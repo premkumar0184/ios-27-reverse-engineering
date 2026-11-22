@@ -1,0 +1,158 @@
+{
+  "phase": "Phase 3D",
+  "subsystem": "UIKitCore.framework - Target Content Offset Resolution, Delegate Arbitration & Custom Snapping",
+  "target_platform": {
+    "device": "iPhone18,3 (iPhone 16 Pro Max / D94AP)",
+    "os_version": "iOS 27.2 (Build 24B119)",
+    "architecture": "arm64e (PAC00)",
+    "subcache_slice": "dyld_shared_cache_arm64e.01",
+    "uikitcore_base_address": "0x184752000"
+  },
+  "proposed_target_offset_calculation": {
+    "closed_form_landing_equation": {
+      "formula": "s_projected = s_0 + v_scroll / (-1000 * ln(d))",
+      "formula_latex": "s_{\\text{projected}} = s_0 + \\frac{v_{\\text{scroll}}}{-1000 \\cdot \\ln(d)} = s_0 + C_d \\cdot v_{\\text{scroll}}",
+      "derivation": "Definite integral of continuous exponential decay v(t) = v_0 * e^(-lambda * t) from t = 0 to infinity, where lambda = -1000 * ln(d) and C_d = 1 / lambda."
+    },
+    "landing_multipliers": {
+      "normal_deceleration_0_998": {
+        "d": 0.998,
+        "lambda_per_sec": 2.00200267,
+        "multiplier_Cd": 0.4995004,
+        "sample_landing_for_1000_pt_per_sec": 499.5004
+      },
+      "fast_deceleration_0_990": {
+        "d": 0.990,
+        "lambda_per_sec": 10.05033585,
+        "multiplier_Cd": 0.0995024,
+        "sample_landing_for_1000_pt_per_sec": 99.5024
+      },
+      "paging_deceleration_0_985": {
+        "d": 0.985,
+        "lambda_per_sec": 15.113638,
+        "multiplier_Cd": 0.066165,
+        "sample_landing_for_1000_pt_per_sec": 66.165
+      }
+    },
+    "boundary_clamping": {
+      "formula": "s_clamped = min(max(s_projected, minContentOffset), maximumContentOffset)",
+      "formula_latex": "s_{\\text{clamped}} = \\min\\left(\\max(s_{\\text{projected}}, s_{\\min}), s_{\\max}\\right)",
+      "min_offset_definition": "s_min = (-adjustedContentInset.left, -adjustedContentInset.top)",
+      "max_offset_definition": "s_max = max(s_min, contentSize + inset - bounds.size)"
+    }
+  },
+  "delegate_arbitration": {
+    "protocol_signature": "-[id<UIScrollViewDelegate> scrollViewWillEndDragging:withVelocity:targetContentOffset:]",
+    "gating_bitfield_flag": "_scrollViewFlags.delegateScrollViewWillEndDragging",
+    "velocity_conversion": {
+      "internal_velocity_unit": "points per second (pt/s)",
+      "delegate_velocity_unit": "points per millisecond (pt/ms)",
+      "conversion_formula": "v_delegate = v_internal / 1000.0",
+      "formula_latex": "\\vec{v}_{\\text{delegate}} = \\frac{\\vec{v}_{\\text{internal}}}{1000.0}"
+    },
+    "pointer_mutation_protocol": {
+      "pointer_type": "CGPoint *targetContentOffset",
+      "semantics": "Caller initializes *targetContentOffset with proposed ballistic landing coordinate s_clamped. Delegate can mutate targetContentOffset->x and/or targetContentOffset->y in place.",
+      "readback_verification": "Upon return from delegate invocation, UIKit checks if *targetContentOffset != s_clamped."
+    }
+  },
+  "target_mutation_kinematic_adaptation": {
+    "cases": [
+      {
+        "case_id": "UNMODIFIED_TARGET",
+        "condition": "*targetContentOffset == s_clamped",
+        "action": "Proceed with standard exponential ballistic deceleration animation using initial release velocity and active deceleration rate d."
+      },
+      {
+        "case_id": "MUTATED_IN_BOUNDS",
+        "condition": "*targetContentOffset != s_clamped AND within [s_min, s_max]",
+        "adaptation_mechanism": "Dynamic deceleration curve adaptation or target-directed spring settling.",
+        "effective_deceleration_recomputation": {
+          "formula": "d_prime = exp(-v_0 / (1000 * (s_target - s_0)))",
+          "formula_latex": "d' = \\exp\\left( -\\frac{v_0}{1000 \\cdot (s_{\\text{target}} - s_0)} \\right)",
+          "description": "Adjusts effective friction so exponential decay lands exactly at delegate-specified target position."
+        },
+        "spring_handover_condition": "If displacement delta |s_target - s_projected| > 150.0 pt or d_prime falls outside physical range [0.85, 0.9995], UIKit switches from ballistic deceleration to target-directed _UIScrollViewSpringAnimation or _UIScrollViewScrollAnimation."
+      },
+      {
+        "case_id": "MUTATED_OUT_OF_BOUNDS",
+        "condition": "*targetContentOffset < s_min OR *targetContentOffset > s_max",
+        "adaptation_mechanism": "Immediate transition to boundary bounce recovery spring (_UIScrollViewSpringAnimation) targeting nearest boundary limit with transferred release velocity."
+      }
+    ]
+  },
+  "snapping_detents_and_alignment": {
+    "detent_data_structures": {
+      "paging_grid": {
+        "paging_origin": "CGPoint _pagingOrigin",
+        "paging_interval": "CGSize _pagingInterval",
+        "regular_grid_formula": "detent_i = origin + i * interval"
+      },
+      "custom_detent_array": {
+        "source": "UICollectionViewLayout / _UIScrollViewSnappingBehavior",
+        "representation": "Sorted array of double coordinates: [p_0, p_1, p_2, ..., p_{N-1}], where p_0 < p_1 < ... < p_{N-1}"
+      }
+    },
+    "nearest_neighbor_search_with_directional_bias": {
+      "bias_threshold": {
+        "velocity_threshold_pt_per_sec": 100.0,
+        "velocity_threshold_pt_per_ms": 0.100,
+        "description": "Fling velocity threshold differentiating intentional directional snap from neutral nearest-neighbor settlement."
+      },
+      "directional_search_modes": [
+        {
+          "mode": "FORWARD_SNAP",
+          "condition": "v_scroll > +velocity_threshold_pt_per_sec",
+          "algorithm": "Locate smallest detent p_i strictly greater than current offset s_0. If projected offset s_proj > s_0, select nearest detent to s_proj subject to p_i >= p_{current + 1}."
+        },
+        {
+          "mode": "BACKWARD_SNAP",
+          "condition": "v_scroll < -velocity_threshold_pt_per_sec",
+          "algorithm": "Locate largest detent p_i strictly less than current offset s_0. If projected offset s_proj < s_0, select nearest detent to s_proj subject to p_i <= p_{current - 1}."
+        },
+        {
+          "mode": "STATIC_NEAREST_SNAP",
+          "condition": "abs(v_scroll) <= velocity_threshold_pt_per_sec",
+          "algorithm": "Pure Euclidean distance minimization: p* = argmin_{p_i} |s_0 - p_i|."
+        }
+      ],
+      "multi_detent_clamping": {
+        "maximum_detents_skipped": "Configurable (default unlimited in collection views, clamped to 1 in standard paging).",
+        "clamping_formula": "index_target = clamp(index_projected, index_current - max_skip, index_current + max_skip)"
+      }
+    },
+    "alignment_offsets": {
+      "leading_alignment": "detent_offset = item_origin - container_inset_leading",
+      "center_alignment": "detent_offset = item_origin - (container_size - item_size) / 2.0",
+      "trailing_alignment": "detent_offset = item_origin + item_size - container_size + container_inset_trailing"
+    }
+  },
+  "collection_view_layout_arbitration": {
+    "proposed_offset_method": "-[UICollectionViewLayout targetContentOffsetForProposedContentOffset:withScrollingVelocity:]",
+    "unbiased_offset_method": "-[UICollectionViewLayout targetContentOffsetForProposedContentOffset:]",
+    "flow_layout_implementation": {
+      "class": "UICollectionViewFlowLayout",
+      "behavior": "Queries layout attributes for elements in target rect, snaps to cell leading edge or center based on sectionInset and minimumLineSpacing."
+    }
+  },
+  "decompiled_routines": [
+    {
+      "method_name": "-[UIScrollView targetContentOffsetForProposedContentOffset:withScrollingVelocity:]",
+      "vm_address": "0x1848b6a00",
+      "signature": "{CGPoint=dd}48@0:8{CGPoint=dd}16{CGPoint=dd}32",
+      "role": "Calculates default proposed content offset clamped to bounds."
+    },
+    {
+      "method_name": "-[UICollectionViewLayout targetContentOffsetForProposedContentOffset:withScrollingVelocity:]",
+      "vm_address": "0x1848da200",
+      "signature": "{CGPoint=dd}48@0:8{CGPoint=dd}16{CGPoint=dd}32",
+      "role": "Layout-level offset resolution allowing item and section snapping."
+    },
+    {
+      "method_name": "-[_UIScrollViewSnappingBehavior targetOffsetForProjectedOffset:velocity:]",
+      "vm_address": "0x1848d9100",
+      "signature": "{CGPoint=dd}48@0:8{CGPoint=dd}16{CGPoint=dd}32",
+      "role": "Custom snapping behavior executing directional nearest-neighbor detent search."
+    }
+  ]
+}

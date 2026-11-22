@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AOP2 RTKit Preemptive Microkernel Specification",
+  "microkernel_architecture": {
+    "name": "RTKitOS (Yggdrasill)",
+    "execution_level": "EL1 (ARM64e Supervisor / Kernel)",
+    "target_cpu": "ARM64_V8 with Pointer Authentication (PAC00)",
+    "virtual_load_base": "0xffffffff00000000",
+    "entry_point": "0xffffffff00000800",
+    "binary_type": "MH_PRELOAD (06_rtkit_microkernel_preload.macho)",
+    "scheduler": {
+      "type": "Priority-Driven Preemptive Multi-Tasking Scheduler",
+      "priority_levels": 64,
+      "tick_model": "Tickless high-resolution hardware timer interrupt (ARM64 Generic Timer CNTPCT_EL0)",
+      "context_switch_latency_ns": 450,
+      "quantum_nanos": 10000000,
+      "queues": [
+        {"name": "RT_HIGH", "priority_range": "48-63", "role": "Interrupt top-half and hard real-time audio/IMU ring buffers"},
+        {"name": "RT_NORM", "priority_range": "32-47", "role": "Endpoint message processing and Tightbeam RPC handling"},
+        {"name": "BACKGROUND", "priority_range": "16-31", "role": "On-chip sensor filtering, step cadence, and geofence arbitration"},
+        {"name": "IDLE", "priority_range": "0-15", "role": "Power-saving WFI (Wait For Interrupt) and retention state gating"}
+      ]
+    },
+    "stack_partitions": {
+      "kernel_stack": {"vmaddr": "0xffffffff00016000", "size_bytes": 8192, "role": "Microkernel EL1 interrupt and exception stack"},
+      "init_stack": {"section": "_rtk_init_stack", "size_bytes": 16384, "role": "Early task initialization stack"},
+      "irq_stack": {"section": "_rtk_irq_stack", "size_bytes": 16384, "role": "High-priority hardware interrupt servicing stack"},
+      "exc_stack": {"section": "_rtk_exc_stack", "size_bytes": 8192, "role": "Synchronous fault and abort diagnostic stack"},
+      "heap_region": {"section": "_rtk_heap", "size_bytes": 262144, "role": "Task dynamic heap allocation"}
+    }
+  },
+  "mailbox_multiplexing_protocol": {
+    "word_size_bits": 64,
+    "framing": {
+      "endpoint_id": {"bits": "63:48", "mask": "0xffff000000000000", "shift": 48, "description": "16-bit multiplexed endpoint index (0x00..0x53)"},
+      "payload": {"bits": "47:0", "mask": "0x0000ffffffffffff", "shift": 0, "description": "48-bit immediate message payload or shared-memory physical DMA descriptor pointer"}
+    },
+    "system_endpoints": {
+      "0x00": {"name": "system-ep", "role": "Microkernel system control, protocol version negotiation, crashdump, time synchronization"},
+      "0x01": {"name": "oslog-ep / syslog-ep", "role": "Structured OSLog string streaming to host Darwin logd daemon"},
+      "0x02": {"name": "ioreporting-ep", "role": "IOReporting energy telemetry, FIFO queue depth metrics, and channel statistics"},
+      "0x03": {"name": "entropy-ep", "role": "Hardware TRNG continuous seed feeding to host kernel entropy pool"},
+      "0x04": {"name": "iopm-ep", "role": "Bidirectional power management assertions (wake, sleep, retention acknowledgment)"},
+      "0x05": {"name": "system-manager-ep", "role": "Coprocessor supervisor, task heartbeat monitor, and crashlog collection"},
+      "0x07": {"name": "tightbeam-ep", "role": "Internal Tightbeam RPC multiplexer for intra-firmware IPC"}
+    },
+    "application_endpoints": {
+      "0x10": {"name": "ap-motionx-ep", "task": "01_motion_expert_app.macho", "role": "6-axis IMU fast-path streaming to AppleSPUFastpathDriver"},
+      "0x11": {"name": "ap-asenx-ep", "task": "01_motion_expert_app.macho", "role": "Ambient Light Sensor (ALS) lux telemetry and TrueTone chromaticity tracking"},
+      "0x12": {"name": "ap-location-ep", "task": "02_aon_location_app.macho", "role": "Always-On Location dead reckoning, step count, and geofence alarms"},
+      "0x18": {"name": "ap-audio-ep", "task": "03_audio_hotword_app.macho", "role": "Low-power microphone streaming and local Siri hotword circular buffer (3.0s SRAM FIFO)"},
+      "0x19": {"name": "ap-chime-ep", "task": "03_audio_hotword_app.macho", "role": "Low-power boot chime and system audio asset playback"},
+      "0x20": {"name": "ap-dcp-ep", "task": "01_motion_expert_app.macho", "role": "1Hz Always-On Display (AOD) direct frame streamer arbitration"},
+      "0x22": {"name": "ap-hid-ep", "task": "01_motion_expert_app.macho", "role": "Always-on capacitive touch detection, crown rotation, and button debouncing"},
+      "0x30": {"name": "ap-bluetoothx-ep", "task": "01_motion_expert_app.macho", "role": "Bluetooth Low-Energy proximity beacon and advertisement coprocessor link"},
+      "0x35": {"name": "ap-gnss-ep", "task": "01_motion_expert_app.macho", "role": "GNSS GPS baseband power state gating and ephemeris staging"},
+      "0x53": {"name": "sharedmem_xcoproc_AOP2_EP53_in", "task": "04_rtkit_exclave_bridge.macho", "role": "Direct DART IOMMU channel to ExclaveOS (Sensor Indicator Light / EXSurface SIL manager)"}
+    }
+  }
+}

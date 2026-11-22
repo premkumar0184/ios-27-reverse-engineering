@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "phase": "exclave_phase_4_xnu_boundary",
+  "syscall_traps": {
+    "_exclaves_ctl_trap": {
+      "name": "_exclaves_ctl_trap",
+      "trap_class": "Mach / BSD System Call Trap",
+      "prototype": "int _exclaves_ctl_trap(uint32_t operation, void *args, size_t args_size)",
+      "operations": {
+        "0x01": {
+          "symbol": "EXCLAVES_CTL_DONATE_PAGE",
+          "description": "Donates host DRAM physical pages as Datacubes to ExclaveOS PMM server.",
+          "arguments": "struct exclaves_donate_page_args { uint64_t paddr; uint64_t size; uint32_t mem_type; uint32_t flags; }",
+          "semantics": "Unmaps physical address range from Darwin Stage-1 translation tables, notifies SPTM, and triggers pmm-server retyping."
+        },
+        "0x02": {
+          "symbol": "EXCLAVES_CTL_RECLAIM_PAGE",
+          "description": "Reclaims released Datacubes after ExclaveOS zero-fill scrubbing.",
+          "arguments": "struct exclaves_reclaim_page_args { uint64_t paddr; uint64_t size; }",
+          "semantics": "Verifies that pmm-server has executed xnu_frame_unreserve and remaps page into host Darwin physical memory pool."
+        },
+        "0x03": {
+          "symbol": "EXCLAVES_CTL_GET_STATUS",
+          "description": "Queries ExclaveOS subsystem health, active Conclave count, and memory carveout statistics.",
+          "arguments": "struct exclaves_status_args { struct exclaves_allocation_statistics *stats; size_t buffer_len; }",
+          "semantics": "Populates com.apple.xnu.ca_exclaves_allocation_statistics telemetry."
+        },
+        "0x04": {
+          "symbol": "EXCLAVES_CTL_SET_SENSOR_STATE",
+          "description": "Updates sensor arbitration state machine (e.g. camera, microphone active status).",
+          "arguments": "struct exclaves_sensor_state_args { uint32_t sensor_type; uint32_t state; uint64_t timestamp; }",
+          "semantics": "Invokes _exclaves_indicator_system_state_change to arbitrate Sensor Indicator Light (SIL) status."
+        }
+      },
+      "entitlements_required": [
+        "com.apple.private.exclaves.control",
+        "com.apple.private.exclaves.sensor"
+      ]
+    },
+    "_exclaves_call_trap": {
+      "name": "_exclaves_call_trap",
+      "trap_class": "Synchronous Conclave Invocation Trap",
+      "prototype": "int _exclaves_call_trap(uint64_t endpoint_token, const void *in_msg, size_t in_size, void *out_msg, size_t *out_size)",
+      "semantics": "Copies userland Tightbeam message payload into per-thread IPC buffer (ipcb_paddr), enters exclaves_run in exclaves_xnuproxy.c, transitions through RingGate via sk_enter, and blocks until Conclave replies.",
+      "error_codes": {
+        "0": "EXCLAVES_SCHEDULER_SUCCESS",
+        "1": "RINGGATE_STATUS_ERROR",
+        "2": "EXCLAVES_STATUS_TIMEOUT",
+        "3": "EXCLAVES_STATUS_INVALID_ENDPOINT"
+      }
+    },
+    "_exclaves_boot_trap": {
+      "name": "_exclaves_boot_trap",
+      "trap_class": "Early Bootstrap & Verification Trap",
+      "prototype": "int _exclaves_boot_trap(uint32_t stage, void *bootinfo, size_t bootinfo_size)",
+      "semantics": "Executed during Darwin kernel initialization (exclaves_boot.c). Verifies BUND archive signature, measures firmware segments, and passes exclaves_bootinfo to Apple Silicon SPTM.",
+      "stages": [
+        {
+          "stage": 0,
+          "name": "EXCLAVES_BOOT_PROBE",
+          "description": "Detects Apple Silicon Exclave hardware capabilities"
+        },
+        {
+          "stage": 1,
+          "name": "EXCLAVES_BOOT_LOAD",
+          "description": "Loads ExclaveCore BUND into SPM carveout"
+        },
+        {
+          "stage": 2,
+          "name": "EXCLAVES_BOOT_INIT",
+          "description": "Executes exclaves_aoe_boot and activates cL4 scheduler hook"
+        }
+      ]
+    }
+  },
+  "xnuproxy": {
+    "name": "XnuProxy Subsystem",
+    "source_file": "xnu/osfmk/arm64/exclaves_xnuproxy.c",
+    "notification_servers": [
+      {
+        "class": "JgXnuProxyComponents.XnuProxyNotificationServer",
+        "initializer": "JgXnuProxyComponents.XnuProxyNotificationServer.init(notificationUpcalls:notificationId:)",
+        "role": "General asynchronous event notification server from ExclaveOS to Darwin kernel"
+      },
+      {
+        "class": "JgXnuProxyComponents.DaemonNotificationServer",
+        "initializer": "JgXnuProxyComponents.DaemonNotificationServer.init(notificationUpcalls:notificationId:)",
+        "role": "Direct event distribution channel routing notifications to Darwin userland daemons (sharingd, apsd, backboardd)"
+      }
+    ],
+    "ipc_buffer_mapping": {
+      "type": "Exclaves_L4_IpcBuffer_t",
+      "alignment_assertion": "trunc_page_64(ipcb_paddr) == trunc_page_64(ipcb_paddr + sizeof(Exclaves_L4_IpcBuffer_t) - 1)",
+      "page_permission_check": "exclaves_memory_pa_page_is_sk_shared_rw(trunc_page_64(ipcb_paddr))",
+      "description": "Each XNU thread participating in exclave calls allocates a dedicated 512-byte IPC buffer mapped shared read-write between XNU and ExclaveOS."
+    },
+    "thread_context": {
+      "struct_type": "struct exclaves_ctx",
+      "embedded_in": "struct thread (thread_t->exclaves_ctx)",
+      "fields": [
+        {
+          "name": "ipcb_paddr",
+          "type": "uint64_t",
+          "description": "Physical address of thread IPC buffer"
+        },
+        {
+          "name": "ringgate_token",
+          "type": "uint64_t",
+          "description": "Hardware RingGate authorization token"
+        },
+        {
+          "name": "saved_state",
+          "type": "struct arm_saved_state*",
+          "description": "Pointer to saved ARM64 register frame"
+        },
+        {
+          "name": "active_endpoint",
+          "type": "uint64_t",
+          "description": "Target Conclave endpoint capability index"
+        }
+      ]
+    }
+  },
+  "spm_domain_transitions": {
+    "hardware_monitor": "Apple Silicon Secure Page Table Monitor (SPTM / SPM)",
+    "transition_gate": "RingGate (L4_Type_Plat_RingGate = 0x17)",
+    "entry_primitive": "sk_enter (Secure Kernel Enter)",
+    "exit_primitive": "xrt__plat_RingGate_Return",
+    "cache_invariants": [
+      "Data cache clean to Point of Coherence (dc cvac) executed on IPC buffer prior to sk_enter.",
+      "Instruction cache invalidate (ic ivau) executed upon retyped executable pages.",
+      "Memory barrier (dmb ish / isb) serialized across domain crossings."
+    ],
+    "domain_fault_isolation": {
+      "policy": "Isolated Exclave crashes do not panic the Darwin host kernel.",
+      "translation_fault_routing": "SPTM redirects translation faults in Conclave VAS to cL4 vas_faulthandler_vtable.",
+      "panic_fallback": "Unrecoverable microkernel exceptions enter EXCLAVES_PANIC_WAIT_THREAD, freezing the Conclave while allowing Darwin to collect diagnostic stackshots."
+    }
+  }
+}

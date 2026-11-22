@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "sepOS Service Topology & IPC Endpoint Specification",
+  "services": [
+    {
+      "identifier": "com.apple.sepos.keystore",
+      "name": "KeyStoreServer",
+      "priority": 48,
+      "stack_size_bytes": 65536,
+      "role": "AppleKeyStore (AKS) master manager, Class A through D key derivation, file system media key unwrapping, and passcode iteration scrypt engine.",
+      "supported_commands": [
+        "cmsgLOAD_KEYBAG",
+        "cmsgSAVE_KEYBAG",
+        "cmsgUNWRAP_KEY",
+        "cmsgWRAP_KEY",
+        "cmsgDROP_CLASS_KEYS",
+        "cmsgVERIFY_PASSCODE",
+        "cmsgCHANGE_PASSCODE",
+        "cmsgGET_PASSCODE_BACKOFF"
+      ]
+    },
+    {
+      "identifier": "com.apple.sepos.pearl",
+      "name": "BiometricServer",
+      "priority": 56,
+      "stack_size_bytes": 131072,
+      "role": "Pearl Face ID biometric authentication pipeline, NIR camera frame anti-spoofing verification, neural embedding scoring, and signed biometric match token issuance.",
+      "supported_commands": [
+        "cmsgPEARL_ENROLL_START",
+        "cmsgPEARL_ENROLL_COMMIT",
+        "cmsgPEARL_MATCH_START",
+        "cmsgPEARL_MATCH_RESULT",
+        "cmsgPEARL_SIGN_AUTH_TOKEN",
+        "cmsgPEARL_RESET_LOCKOUT"
+      ]
+    },
+    {
+      "identifier": "com.apple.sepos.applepay",
+      "name": "ApplePayServer",
+      "priority": 52,
+      "stack_size_bytes": 65536,
+      "role": "Embedded Secure Element (eSE) Stockholm manager, EMV dynamic cryptogram generation, payment applet authorization, and transaction signature verification.",
+      "supported_commands": [
+        "cmsgESE_TRANSCEIVE_APDU",
+        "cmsgESE_SIGN_PAYMENT_CRYPTOGRAM",
+        "cmsgESE_GET_TRANSIT_BALANCE",
+        "cmsgESE_CARKEY_AUTHORIZE"
+      ]
+    },
+    {
+      "identifier": "com.apple.sepos.credentialmanager",
+      "name": "CredentialServer",
+      "priority": 44,
+      "stack_size_bytes": 65536,
+      "role": "FIDO2 / WebAuthn passkey management, hardware Attestation Identity Key (AIK) creation, hardware-bound cert issuance, and device identity assertions.",
+      "supported_commands": [
+        "cmsgPASSKEY_GENERATE_PAIR",
+        "cmsgPASSKEY_SIGN_CHALLENGE",
+        "cmsgPASSKEY_DELETE_CREDENTIAL",
+        "cmsgATTESTATION_GET_CERTIFICATE"
+      ]
+    },
+    {
+      "identifier": "com.apple.sepos.art",
+      "name": "AntiReplayServer",
+      "priority": 40,
+      "stack_size_bytes": 32768,
+      "role": "Anti-Replay Token (ART) lifecycle validation, External Anti-Replay Token (xART / Gigalocker) persistent synchronization, and monotonic OTP counter enforcement.",
+      "supported_commands": [
+        "cmsgART_LOAD_TOKENS",
+        "cmsgART_COMMIT_TOKENS",
+        "cmsgART_GET_NONCE",
+        "cmsgXART_SYNC_GIGALOCKER",
+        "cmsgOTP_INCREMENT_ROLLBACK_COUNTER"
+      ]
+    },
+    {
+      "identifier": "com.apple.sepos.trng",
+      "name": "EntropyServer",
+      "priority": 60,
+      "stack_size_bytes": 16384,
+      "role": "Silicon True Random Number Generator collector, NIST SP 800-90B continuous health monitor, AES-256 CTR_DRBG conditioner, and host kernel reseed provider.",
+      "supported_commands": [
+        "cmsgGET_ENTROPY_FOR_XNU_PRNG",
+        "cmsgTRNG_HEALTH_STATUS",
+        "cmsgDRBG_RESEED_INTERNAL"
+      ]
+    },
+    {
+      "identifier": "com.apple.sepos.tightbeam",
+      "name": "TightbeamSecureBridge",
+      "priority": 50,
+      "stack_size_bytes": 65536,
+      "role": "ExclaveOS inter-enclave communication bridge (tbms), handling direct RPC requests from Conclaves over DART-SEP Stream ID 2 and shared Datacubes.",
+      "supported_commands": [
+        "cmsgTB_PROCESS_INVOCATION",
+        "cmsgTB_EXCHANGE_CAPABILITY",
+        "cmsgTB_REGISTER_CONCLAVE_ENDPOINT"
+      ]
+    }
+  ],
+  "ipc_endpoints": [
+    {
+      "endpoint_id": 1,
+      "endpoint_hex": "0x01",
+      "name": "SEP_ENDPOINT_CONTROL",
+      "target_service": "sepOS Executive Core",
+      "description": "Kernel boot handshake, clock synchronization, sleep/wake notifications, and panic telemetry extraction."
+    },
+    {
+      "endpoint_id": 2,
+      "endpoint_hex": "0x02",
+      "name": "SEP_ENDPOINT_KEYSTORE",
+      "target_service": "KeyStoreServer",
+      "description": "AppleKeyStore (AKS) class protection operations, keybag unwrapping, and passcode iteration."
+    },
+    {
+      "endpoint_id": 3,
+      "endpoint_hex": "0x03",
+      "name": "SEP_ENDPOINT_BIOMETRIC",
+      "target_service": "BiometricServer",
+      "description": "Pearl Face ID sensor configuration, biometric template match requests, and signed authorization tokens."
+    },
+    {
+      "endpoint_id": 4,
+      "endpoint_hex": "0x04",
+      "name": "SEP_ENDPOINT_STORAGE",
+      "target_service": "AntiReplayServer",
+      "description": "Persistent Anti-Replay Tokens (ART/xART), anti-rollback counter validation, and secure storage."
+    },
+    {
+      "endpoint_id": 5,
+      "endpoint_hex": "0x05",
+      "name": "SEP_ENDPOINT_SECURE_ELEMENT",
+      "target_service": "ApplePayServer",
+      "description": "Stockholm embedded Secure Element (eSE) APDU passthrough, payment tokens, and CarKey credentials."
+    },
+    {
+      "endpoint_id": 6,
+      "endpoint_hex": "0x06",
+      "name": "SEP_ENDPOINT_CREDENTIAL",
+      "target_service": "CredentialServer",
+      "description": "FIDO2 / WebAuthn passkey generation, signing, and hardware device attestation."
+    },
+    {
+      "endpoint_id": 7,
+      "endpoint_hex": "0x07",
+      "name": "SEP_ENDPOINT_ENTROPY",
+      "target_service": "EntropyServer",
+      "description": "High-entropy true random byte streaming from on-chip TRNG to Darwin XNU kernel pool."
+    },
+    {
+      "endpoint_id": 8,
+      "endpoint_hex": "0x08",
+      "name": "SEP_ENDPOINT_EXCLAVE_BRIDGE",
+      "target_service": "TightbeamSecureBridge",
+      "description": "Direct Tightbeam RPC channel between ExclaveOS Conclaves (sksd) and sepOS."
+    }
+  ]
+}

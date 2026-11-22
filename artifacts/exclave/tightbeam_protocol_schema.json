@@ -1,0 +1,165 @@
+{
+  "schema_version": "1.0",
+  "phase": "exclave_phase_2_tightbeam_wire_format",
+  "swift_protocols": {
+    "TightbeamServiceInitProtocol": {
+      "mangled_name": "$s9Tightbeam0A19ServiceInitProtocolP",
+      "module": "Tightbeam",
+      "role": "Conclave bootstrap service initialization",
+      "methods": [
+        "_tightbeamInitComponents() -> Void",
+        "tightbeamRegisterEndpoint(_ endpoint: TightbeamEndpoint) -> Bool"
+      ],
+      "description": "Implemented by exclave daemons (e.g. tightbeam_stub) to publish service endpoints upon bootstrap."
+    },
+    "TightbeamBadge": {
+      "mangled_name": "$s9Tightbeam0A5BadgeV",
+      "module": "Tightbeam",
+      "role": "Unforgeable hardware client identity token",
+      "properties": [
+        "clientId: UInt16",
+        "isolationDomain: UInt16",
+        "sessionNonce: UInt32"
+      ],
+      "description": "Kernel-injected client badge delivered in register x2 during L4_ReplyWait."
+    },
+    "TightbeamDecoderProtocol": {
+      "mangled_name": "$s9Tightbeam0A15DecoderProtocolP",
+      "module": "Tightbeam",
+      "role": "Binary deserialization engine",
+      "methods": [
+        "decode<T: TightbeamDecodable>(_ type: T.Type) throws -> T",
+        "decodeCapability() throws -> L4_Cap_t",
+        "decodeFloat32() throws -> Float",
+        "decodeFloat64() throws -> Double"
+      ],
+      "description": "Deserializes primitives, collections, and capabilities from incoming transport buffer."
+    },
+    "TightbeamEncoderProtocol": {
+      "mangled_name": "$s9Tightbeam0A15EncoderProtocolP",
+      "module": "Tightbeam",
+      "role": "Binary serialization engine",
+      "methods": [
+        "encode<T: TightbeamEncodable>(_ value: T) throws -> Void",
+        "encodeCapability(_ cap: L4_Cap_t) throws -> Void",
+        "encodeFloat32(_ val: Float) throws -> Void",
+        "encodeFloat64(_ val: Double) throws -> Void"
+      ],
+      "description": "Serializes primitives, collections, and capabilities into message transport buffer."
+    },
+    "TightbeamEndpoint": {
+      "mangled_name": "$s9Tightbeam0A8EndpointC",
+      "module": "Tightbeam",
+      "role": "High-level cL4 IPC endpoint abstraction",
+      "properties": [
+        "endpointCap: L4_Cap_t",
+        "badge: TightbeamBadge",
+        "transportType: TightbeamTransportType"
+      ],
+      "description": "Encapsulates cL4 endpoint capability, handling dispatch across cL4 or cL4_large."
+    },
+    "TightbeamMessage": {
+      "mangled_name": "$s9Tightbeam0A7MessageC",
+      "module": "Tightbeam",
+      "role": "High-level message container",
+      "properties": [
+        "underlyingMessage: UnsafeMutablePointer<tb_message_s>",
+        "disposition: TightbeamDisposition",
+        "invocationId: UInt64"
+      ],
+      "description": "Wraps low-level struct tb_message_s with Swift ARC memory lifecycle."
+    },
+    "TightbeamResourceSerializerProtocol": {
+      "mangled_name": "$s23InternalExclaveLauncher35TightbeamResourceSerializerProtocolP",
+      "module": "InternalExclaveLauncher",
+      "role": "Platform hardware resource serialization",
+      "methods": [
+        "serializeResource(_ resource: AnyTightbeamResource) throws -> TightbeamDescriptor",
+        "deserializeResource(_ descriptor: TightbeamDescriptor) throws -> AnyTightbeamResource"
+      ],
+      "description": "Serializes Datacube shared memory frames, DART IOMMU channels, and event signals."
+    },
+    "TightbeamBuilderApi": {
+      "mangled_name": "$s23InternalExclaveLauncher19TightbeamBuilderApiP",
+      "module": "InternalExclaveLauncher",
+      "role": "Declarative interface builder DSL",
+      "methods": [
+        "buildComponent() -> TightbeamBuilderComponentApi",
+        "buildEndpoint() -> TightbeamBuilderEndpointApi",
+        "buildClient() -> TightbeamBuilderClientApi"
+      ],
+      "description": "Configures Conclave component routing, endpoint bindings, and type metadata."
+    }
+  },
+  "descriptors": {
+    "TightbeamDescriptor": {
+      "tag": "0x54424453 ('TBDS')",
+      "description": "Generic capability and resource descriptor container.",
+      "fields": [
+        {
+          "name": "resource_type",
+          "type": "uint32_t",
+          "description": "L4_Type_* capability type"
+        },
+        {
+          "name": "slot_index",
+          "type": "uint32_t",
+          "description": "Target CNode slot index"
+        },
+        {
+          "name": "rights_mask",
+          "type": "uint64_t",
+          "description": "Attenuated rights bitmask"
+        }
+      ]
+    },
+    "EndpointTightbeamResource": {
+      "tag": "0x54424550 ('TBEP')",
+      "description": "Exported IPC service endpoint descriptor with badge metadata.",
+      "fields": [
+        {
+          "name": "service_id",
+          "type": "uint64_t",
+          "description": "64-bit service hash identifier"
+        },
+        {
+          "name": "endpoint_cap",
+          "type": "uint64_t",
+          "description": "cL4 endpoint capability slot"
+        },
+        {
+          "name": "max_message_size",
+          "type": "uint64_t",
+          "description": "Maximum payload quota"
+        }
+      ]
+    },
+    "SharedMemoryTightbeamResource": {
+      "tag": "0x5442534d ('TBSM')",
+      "description": "Datacube shared memory frame descriptor for bulk transfer.",
+      "fields": [
+        {
+          "name": "frame_cap",
+          "type": "uint64_t",
+          "description": "Physical frame capability"
+        },
+        {
+          "name": "size_bytes",
+          "type": "uint64_t",
+          "description": "Buffer byte length"
+        },
+        {
+          "name": "permission_flags",
+          "type": "uint32_t",
+          "description": "Read / Write / Map attributes"
+        }
+      ]
+    }
+  },
+  "transport_selection_matrix": {
+    "payload_size_lte_256_bytes": "cL4 inline register IPC fast path",
+    "payload_size_gt_256_bytes": "cL4_large shared-memory frame accumulator",
+    "capabilities_count_lte_8": "Direct delegation in CR0..CR7",
+    "capabilities_count_gt_8": "Chained delegation across multiple cL4_large parts"
+  }
+}

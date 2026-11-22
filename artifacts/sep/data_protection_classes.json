@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Data Protection Class Hierarchy & KDF Specification",
+  "classes": [
+    {
+      "class_id": 1,
+      "name": "Class A (Complete Protection)",
+      "constant": "kAKSProtectionClassA",
+      "locking_behavior": "Keys discarded immediately from memory upon device lock (secret_drop). Inaccessible until user passcode entry.",
+      "intended_usage": "User sensitive data: Health data, Mail messages, Safari history, Photos, Keychain items.",
+      "key_recovery": "Passcode required. Key derivation fails immediately if device is locked."
+    },
+    {
+      "class_id": 2,
+      "name": "Class B (Protected Unless Open)",
+      "constant": "kAKSProtectionClassB",
+      "locking_behavior": "Keys retained in memory for currently open files even when the device locks. New files can be created while locked via asymmetric curve derivation.",
+      "intended_usage": "Background downloads, Mail attachments being downloaded in background, audio recordings.",
+      "key_recovery": "Public key encrypts new file key; private key required to decrypt and open existing files."
+    },
+    {
+      "class_id": 3,
+      "name": "Class C (Protected Until First Unlock)",
+      "constant": "kAKSProtectionClassC",
+      "locking_behavior": "Keys decrypted upon first user passcode entry post-boot and retained in memory across subsequent lock/unlock cycles until reboot.",
+      "intended_usage": "Background system daemons, push notification delivery, alarm clock, calendar reminders.",
+      "key_recovery": "Accessible across lock states as long as the device has booted and been unlocked at least once."
+    },
+    {
+      "class_id": 4,
+      "name": "Class D (No Protection / Effaceable)",
+      "constant": "kAKSProtectionClassD",
+      "locking_behavior": "Encrypted using D-Key stored in Effaceable Storage. Always accessible regardless of lock state.",
+      "intended_usage": "System binaries, caches, non-sensitive assets. Wiped instantly upon Erase All Content and Settings.",
+      "key_recovery": "Hardware key in Effaceable Storage wiped instantly to achieve cryptographic erase."
+    }
+  ],
+  "kdf_specifications": {
+    "device_kek_kdf": {
+      "standard": "NIST SP 800-108 CMAC",
+      "input_key": "UID0 (256-bit)",
+      "context": "AppleKeyStore::DeviceKEK",
+      "output_bits": 256
+    },
+    "passcode_iteration_kdf": {
+      "algorithm": "scrypt",
+      "parameters": {
+        "N": 32768,
+        "r": 8,
+        "p": 1,
+        "output_length_bytes": 32
+      },
+      "hardware_binding": "scrypt output is hashed with UID0 using hardware AES-CMAC",
+      "backoff_rate_limiting": {
+        "attempts_1_to_4": "No delay",
+        "attempt_5": "60 seconds (1 minute)",
+        "attempt_6": "300 seconds (5 minutes)",
+        "attempts_7_to_8": "900 seconds (15 minutes)",
+        "attempts_9_plus": "3600 seconds (60 minutes)",
+        "attempt_10_max": "Erase device data if configured (com.apple.keystore.max_failed_attempts)"
+      }
+    },
+    "file_key_wrapping": {
+      "standard": "NIST SP 800-38F Key Wrap (KW)",
+      "primitive": "AES-KW-256",
+      "role": "Wraps individual per-inode file encryption keys under class protection keys."
+    }
+  }
+}

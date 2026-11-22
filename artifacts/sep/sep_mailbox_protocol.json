@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple ASCwrap-v6 Mailbox MMIO & Framing Protocol Specification",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "mmio_registers": {
+    "ascwrap_mailbox": {
+      "device_tree_path": "/device-tree/arm-io/sep",
+      "reg_index": 0,
+      "base_address": "0x0000000072600000",
+      "size_bytes": 557056,
+      "size_hex": "0x00088000",
+      "size_human": "544 KB",
+      "registers": {
+        "INBOX_DATA_FIFO": {
+          "offset": "0x0000",
+          "access": "Write-Only (AP to SEP)",
+          "width_bits": 64,
+          "description": "FIFO data register for writing outgoing 64-bit command message words to SEP."
+        },
+        "OUTBOX_DATA_FIFO": {
+          "offset": "0x0100",
+          "access": "Read-Only (SEP to AP)",
+          "width_bits": 64,
+          "description": "FIFO data register for reading incoming 64-bit reply message words from SEP."
+        },
+        "INBOX_STATUS": {
+          "offset": "0x0008",
+          "access": "Read-Only",
+          "width_bits": 32,
+          "bitfields": {
+            "COUNT": {"bits": "0..7", "description": "Number of available free words in inbox FIFO."},
+            "FULL": {"bit": "16", "description": "Asserted when inbox FIFO is completely full (64 words)."},
+            "EMPTY": {"bit": "17", "description": "Asserted when inbox FIFO is completely drained."}
+          }
+        },
+        "OUTBOX_STATUS": {
+          "offset": "0x0108",
+          "access": "Read-Only",
+          "width_bits": 32,
+          "bitfields": {
+            "COUNT": {"bits": "0..7", "description": "Number of readable response words in outbox FIFO."},
+            "FULL": {"bit": "16", "description": "Asserted when outbox FIFO is full."},
+            "EMPTY": {"bit": "17", "description": "Asserted when outbox FIFO contains zero messages."}
+          }
+        },
+        "DOORBELL_AP_TO_SEP": {
+          "offset": "0x0040",
+          "access": "Write-Only",
+          "width_bits": 32,
+          "description": "Triggers high-priority interrupt to SEP core indicating new message ready."
+        },
+        "DOORBELL_SEP_TO_AP": {
+          "offset": "0x0140",
+          "access": "Read/Clear",
+          "width_bits": 32,
+          "description": "Asserted by SEP upon response completion. Cleared by AP driver write."
+        },
+        "INTERRUPT_ENABLE": {
+          "offset": "0x0200",
+          "access": "Read/Write",
+          "width_bits": 32,
+          "description": "Interrupt mask register enabling AIC IRQ assertion for FIFO state transitions."
+        }
+      }
+    }
+  },
+  "interrupt_vectors": {
+    "interrupt_controller": "aic",
+    "lines": [
+      {
+        "line": 304,
+        "hex": "0x0130",
+        "symbol": "SEP_IRQ_OUTBOX_NOT_EMPTY",
+        "assertion": "Triggered when Outbox FIFO count > 0; AP driver reads response packet."
+      },
+      {
+        "line": 305,
+        "hex": "0x0131",
+        "symbol": "SEP_IRQ_INBOX_EMPTY",
+        "assertion": "Triggered when Inbox FIFO drains completely; unblocks pending message queue."
+      },
+      {
+        "line": 306,
+        "hex": "0x0132",
+        "symbol": "SEP_IRQ_DOORBELL_STATUS",
+        "assertion": "Doorbell synchronization interrupt signaling asynchronous event or state change."
+      },
+      {
+        "line": 307,
+        "hex": "0x0133",
+        "symbol": "SEP_IRQ_ERROR_FAULT",
+        "assertion": "Hardware exception interrupt signaling SEP panic, memory bus abort, or tamper attempt."
+      }
+    ]
+  },
+  "command_framing": {
+    "header_format": {
+      "word_0": {
+        "width_bits": 64,
+        "bitfields": {
+          "PAYLOAD_LENGTH_WORDS": {"bits": "0..7", "description": "Message length in 64-bit words (1..64)."},
+          "ENDPOINT_ID": {"bits": "8..15", "description": "Target sepOS service endpoint identifier (0x01..0x08)."},
+          "SEQUENCE_TAG": {"bits": "16..31", "description": "Correlation tag for asynchronous transaction tracking."},
+          "COMMAND_OPCODE": {"bits": "32..47", "description": "Service-specific operation selector."},
+          "FLAGS": {"bits": "48..63", "description": "Message control flags (OOL payload, priority, reply expected)."}
+        }
+      },
+      "word_1_to_7": "Inline arguments (up to 48 bytes) for fast-path mailbox dispatch.",
+      "ool_descriptor": {
+        "paddr_64": "Physical DMA address mapped through DART-SEP Stream ID 0 (mapper-sep).",
+        "length_bytes": "Buffer size in bytes (must be 16-byte aligned)."
+      }
+    },
+    "core_opcodes": {
+      "SEP_KEYSTORE": [
+        {"opcode": "0x0201", "name": "cmsgLOAD_KEYBAG", "description": "Loads user or system keybag into sepOS memory."},
+        {"opcode": "0x0202", "name": "cmsgSAVE_KEYBAG", "description": "Exports sealed keybag encrypted under Device KEK."},
+        {"opcode": "0x0203", "name": "cmsgUNWRAP_KEY", "description": "Unwraps per-file media key using specified protection class."},
+        {"opcode": "0x0204", "name": "cmsgWRAP_KEY", "description": "Wraps new file media key under target protection class."},
+        {"opcode": "0x0205", "name": "cmsgDROP_CLASS_KEYS", "description": "Evicts Class A keys immediately upon lock event (secret_drop)."},
+        {"opcode": "0x0206", "name": "cmsgVERIFY_PASSCODE", "description": "Verifies user passcode with scrypt hardware backoff."}
+      ],
+      "SEP_ENTROPY": [
+        {"opcode": "0x0701", "name": "cmsgGET_ENTROPY_FOR_XNU_PRNG", "description": "Transfers 64 bytes of high-entropy TRNG data to XNU kernel."}
+      ],
+      "SEP_STORAGE": [
+        {"opcode": "0x0401", "name": "cmsgART_LOAD_TOKENS", "description": "Validates Anti-Replay Tokens during boot sequence."},
+        {"opcode": "0x0402", "name": "cmsgART_COMMIT_TOKENS", "description": "Commits updated anti-replay state to persistent storage."}
+      ]
+    }
+  }
+}

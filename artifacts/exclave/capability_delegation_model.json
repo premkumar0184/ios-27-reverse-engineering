@@ -1,0 +1,230 @@
+{
+  "schema_version": "1.0",
+  "phase": "exclave_phase_1b_cl4_microkernel",
+  "capability_types": [
+    {
+      "id": 0,
+      "name": "L4_Type_Null",
+      "hex": "0x00",
+      "description": "Unallocated capability slot (L4_Nil)"
+    },
+    {
+      "id": 1,
+      "name": "L4_Type_Root",
+      "hex": "0x01",
+      "description": "Master Root capability possessing universal attenuation rights"
+    },
+    {
+      "id": 2,
+      "name": "L4_Type_Zombie",
+      "hex": "0x02",
+      "description": "Decommissioned capability awaiting asynchronous subtree cleanup"
+    },
+    {
+      "id": 3,
+      "name": "L4_Type_Untyped",
+      "hex": "0x03",
+      "description": "Contiguous physical memory range available for kernel object retyping"
+    },
+    {
+      "id": 4,
+      "name": "L4_Type_CNode",
+      "hex": "0x04",
+      "description": "Capability Node table (256 slots, 2048 bytes)"
+    },
+    {
+      "id": 5,
+      "name": "L4_Type_Cpu",
+      "hex": "0x05",
+      "description": "Physical CPU core affinity and scheduling capability"
+    },
+    {
+      "id": 6,
+      "name": "L4_Type_Ec",
+      "hex": "0x06",
+      "description": "Execution Context (Thread Control Block, register state, stack pointer)"
+    },
+    {
+      "id": 7,
+      "name": "L4_Type_Sc",
+      "hex": "0x07",
+      "description": "Scheduling Context (Time budget, period, priority band)"
+    },
+    {
+      "id": 8,
+      "name": "L4_Type_Ep",
+      "hex": "0x08",
+      "description": "Synchronous IPC communication endpoint"
+    },
+    {
+      "id": 9,
+      "name": "L4_Type_Ev",
+      "hex": "0x09",
+      "description": "Event signaling object"
+    },
+    {
+      "id": 10,
+      "name": "L4_Type_Notify",
+      "hex": "0x0a",
+      "description": "Asynchronous notification bitmask channel"
+    },
+    {
+      "id": 11,
+      "name": "L4_Type_Irq",
+      "hex": "0x0b",
+      "description": "Hardware interrupt delivery capability"
+    },
+    {
+      "id": 12,
+      "name": "L4_Type_Debug",
+      "hex": "0x0c",
+      "description": "Hardware breakpoint, watchpoint, and trace register access"
+    },
+    {
+      "id": 13,
+      "name": "L4_Type_Arm64_PageTableLevel2",
+      "hex": "0x0d",
+      "description": "ARM64 Level-2 translation table (512 GB span)"
+    },
+    {
+      "id": 14,
+      "name": "L4_Type_Arm64_PageTableLevel1",
+      "hex": "0x0e",
+      "description": "ARM64 Level-1 translation table (1 GB span)"
+    },
+    {
+      "id": 15,
+      "name": "L4_Type_Arm64_PageTableLevel0",
+      "hex": "0x0f",
+      "description": "ARM64 Level-0 translation table (2 MB span per block)"
+    },
+    {
+      "id": 16,
+      "name": "L4_Type_Arm64_FrameLevel2",
+      "hex": "0x10",
+      "description": "Large physical page frame (512 GB)"
+    },
+    {
+      "id": 17,
+      "name": "L4_Type_Arm64_FrameLevel1",
+      "hex": "0x11",
+      "description": "Medium physical page frame (1 GB)"
+    },
+    {
+      "id": 18,
+      "name": "L4_Type_Arm64_FrameLevel0",
+      "hex": "0x12",
+      "description": "Standard 16 KB physical page frame (L4_FrameSize)"
+    },
+    {
+      "id": 19,
+      "name": "L4_Type_Arm64_Debug",
+      "hex": "0x13",
+      "description": "ARM64 CoreSight debug context"
+    },
+    {
+      "id": 20,
+      "name": "L4_Type_Arm64_Pac",
+      "hex": "0x14",
+      "description": "ARM64 Pointer Authentication Key registers (APIAKey, APDBKey)"
+    },
+    {
+      "id": 21,
+      "name": "L4_Type_Arm64_Sme",
+      "hex": "0x15",
+      "description": "Scalable Matrix Extension (SME/SME2) state & streaming SVE vector length"
+    },
+    {
+      "id": 22,
+      "name": "L4_Type_Arm64_Apple_Amx",
+      "hex": "0x16",
+      "description": "Apple Matrix Coprocessor hardware registers & execution pipe"
+    },
+    {
+      "id": 23,
+      "name": "L4_Type_Plat_RingGate",
+      "hex": "0x17",
+      "description": "Apple Silicon RingGate cross-domain hardware transition descriptor"
+    },
+    {
+      "id": 24,
+      "name": "L4_Type_Plat_DataCube",
+      "hex": "0x18",
+      "description": "Retypable host-shared memory container (Datacube)"
+    },
+    {
+      "id": 25,
+      "name": "L4_Type_EVP_Hypercall",
+      "hex": "0x19",
+      "description": "Exclave Virtual Platform Hypercall channel to host hypervisor"
+    },
+    {
+      "id": 26,
+      "name": "L4_Type_Plat_Dart",
+      "hex": "0x1a",
+      "description": "Device Address Resolution Table (DART) hardware IOMMU root"
+    },
+    {
+      "id": 27,
+      "name": "L4_Type_Plat_Dart_PageTable",
+      "hex": "0x1b",
+      "description": "DART translation table for DMA memory isolation"
+    }
+  ],
+  "rights_bits": {
+    "L4_CanRead": {
+      "bit": 0,
+      "mask": "0x0001",
+      "description": "Read access to memory frame, or authority to send request through Endpoint capability."
+    },
+    "L4_CanWrite": {
+      "bit": 1,
+      "mask": "0x0002",
+      "description": "Write access to memory frame, authority to receive IPC requests, or retype untyped memory."
+    },
+    "L4_CanGrant": {
+      "bit": 2,
+      "mask": "0x0004",
+      "description": "Authority to delegate / transfer capabilities across IPC endpoints to another Conclave."
+    },
+    "L4_CanGrantReply": {
+      "bit": 3,
+      "mask": "0x0008",
+      "description": "Authority to pass single-use reply endpoint capabilities during synchronous IPC."
+    },
+    "L4_CanBadge": {
+      "bit": 4,
+      "mask": "0x0010",
+      "description": "Authority to mint an endpoint with an unforgeable hardware badge (L4_Cap_Mint_Ep)."
+    },
+    "L4_CanControl": {
+      "bit": 5,
+      "mask": "0x0020",
+      "description": "Thread lifecycle management authority (suspend, resume, set stack pointer, set entrypoint)."
+    },
+    "L4_CanSync": {
+      "bit": 9,
+      "mask": "0x0200",
+      "description": "Thread synchronization authority: read thread PC/SP/CPSR state without mutating registers."
+    }
+  },
+  "badging_model": {
+    "badge_width_bits": 64,
+    "format": {
+      "bits_0_15": "slot.client_id (16-bit Conclave Client Identifier assigned by Conclave Launcher)",
+      "bits_16_31": "domain_id (16-bit Security Isolation Domain / Enclave Tag)",
+      "bits_32_63": "session_nonce (32-bit ephemeral connection nonce or signal mask)"
+    },
+    "integrity_invariants": [
+      "Badges are injected exclusively by the cL4 microkernel during L4_Cap_Mint_Ep.",
+      "Client conclave cannot modify badge bits on minted endpoint capability.",
+      "Upon message arrival, microkernel overwrites register x2 with unforgeable badge value.",
+      "Receiver compares badge with internal client session table to verify caller identity without cryptographic handshakes."
+    ]
+  },
+  "lifecycle_rules": {
+    "attenuation_only": "Derived capabilities must possess subset of parent rights. Bitwise: (child_rights & ~parent_rights) == 0.",
+    "tree_derivation": "Microkernel tracks capability lineage in derivation tree. Revocation of parent recursively deletes all descendants.",
+    "memory_retyping": "Untyped memory can only be retyped if all previously allocated objects from that range have been revoked and freed."
+  }
+}

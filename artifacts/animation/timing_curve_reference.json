@@ -1,0 +1,93 @@
+{
+  "target": "iOS 27.2 (24B119) Timing Curve Reference",
+  "generated_at": "2026-11-22T09:54:15+05:30",
+  "confidence_level": "EXTRACTED",
+  "cubic_bezier_curves": {
+    "kCAMediaTimingFunctionDefault": {
+      "name": "Default (kCAMediaTimingFunctionDefault)",
+      "control_points": {
+        "p1": [0.25, 0.1],
+        "p2": [0.25, 1.0]
+      },
+      "source_binary": "QuartzCore.framework",
+      "description": "Standard Apple default ease curve for non-spring animations",
+      "confidence": "EXTRACTED"
+    },
+    "kCAMediaTimingFunctionLinear": {
+      "name": "Linear (kCAMediaTimingFunctionLinear)",
+      "control_points": {
+        "p1": [0.0, 0.0],
+        "p2": [1.0, 1.0]
+      },
+      "source_binary": "QuartzCore.framework",
+      "description": "Uniform velocity progression across animation duration",
+      "confidence": "EXTRACTED"
+    },
+    "kCAMediaTimingFunctionEaseIn": {
+      "name": "Ease In (kCAMediaTimingFunctionEaseIn)",
+      "control_points": {
+        "p1": [0.42, 0.0],
+        "p2": [1.0, 1.0]
+      },
+      "source_binary": "QuartzCore.framework",
+      "description": "Slow acceleration from rest into linear velocity",
+      "confidence": "EXTRACTED"
+    },
+    "kCAMediaTimingFunctionEaseOut": {
+      "name": "Ease Out (kCAMediaTimingFunctionEaseOut)",
+      "control_points": {
+        "p1": [0.0, 0.0],
+        "p2": [0.58, 1.0]
+      },
+      "source_binary": "QuartzCore.framework",
+      "description": "Deceleration from initial velocity to rest at destination",
+      "confidence": "EXTRACTED"
+    },
+    "kCAMediaTimingFunctionEaseInEaseOut": {
+      "name": "Ease In Ease Out (kCAMediaTimingFunctionEaseInEaseOut)",
+      "control_points": {
+        "p1": [0.42, 0.0],
+        "p2": [0.58, 1.0]
+      },
+      "source_binary": "QuartzCore.framework",
+      "description": "S-curve with symmetric acceleration and deceleration phases",
+      "confidence": "EXTRACTED"
+    },
+    "kUIKeyboardAnimationCurve": {
+      "name": "Keyboard Transition Curve",
+      "control_points": {
+        "p1": [0.2, 0.0],
+        "p2": [0.0, 1.0]
+      },
+      "source_binary": "UIKitCore.framework",
+      "description": "Fast acceleration cubic curve for on-screen software keyboard docking",
+      "confidence": "EXTRACTED"
+    }
+  },
+  "pro_motion_frame_rate_hints": {
+    "interactive_gesture_tracking": {
+      "preferred_fps": 120,
+      "min_fps": 80,
+      "max_fps": 120,
+      "reason": "Direct touch-tracking low latency rendering"
+    },
+    "high_speed_spring_settle": {
+      "preferred_fps": 120,
+      "min_fps": 60,
+      "max_fps": 120,
+      "reason": "Fluid spring overshoot and settling phase"
+    },
+    "sub_pixel_decay": {
+      "preferred_fps": 80,
+      "min_fps": 60,
+      "max_fps": 80,
+      "reason": "Terminal asymptotic settling near resting bounds"
+    },
+    "always_on_display_idle": {
+      "preferred_fps": 1,
+      "min_fps": 1,
+      "max_fps": 10,
+      "reason": "OLED panel power gating during lock screen sleep"
+    }
+  }
+}

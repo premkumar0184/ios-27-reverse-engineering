@@ -1,0 +1,232 @@
+{
+  "schema_version": "1.0",
+  "phase": "ane_phase_3_isa_bytecode",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "ane_generation": "H18 (Apollo v5)",
+  "hardware_units": {
+    "MX": "Matrix Multiplier Array (Systolic MAC unit, 32 channels wide)",
+    "PE": "Processing Element Array (Vector ALU, Activation LUTs, Reduction unit)",
+    "DMA": "Direct Memory Access Engine (DART IOMMU translation, 16KB Tile Fetch)",
+    "CCDMA": "Cross-Cluster DMA Interconnect (fANE0, fANE1, fANE2 collective ring)"
+  },
+  "tile_geometry": {
+    "tile_size_bytes": 16384,
+    "tile_shift": 14,
+    "channels_per_tile": 32,
+    "alignment_bytes": 64,
+    "dimensions": {
+      "N": "Batch dimension (number of independent samples)",
+      "C": "Channel depth dimension (rasterized in 32-channel groups)",
+      "H": "Spatial height dimension",
+      "W": "Spatial width dimension",
+      "P": "Pitch (channel plane byte distance, aligned to 16KB tile boundary)",
+      "R": "Row stride (horizontal line byte distance, aligned to 64 bytes)"
+    },
+    "formulas": {
+      "tile_height": "P / R",
+      "tile_width": "R / sizeof(dtype)",
+      "channel_groups": "ceil(C / 32)",
+      "plane_size_bytes": "H * R",
+      "aligned_pitch_bytes": "((plane_size_bytes + 16383) / 16384) * 16384",
+      "total_tiles": "(N * channel_groups * aligned_pitch_bytes) / 16384"
+    },
+    "supported_precisions": [
+      {
+        "name": "FP16",
+        "bytes": 2,
+        "description": "IEEE 754 half-precision float (1 sign, 5 exp, 10 mantissa)"
+      },
+      {
+        "name": "BF16",
+        "bytes": 2,
+        "description": "Brain floating point (1 sign, 8 exp, 7 mantissa)"
+      },
+      {
+        "name": "INT8",
+        "bytes": 1,
+        "description": "Signed 8-bit quantized integer with per-channel scaling"
+      },
+      {
+        "name": "UINT8",
+        "bytes": 1,
+        "description": "Unsigned 8-bit quantized integer with zero-point offset"
+      },
+      {
+        "name": "INT4",
+        "bytes": 0.5,
+        "description": "Sub-byte 4-bit packed weights for compressed generative LLMs"
+      }
+    ]
+  },
+  "opcodes": {
+    "CSNE_CMD_RESET": {
+      "opcode": "0x0001",
+      "mnemonic": "RESET",
+      "hardware_unit": "Microcontroller / Power Management",
+      "description": "Hardware device reset and state recovery",
+      "operands": [
+        "reset_mask",
+        "timeout_us"
+      ],
+      "packet_size_bytes": 16
+    },
+    "CSNE_CMD_LOAD_PROGRAM": {
+      "opcode": "0x0002",
+      "mnemonic": "LOAD_PROG",
+      "hardware_unit": "DMA / Memory Scheduler",
+      "description": "Load program context, bind .hwx task descriptors and allocate L2 SRAM pages",
+      "operands": [
+        "program_id",
+        "td_base_addr",
+        "td_count",
+        "l2_footprint"
+      ],
+      "packet_size_bytes": 32
+    },
+    "CSNE_CMD_UNLOAD_PROGRAM": {
+      "opcode": "0x0003",
+      "mnemonic": "UNLOAD_PROG",
+      "hardware_unit": "DMA / Memory Scheduler",
+      "description": "Unload program context and release L2 SRAM footprint",
+      "operands": [
+        "program_id"
+      ],
+      "packet_size_bytes": 16
+    },
+    "CSNE_CMD_CREATE_PROCESS": {
+      "opcode": "0x0004",
+      "mnemonic": "CREATE_PROC",
+      "hardware_unit": "MMU / DART Translation",
+      "description": "Allocate process execution arena and register DART IOMMU page table root",
+      "operands": [
+        "process_id",
+        "dart_root_paddr",
+        "qos_priority"
+      ],
+      "packet_size_bytes": 32
+    },
+    "CSNE_CMD_TERMINATE_PROCESS": {
+      "opcode": "0x0005",
+      "mnemonic": "TERM_PROC",
+      "hardware_unit": "MMU / DART Translation",
+      "description": "Terminate process execution arena and flush DART mappings",
+      "operands": [
+        "process_id"
+      ],
+      "packet_size_bytes": 16
+    },
+    "CSNE_CMD_PROCEDURE_CALL": {
+      "opcode": "0x0006",
+      "mnemonic": "PROC_CALL",
+      "hardware_unit": "MX Matrix Array + PE Vector ALU",
+      "description": "Execute procedure inference request on pre-mapped input/output IOSurfaces",
+      "operands": [
+        "program_id",
+        "process_id",
+        "procedure_index",
+        "qos_class",
+        "flags"
+      ],
+      "packet_size_bytes": 32
+    },
+    "CSNE_CMD_PROCEDURE_CALL_WITH_CUSTOM_BARS": {
+      "opcode": "0x0007",
+      "mnemonic": "PROC_CALL_BARS",
+      "hardware_unit": "MX Matrix Array + PE Vector ALU",
+      "description": "Execute procedure with explicit Base Address Register (BAR) remap table",
+      "operands": [
+        "program_id",
+        "process_id",
+        "procedure_index",
+        "bar_mask",
+        "bar_table_ptr"
+      ],
+      "packet_size_bytes": 48
+    },
+    "CSNE_CMD_PROCEDURE_CALL_WITH_SIGNAL_EVENTS": {
+      "opcode": "0x0008",
+      "mnemonic": "PROC_CALL_EVENTS",
+      "hardware_unit": "Sequencer / Barrier Sync",
+      "description": "Execute procedure with hardware-enforced IOSurfaceSharedEvent signaling",
+      "operands": [
+        "program_id",
+        "procedure_index",
+        "event_id",
+        "signal_val",
+        "wait_val"
+      ],
+      "packet_size_bytes": 48
+    },
+    "CSNE_CMD_LOAD_AFPP": {
+      "opcode": "0x0009",
+      "mnemonic": "LOAD_AFPP",
+      "hardware_unit": "Fast Path Pipeline Engine",
+      "description": "Load ANE Fast Path Pipeline descriptor into ultra-low latency hardware register queue",
+      "operands": [
+        "afpp_id",
+        "hwq_id",
+        "descriptor_addr"
+      ],
+      "packet_size_bytes": 32
+    },
+    "CSNE_CMD_UNLOAD_AFPP": {
+      "opcode": "0x000A",
+      "mnemonic": "UNLOAD_AFPP",
+      "hardware_unit": "Fast Path Pipeline Engine",
+      "description": "Release Fast Path Pipeline context and unbind hardware queue slot",
+      "operands": [
+        "afpp_id",
+        "hwq_id"
+      ],
+      "packet_size_bytes": 16
+    },
+    "CSNE_CMD_PREMAP_BUFFER": {
+      "opcode": "0x000B",
+      "mnemonic": "PREMAP_BUF",
+      "hardware_unit": "DART IOMMU DMA",
+      "description": "Asynchronously pre-map input/output IOSurface buffer into DART page tables",
+      "operands": [
+        "iosurface_id",
+        "dart_vaddr",
+        "byte_size",
+        "prot_flags"
+      ],
+      "packet_size_bytes": 32
+    },
+    "CSNE_CMD_DATA_CHAINING_EVENT": {
+      "opcode": "0x000C",
+      "mnemonic": "CHAIN_EVENT",
+      "hardware_unit": "Sequencer / Buffer Chaining",
+      "description": "Link procedure output directly to subsequent procedure input in L2 SRAM",
+      "operands": [
+        "src_proc_id",
+        "dst_proc_id",
+        "loopback_symbol_idx"
+      ],
+      "packet_size_bytes": 24
+    },
+    "CSNE_CMD_PREFETCH_DSID_EVENT": {
+      "opcode": "0x000D",
+      "mnemonic": "PREFETCH_DSID",
+      "hardware_unit": "DMA Prefetch Engine",
+      "description": "Trigger asynchronous DMA tile prefetch into L2 cache ahead of execution",
+      "operands": [
+        "dsid",
+        "tile_addr",
+        "tile_count"
+      ],
+      "packet_size_bytes": 24
+    },
+    "CSNE_CMD_SECURE_MODE_EVENT": {
+      "opcode": "0x000E",
+      "mnemonic": "SECURE_MODE",
+      "hardware_unit": "Security Engine / SPTM Barrier",
+      "description": "Engage secure mode barrier isolating ANE execution to authenticated memory regions",
+      "operands": [
+        "security_domain",
+        "token"
+      ],
+      "packet_size_bytes": 16
+    }
+  }
+}

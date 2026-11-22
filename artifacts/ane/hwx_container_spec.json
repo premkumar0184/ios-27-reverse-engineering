@@ -1,0 +1,480 @@
+{
+  "schema_version": "1.0",
+  "phase": "ane_phase_2_hwx_compiler",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "ane_generation": "H18 (Apollo v5)",
+  "compiler_framework": "ANECompiler.framework",
+  "header": {
+    "magic": "0x414e4543",
+    "magic_ascii": "ANEC",
+    "version": 36,
+    "hw_version": 36,
+    "architecture": "H18_Apollo_v5",
+    "header_size_bytes": 128,
+    "fields": [
+      {
+        "offset": "0x00",
+        "name": "magic",
+        "type": "uint32_t",
+        "size": 4,
+        "value": "0x414e4543 ('ANEC')"
+      },
+      {
+        "offset": "0x04",
+        "name": "hw_version",
+        "type": "uint32_t",
+        "size": 4,
+        "value": 36
+      },
+      {
+        "offset": "0x08",
+        "name": "flags",
+        "type": "uint32_t",
+        "size": 4,
+        "description": "Compilation flags, QoS, caching attributes"
+      },
+      {
+        "offset": "0x0c",
+        "name": "num_procedures",
+        "type": "uint32_t",
+        "size": 4,
+        "description": "Procedure / subgraph count"
+      },
+      {
+        "offset": "0x10",
+        "name": "td_section_offset",
+        "type": "uint64_t",
+        "size": 8,
+        "description": "Offset to Task Descriptor array"
+      },
+      {
+        "offset": "0x18",
+        "name": "td_section_size",
+        "type": "uint64_t",
+        "size": 8,
+        "description": "Total size of td section in bytes"
+      },
+      {
+        "offset": "0x20",
+        "name": "tsk_section_offset",
+        "type": "uint64_t",
+        "size": 8,
+        "description": "Offset to Task Stream microcode"
+      },
+      {
+        "offset": "0x28",
+        "name": "tsk_section_size",
+        "type": "uint64_t",
+        "size": 8,
+        "description": "Total size of tsk section in bytes"
+      },
+      {
+        "offset": "0x30",
+        "name": "krn_section_offset",
+        "type": "uint64_t",
+        "size": 8,
+        "description": "Offset to Kernel Weights payload"
+      },
+      {
+        "offset": "0x38",
+        "name": "krn_section_size",
+        "type": "uint64_t",
+        "size": 8,
+        "description": "Total size of krn section in bytes"
+      },
+      {
+        "offset": "0x40",
+        "name": "desc_section_offset",
+        "type": "uint64_t",
+        "size": 8,
+        "description": "Offset to Model Descriptor section"
+      },
+      {
+        "offset": "0x48",
+        "name": "desc_section_size",
+        "type": "uint64_t",
+        "size": 8,
+        "description": "Total size of desc section in bytes"
+      },
+      {
+        "offset": "0x50",
+        "name": "num_inputs",
+        "type": "uint32_t",
+        "size": 4,
+        "description": "Input tensor count"
+      },
+      {
+        "offset": "0x54",
+        "name": "num_outputs",
+        "type": "uint32_t",
+        "size": 4,
+        "description": "Output tensor count"
+      },
+      {
+        "offset": "0x58",
+        "name": "tile_size_bytes",
+        "type": "uint32_t",
+        "size": 4,
+        "value": 16384
+      },
+      {
+        "offset": "0x5c",
+        "name": "tile_channel_stride",
+        "type": "uint32_t",
+        "size": 4,
+        "value": 32
+      },
+      {
+        "offset": "0x60",
+        "name": "l2_footprint_bytes",
+        "type": "uint64_t",
+        "size": 8,
+        "description": "Allocated L2 SRAM workspace"
+      },
+      {
+        "offset": "0x68",
+        "name": "num_bar_ids",
+        "type": "uint32_t",
+        "size": 4,
+        "description": "DRAM BAR pools utilized"
+      },
+      {
+        "offset": "0x6c",
+        "name": "reserved",
+        "type": "uint32_t[5]",
+        "size": 20,
+        "description": "Alignment padding"
+      }
+    ]
+  },
+  "sections": {
+    "td": {
+      "section_name": "__DATA.__td",
+      "role": "Task Descriptors (ZinAneTd)",
+      "description": "Sequence of task descriptors configuring DMA engines, Processing Elements (PE), and Matrix units (MX)",
+      "descriptor_size_bytes": 128,
+      "fields": [
+        {
+          "offset": "0x00",
+          "name": "task_type",
+          "type": "uint32_t",
+          "size": 4,
+          "description": "Task opcode: 0x01=Conv/GEMM, 0x02=Elementwise/Activation, 0x03=Pooling, 0x04=CCDma, 0x05=SpillFill"
+        },
+        {
+          "offset": "0x04",
+          "name": "bar_id",
+          "type": "uint32_t",
+          "size": 4,
+          "description": "Base Address Register index (0..7)"
+        },
+        {
+          "offset": "0x08",
+          "name": "src_base_addr",
+          "type": "uint64_t",
+          "size": 8,
+          "description": "Source tensor DMA buffer virtual/DART address"
+        },
+        {
+          "offset": "0x10",
+          "name": "dst_base_addr",
+          "type": "uint64_t",
+          "size": 8,
+          "description": "Destination tensor DMA buffer DART address"
+        },
+        {
+          "offset": "0x18",
+          "name": "kernel_offset",
+          "type": "uint64_t",
+          "size": 8,
+          "description": "Offset into krn weights section for filters and biases"
+        },
+        {
+          "offset": "0x20",
+          "name": "shape0",
+          "type": "uint32_t",
+          "size": 4,
+          "description": "Tensor dimension 0 (Batch / Depth)"
+        },
+        {
+          "offset": "0x24",
+          "name": "shape1",
+          "type": "uint32_t",
+          "size": 4,
+          "description": "Tensor dimension 1 (Channels)"
+        },
+        {
+          "offset": "0x28",
+          "name": "shape2",
+          "type": "uint32_t",
+          "size": 4,
+          "description": "Tensor dimension 2 (Height)"
+        },
+        {
+          "offset": "0x2c",
+          "name": "shape3",
+          "type": "uint32_t",
+          "size": 4,
+          "description": "Tensor dimension 3 (Width)"
+        },
+        {
+          "offset": "0x30",
+          "name": "shape4",
+          "type": "uint32_t",
+          "size": 4,
+          "description": "Tensor dimension 4 (Sub-tile / Planes)"
+        },
+        {
+          "offset": "0x34",
+          "name": "constant_data",
+          "type": "uint32_t",
+          "size": 4,
+          "description": "Scalar constant (e.g. ReLU threshold, scale)"
+        },
+        {
+          "offset": "0x38",
+          "name": "src_stride0",
+          "type": "uint64_t",
+          "size": 8,
+          "description": "Source tensor stride along dimension 0"
+        },
+        {
+          "offset": "0x40",
+          "name": "src_stride1",
+          "type": "uint64_t",
+          "size": 8,
+          "description": "Source tensor stride along dimension 1"
+        },
+        {
+          "offset": "0x48",
+          "name": "src_stride2",
+          "type": "uint64_t",
+          "size": 8,
+          "description": "Source tensor stride along dimension 2"
+        },
+        {
+          "offset": "0x50",
+          "name": "src_stride3",
+          "type": "uint64_t",
+          "size": 8,
+          "description": "Source tensor stride along dimension 3"
+        },
+        {
+          "offset": "0x58",
+          "name": "dst_stride0",
+          "type": "uint64_t",
+          "size": 8,
+          "description": "Destination tensor stride along dimension 0"
+        },
+        {
+          "offset": "0x60",
+          "name": "dst_stride1",
+          "type": "uint64_t",
+          "size": 8,
+          "description": "Destination tensor stride along dimension 1"
+        },
+        {
+          "offset": "0x68",
+          "name": "dst_stride2",
+          "type": "uint64_t",
+          "size": 8,
+          "description": "Destination tensor stride along dimension 2"
+        },
+        {
+          "offset": "0x70",
+          "name": "dst_stride3",
+          "type": "uint64_t",
+          "size": 8,
+          "description": "Destination tensor stride along dimension 3"
+        },
+        {
+          "offset": "0x78",
+          "name": "zero_pad_mode",
+          "type": "uint32_t",
+          "size": 4,
+          "description": "Zero padding configuration (top/bottom/left/right)"
+        },
+        {
+          "offset": "0x7c",
+          "name": "wait_event_val",
+          "type": "uint32_t",
+          "size": 4,
+          "description": "Synchronization barrier value"
+        }
+      ]
+    },
+    "tsk": {
+      "section_name": "__DATA.__tsk",
+      "role": "Task Stream Microcode",
+      "description": "Microcode instructions executed by the coprocessor microcontroller, controlling sequencer execution and hardware DMA pipelines",
+      "instruction_encoding": "Variable length command packets (16-byte alignment)",
+      "packet_types": [
+        {
+          "type": "TASK_INIT",
+          "opcode": "0x01",
+          "description": "Initialize hardware registers for upcoming task"
+        },
+        {
+          "type": "DMA_PREFETCH",
+          "opcode": "0x02",
+          "description": "Trigger asynchronous DMA prefetch of input tiles to L2 SRAM"
+        },
+        {
+          "type": "TILE_DISPATCH",
+          "opcode": "0x03",
+          "description": "Issue execution of tile tensor geometry to PE matrix units"
+        },
+        {
+          "type": "BARRIER_WAIT",
+          "opcode": "0x04",
+          "description": "Stall execution until completion signal on specified event"
+        },
+        {
+          "type": "DMA_WRITEBACK",
+          "opcode": "0x05",
+          "description": "Commit completed tile from L2 SRAM to destination IOSurface"
+        }
+      ]
+    },
+    "krn": {
+      "section_name": "__DATA.__krn",
+      "role": "Kernel Weights & Biases",
+      "description": "Quantized weight matrix payload arranged in 32-channel aligned raster format for zero-overhead ANE DMA ingestion",
+      "supported_formats": [
+        {
+          "format": "FP16",
+          "bytes_per_element": 2,
+          "description": "IEEE 754 half-precision floating point"
+        },
+        {
+          "format": "INT8",
+          "bytes_per_element": 1,
+          "description": "Signed 8-bit quantized integer with per-channel scaling"
+        },
+        {
+          "format": "UINT8",
+          "bytes_per_element": 1,
+          "description": "Unsigned 8-bit quantized integer with zero-point offset"
+        }
+      ],
+      "memory_alignment": "64-byte hardware cache line aligned; 16384-byte tile page boundary"
+    },
+    "desc": {
+      "section_name": "__DATA.__desc",
+      "role": "Network Descriptor & Plist",
+      "description": "Model tensor binding metadata, procedure call DAG, and IOMMU IOSurface requirements",
+      "format": "Apple Property List (binary format) / Network Descriptor Struct",
+      "key_fields": [
+        "kANECModelInputSymbolsArray",
+        "kANECModelOutputSymbolsArray",
+        "kANECModelProcedureNamesArray",
+        "kANECModelWeightsInfoArray",
+        "kANECModelIntermediateBufferSizeBytes",
+        "kANECModelQoSPriority"
+      ]
+    }
+  },
+  "operator_lowering_matrix": {
+    "total_supported_layers": 54,
+    "core_mappings": [
+      {
+        "operation": "Convolution 2D",
+        "source_layers": [
+          "mil.conv",
+          "coreml.convolution"
+        ],
+        "ane_lowering": "ZinNEConvLayer",
+        "hardware_unit": "MX (Matrix Unit) + PE (Processing Element)",
+        "fusion_capabilities": [
+          "Bias Add",
+          "ReLU",
+          "GeLU",
+          "SiLU",
+          "Batch Normalization"
+        ]
+      },
+      {
+        "operation": "Linear / GEMM",
+        "source_layers": [
+          "mil.linear",
+          "mil.matmul"
+        ],
+        "ane_lowering": "ZinMatrixMultLayer / ZinMirOptFullyConnectedLayer",
+        "hardware_unit": "MX (Matrix Unit)",
+        "fusion_capabilities": [
+          "Bias Add",
+          "Activation Fusion",
+          "Quantization Rescale"
+        ]
+      },
+      {
+        "operation": "Layer Normalization / RMSNorm",
+        "source_layers": [
+          "mil.layer_norm",
+          "mil.rms_norm"
+        ],
+        "ane_lowering": "ZinRCASLayer + ZinPEElementWiseLayer",
+        "hardware_unit": "PE (Processing Element) Reduction Array",
+        "fusion_capabilities": [
+          "Gamma Scale",
+          "Beta Bias"
+        ]
+      },
+      {
+        "operation": "Elementwise Add / Multiply",
+        "source_layers": [
+          "mil.add",
+          "mil.mul",
+          "mil.sub"
+        ],
+        "ane_lowering": "ZinPEElementWiseLayer / ZinPEGOCLayer",
+        "hardware_unit": "PE ALU Vector Unit",
+        "fusion_capabilities": [
+          "Broadcast dimension expansion",
+          "Fused activation"
+        ]
+      },
+      {
+        "operation": "Pooling (Max / Avg / Min)",
+        "source_layers": [
+          "mil.max_pool",
+          "mil.avg_pool"
+        ],
+        "ane_lowering": "ZinPoolLayer / ZinMirPoolingLayer",
+        "hardware_unit": "PE Neighborhood Spatial Reduction Unit",
+        "fusion_capabilities": [
+          "Padding clamp",
+          "Post-pooling scale"
+        ]
+      },
+      {
+        "operation": "Activations (GELU, SILU, ReLU)",
+        "source_layers": [
+          "mil.gelu",
+          "mil.silu",
+          "mil.relu",
+          "mil.sigmoid"
+        ],
+        "ane_lowering": "ZinActivationLayer",
+        "hardware_unit": "PE Lookup Table (LUT) + Piecewise Polynomial Unit",
+        "fusion_capabilities": [
+          "In-line Conv/GEMM output clamp"
+        ]
+      },
+      {
+        "operation": "Collective Communication (Multi-ANE)",
+        "source_layers": [
+          "ane.all_gather",
+          "ane.all_reduce",
+          "ane.reduce_scatter"
+        ],
+        "ane_lowering": "ZinAllGatherLayer / ZinAllReduceLayer / ZinReduceScatterLayer",
+        "hardware_unit": "CCDMA Inter-Cluster Engine (fANE0 <-> fANE1 <-> fANE2)",
+        "fusion_capabilities": [
+          "Ring reduction",
+          "Memory-to-memory DMA bypass"
+        ]
+      }
+    ]
+  }
+}

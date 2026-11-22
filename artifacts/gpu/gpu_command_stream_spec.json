@@ -1,0 +1,167 @@
+{
+  "hardware_command_buffer": {
+    "alignment_bytes": 64,
+    "page_size_bytes": 16384,
+    "endianness": "Little-Endian (AArch64)",
+    "memory_type": "Unified System RAM (CPU write-combined, GPU cacheable)"
+  },
+  "command_descriptors": {
+    "descriptor_size_bytes": 64,
+    "alignment_bytes": 64,
+    "descriptor_classes": [
+      "IOGPUCommandDescriptor",
+      "AGX3DCommandDescriptor",
+      "AGXCLCommandDescriptor"
+    ],
+    "demangled_xnu_type_encoding": "v16@?0^{IOGPUCommandDescriptor=^^?iAI^{IOGPU}^^{OSObject}ii^^{IOGPUMemory}ii{IOGPUIOFenceListHead=^{sIOGPUIOFence}^^{sIOGPUIOFence}}iBC^{IOGPUWorkQueue}^{IOGPUTask}^{IOGPUCommandQueue}^{IOGPUBlockFence}QII{IOGPUEvent={?=I[15I]}}{IOGPUEvent={?=I[15I]}}QQ^^vIiiQQQ}8",
+    "field_layout_64_bytes": [
+      {
+        "offset_hex": "0x00",
+        "offset_bytes": 0,
+        "size_bytes": 8,
+        "field_name": "header",
+        "subfields": {
+          "opcode": {
+            "bits": "7:0",
+            "desc": "Hardware execution opcode (1 byte)"
+          },
+          "data_master": {
+            "bits": "11:8",
+            "desc": "Target Data Master: 0=VDM, 1=PDM, 2=Blit, 3=CDM"
+          },
+          "priority": {
+            "bits": "15:12",
+            "desc": "Submission queue priority (0=Normal, 1=High, 2=RealTime)"
+          },
+          "flags": {
+            "bits": "31:16",
+            "desc": "Execution flags: Coherent, Sync, Profiling, Secure"
+          },
+          "context_id": {
+            "bits": "63:32",
+            "desc": "32-bit hardware context identifier"
+          }
+        }
+      },
+      {
+        "offset_hex": "0x08",
+        "offset_bytes": 8,
+        "size_bytes": 8,
+        "field_name": "trace_id",
+        "description": "64-bit unique telemetry and profiling trace identifier"
+      },
+      {
+        "offset_hex": "0x10",
+        "offset_bytes": 16,
+        "size_bytes": 8,
+        "field_name": "command_buffer_gpu_va",
+        "description": "64-bit GPU virtual address pointing to contiguous token payload buffer"
+      },
+      {
+        "offset_hex": "0x18",
+        "offset_bytes": 24,
+        "size_bytes": 8,
+        "field_name": "buffer_lengths",
+        "subfields": {
+          "used_bytes": {
+            "bits": "31:0",
+            "desc": "Actual valid payload byte length"
+          },
+          "allocated_bytes": {
+            "bits": "63:32",
+            "desc": "Total allocated buffer capacity (16 KB page multiple)"
+          }
+        }
+      },
+      {
+        "offset_hex": "0x20",
+        "offset_bytes": 32,
+        "size_bytes": 8,
+        "field_name": "fence_list_head",
+        "description": "64-bit pointer / token for IOGPUIOFenceListHead and AGXBlockFence synchronizations"
+      },
+      {
+        "offset_hex": "0x28",
+        "offset_bytes": 40,
+        "size_bytes": 8,
+        "field_name": "timestamp_token",
+        "subfields": {
+          "queue_index": {
+            "bits": "31:0",
+            "desc": "Target timestamp ring queue index"
+          },
+          "stamp_value": {
+            "bits": "63:32",
+            "desc": "Monotonically increasing completion value"
+          }
+        }
+      },
+      {
+        "offset_hex": "0x30",
+        "offset_bytes": 48,
+        "size_bytes": 8,
+        "field_name": "parameter_buffer_desc",
+        "description": "GPU virtual address of Parameter Scene Allocation (MList / MTileArray / VHeap)"
+      },
+      {
+        "offset_hex": "0x38",
+        "offset_bytes": 56,
+        "size_bytes": 8,
+        "field_name": "completion_event",
+        "description": "64-bit Metal shared event completion descriptor and signaling mask"
+      }
+    ]
+  },
+  "opcodes": {
+    "0x01": {
+      "name": "CMD_3D_RENDER_PASS",
+      "target_dm": "VDM / PDM",
+      "description": "Submits full 3D TBDR render pass (Vertex/Tiling phase followed by Fragment phase)"
+    },
+    "0x02": {
+      "name": "CMD_COMPUTE_DISPATCH",
+      "target_dm": "CDM",
+      "description": "Launches general-purpose compute kernel threadgroups into USC clusters"
+    },
+    "0x03": {
+      "name": "CMD_RAY_TRACING_BVH_BUILD",
+      "target_dm": "CDM / RIA",
+      "description": "Constructs or refits acceleration structures (BVH2 / BVH4) using hardware traversal accelerators"
+    },
+    "0x04": {
+      "name": "CMD_RAY_TRACING_DISPATCH",
+      "target_dm": "CDM / RIA",
+      "description": "Executes ray-generation, intersection, and closest-hit shaders with hardware RIA stack"
+    },
+    "0x05": {
+      "name": "CMD_TILE_LOAD_STORE",
+      "target_dm": "TA / PDM",
+      "description": "Explicit on-chip tile memory load/store operations to/from DRAM"
+    },
+    "0x06": {
+      "name": "CMD_BLIT_COPY",
+      "target_dm": "PDM Blit",
+      "description": "Hardware 2D memory copy, buffer clear, and texture sub-resource remapping"
+    },
+    "0x07": {
+      "name": "CMD_BARRIER_FENCE",
+      "target_dm": "All DMs",
+      "description": "Inserts pipeline execution barrier and flushes USC L1 instruction/data caches"
+    },
+    "0x08": {
+      "name": "CMD_SHARED_EVENT_SIGNAL",
+      "target_dm": "Event Engine",
+      "description": "Signals a Metal SharedEvent object upon hardware completion of preceding commands"
+    },
+    "0x09": {
+      "name": "CMD_SHARED_EVENT_WAIT",
+      "target_dm": "Event Engine",
+      "description": "Suspends pipeline execution until specified SharedEvent reaches threshold value"
+    },
+    "0x0F": {
+      "name": "CMD_NOP",
+      "target_dm": "Control",
+      "description": "No-operation descriptor used for ring alignment, latency pads, and heartbeat keepalive"
+    }
+  }
+}

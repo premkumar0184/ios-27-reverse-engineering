@@ -1,0 +1,541 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Always-On Processor (AOP / AOP2) Architectural Analysis",
+  "device_context": {
+    "target_device": "iPhone18,3 (v57ap)",
+    "soc": "t8150",
+    "os_version": "iOS 27.2 (24B119)",
+    "firmware_sources": [
+      "Firmware/AOP/aopfw-v57aop.RELEASE.im4p",
+      "Firmware/AOP2/aop2fw-v57aop2.RELEASE.im4p"
+    ]
+  },
+  "firmware_source": "Firmware/AOP/aopfw-v57aop.RELEASE.im4p",
+  "architecture": "ARM64e (ARMv8.3-A with Pointer Authentication / PAC)",
+  "container_format": {
+    "wrapper": "Apple Image4 (IM4P)",
+    "fourcc_tag": "aopf",
+    "description": "1",
+    "total_file_size": 5148697,
+    "payload_length_encoded": 5148672,
+    "compression": "none (container)",
+    "internal_format": "Apple BUNDLE (DNUB Multi-Binary Archive)",
+    "dnub_offset": "0x00000008",
+    "dnub_version": "0x00040000",
+    "dnub_flags": "0x0000000e",
+    "dnub_section_count": 14,
+    "table_of_contents": [
+      { "tag_hex": "0x6b747874", "tag_ascii": "txtk", "semantic": "Kernel Text / SPU Drivers", "payload_offset": "0x00011000", "payload_size": 57344, "domain": "SRAM (0x08000000)" },
+      { "tag_hex": "0x72747874", "tag_ascii": "txtr", "semantic": "Runtime Text / Sensor Hub", "payload_offset": "0x0001f000", "payload_size": 1433600, "domain": "DRAM (0x01067000)" },
+      { "tag_hex": "0x75747874", "tag_ascii": "txtu", "semantic": "User Text / Extensions", "payload_offset": "0x0017d000", "payload_size": 32768, "domain": "DRAM (0x011d4000)" },
+      { "tag_hex": "0x6b646174", "tag_ascii": "tadk", "semantic": "Kernel Data / SPU", "payload_offset": "0x00185000", "payload_size": 12288, "domain": "SRAM (0x0800e000)" },
+      { "tag_hex": "0x72646174", "tag_ascii": "tadr", "semantic": "Runtime Data / Sensor Hub", "payload_offset": "0x00188000", "payload_size": 1351680, "domain": "DRAM (0x01127000)" },
+      { "tag_hex": "0x75646174", "tag_ascii": "tadu", "semantic": "User Data / Drivers", "payload_offset": "0x002d2000", "payload_size": 24576, "domain": "DRAM (0x01272000)" },
+      { "tag_hex": "0x6e6f6c64", "tag_ascii": "dlon", "semantic": "No-load Data Descriptor", "payload_offset": "0x002d8000", "payload_size": 0, "domain": "N/A" },
+      { "tag_hex": "0x6473726f", "tag_ascii": "orsd", "semantic": "OS Read-Only Data", "payload_offset": "0x002d8000", "payload_size": 0, "domain": "N/A" },
+      { "tag_hex": "0x64737277", "tag_ascii": "wrsd", "semantic": "Writable Shared DRAM Region", "payload_offset": "0x002d8000", "payload_size": 1261568, "domain": "DRAM Shared" },
+      { "tag_hex": "0x75657478", "tag_ascii": "xteu", "semantic": "User Extended Text", "payload_offset": "0x0040c000", "payload_size": 266240, "domain": "DRAM Extended" },
+      { "tag_hex": "0x75656474", "tag_ascii": "tdeu", "semantic": "User Extended Data", "payload_offset": "0x0044d000", "payload_size": 192512, "domain": "DRAM Extended" },
+      { "tag_hex": "0x75736474", "tag_ascii": "tdsu", "semantic": "User Stack Descriptors", "payload_offset": "0x0047c000", "payload_size": 90112, "domain": "DRAM Stacks" },
+      { "tag_hex": "0x7562646c", "tag_ascii": "ldbu", "semantic": "Low-Power Boot Staging", "payload_offset": "0x00492000", "payload_size": 356352, "domain": "High Virtual Kernel" },
+      { "tag_hex": "0x6f736c67", "tag_ascii": "glso", "semantic": "OS Log Format Descriptors", "payload_offset": "0x00000000", "payload_size": 0, "domain": "0xfe067000" }
+    ],
+    "sha256": "564c25205cd3839b19e906f93c75240351aec0efc961fed53bebee04749462f8"
+  },
+  "memory_layout": {
+    "execution_model": "Two-Tier Heterogeneous (Internal SRAM & Shared System DRAM)",
+    "sram_region": {
+      "base_address": "0x08000000",
+      "size_bytes": 1048576,
+      "size_human": "1 MB On-Chip Dedicated SRAM",
+      "purpose": "Ultra-low-power deep sleep execution, wake-event monitors, and fast-path SPU ring buffers"
+    },
+    "dram_region": {
+      "base_address": "0x01000000",
+      "physical_carveout_base": "0x310c00000",
+      "physical_carveout_size": "0x03a00000",
+      "size_bytes": 60817408,
+      "size_human": "58 MB Shared System DRAM Carveout",
+      "iommu": "Apple DART-AOP (t8110 IOMMU at MMIO 0x100fc0000, Stream 0 & 1)",
+      "purpose": "Primary sensor hub runtime, audio DSP pipeline, voice trigger, and RTKit heap"
+    },
+    "kernel_high_vm": {
+      "base_address": "0xffffffff00000000",
+      "size_bytes": 102400,
+      "purpose": "RTKitOS privileged microkernel supervisor mapping"
+    },
+    "high_memory_carveouts": [
+      { "base_address": "0xfe067000", "name": "__OS_LOG", "description": "Persistent circular os_log buffer" },
+      { "base_address": "0xff067000", "name": "__MISC", "description": "Apple Packet Filter (__apf_list) staging" },
+      { "base_address": "0x100067000", "name": "__CMA", "description": "Contiguous Memory Allocator circular diagnostic log" }
+    ],
+    "stack_regions": [
+      { "name": "__kernel_stack", "address": "0xffffffff00016000", "size_bytes": 8192, "description": "Privileged kernel supervisor execution stack" },
+      { "name": "_spu_stack", "address": "0x01127000", "size_bytes": 75776, "description": "SPU driver execution stack (60 KB - 74 KB)" },
+      { "name": "_rtk_init_stack", "address": "0x0113a000", "size_bytes": 12288, "description": "Cold-boot initialization stack" },
+      { "name": "_rtk_irq_stack", "address": "0x0113d000", "size_bytes": 4096, "description": "Asynchronous hardware interrupt stack" },
+      { "name": "_rtk_exc_stack", "address": "0x0113e000", "size_bytes": 8192, "description": "Synchronous abort and exception stack" },
+      { "name": "_rtk_ext_stack", "address": "0x01140000", "size_bytes": 6144, "description": "External peripheral driver stack" },
+      { "name": "__stack_area", "address": "0x08010000", "size_bytes": 4096, "description": "Dedicated SRAM stack for deep-sleep wakeup" }
+    ],
+    "embedded_binaries": [
+      {
+        "index": 0,
+        "name": "SPU Drivers",
+        "role": "Low-level power, clock, and bootstrap drivers (SRAM execution)",
+        "fileoff": "0x00011000",
+        "filetype": "MH_EXECUTE (0x2)",
+        "cputype": "ARM64 (0x100000c)",
+        "cpusubtype": "ARM64E (0x80000002)",
+        "uuid": "9a1615bc-75d5-34ff-aa82-c9edddc2a13d",
+        "entrypoint": "0x08000d00",
+        "segments": {
+          "__TEXT": { "vmaddr": "0x08000000", "vmsize": 57344, "fileoff": "0x0", "filesize": 57344 },
+          "__DATA": { "vmaddr": "0x0800e000", "vmsize": 12288, "fileoff": "0xe000", "filesize": 4096 },
+          "__DATA_CONST": { "vmaddr": "0x08011000", "vmsize": 0, "fileoff": "0xf000", "filesize": 0 },
+          "__ETEXT": { "vmaddr": "0x08300000", "vmsize": 53248, "fileoff": "0xf000", "filesize": 53248 }
+        }
+      },
+      {
+        "index": 1,
+        "name": "Sensor Hub Runtime",
+        "role": "Primary sensor event management (IMU, ALS, PDR, Haptics)",
+        "fileoff": "0x0001f000",
+        "filetype": "MH_EXECUTE (0x2)",
+        "cputype": "ARM64 (0x100000c)",
+        "cpusubtype": "ARM64E (0x80000002)",
+        "uuid": "a6885238-94a5-30ae-83f0-9164c336eebd",
+        "entrypoint": "0x01068bf4",
+        "segments": {
+          "__TEXT": { "vmaddr": "0x01067000", "vmsize": 724992, "fileoff": "0x0", "filesize": 724992 },
+          "__DATA_CONST": { "vmaddr": "0x01118000", "vmsize": 61440, "fileoff": "0xb1000", "filesize": 61440 },
+          "__DATA": { "vmaddr": "0x01127000", "vmsize": 696320, "fileoff": "0xc0000", "filesize": 282624 },
+          "APPCONFIG": { "vmaddr": "0x011d1000", "vmsize": 12288, "fileoff": "0x105000", "filesize": 12288 },
+          "METADATA": { "vmaddr": "0x011d4000", "vmsize": 4096, "fileoff": "0x108000", "filesize": 4096 },
+          "__OS_LOG": { "vmaddr": "0xfe067000", "vmsize": 167936, "fileoff": "0x109000", "filesize": 167936 }
+        }
+      },
+      {
+        "index": 2,
+        "name": "Secondary Drivers",
+        "role": "Audio, voice trigger, and haptic actuator services",
+        "fileoff": "0x000d0000",
+        "filetype": "MH_EXECUTE (0x2)",
+        "cputype": "ARM64 (0x100000c)",
+        "cpusubtype": "ARM64E (0x80000002)",
+        "uuid": "ee351cfd-b108-393b-b543-0bc391b20156",
+        "entrypoint": "0x01068a74",
+        "segments": {
+          "__TEXT": { "vmaddr": "0x01067000", "vmsize": 487424, "fileoff": "0x0", "filesize": 487424 },
+          "__DATA_CONST": { "vmaddr": "0x010de000", "vmsize": 53248, "fileoff": "0x77000", "filesize": 53248 },
+          "__DATA": { "vmaddr": "0x010eb000", "vmsize": 491520, "fileoff": "0x84000", "filesize": 245760 },
+          "APPCONFIG": { "vmaddr": "0x01163000", "vmsize": 12288, "fileoff": "0xc0000", "filesize": 12288 },
+          "__ETEXT": { "vmaddr": "0x01166000", "vmsize": 561152, "fileoff": "0xc3000", "filesize": 561152 }
+        }
+      },
+      {
+        "index": 3,
+        "name": "v57aop.dylib",
+        "role": "Dynamic shared runtime library for AOP RTKit",
+        "fileoff": "0x00147000",
+        "filetype": "MH_DYLIB (0x6)",
+        "cputype": "ARM64 (0x100000c)",
+        "cpusubtype": "ARM64E (0x80000002)",
+        "uuid": "56d5f7a4-677c-3d10-af93-7afee2b79350",
+        "id_dylib": "/Library/Caches/com.apple.xbs/3BE9CCA0-6F5F-443C-8CAE-1B8AFA48EEDF/TemporaryDirectory.rkJaJS/Binaries/AppleSPUFirmwareBuilder/install/Symbols/RELEASE/v57aop/DYLIB/v57aop.dylib",
+        "segments": {
+          "__TEXT": { "vmaddr": "0x01000000", "vmsize": 221184, "fileoff": "0x0", "filesize": 221184 },
+          "__DATA_CONST": { "vmaddr": "0x01036000", "vmsize": 0, "fileoff": "0x36000", "filesize": 0 },
+          "__DATA": { "vmaddr": "0x01037000", "vmsize": 0, "fileoff": "0x37000", "filesize": 0 }
+        }
+      },
+      {
+        "index": 4,
+        "name": "RTKitOS Kernel",
+        "role": "Privileged microkernel supervisor (Workloops, Scheduler, Exception Dispatch)",
+        "fileoff": "0x0047c000",
+        "filetype": "MH_PRELOAD (0x5)",
+        "cputype": "ARM64 (0x100000c)",
+        "cpusubtype": "ARM64E (0x80000002)",
+        "uuid": "05c35c61-00d3-3aae-bc5d-4c4c29405445",
+        "entrypoint": "0xffffffff00000800",
+        "segments": {
+          "__TEXT": { "vmaddr": "0xffffffff00000000", "vmsize": 69632, "fileoff": "0x1000", "filesize": 69632 },
+          "__DATA": { "vmaddr": "0xffffffff00011000", "vmsize": 32768, "fileoff": "0x12000", "filesize": 8192 }
+        }
+      }
+    ]
+  },
+  "vector_table": {
+    "reset_vector": {
+      "offset": "0x00000000",
+      "opcode": "0x14000200",
+      "instruction": "b +0x800",
+      "target_offset": "0x00000800",
+      "comment": "ARM64 unconditional branch overstepping DNUB BUND container header directly into bootstrap sequence"
+    },
+    "bootstrap_sequence": {
+      "offset": "0x00000800",
+      "disassembly": [
+        { "offset": "0x0800", "opcode": "0xd5034fdf", "instruction": "msr daifset, #0xf", "comment": "Mask Debug, SError, IRQ, FIQ exceptions" },
+        { "offset": "0x0804", "opcode": "0xb0000000", "instruction": "adrp x0, 0x1000", "comment": "Load base page of early physical vector table" },
+        { "offset": "0x0808", "opcode": "0x91200000", "instruction": "add x0, x0, #0x800", "comment": "Compute early physical VBAR_EL1 vector address (0x1800)" },
+        { "offset": "0x080c", "opcode": "0xd518c000", "instruction": "msr vbar_el1, x0", "comment": "Install ARM64 exception vector table into VBAR_EL1" },
+        { "offset": "0x0810", "opcode": "0xd5033fdf", "instruction": "isb", "comment": "Instruction synchronization barrier" },
+        { "offset": "0x0814", "opcode": "0xd53800b5", "instruction": "mrs x21, mpidr_el1", "comment": "Read Core Multiprocessor Affinity Register" },
+        { "offset": "0x0818", "opcode": "0x92401eb5", "instruction": "and x21, x21, #0xff", "comment": "Extract CPU Core Index (Affinity 0)" },
+        { "offset": "0x0828", "opcode": "0x72a00000", "instruction": "movk w0, #0, lsl #16", "comment": "Zero upper half of stack stride" },
+        { "offset": "0x082c", "opcode": "0x72840000", "instruction": "movk w0, #8192", "comment": "Set 8 KB per-core stack size stride" },
+        { "offset": "0x0830", "opcode": "0x9b150000", "instruction": "madd x0, x0, x21, x0", "comment": "Compute per-core stack offset: CoreID * 8192" },
+        { "offset": "0x0834", "opcode": "0xd00000a1", "instruction": "adrp x1, 0x16000", "comment": "Load top of kernel stack base page" },
+        { "offset": "0x0838", "opcode": "0x8b000021", "instruction": "add x1, x1, x0", "comment": "Add per-core offset to stack base" },
+        { "offset": "0x083c", "opcode": "0x8b130021", "instruction": "add x1, x1, x19", "comment": "Apply runtime relocation slide" },
+        { "offset": "0x0840", "opcode": "0x9100003f", "instruction": "mov sp, x1", "comment": "Initialize SP_EL1" },
+        { "offset": "0x084c", "opcode": "0xf2a20600", "instruction": "movk x0, #4144, lsl #16", "comment": "Configure CPACR_EL1 FPEN=0b11 (0x01030000)" },
+        { "offset": "0x0854", "opcode": "0xd5181040", "instruction": "msr cpacr_el1, x0", "comment": "Enable FP/NEON access without EL1 trap" },
+        { "offset": "0x0868", "opcode": "0x9400114e", "instruction": "bl #17720", "comment": "Subroutine: init_early_clocks" },
+        { "offset": "0x0878", "opcode": "0x9400114a", "instruction": "bl #17704", "comment": "Subroutine: init_early_uart_mailbox" },
+        { "offset": "0x08cc", "opcode": "0x940008de", "instruction": "bl #9080", "comment": "Subroutine: setup_page_tables_staging" },
+        { "offset": "0x08d8", "opcode": "0x140001ca", "instruction": "b #1832", "comment": "Branch to 0x1000 (MMU switch & runtime vector installation)" }
+      ]
+    },
+    "mmu_and_runtime_transition": {
+      "offset": "0x00001000",
+      "disassembly": [
+        { "offset": "0x1004", "opcode": "0x94000f6c", "instruction": "bl #15792", "comment": "Map and allocate kernel virtual stack" },
+        { "offset": "0x1008", "opcode": "0x9100001f", "instruction": "mov sp, x0", "comment": "Update SP_EL1 to mapped virtual address" },
+        { "offset": "0x1014", "opcode": "0x58007ba1", "instruction": "ldr x1, #3956", "comment": "Load pre-MMU high VA vector pointer from 0x1f88 (0xffffffff00001800)" },
+        { "offset": "0x1018", "opcode": "0xd518c001", "instruction": "msr vbar_el1, x1", "comment": "Install pre-MMU high VA vector table" },
+        { "offset": "0x1024", "opcode": "0xd5381001", "instruction": "mrs x1, sctlr_el1", "comment": "Read System Control Register" },
+        { "offset": "0x1028", "opcode": "0xb2400021", "instruction": "orr x1, x1, #0x1", "comment": "Set bit 0: M = 1 (Enable MMU translation)" },
+        { "offset": "0x102c", "opcode": "0xd5181001", "instruction": "msr sctlr_el1, x1", "comment": "Activate MMU address translation" },
+        { "offset": "0x1034", "opcode": "0xb0000000", "instruction": "adrp x0, 0x2000", "comment": "Load base page of runtime vector table (0x2000)" },
+        { "offset": "0x103c", "opcode": "0xd518c000", "instruction": "msr vbar_el1, x0", "comment": "Install Runtime Vector Table into VBAR_EL1 (0xffffffff00002000)" },
+        { "offset": "0x1048", "opcode": "0xb2610000", "instruction": "orr x0, x0, #0x80000000", "comment": "Enforce PAC branch protection (SCTLR_EL1.PAC)" },
+        { "offset": "0x104c", "opcode": "0xb2620000", "instruction": "orr x0, x0, #0x40000000", "comment": "Enforce W^X Write XOR Execute (SCTLR_EL1.WXN)" },
+        { "offset": "0x1054", "opcode": "0xb2730000", "instruction": "orr x0, x0, #0x2000", "comment": "Enable Instruction Cache (SCTLR_EL1.I)" },
+        { "offset": "0x1060", "opcode": "0xd50344ff", "instruction": "msr daifclr, #4", "comment": "Clear 'I' bit: Unmask IRQ interrupts" },
+        { "offset": "0x1070", "opcode": "0x14001067", "instruction": "b #16796", "comment": "Branch to RTKitOS Kernel Main (0x520c)" }
+      ]
+    },
+    "early_physical_vector_table": {
+      "base_address": "0x00001800",
+      "size_bytes": 2048,
+      "installed_at": "0x080c (msr VBAR_EL1, x0)",
+      "entries": [
+        { "index": 0, "offset": "0x1800", "el": "Current EL with SP0", "type": "Synchronous", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 1, "offset": "0x1880", "el": "Current EL with SP0", "type": "IRQ / vIRQ", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 2, "offset": "0x1900", "el": "Current EL with SP0", "type": "FIQ / vFIQ", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 3, "offset": "0x1980", "el": "Current EL with SP0", "type": "SError / vSError", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 4, "offset": "0x1a00", "el": "Current EL with SPx", "type": "Synchronous", "behavior": "MMU Switch Trampoline: mrs x18, VBAR_EL1; tbnz x18, #63, #12; wfe; b #-4; mrs x18, ELR_EL1; add x18, x18, x0; msr ELR_EL1, x18; eret" },
+        { "index": 5, "offset": "0x1a80", "el": "Current EL with SPx", "type": "IRQ / vIRQ", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 6, "offset": "0x1b00", "el": "Current EL with SPx", "type": "FIQ / vFIQ", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 7, "offset": "0x1b80", "el": "Current EL with SPx", "type": "SError / vSError", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 8, "offset": "0x1c00", "el": "Lower EL (AArch64)", "type": "Synchronous", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 9, "offset": "0x1c80", "el": "Lower EL (AArch64)", "type": "IRQ / vIRQ", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 10, "offset": "0x1d00", "el": "Lower EL (AArch64)", "type": "FIQ / vFIQ", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 11, "offset": "0x1d80", "el": "Lower EL (AArch64)", "type": "SError / vSError", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 12, "offset": "0x1e00", "el": "Lower EL (AArch32)", "type": "Synchronous", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 13, "offset": "0x1e80", "el": "Lower EL (AArch32)", "type": "IRQ / vIRQ", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 14, "offset": "0x1f00", "el": "Lower EL (AArch32)", "type": "FIQ / vFIQ", "behavior": "wfe; b #-4 (Infinite Halt Loop)" },
+        { "index": 15, "offset": "0x1f80", "el": "Lower EL (AArch32)", "type": "SError / vSError", "behavior": "wfe; b #-4 (Infinite Halt Loop)" }
+      ]
+    },
+    "runtime_virtual_vector_table": {
+      "base_address": "0x00002000",
+      "virtual_address": "0xffffffff00002000",
+      "size_bytes": 2048,
+      "installed_at": "0x103c (msr VBAR_EL1, x0)",
+      "entries": [
+        { "index": 0, "offset": "0x2000", "el": "Current EL with SP0", "type": "Synchronous", "handler": "0x2000 (b #0)", "source": "Early deadlock trap" },
+        { "index": 1, "offset": "0x2080", "el": "Current EL with SP0", "type": "IRQ / vIRQ", "handler": "0x2080 (b #0)", "source": "Early deadlock trap" },
+        { "index": 2, "offset": "0x2100", "el": "Current EL with SP0", "type": "FIQ / vFIQ", "handler": "0x2100 (b #0)", "source": "Early deadlock trap" },
+        { "index": 3, "offset": "0x2180", "el": "Current EL with SP0", "type": "SError / vSError", "handler": "0x2180 (b #0)", "source": "Early deadlock trap" },
+        { "index": 4, "offset": "0x2200", "el": "Current EL with SPx", "type": "Synchronous", "handler": "0x5dc0", "source": "exception.c:97" },
+        { "index": 5, "offset": "0x2280", "el": "Current EL with SPx", "type": "IRQ / vIRQ", "handler": "0x5dcc", "source": "exception.c:249" },
+        { "index": 6, "offset": "0x2300", "el": "Current EL with SPx", "type": "FIQ / vFIQ", "handler": "0x5de8", "source": "exception.c:256" },
+        { "index": 7, "offset": "0x2380", "el": "Current EL with SPx", "type": "SError / vSError", "handler": "0x5e04", "source": "exception.c:111" },
+        { "index": 8, "offset": "0x2400", "el": "Lower EL (AArch64)", "type": "Synchronous", "handler": "SVC: 0x2808, Sync Abort: 0x5928", "source": "SVC: exception.c:59, Abort: exception.c:121" },
+        { "index": 9, "offset": "0x2480", "el": "Lower EL (AArch64)", "type": "IRQ / vIRQ", "handler": "0x5da4", "source": "exception.c:187" },
+        { "index": 10, "offset": "0x2500", "el": "Lower EL (AArch64)", "type": "FIQ / vFIQ", "handler": "0x5dac", "source": "exception.c:194" },
+        { "index": 11, "offset": "0x2580", "el": "Lower EL (AArch64)", "type": "SError / vSError", "handler": "0x5db4", "source": "exception.c:49" },
+        { "index": 12, "offset": "0x2600", "el": "Lower EL (AArch32)", "type": "Synchronous", "handler": "0x2600 (b #0)", "source": "AArch32 Unsupported Trap" },
+        { "index": 13, "offset": "0x2680", "el": "Lower EL (AArch32)", "type": "IRQ / vIRQ", "handler": "0x2680 (b #0)", "source": "AArch32 Unsupported Trap" },
+        { "index": 14, "offset": "0x2700", "el": "Lower EL (AArch32)", "type": "FIQ / vFIQ", "handler": "0x2700 (b #0)", "source": "AArch32 Unsupported Trap" },
+        { "index": 15, "offset": "0x2780", "el": "Lower EL (AArch32)", "type": "SError / vSError", "handler": "0x2780 (b #0)", "source": "AArch32 Unsupported Trap" }
+      ]
+    },
+    "context_frame": {
+      "frame_size_bytes": 976,
+      "frame_size_hex": "0x3d0",
+      "allocation_instruction": "sub sp, sp, #976",
+      "register_mapping": [
+        { "offset_sp": "0x000", "registers": "x0, x1" },
+        { "offset_sp": "0x010", "registers": "x2, x3" },
+        { "offset_sp": "0x020", "registers": "x4, x5" },
+        { "offset_sp": "0x030", "registers": "x6, x7" },
+        { "offset_sp": "0x040", "registers": "x8, x9" },
+        { "offset_sp": "0x050", "registers": "x10, x11" },
+        { "offset_sp": "0x060", "registers": "x12, x13" },
+        { "offset_sp": "0x070", "registers": "x14, x15" },
+        { "offset_sp": "0x080", "registers": "x16, x17" },
+        { "offset_sp": "0x090", "registers": "x18, x19" },
+        { "offset_sp": "0x0a0", "registers": "x20, x21" },
+        { "offset_sp": "0x0b0", "registers": "x22, x23" },
+        { "offset_sp": "0x0c0", "registers": "x24, x25" },
+        { "offset_sp": "0x0d0", "registers": "x26, x27" },
+        { "offset_sp": "0x0e0", "registers": "x28, x29" },
+        { "offset_sp": "0x0f0", "registers": "x30 (LR), ELR_EL1 (PC at exception)" },
+        { "offset_sp": "0x100", "registers": "SP_EL0 (Caller stack pointer), SPSR_EL1 (Saved Program Status)" },
+        { "offset_sp": "0x110", "registers": "FPSR (Floating-point status), FPCR (Floating-point control)" },
+        { "offset_sp": "0x120", "registers": "TPIDR_EL0 (Thread pointer)" },
+        { "offset_sp": "0x138", "registers": "Exception type flag (w0 = 1)" },
+        { "offset_sp": "0x140 - 0x330", "registers": "NEON / SIMD vector registers q0 - q31 (512 bytes)" },
+        { "offset_sp": "0x340", "registers": "ESR_EL1 (Exception Syndrome Register)" },
+        { "offset_sp": "0x348", "registers": "FAR_EL1 (Fault Address Register)" }
+      ]
+    },
+    "svc_fastpath_filter": {
+      "offset": "0x00002434",
+      "disassembly": [
+        { "offset": "0x2434", "opcode": "0xd5385214", "instruction": "mrs x20, esr_el1", "comment": "Read Exception Syndrome Register" },
+        { "offset": "0x2438", "opcode": "0x531a7e95", "instruction": "lsr w21, w20, #26", "comment": "Extract Exception Class (EC) field (bits 31:26)" },
+        { "offset": "0x243c", "opcode": "0x710056bf", "instruction": "cmp w21, #21", "comment": "Compare with 0x15 (EC_SVC64)" },
+        { "offset": "0x2440", "opcode": "0x54001e40", "instruction": "b.eq #968", "comment": "If SVC, fast-path branch to 0x2808" }
+      ],
+      "fastpath_target": "0x00002808",
+      "optimizations": [
+        "Saves only callee-saved SIMD registers (q8 - q15), avoiding 512-byte full register save",
+        "Extracts syscall opcode directly from ESR_EL1.ISS (and w2, w20, #0xff)",
+        "Dispatches directly via b #13780 to syscall dispatch table"
+      ]
+    },
+    "abort_classification_engine": {
+      "offset": "0x00005934",
+      "description": "60-entry jump table indexing ESR_EL1 Exception Class values for deterministic fault triage and panic logging",
+      "syndrome_table_entries": 60,
+      "panic_threshold": "EC > 60 triggers immediate hardware panic"
+    }
+  },
+  "rtos_signatures": {
+    "os_name": "Apple RTKitOS",
+    "architecture_tag": "armv8_cl4_Oz_flto_pac",
+    "build_string": "RTKit_armv8_cl4_Oz_flto_pac-3514.40.18.release",
+    "build_offset": "0x0017b7f0",
+    "builder_toolchain": "AppleSPUFirmwareBuilder-990.40.5",
+    "project_version": "AppleSPUFirmware-2444.42.1",
+    "release_version": "RELEASE 1223.40.8",
+    "security_hardening": [
+      "Pointer Authentication Codes (PAC-B Branch Protection)",
+      "Stack Guard Canaries (RTK_stack_guard_guard)",
+      "Strict W^X (Write XOR Execute) memory page tables",
+      "Isolated Exception Stacks (_rtk_exc_stack 8KB, _rtk_irq_stack 4KB, _spu_stack 74KB)"
+    ],
+    "kernel_abstractions": {
+      "scheduling_model": "Event-Driven Workloop & RunLoop Architecture (RTK_workloop_add, RTK_eventsource_signal)",
+      "threading_primitives": [
+        "roottask",
+        "RTK_workloop_init",
+        "RTK_eventqueue_init",
+        "RTK_lock_lock",
+        "EndpointRunLoopEventSource"
+      ],
+      "contrast_with_freertos": "Unlike classic priority-preemptive microcontroller RTOSes such as FreeRTOS which rely on periodic timer ticks and preemptive priority task switching, RTKit operates on a cooperative priority-gated WorkLoop model where threads only execute in response to hardware doorbell event sources and mailbox signals, allowing complete coprocessor clock and power gating during idle."
+    }
+  },
+  "ipc_mailbox": {
+    "hardware_controller": {
+      "compatible": "iop,ascwrap-v6",
+      "device_type": "aop",
+      "soc_ip": "Apple System Coprocessor Wrap (ASC Wrap v6)",
+      "mmio_registers": [
+        {
+          "bank": 0,
+          "base_address": "0x100600000",
+          "size_bytes": "0x00088000",
+          "description": "ASC Wrap Primary Mailbox MMIO: AP-to-IOP / IOP-to-AP FIFO data registers, doorbell triggers, and status registers"
+        },
+        {
+          "bank": 1,
+          "base_address": "0x100050000",
+          "size_bytes": "0x00004000",
+          "description": "AOP core power-gating, clock domain governor, and reset control"
+        },
+        {
+          "bank": 2,
+          "base_address": "0x100c00000",
+          "size_bytes": "0x001e0000",
+          "description": "On-chip SRAM memory aperture for fast-path SPU ring buffers and ping-pong queues"
+        },
+        {
+          "bank": 3,
+          "base_address": "0x0f82a8000",
+          "size_bytes": "0x00000008",
+          "description": "Hardware free-running timebase register (aop-fr-timebase) for microsecond AP-SPU clock synchronization"
+        },
+        {
+          "bank": 4,
+          "base_address": "0x10062c000",
+          "size_bytes": "0x0003c008",
+          "description": "Extended FIFO Queue and Ring Buffer DMA Engine"
+        }
+      ],
+      "interrupt_lines": [
+        { "line_number": 349, "hex": "0x15d", "name": "MBOX_RX_IRQ", "description": "ASC Mailbox RX Available interrupt (AOP-to-AP message notification doorbell)" },
+        { "line_number": 350, "hex": "0x15e", "name": "MBOX_TX_ACK_IRQ", "description": "ASC Mailbox TX Ready / Acknowledgement interrupt" },
+        { "line_number": 351, "hex": "0x15f", "name": "MBOX_ERR_IRQ", "description": "ASC Mailbox Protocol Parity / Queue Overflow / Error interrupt" },
+        { "line_number": 352, "hex": "0x160", "name": "SPU_WAKE_IRQ", "description": "SPU Wake-from-Sleep Doorbell interrupt (triggers AP power-on for urgent sensor events)" }
+      ]
+    },
+    "mailbox_message_format": {
+      "type_name": "mbi_msg_t",
+      "width_bits": 64,
+      "bitfield_layout": [
+        { "bits": "63:56", "width": 8, "field": "endpoint_id", "description": "Target / Source RTKit Endpoint ID (0..255)" },
+        { "bits": "55:48", "width": 8, "field": "message_type", "description": "Protocol Command Tag / Message Category (e.g. 0x01=Hello, 0x02=Ack, 0x04=RollCall)" },
+        { "bits": "47:0", "width": 48, "field": "payload_or_address", "description": "48-bit Physical Address (IOPhysicalAddress) or direct command parameters" }
+      ]
+    },
+    "ring_buffer_descriptors": {
+      "descriptor_structure": "iop_ringbuffer / srb_ringbuffer",
+      "fields": {
+        "rdptr": "32-bit uint Read Pointer offset from base",
+        "wrptr": "32-bit uint Write Pointer offset from base",
+        "size": "32-bit uint Total Ring Buffer size in bytes",
+        "sample_size": "32-bit uint Element / Frame size in bytes",
+        "zero_ts_wrap": "32-bit uint Timestamp counter wrap threshold",
+        "flags": "32-bit uint Ring status flags (DefersQueueStart, OverflowFlag)"
+      },
+      "fastpath_dma": "AppleSPUFastPathRingBuffer for zero-copy DMA transfer of 200Hz - 1000Hz raw IMU data streams directly into host DRAM."
+    },
+    "rtkit_builtin_endpoints": [
+      { "id": 0, "name": "Management", "class": "RTBuddyManagementEndpoint", "description": "Protocol version negotiation (_handleHello), Roll Call endpoint discovery (_handleEPRollCall), and power transitions (_handlePowerAck)" },
+      { "id": 1, "name": "Crashlog", "class": "RTBuddyCrashlogEndpoint", "description": "Hardware fault reporting, panic strings, register snapshots, and microkernel coredumps" },
+      { "id": 2, "name": "Syslog / OSLog", "class": "RTBuddySyslogEndpoint", "description": "Structured logging stream and string coalescer (_handleNewCoalescerRequest)" },
+      { "id": 3, "name": "TraceKit / Kdebug", "class": "RTBuddyTraceKitEndpoint", "description": "Deterministic kernel tracing, performance counters, and kdebug tracepoints" },
+      { "id": 4, "name": "IOReporting", "class": "RTBuddyIOReportingEndpoint", "description": "Hardware energy metrics, clock drift telemetry, and communication packet statistics" },
+      { "id": 5, "name": "CoreAnalytics", "class": "RTBuddyCoreAnalyticsEndpoint", "description": "Diagnostic telemetry and device usage histograms" },
+      { "id": 6, "name": "Entropy", "class": "RTBuddyEntropyEndpoint", "description": "Cryptographic hardware true random number generation (ENTROPY_MSG_ENTROPY_GENERATE)" }
+    ],
+    "tightbeam_rpc_endpoints": [
+      {
+        "endpoint_name": "AOPAudioTightbeam_C",
+        "kernel_client": "com.apple.driver.AppleAOPAudio",
+        "protocol": "Tightbeam RPC over RTKit Mailbox",
+        "channels": [
+          "Low-Power Audio Input (LPAI)",
+          "Voice Trigger Buffer Streaming (Hey Siri)",
+          "Hardware Codec State Synchronization",
+          "Audio Drift Detection (24MHz clock comparison)"
+        ],
+        "transport_helper": "tb_aop2_mbox_endpoint_helper"
+      },
+      {
+        "endpoint_name": "SPUMotionTightbeam",
+        "kernel_client": "com.apple.driver.AppleSPU",
+        "protocol": "Tightbeam RPC",
+        "channels": [
+          "Raw Gyroscope & Accelerometer Events",
+          "Sensor Calibration Matrices",
+          "Gesture Recognition Notifications",
+          "Emergency Impact / Crash Detection Telemetry"
+        ],
+        "transport_helper": "tb_iop_mbox_endpoint_helper"
+      },
+      {
+        "endpoint_name": "VoiceTriggerFirmwareTightbeam_C",
+        "kernel_client": "com.apple.driver.AppleAOPAudio / AOPAudioDriver",
+        "protocol": "Tightbeam RPC",
+        "channels": [
+          "Acoustic Feature Extraction Pipeline",
+          "AOPVoiceTriggerSecure_Server",
+          "Wake Word Confidence Scoring"
+        ],
+        "transport_helper": "tb_dispatcher"
+      },
+      {
+        "endpoint_name": "AFKTightbeamEndpoint",
+        "kernel_client": "com.apple.driver.AppleAOP2",
+        "protocol": "Tightbeam Relay across AOP <-> AOP2",
+        "channels": [
+          "AOP1-to-AOP2 Sensor Forwarding Connection",
+          "Contextual Motion Engine Coordination",
+          "Neural Dead Reckoning Coordinate Updates"
+        ],
+        "transport_helper": "AFKTightbeamRelay"
+      }
+    ]
+  },
+  "sensor_hub_catalog": {
+    "imu": {
+      "driver_classes": [
+        "AppleComboGyro.cpp",
+        "AppleComboAccel.cpp",
+        "BMI482HGAccel.cpp",
+        "CMSPUHgAccel"
+      ],
+      "hardware_target": "Bosch Sensortec BMI482 6-Axis High-G / Low-G IMU",
+      "firmware_extensions": [
+        "BMI482GyroSelfCalibrationExtension",
+        "BMI482GyroSelfTestExtension",
+        "CMGyroBiasEstimator",
+        "PressureAccelCompensator"
+      ],
+      "data_path": "Fastpath ring buffer streaming (200Hz - 1000Hz) with ping-pong buffering in SRAM (0x100c00000)."
+    },
+    "ambient_light_sensor": {
+      "firmware_driver": "AppleEmbeddedLightSensor-2300.42.3",
+      "variants": [
+        { "name": "AOPALSDriverD9XTrusted", "security_domain": "Trusted Execution", "purpose": "Display brightness adaptation and biometric security gates" },
+        { "name": "AOPALSDriverD9XUntrusted", "security_domain": "General Execution", "purpose": "Ambient light color temperature and lux monitoring" }
+      ],
+      "kernel_drivers": [
+        "com.apple.driver.AppleEmbeddedLightSensor",
+        "com.apple.driver.AppleALSColorSensor",
+        "AppleSPUALSDriver",
+        "AppleSPUALSSunfishDriver",
+        "AppleSPUALSSealionAccessoryDriver"
+      ],
+      "optical_channels": ["Clear", "Red", "Green", "Blue", "Infrared (IR)", "Flicker Frequency"]
+    },
+    "neural_pdr": {
+      "framework_name": "Apple SLOMLite (Sensory Localization & Odometry Machine Lite)",
+      "firmware_module": "AppleNeuralPDR_rtkit",
+      "architecture": "Low-Power Neural Network Acceleration for Pedestrian Dead Reckoning",
+      "source_components": [
+        "AMLNeuralPDRLiteBackend.cpp (Apple Machine Learning inference engine)",
+        "NeuralPDRLiteInstance.cpp (Fast Sparse Recurrent Neural Network / FSRNN cache)",
+        "AMLGravSenseLiteBackend.cpp (Gravity vector alignment)",
+        "AttitudeFilterLite.cpp (3D attitude estimation)",
+        "EKFEstimatorLite.cpp (Extended Kalman Filter state propagation)",
+        "GravSenseLitePredictor.cpp (Inertial trajectory predictor)"
+      ],
+      "coprocessor_topology": "AOP1 acquires raw IMU data from BMI482 and relays frames via tb_aop2_mbox_endpoint_helper to AOP2; AOP2 executes FSRNN inference in low-power SRAM, computing continuous pedestrian displacement and geofence alarms ([PedestrianFence] enable,hasPDRClient,hasActiveFenceSession) without waking the Application Processor."
+    }
+  },
+  "aop2_coprocessor": {
+    "firmware_source": "Firmware/AOP2/aop2fw-v57aop2.RELEASE.im4p",
+    "architecture": "ARM64e (ARMv8.3-A PAC)",
+    "container_size_bytes": 5603353,
+    "sha256": "5970b3c2a5ac94fc8b13b337b687e32c0690b7f2ce458e777ae8b98f229e1e71",
+    "embedded_macho_count": 7,
+    "embedded_binaries": [
+      { "index": 0, "offset": "0x00011000", "type": "MH_EXECUTE", "vmaddr_range": "0x8000000 - 0x8026000", "size_bytes": 139264, "uuid": "2e915a01-a661-3afb-b04a-a81aae792a70", "role": "SPU Secondary Core Drivers, Clock/Reset, Power Management" },
+      { "index": 1, "offset": "0x00033000", "type": "MH_EXECUTE", "vmaddr_range": "0x10f3000 - 0x1229000", "size_bytes": 102400, "uuid": "b035344a-292d-3a16-bcf8-0ffcab64a775", "role": "Context Engine 1 (AppleFirmwareKit, Context Dispatcher)" },
+      { "index": 2, "offset": "0x0004c000", "type": "MH_EXECUTE", "vmaddr_range": "0x10f3000 - 0x125e000", "size_bytes": 122880, "uuid": "c52a816d-0e07-33cb-87db-9ab57586ac39", "role": "Context Engine 2 (AppleFirmwareKit, Motion Profiling)" },
+      { "index": 3, "offset": "0x0006a000", "type": "MH_EXECUTE", "vmaddr_range": "0x10f3000 - 0x11bf000", "size_bytes": 389120, "uuid": "46699d8a-f0e6-33b5-95d2-62b5cce92e9c", "role": "Neural Dead Reckoning (AppleNeuralPDR, AMLNeuralPDR, IMU Trajectory Tracking)" },
+      { "index": 4, "offset": "0x000c9000", "type": "MH_EXECUTE", "vmaddr_range": "0x10f3000 - 0x11a5000", "size_bytes": 65536, "uuid": "3fbec0c7-266a-3f2d-b4b5-5319055c9d5f", "role": "Telemetry & Inter-AOP Link (AsenAOP1CommManager, AFKPowerAssertAOP2Service, AFKRootService)" },
+      { "index": 5, "offset": "0x000d9000", "type": "MH_DYLIB", "vmaddr_range": "0x1000000 - 0x107f000", "size_bytes": 507904, "uuid": "f9f5696a-f4df-397e-928d-32e29f0f263e", "role": "Shared Runtime Dylib (v57aop2.dylib), RTKit_armv8_cl4_Oz_flto_pac-3514.40.18.release" },
+      { "index": 6, "offset": "0x00530000", "type": "MH_PRELOAD", "vmaddr_range": "0xffffffff00000000 - 0xffffffff00019000", "size_bytes": 90112, "uuid": "05c35c61-00d3-3aae-bc5d-4c4c29405445", "role": "Core RTKitOS Kernel Supervisor (Identical kernel image shared with AOP)" }
+    ],
+    "primary_role": "Contextual coprocessor, Neural PDR execution, and background sensor offload",
+    "device_tree_node": "/device-tree/arm-io/aop2",
+    "mmio_base": "0x101600000",
+    "interrupt_lines": [357, 358, 359, 360],
+    "peer_relay": {
+      "transport": "AFKTightbeamRelay / tb_aop2_mbox_endpoint_helper",
+      "connection_type": "Direct Coprocessor-to-Coprocessor Mailbox Peer Link",
+      "data_forwarded": "100Hz Raw IMU Frames, Micro-Doppler Gestures, and Context Triggers"
+    }
+  }
+}

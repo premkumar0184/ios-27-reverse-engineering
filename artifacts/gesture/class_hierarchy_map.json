@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "root_class": "UIGestureRecognizer",
+  "framework": "UIKitCore.framework / Gestures.framework",
+  "arbitration_classes": [
+    "UIGestureRecognizerArena",
+    "_UIGestureEnvironment",
+    "_UISystemGestureGate",
+    "_UIGestureDelaying",
+    "_UIGestureRecognizerTransformAnalyzer"
+  ],
+  "hierarchy": {
+    "UIGestureRecognizer": {
+      "framework": "UIKitCore.framework",
+      "subclasses": {
+        "UIPanGestureRecognizer": {
+          "framework": "UIKitCore.framework",
+          "subclasses": {
+            "UIScreenEdgePanGestureRecognizer": {
+              "framework": "UIKitCore.framework",
+              "subclasses": {
+                "_UIBackGestureRecognizer": {
+                  "framework": "UIKitCore.framework",
+                  "role": "Left-edge interactive navigation pop transition"
+                },
+                "_UINotificationCenterGestureRecognizer": {
+                  "framework": "SpringBoard.framework / UIKitCore.framework",
+                  "role": "Top-edge pull down notification centre reveal"
+                },
+                "_UIControlCenterGestureRecognizer": {
+                  "framework": "SpringBoard.framework / UIKitCore.framework",
+                  "role": "Top-right corner pull down control centre reveal"
+                },
+                "_UIReachabilityGestureRecognizer": {
+                  "framework": "SpringBoard.framework / UIKitCore.framework",
+                  "role": "Home-bar downward swipe reachability trigger"
+                },
+                "SBHomeGesturePanGestureRecognizer": {
+                  "framework": "SpringBoard.framework",
+                  "role": "Bottom-edge home bar swipe-up task switcher / return to home"
+                }
+              }
+            },
+            "UIScrollViewPanGestureRecognizer": {
+              "framework": "UIKitCore.framework",
+              "role": "Primary viewport pan recognizer with velocity handoff"
+            },
+            "_UIPanOrFlingGestureRecognizer": {
+              "framework": "Gestures.framework",
+              "role": "Velocity-based drag vs fling discriminator"
+            }
+          }
+        },
+        "UISwipeGestureRecognizer": {
+          "framework": "UIKitCore.framework",
+          "subclasses": {}
+        },
+        "UITapGestureRecognizer": {
+          "framework": "UIKitCore.framework",
+          "subclasses": {
+            "UIScrollViewDelayedTouchesBeganGestureRecognizer": {
+              "framework": "UIKitCore.framework",
+              "role": "Delays touch delivery in scrollable containers"
+            }
+          }
+        },
+        "UILongPressGestureRecognizer": {
+          "framework": "UIKitCore.framework",
+          "subclasses": {
+            "UIScrollViewKnobLongPressGestureRecognizer": {
+              "framework": "UIKitCore.framework",
+              "role": "Scrollbar thumb/knob dragging activation"
+            }
+          }
+        },
+        "UIPinchGestureRecognizer": {
+          "framework": "UIKitCore.framework",
+          "subclasses": {
+            "_UIScrollViewPinchGestureRecognizer": {
+              "framework": "UIKitCore.framework",
+              "role": "Zoom gesture coordinator for UIScrollView"
+            }
+          }
+        },
+        "UIRotationGestureRecognizer": {
+          "framework": "UIKitCore.framework",
+          "subclasses": {}
+        }
+      }
+    }
+  }
+}

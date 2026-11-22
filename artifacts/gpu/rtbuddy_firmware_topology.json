@@ -1,0 +1,128 @@
+{
+  "coprocessor_architecture": {
+    "platform": "Apple RTBuddy / RTKit OS",
+    "microkernel_model": "Preemptible Real-Time Embedded Microkernel",
+    "cpu_architecture": "64-bit ARMv8.3-A (ARM64e / PAC enabled)",
+    "stepping_dispatch": "rkosftab multi-stepping loader (a000, b000, a010)"
+  },
+  "dual_core_topology": {
+    "core_0": {
+      "identifier": "AGX Coprocessor Core 0",
+      "fourcc_tag": "gfxf",
+      "firmware_image": "armfw_g18p.im4p",
+      "vm_base_address": "0xfffffc0000000000",
+      "execution_roles": [
+        "Host IPC Arbitration & Command Queue Enqueueing",
+        "Hardware Power Management (RTK_POWER_SLEEP, RTK_POWER_NAP, RTK_POWER_ACTIVE)",
+        "Dynamic Frequency / Voltage Control (APS_USC)",
+        "Secure Page Table Monitor (SPTM) Telemetry WorkLoop",
+        "Hardware Watchdog & Fault Recovery (AGFIRecoveryInfo)"
+      ],
+      "memory_layout": {
+        "__TEXT": {
+          "vmaddr": "0xfffffc0000000000",
+          "size_bytes": 327680,
+          "prot": "r-x"
+        },
+        "__DATA": {
+          "vmaddr": "0xfffffc0000050000",
+          "size_bytes": 786432,
+          "prot": "rw-"
+        },
+        "__DATA_SHARED_RO": {
+          "vmaddr": "0xfffffc0000110000",
+          "size_bytes": 32768,
+          "prot": "r--"
+        }
+      }
+    },
+    "core_1": {
+      "identifier": "AGX Coprocessor Core 1",
+      "fourcc_tag": "gf1f",
+      "firmware_image": "armfw1_g18p.im4p",
+      "vm_base_address": "0xfffffc0000000000",
+      "execution_roles": [
+        "Context Switching & Virtual Address Space Switching",
+        "Low-Latency Command Dispatch to VDM, PDM, and CDM Hardware Pipelines",
+        "Hardware Doorbell Servicing (kAGFIPIORegionTypePMPDoorbell)",
+        "Ring Buffer Read/Write Pointer Tracking (AGXAcceleratorRing)",
+        "Fence and Timestamp Event Signaling"
+      ],
+      "memory_layout": {
+        "__TEXT": {
+          "vmaddr": "0xfffffc0000000000",
+          "size_bytes": 311296,
+          "prot": "r-x"
+        },
+        "__DATA": {
+          "vmaddr": "0xfffffc000004c000",
+          "size_bytes": 737280,
+          "prot": "rw-"
+        },
+        "__DATA_SHARED_RO": {
+          "vmaddr": "0xfffffc0000100000",
+          "size_bytes": 32768,
+          "prot": "r--"
+        }
+      }
+    },
+    "inter_core_communication": {
+      "mechanism": "Shared Memory Segment + Mailbox Hardware Interrupts",
+      "shared_segment_symbol": "_RTK_EXT_SHD_DTA__DATA_SHARED_RO",
+      "size_bytes": 32768,
+      "synchronization": "Hardware Mailbox Doorbell & Spinlock primitives"
+    }
+  },
+  "ipc_endpoints": {
+    "asc_mailbox": {
+      "controller": "Apple Storage Controller / ASCwrap Mailbox",
+      "inbox_symbol": "_RTK_DEV_WRAPPER_INBOX",
+      "outbox_symbol": "_RTK_DEV_WRAPPER_OUTBOX",
+      "device_symbol": "_RTK_dev_asc"
+    },
+    "hardware_command_pools": [
+      {
+        "pool_name": "Firmware VDM Command Pool",
+        "target_pipeline": "Vertex Data Master (VDM)",
+        "data_master_id": 0
+      },
+      {
+        "pool_name": "Firmware PDM Command Pool",
+        "target_pipeline": "Pixel / Primitive Data Master (PDM)",
+        "data_master_id": 1
+      },
+      {
+        "pool_name": "Firmware PDM Blit Command Pool",
+        "target_pipeline": "2D Blit Engine",
+        "data_master_id": 2
+      },
+      {
+        "pool_name": "Firmware CDM Command Pool",
+        "target_pipeline": "Compute Data Master (CDM)",
+        "data_master_id": 3
+      }
+    ],
+    "channel_commands": {
+      "dispatch_entry": "agfaProcessChannelCommand",
+      "pm_rebuild": "kAGFIChannelCommandTypePMRebuild"
+    },
+    "power_state_transitions": [
+      "RTK_POWER_SLEEP -> RTK_POWER_NAP",
+      "RTK_POWER_NAP -> RTK_POWER_ACTIVE",
+      "RTK_POWER_ACTIVE -> RTK_POWER_SLEEP"
+    ]
+  },
+  "host_xnu_kext_boundary": {
+    "driver_bundle": "com.apple.AGXFirmwareKextG18PRTBuddy",
+    "companion_bundle": "com.apple.AGXFirmwareKextRTBuddy64",
+    "kext_version": "362.5",
+    "workloops": [
+      "AGXFWLoggingWorkLoop",
+      "AGXHardwareWorkLoop",
+      "AGXNonHardwareWorkLoop",
+      "AGXEnergyAttributionWorkLoop",
+      "AGXASCWakeIrritatorWorkLoop",
+      "AGXSPTMTelemetryWorkLoop"
+    ]
+  }
+}

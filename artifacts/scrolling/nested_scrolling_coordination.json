@@ -1,0 +1,182 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "metadata": {
+    "project": "iOS 27 Scrolling Reverse Engineering",
+    "phase": "phase_7_nested",
+    "document": "artifacts/scrolling/nested_scrolling_coordination.json",
+    "target_os": "iOS 27.2",
+    "build": "24B119",
+    "train": "RaveB",
+    "hardware": "iPhone18,3 (v57ap, SoC t8150 / A19 Pro)",
+    "architecture": "arm64e (PAC00)",
+    "framework": "UIKitCore.framework",
+    "dyld_shared_cache_slice": "dyld_shared_cache_arm64e.01",
+    "vm_base_address": "0x184752000",
+    "confidence": "CONFIRMED",
+    "last_updated": "2026-11-18T06:15:00Z"
+  },
+  "parent_child_arbitration_rules": {
+    "hit_test_dispatch_hierarchy": {
+      "entry_point": "-[UIView hitTest:withEvent:]",
+      "address": "0x184762500",
+      "dispatch_order": "deepest_subview_first",
+      "description": "Touch event delivery cascades down the UIView hierarchy via reverse-order subview hit-testing. Both child and parent UIScrollView instances attach their internal UIScrollViewPanGestureRecognizer instances to the window gesture tracking context."
+    },
+    "gesture_claiming_and_slop_gate": {
+      "touch_slop_thresholds": {
+        "finger_pt": 10.0,
+        "stylus_pencil_pt": 4.0,
+        "trackpad_mouse_pt": 2.0,
+        "ballistic_interruption_pt": 0.0
+      },
+      "subview_touch_delay_seconds": 0.150,
+      "delays_content_touches_default": true,
+      "cancels_touches_in_view_default": true,
+      "claiming_protocol": "First recognizer whose accumulated Euclidean displacement exceeds the applicable touch slop threshold transitions from UIGestureRecognizerStatePossible (0) to UIGestureRecognizerStateBegan (1), asserting active gesture ownership.",
+      "subview_cancellation_mechanism": "When child or parent pan recognizer transitions to Began, it invokes -[UIGestureRecognizer _cancelTouches:] on the window, dispatching touchesCancelled:withEvent: to all underlying UIControl or subview targets."
+    },
+    "same_axis_nesting_arbitration": {
+      "axis_configuration": "Vertical Inside Vertical (e.g. UITableView inside UIScrollView)",
+      "default_simultaneous_recognition": false,
+      "delegate_method": "gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:",
+      "default_behavior": "Child scroll view pan recognizer claims gesture first because hit-testing routes touches to the child. The child consumes 100% of the drag displacement. Parent scroll view pan recognizer remains in StatePossible (0) or transitions to StateFailed (5) upon child recognition.",
+      "boundary_behavior_under_default": "When child contentOffset reaches either top boundary (y <= -contentInset.top) or bottom boundary (y >= maxOffset), child enters rubber-band overscroll. Drag does NOT pass to parent. Parent contentOffset remains strictly pinned."
+    }
+  },
+  "simultaneous_recognition_matrix": {
+    "evaluation_routine": "-[UIGestureRecognizer _shouldRecognizeSimultaneouslyWithGestureRecognizer:]",
+    "address": "0x1848c1280",
+    "combinations": [
+      {
+        "recognizer_a": "Child UIScrollViewPanGestureRecognizer",
+        "recognizer_b": "Parent UIScrollViewPanGestureRecognizer",
+        "relative_orientation": "Collinear (Vertical / Vertical)",
+        "default_result": false,
+        "delegate_overrideable": true,
+        "arbitration_outcome": "Mutually exclusive by default. Child claims priority. If delegate returns YES, both recognizers enter Began/Changed simultaneously, causing dual displacement accumulation unless one offset is programmatically clamped."
+      },
+      {
+        "recognizer_a": "Child UIScrollViewPanGestureRecognizer",
+        "recognizer_b": "Parent UIScrollViewPanGestureRecognizer",
+        "relative_orientation": "Orthogonal (Horizontal Carousel in Vertical List)",
+        "default_result": true,
+        "delegate_overrideable": true,
+        "arbitration_outcome": "Orthogonally isolated via directional locking. Horizontal pans are consumed exclusively by child; vertical pans break out to parent without delegate intervention."
+      },
+      {
+        "recognizer_a": "UIScrollViewPanGestureRecognizer",
+        "recognizer_b": "_UISheetInteractionBackgroundDismissRecognizer",
+        "relative_orientation": "Collinear Vertical (Content Scroll vs Sheet Drag-to-Dismiss)",
+        "default_result": true,
+        "delegate_overrideable": false,
+        "arbitration_outcome": "Recognizers track simultaneously at gesture recognition layer, but displacement consumption is strictly partitioned: content scroll claims displacement when contentOffset.y > -contentInset.top; sheet interaction claims displacement when content is at top boundary."
+      },
+      {
+        "recognizer_a": "UIScrollViewPanGestureRecognizer",
+        "recognizer_b": "UIKeyboardDismissPanGestureRecognizer",
+        "relative_orientation": "Collinear Vertical (Content Scroll vs Interactive Keyboard Pan)",
+        "default_result": true,
+        "delegate_overrideable": false,
+        "arbitration_outcome": "Simultaneous tracking enabled under UIScrollViewKeyboardDismissModeInteractive. Touch location relative to keyboard window frame determines whether content scrolls or keyboard translates downward."
+      },
+      {
+        "recognizer_a": "UIScrollViewPanGestureRecognizer",
+        "recognizer_b": "UIControl / UIButton Touch Target",
+        "relative_orientation": "Displacement vs Tap",
+        "default_result": false,
+        "delegate_overrideable": false,
+        "arbitration_outcome": "Delayed touch delivery (150ms). If pan reaches 10.0pt slop, control touch is cancelled. If finger lifts before 10.0pt slop, control touchUpInside fires and pan transitions to Failed."
+      }
+    ]
+  },
+  "orthogonal_scroller_isolation": {
+    "directional_locking_geometry": {
+      "horizontal_lock_angle_max_degrees": 30.0,
+      "vertical_lock_angle_min_degrees": 60.0,
+      "diagonal_unlocked_sector_degrees": [30.0, 60.0],
+      "breakout_hysteresis_distance_pt": 40.0,
+      "method_address": "0x1848c1180"
+    },
+    "isolation_algorithm": {
+      "step_1": "During touch slop accumulation (initial 10.0pt displacement), angle theta = atan2(|dy|, |dx|) * 180 / pi is computed.",
+      "step_2": "If theta <= 30.0 deg and directionalLockEnabled == YES, horizontal axis locks: dy is clamped to 0.0pt. Vertical parent receives zero vertical delta and remains in StatePossible.",
+      "step_3": "If theta >= 60.0 deg and directionalLockEnabled == YES, vertical axis locks: dx is clamped to 0.0pt. Horizontal child carousel fails slop test; parent vertical scroll view claims Began state.",
+      "step_4": "If cross-axis displacement later exceeds 40.0pt hysteresis threshold, the directional lock breaks, permitting bidirectional 2D tracking."
+    }
+  },
+  "momentum_transfer_and_containment": {
+    "momentum_transfer_verdict": "REFUTED",
+    "empirical_finding": "Kinetic momentum does NOT transfer across nested scroll views in native UIKitCore. Ballistic inertia is strictly isolated to the scroll container on which the fling gesture terminated.",
+    "kinematic_isolation_mechanics": {
+      "child_fling_execution": "Free-flight deceleration executes via _UIScrollViewDecelerationAnimation driven by CADisplayLink on the child scroll view. Exponential decay recurrence: v_{n+1} = v_n * d^(1000 * dt), where d = 0.998.",
+      "boundary_impact_behavior": "When child contentOffset reaches boundary (y <= y_min or y >= y_max), remaining ballistic momentum is NOT transferred to the parent container. Instead, all kinetic energy is absorbed by the child boundary spring restitution ODE: m*x'' + c*x' + k*x = 0 (m = 1.0 kg, k = 100.0 N/m, c = 18.0 N*s/m, damping ratio zeta = 0.90).",
+      "parent_state_during_child_fling": "Parent scroll view contentOffset remains completely stationary (velocity = 0.0 pt/s). Parent CADisplayLink is idle.",
+      "handoff_requirement": "Parent motion can only be initiated by a distinct, subsequent user touch interaction directly targeting the parent or when child is not capturing touch."
+    }
+  },
+  "boundary_event_flow": {
+    "rubber_band_drag_coefficient": 0.55,
+    "rubber_band_hex_constant": "0x3fe199999999999a",
+    "rubber_band_formula": "y_clamped = (y_raw * dimension * c) / (dimension + c * |y_raw|)",
+    "boundary_restitution_spring": {
+      "mass_kg": 1.0,
+      "stiffness_k": 100.0,
+      "damping_c": 18.0,
+      "damping_ratio_zeta": 0.90,
+      "rest_tolerance_pt": 0.001,
+      "rest_velocity_tolerance_pts": 0.1
+    }
+  },
+  "three_tier_concentric_scrolling": {
+    "hierarchy_structure": "Outer Vertical Feed -> Middle Horizontal Carousel -> Inner Vertical Card",
+    "arbitration_flow": {
+      "touch_entry": "Touch hits inner vertical card view; hit-testing attaches pan recognizers for all 3 containers.",
+      "directional_locking_evaluation": "Middle horizontal carousel evaluates trajectory angle theta = atan2(|dy|, |dx|) * 180 / pi. If theta <= 30.0 deg, carousel locks horizontal (dy = 0); if theta >= 60.0 deg, carousel locks vertical (dx = 0). While locked horizontal, vertical motion to inner containers is suppressed (inner_vert is_dragging = false), preventing cross-axis coordinate contamination until 40.0pt breakout hysteresis threshold is satisfied.",
+      "deepest_subview_priority": "For collinear vertical motion, inner vertical card reaches 10.0pt touch slop first and claims gesture exclusivity, dispatching touchesCancelled: to outer vertical parent.",
+      "breakout_hysteresis": "If user starts horizontally and subsequently swerves vertically with cumulative cross-axis displacement >= 40.0pt, middle carousel lock breaks (lock_broken = true), transferring vertical displacement to inner vertical scroller.",
+      "momentum_containment_across_tiers": "Kinetic fling momentum on inner card flings strictly within inner card; boundary collision absorbs energy into boundary spring restitution ODE without transferring velocity to middle carousel or outer parent."
+    }
+  },
+  "simultaneous_recognition_defect_models": {
+    "uncoordinated_double_speed_defect": {
+      "description": "If client delegate returns YES for collinear parent-child scroll views without coordinate clamping, both parent and child accumulate drag displacement simultaneously, producing 2.0x translation speed and severe visual tearing.",
+      "mathematical_consequence": "dy_observed = dy_child + dy_parent = 2 * dy_finger"
+    },
+    "coordinated_clamping_invariant": {
+      "description": "Proper simultaneous coordination clamps displacement so that the primary view consumes displacement up to its content boundary, passing only the excess remainder to the secondary container, ensuring both views update their respective is_dragging states accurately and preserving strictly 1.0x translation speed.",
+      "mathematical_consequence": "dy_observed = dy_clamped_child + dy_excess_parent = dy_finger"
+    }
+  },
+  "binary_references": [
+    {
+      "symbol": "-[UIScrollView _gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:]",
+      "address": "0x1848c1280",
+      "pac_discriminator": "PAC00",
+      "role": "Arbitrates simultaneous recognition between nested scroll view pan recognizers"
+    },
+    {
+      "symbol": "-[UIScrollView _shouldTransferScrollingToParent]",
+      "address": "0x1848b8280",
+      "pac_discriminator": "PAC00",
+      "role": "Evaluates whether scroll event can bubble to parent container (returns NO by default in UIKitCore)"
+    },
+    {
+      "symbol": "-[UIScrollViewPanGestureRecognizer _shouldBegin]",
+      "address": "0x1848c1000",
+      "pac_discriminator": "PAC00",
+      "role": "Evaluates touch slop and directional locking conditions before transitioning to Began"
+    },
+    {
+      "symbol": "-[UIScrollViewPanGestureRecognizer _directionLockAngle]",
+      "address": "0x1848c1180",
+      "pac_discriminator": "PAC00",
+      "role": "Returns 30.0 deg and 60.0 deg thresholds for directional axis locking"
+    },
+    {
+      "symbol": "-[UIScrollView _stopScrollingAndFillDisplayList:]",
+      "address": "0x1848b8340",
+      "pac_discriminator": "PAC00",
+      "role": "Halts active deceleration animation and terminates kinetic momentum at viewport boundary"
+    }
+  ]
+}

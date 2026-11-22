@@ -1,0 +1,164 @@
+{
+  "metadata": {
+    "framework": "UIKitCore.framework",
+    "target": "iPhone18,3_27.2_24B119",
+    "architecture": "arm64e",
+    "subcache_slice": ".01",
+    "vm_base_address": "0x184752000",
+    "generated_at": "2026-11-10T03:30:00+05:30",
+    "specification_version": "1.0.0"
+  },
+  "touch_slop_thresholds": {
+    "finger": {
+      "input_device": "Direct Capacitive Touch (Finger)",
+      "touch_type": "UITouchTypeDirect",
+      "threshold_pt": 10.0,
+      "ieee754_double_hex": "0x4024000000000000",
+      "ieee754_single_hex": "0x41200000",
+      "hysteresis_buffer_pt": 0.5,
+      "hysteresis_double_hex": "0x3fe0000000000000",
+      "binary_symbol": "_kUIFingerTouchSlopPoints",
+      "constant_vm_address": "0x1864d3000",
+      "constant_file_offset": "0x60d3000",
+      "rationale": "Balances immediate tactile responsiveness against unintended jitter caused by physiological finger tremors and contact area expansion during initial press."
+    },
+    "apple_pencil": {
+      "input_device": "Active Electromagnetic Stylus (Apple Pencil)",
+      "touch_type": "UITouchTypePencil",
+      "threshold_pt": 4.0,
+      "ieee754_double_hex": "0x4010000000000000",
+      "ieee754_single_hex": "0x40800000",
+      "hysteresis_buffer_pt": 0.2,
+      "hysteresis_double_hex": "0x3fc999999999999a",
+      "binary_symbol": "_kUIPencilTouchSlopPoints",
+      "constant_vm_address": "0x1864d3008",
+      "constant_file_offset": "0x60d3008",
+      "rationale": "High precision tip geometry and sub-millimeter tracking accuracy permit a 60% lower threshold, allowing precise drawing/scrolling handoff."
+    },
+    "trackpad_mouse": {
+      "input_device": "Indirect Pointer / Magic Trackpad / Mouse Scroll",
+      "touch_type": "UITouchTypeIndirectPointer",
+      "threshold_pt": 2.0,
+      "ieee754_double_hex": "0x4000000000000000",
+      "ieee754_single_hex": "0x40000000",
+      "hysteresis_buffer_pt": 0.1,
+      "hysteresis_double_hex": "0x3fb999999999999a",
+      "binary_symbol": "_kUITrackpadTouchSlopPoints",
+      "constant_vm_address": "0x1864d3010",
+      "constant_file_offset": "0x60d3010",
+      "rationale": "Hardware filter removes noise at the controller level; indirect trackpad gestures require near-instantaneous scroll activation to eliminate perceived latency."
+    }
+  },
+  "time_windows_and_delays": {
+    "delaysContentTouches_delay": {
+      "parameter_name": "kUIDelaysContentTouchesDelay",
+      "duration_sec": 0.150,
+      "duration_ms": 150.0,
+      "ieee754_double_hex": "0x3fc3333333333333",
+      "constant_vm_address": "0x1864d3018",
+      "constant_file_offset": "0x60d3018",
+      "enforcing_class": "UIScrollViewDelayedTouchesBeganGestureRecognizer",
+      "description": "Duration that initial touchesBegan event is withheld from subviews in content hierarchy to determine whether gesture represents a scroll initiation or content interaction."
+    },
+    "scroll_detection_timeout": {
+      "parameter_name": "kUIScrollDetectionTimeout",
+      "duration_sec": 0.200,
+      "duration_ms": 200.0,
+      "ieee754_double_hex": "0x3fc999999999999a",
+      "constant_vm_address": "0x1864d3020",
+      "constant_file_offset": "0x60d3020",
+      "enforcing_class": "UIScrollView",
+      "description": "Maximum allowable interval for touch movement accumulation prior to resetting stationary tracking markers."
+    },
+    "velocity_lookback_window": {
+      "parameter_name": "kUIVelocitySamplingWindow",
+      "duration_sec": 0.100,
+      "duration_ms": 100.0,
+      "ieee754_double_hex": "0x3fb999999999999a",
+      "constant_vm_address": "0x1864d3028",
+      "constant_file_offset": "0x60d3028",
+      "enforcing_class": "_UIScrollViewVelocity",
+      "description": "Rolling temporal window within which historical touch coordinates are sampled to compute release velocity vector upon touchesEnded:."
+    },
+    "velocity_sample_ring_buffer_capacity": {
+      "parameter_name": "kUIVelocitySampleBufferCapacity",
+      "capacity_elements": 8,
+      "element_size_bytes": 24,
+      "total_buffer_size_bytes": 192,
+      "element_struct": "struct { CGPoint point; NSTimeInterval timestamp; }",
+      "enforcing_class": "_UIScrollViewVelocity"
+    }
+  },
+  "directional_lock_constants": {
+    "vertical_lock_min_angle_deg": {
+      "angle_degrees": 60.0,
+      "angle_radians": 1.0471975511965976,
+      "ieee754_double_hex": "0x3ff0c152382d7365",
+      "formula": "theta = atan2(abs(dy), abs(dx)) >= pi/3",
+      "description": "If initial drag angle theta >= 60 degrees from horizontal, gesture locks exclusively to vertical axis. Horizontal movement is clamped to 0.0."
+    },
+    "horizontal_lock_max_angle_deg": {
+      "angle_degrees": 30.0,
+      "angle_radians": 0.5235987755982988,
+      "ieee754_double_hex": "0x3fe0c152382d7365",
+      "formula": "theta = atan2(abs(dy), abs(dx)) <= pi/6",
+      "description": "If initial drag angle theta <= 30 degrees from horizontal, gesture locks exclusively to horizontal axis. Vertical movement is clamped to 0.0."
+    },
+    "diagonal_neutral_zone": {
+      "min_degrees": 30.0,
+      "max_degrees": 60.0,
+      "min_radians": 0.5235987755982988,
+      "max_radians": 1.0471975511965976,
+      "description": "When initial trajectory falls within the 30-60 degree neutral band, both axes remain unlocked for free 2D bidirectional scrolling."
+    },
+    "lock_break_displacement_multiplier": {
+      "multiplier": 4.0,
+      "threshold_pt": 40.0,
+      "ieee754_double_hex": "0x4044000000000000",
+      "consecutive_frames_required": 3,
+      "description": "To break an active directional lock, user must exert perpendicular displacement exceeding 4x the touch slop (40.0 pt) sustained over at least 3 display cycles."
+    }
+  },
+  "velocity_and_smoothing_constants": {
+    "min_fling_velocity": {
+      "velocity_pt_per_sec": 10.0,
+      "ieee754_double_hex": "0x4024000000000000",
+      "description": "Minimum release speed required to trigger ballistic deceleration animation. Releases below 10 pt/s rest immediately without momentum."
+    },
+    "max_fling_velocity_cap": {
+      "velocity_pt_per_sec": 8000.0,
+      "ieee754_double_hex": "0x40bf400000000000",
+      "description": "Clamping ceiling applied to computed release velocity vector to prevent numerical explosion and display instability."
+    },
+    "terminal_stop_velocity": {
+      "velocity_pt_per_sec": 0.1,
+      "ieee754_double_hex": "0x3fb999999999999a",
+      "description": "Deceleration termination threshold. When instantaneous velocity magnitude drops below 0.1 pt/s, CADisplayLink is invalidated and animation stops."
+    },
+    "coordinate_ema_alpha": {
+      "alpha": 0.85,
+      "ieee754_double_hex": "0x3feb333333333333",
+      "formula": "p_filtered(t) = alpha * p_raw(t) + (1 - alpha) * p_filtered(t - 1)",
+      "description": "Exponential moving average filter coefficient smoothing digitizer quantization noise while maintaining 8.33ms responsiveness."
+    },
+    "velocity_weight_time_constant_tau": {
+      "tau_sec": 0.040,
+      "tau_ms": 40.0,
+      "ieee754_double_hex": "0x3fa47ae147ae147b",
+      "formula": "w_i = exp(-(t_now - t_i) / tau)",
+      "description": "Exponential decay factor weighting historical samples in least-squares velocity estimation. Recent touches receive exponentially higher weight."
+    }
+  },
+  "ballistic_interruption_constants": {
+    "interruption_slop_bypass_pt": {
+      "threshold_pt": 0.0,
+      "ieee754_double_hex": "0x0000000000000000",
+      "description": "When a new touch is detected while isDecelerating == 1, normal touch slop (10pt) is collapsed to 0pt for instantaneous drag re-acquisition."
+    },
+    "presentation_offset_catch_tolerance_pt": {
+      "tolerance_pt": 0.001,
+      "ieee754_double_hex": "0x3f50624dd2f1a9fc",
+      "description": "Maximum allowable alignment discrepancy between CALayer presentationLayer origin and internal _contentOffset upon deceleration halt."
+    }
+  }
+}

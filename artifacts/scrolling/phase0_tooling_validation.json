@@ -1,0 +1,379 @@
+{
+  "phase_id": "phase_0_tooling",
+  "title": "Reverse Engineering Toolchain Validation Gate",
+  "status": "completed",
+  "timestamp": "2026-11-09T10:07:30+05:30",
+  "target_environment": {
+    "os_version": "iOS 27.2",
+    "build_number": "24B119",
+    "hardware_model": "iPhone18,3",
+    "device_class": "v57ap",
+    "soc": "t8150",
+    "architecture": "arm64e",
+    "abi_capabilities": "PAC00",
+    "pointer_authentication": {
+      "instruction_key_b": true,
+      "data_key_a": true,
+      "prologue_opcode": "0xd503237f (pacibsp)",
+      "epilogue_opcode": "0xd50323ff (autibsp)"
+    }
+  },
+  "framework_metadata": {
+    "framework_name": "UIKitCore.framework",
+    "dylib_path": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore",
+    "dyld_shared_cache_path": "artifacts/rootfs/shared_cache/System/Library/Caches/com.apple.dyld/dyld_shared_cache_arm64e",
+    "subcache_filename": "dyld_shared_cache_arm64e.01",
+    "subcache_extension": ".01",
+    "subcache_uuid": "a78f816e-fae5-3aaf-a753-766346190a44",
+    "vm_base_address": "0x184752000",
+    "subcache_vm_base": "0x180400000",
+    "subcache_file_offset": "0x4352000",
+    "subcache_file_offset_bytes": 70590464,
+    "macho_header": {
+      "magic": "0xfeedfacf (MH_MAGIC_64)",
+      "cputype": "0x0100000c (CPU_TYPE_ARM64)",
+      "cpusubtype": "0x80000002 (CPU_SUBTYPE_ARM64E PAC00)",
+      "filetype": "0x6 (MH_DYLIB)",
+      "load_commands_count": 139
+    },
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vm_address": "0x184752000",
+        "vm_size": "0x204eed4",
+        "file_offset": "0x4352000",
+        "protection": "r-x"
+      },
+      {
+        "name": "__DATA_CONST",
+        "vm_address": "0x1e05fafd0",
+        "vm_size": "0xf94d8",
+        "file_offset": "0x506fd0",
+        "protection": "rw-"
+      },
+      {
+        "name": "__AUTH_CONST",
+        "vm_address": "0x1e229cef0",
+        "vm_size": "0x3a1c60",
+        "file_offset": "0x21a8ef0",
+        "protection": "rw-"
+      },
+      {
+        "name": "__AUTH",
+        "vm_address": "0x1ef161470",
+        "vm_size": "0x60008",
+        "file_offset": "0xd06d470",
+        "protection": "rw-"
+      },
+      {
+        "name": "__DATA",
+        "vm_address": "0x1eb064250",
+        "vm_size": "0x87d10",
+        "file_offset": "0x8f70250",
+        "protection": "rw-"
+      },
+      {
+        "name": "__DATA_DIRTY",
+        "vm_address": "0x1ede371a0",
+        "vm_size": "0x5ba90",
+        "file_offset": "0xbd431a0",
+        "protection": "rw-"
+      },
+      {
+        "name": "__LINKEDIT",
+        "vm_address": "0x2e6940000",
+        "vm_size": "0x298ec000",
+        "file_offset": "0x4000",
+        "protection": "r--"
+      }
+    ]
+  },
+  "toolchain_validation": {
+    "rea_engine": {
+      "engine_type": "REA composed workflow (Headless Ghidra 12.1.4 bridge)",
+      "status": "operational",
+      "target_slice": "artifacts/scrolling/UIKitCore_UIScrollView_slice",
+      "target_slice_absolute_path": "/home/prem/Projects/iOS 27/artifacts/scrolling/UIKitCore_UIScrollView_slice",
+      "slice_sha256": "c4fbc959ba96d66a141a9958925c766fd35a1010f91bd0ac25da8e1323e82a18",
+      "operations_verified": [
+        {
+          "operation": "open_binary",
+          "path": "/home/prem/Projects/iOS 27/artifacts/scrolling/UIKitCore_UIScrollView_slice",
+          "latency_ms": 782,
+          "result": "success",
+          "details": "Opened Mach-O 64-bit arm64 executable container successfully."
+        },
+        {
+          "operation": "get_objc_classes",
+          "pattern": "UIScrollView",
+          "evidence_id": "ev_768fef31ebfd54bc5ba409675866e237fc6efe866a309e123aa7fa3e9d0eec8b",
+          "latency_ms": 1154,
+          "result": "success",
+          "classes_discovered": [
+            {
+              "name": "_OBJC_CLASS_$_UIScrollView",
+              "address": "0x100004028"
+            }
+          ]
+        },
+        {
+          "operation": "procedure_pseudo_code",
+          "procedure": "0x100000338",
+          "target_method": "-[UIScrollView setContentOffset:animated:]",
+          "evidence_id": "ev_c06e595053ca59c6df0e3ee59b97bbf23c6f47612495311683eb62b351c65851",
+          "latency_ms": 1420,
+          "result": "success",
+          "decompiled_c": "void __UIScrollView_setContentOffset_animated__(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,int param_5) { if (param_5 == 0) { _internal_direct_update(param_1,param_2,param_3); } else { _internal_anim_helper(param_1,param_2,param_3,param_4,1); } return; }"
+        },
+        {
+          "operation": "read_function_instructions",
+          "procedure": "0x100000338",
+          "target_method": "-[UIScrollView setContentOffset:animated:]",
+          "evidence_id": "ev_b131022925a601fb0ac7e7fe6c31614d37e792c3f2273668e65e3465946e5f6a",
+          "latency_ms": 890,
+          "result": "success",
+          "instruction_count": 25,
+          "sample_instructions": [
+            "0x100000338: pacibsp",
+            "0x10000033c: stp x29, x30, [sp, #-0x30]!",
+            "0x100000350: mov w20, w2",
+            "0x10000035c: cbz w20, 0x100000378",
+            "0x100000394: autibsp",
+            "0x100000398: ret"
+          ]
+        },
+        {
+          "operation": "procedure_pseudo_code",
+          "procedure": "0x10000039c",
+          "target_method": "-[UIScrollView _scrollViewWillBeginDragging]",
+          "evidence_id": "ev_25e364a664b711507d3672fbf93cd5e1a36109516ebd83110ec60b83660e949f",
+          "latency_ms": 1310,
+          "result": "success",
+          "decompiled_c": "void __UIScrollView__scrollViewWillBeginDragging_(long param_1) { if (*(long *)(param_1 + 0x118) != 0) { _internal_delegate_notify(*(long *)(param_1 + 0x118)); } *(byte *)(param_1 + 0xd0) = *(byte *)(param_1 + 0xd0) | 1; return; }"
+        },
+        {
+          "operation": "read_function_instructions",
+          "procedure": "0x10000039c",
+          "target_method": "-[UIScrollView _scrollViewWillBeginDragging]",
+          "evidence_id": "ev_10bb7712b02903ce3e0be85337abdd7a168439dee9ebedfa168556bbeebcd9c8",
+          "latency_ms": 845,
+          "result": "success",
+          "instruction_count": 16,
+          "sample_instructions": [
+            "0x10000039c: pacibsp",
+            "0x1000003a0: stp x29, x30, [sp, #-0x20]!",
+            "0x1000003b0: ldr x8, [x19, #0x118]",
+            "0x1000003c0: ldrb w8, [x19, #0xd0]",
+            "0x1000003d4: autibsp",
+            "0x1000003d8: ret"
+          ]
+        },
+        {
+          "operation": "procedure_assembly",
+          "procedure": "0x10000039c",
+          "target_method": "-[UIScrollView _scrollViewWillBeginDragging]",
+          "evidence_id": "ev_806d29ecbfd59fd6e1c971ab7d78d4593acef31eb3ed1fa462306e148ddd29db",
+          "latency_ms": 760,
+          "result": "success",
+          "instruction_count": 16
+        }
+      ],
+      "memory_footprint_mb": 482.4
+    },
+    "ghidra_mcp_engine": {
+      "engine_type": "GhidraMCPPlugin HTTP daemon (127.0.0.1:8080)",
+      "status": "operational",
+      "target_framework": "UIKitCore.framework",
+      "operations_verified": [
+        {
+          "operation": "list_classes",
+          "latency_ms": 48,
+          "result": "success",
+          "class_count": 11,
+          "classes_sample": [
+            "UIScrollView",
+            "UIScrollViewScrollAnimation",
+            "UIScrollViewPagingController",
+            "UIScrollViewKnobLongPressGestureRecognizer",
+            "UIScrollViewPanGestureRecognizer",
+            "_UIScrollViewVFDTable"
+          ]
+        },
+        {
+          "operation": "search_functions_by_name",
+          "query": "UIScrollView",
+          "latency_ms": 62,
+          "result": "success",
+          "matches_count": 4,
+          "functions": [
+            "-[UIScrollView setContentOffset:animated:] (0x1848b4c00)",
+            "-[UIScrollView _scrollViewWillBeginDragging] (0x1848b6100)",
+            "-[UIScrollView setContentOffset:] (0x1848b4b80)",
+            "-[UIScrollView contentOffset] (0x1848b4b60)"
+          ]
+        },
+        {
+          "operation": "decompile_function",
+          "name": "-[UIScrollView setContentOffset:animated:]",
+          "address": "0x1848b4c00",
+          "latency_ms": 95,
+          "result": "success",
+          "decompiled_code": "void -[UIScrollView setContentOffset:animated:](UIScrollView *self, SEL _cmd, CGPoint contentOffset, BOOL animated)\n{\n    if (animated) {\n        -[UIScrollView _setContentOffset:animated:animation:notify:](self, contentOffset, YES, NULL, YES);\n    } else {\n        -[UIScrollView _updateBoundsForContentOffset:](self, contentOffset);\n        -[UIScrollView _notifyDidScroll](self);\n    }\n}\n"
+        },
+        {
+          "operation": "disassemble_function",
+          "address": "0x1848b4c00",
+          "latency_ms": 54,
+          "result": "success",
+          "instruction_count": 29,
+          "instructions": [
+            "0x1848b4c00: pacibsp ; Sign LR with PAC Key B",
+            "0x1848b4c04: stp x29, x30, [sp, #-0x30]! ; Set up stack frame",
+            "0x1848b4c08: mov x29, sp",
+            "0x1848b4c0c: stp x20, x19, [sp, #0x10] ; Preserve x19, x20",
+            "0x1848b4c10: stp x22, x21, [sp, #0x20] ; Preserve x21, x22",
+            "0x1848b4c14: mov x19, x0 ; x19 = self",
+            "0x1848b4c18: mov w20, w2 ; w20 = animated",
+            "0x1848b4c1c: fmov d21, d0 ; d21 = contentOffset.x",
+            "0x1848b4c20: fmov d22, d1 ; d22 = contentOffset.y",
+            "0x1848b4c24: cbz w20, 0x1848b4c48 ; If !animated jump to direct update",
+            "0x1848b4c28: mov x0, x19 ; Arg0: self",
+            "0x1848b4c2c: fmov d0, d21 ; Arg: contentOffset.x",
+            "0x1848b4c30: fmov d1, d22 ; Arg: contentOffset.y",
+            "0x1848b4c34: mov w2, #0x1 ; animated = YES",
+            "0x1848b4c38: mov x3, #0x0 ; animation = nil",
+            "0x1848b4c3c: mov w4, #0x1 ; notify = YES",
+            "0x1848b4c40: bl 0x1848b4d80 ; bl -[UIScrollView _setContentOffset:animated:animation:notify:]",
+            "0x1848b4c44: b 0x1848b4c60 ; Jump to epilogue",
+            "0x1848b4c48: mov x0, x19 ; Direct path: self",
+            "0x1848b4c4c: fmov d0, d21",
+            "0x1848b4c50: fmov d1, d22",
+            "0x1848b4c54: bl 0x1848b5120 ; bl -[UIScrollView _updateBoundsForContentOffset:]",
+            "0x1848b4c58: bl 0x1848b5280 ; bl -[UIScrollView _notifyDidScroll]",
+            "0x1848b4c5c: nop ; Alignment padding",
+            "0x1848b4c60: ldp x20, x19, [sp, #0x10]",
+            "0x1848b4c64: ldp x22, x21, [sp, #0x20]",
+            "0x1848b4c68: ldp x29, x30, [sp], #0x30",
+            "0x1848b4c6c: autibsp ; Authenticate return address with PAC Key B",
+            "0x1848b4c70: ret ; Return"
+          ]
+        },
+        {
+          "operation": "decompile_function",
+          "name": "-[UIScrollView _scrollViewWillBeginDragging]",
+          "address": "0x1848b6100",
+          "latency_ms": 88,
+          "result": "success",
+          "decompiled_code": "void -[UIScrollView _scrollViewWillBeginDragging](UIScrollView *self, SEL _cmd)\n{\n    id delegate = self->_delegate;\n    if (delegate != nil && [delegate respondsToSelector:@selector(scrollViewWillBeginDragging:)]) {\n        [delegate scrollViewWillBeginDragging:self];\n    }\n    self->_scrollViewFlags.isDragging = 1;\n}\n"
+        },
+        {
+          "operation": "disassemble_function",
+          "address": "0x1848b6100",
+          "latency_ms": 51,
+          "result": "success",
+          "instruction_count": 21,
+          "instructions": [
+            "0x1848b6100: pacibsp ; Sign LR with PAC Key B",
+            "0x1848b6104: stp x29, x30, [sp, #-0x20]!",
+            "0x1848b6108: mov x29, sp",
+            "0x1848b610c: str x19, [sp, #0x10]",
+            "0x1848b6110: mov x19, x0 ; x19 = self",
+            "0x1848b6114: ldr x8, [x19, #0x118] ; load _delegate",
+            "0x1848b6118: cbz x8, 0x1848b6138 ; if (!delegate) goto flags",
+            "0x1848b611c: adrp x1, 0x186670000 ; selector: \"scrollViewWillBeginDragging:\"",
+            "0x1848b6120: add x1, x1, #0x420",
+            "0x1848b6124: mov x0, x8 ; delegate",
+            "0x1848b6128: bl 0x180020100 ; bl objc_opt_respondsToSelector",
+            "0x1848b612c: cbz w0, 0x1848b6138 ; if (!responds) goto flags",
+            "0x1848b6130: mov x2, x19 ; Arg2: self",
+            "0x1848b6134: bl 0x18001a400 ; bl objc_msgSend(delegate, @selector(scrollViewWillBeginDragging:), self)",
+            "0x1848b6138: ldrb w8, [x19, #0xd0] ; load _scrollViewFlags",
+            "0x1848b613c: orr w8, w8, #0x1 ; set isDragging = 1",
+            "0x1848b6140: strb w8, [x19, #0xd0]",
+            "0x1848b6144: ldr x19, [sp, #0x10]",
+            "0x1848b6148: ldp x29, x30, [sp], #0x20",
+            "0x1848b614c: autibsp ; Authenticate return address with PAC Key B",
+            "0x1848b6150: ret"
+          ]
+        },
+        {
+          "operation": "get_function_xrefs",
+          "name": "-[UIScrollView setContentOffset:animated:]",
+          "latency_ms": 42,
+          "result": "success",
+          "callers_count": 3,
+          "callers": [
+            "0x1848b4b90 in -[UIScrollView setContentOffset:] (Call)",
+            "0x1848b4a20 in -[UIScrollView _scrollToTopFromTouchAtScreenLocation:animate:] (Call)",
+            "0x1848b8140 in -[UIScrollView handlePan:] (Call)"
+          ]
+        },
+        {
+          "operation": "list_strings",
+          "filter": "scrollViewWillBeginDragging",
+          "latency_ms": 38,
+          "result": "success",
+          "matches": [
+            "0x18659fbc0: \"_scrollViewWillBeginDragging\"",
+            "0x186670420: \"scrollViewWillBeginDragging:\""
+          ]
+        },
+        {
+          "operation": "list_data_items",
+          "latency_ms": 35,
+          "result": "success",
+          "data_count": 10,
+          "items_sample": [
+            "0x1e05fafd0: _OBJC_CLASS_$_UIScrollView",
+            "0x1e05faff8: _OBJC_METACLASS_$_UIScrollView",
+            "0x1e229cef0: _OBJC_IVAR_$_UIScrollView._delegate",
+            "0x1e229cf00: _OBJC_IVAR_$_UIScrollView._contentOffset",
+            "0x1e229cf10: _OBJC_IVAR_$_UIScrollView._scrollViewFlags"
+          ]
+        }
+      ],
+      "memory_footprint_mb": 38.6
+    }
+  },
+  "cross_validation_findings": [
+    {
+      "method_name": "-[UIScrollView setContentOffset:animated:]",
+      "shared_cache_vmaddr": "0x1848b4c00",
+      "slice_vmaddr": "0x100000338",
+      "pac_enforcement": "pacibsp (prologue) / autibsp (epilogue) confirmed on ARM64E",
+      "branch_logic": "Conditional branch on register w2/w20 (animated flag). Animated branch dispatches to internal helper with animation=nil and notify=YES. Non-animated branch performs immediate bounds update and notifies observers.",
+      "rea_evidence_id": "ev_c06e595053ca59c6df0e3ee59b97bbf23c6f47612495311683eb62b351c65851",
+      "ghidra_evidence_address": "0x1848b4c00",
+      "semantic_concordance": "100% semantic identity across REA and Ghidra decompilation",
+      "status": "CONFIRMED"
+    },
+    {
+      "method_name": "-[UIScrollView _scrollViewWillBeginDragging]",
+      "shared_cache_vmaddr": "0x1848b6100",
+      "slice_vmaddr": "0x10000039c",
+      "pac_enforcement": "pacibsp (prologue) / autibsp (epilogue) confirmed on ARM64E",
+      "branch_logic": "Loads delegate ivar at offset +0x118, verifies delegate non-null and responsiveness to scrollViewWillBeginDragging:, invokes delegate callback, sets isDragging flag bit at offset +0xd0.",
+      "rea_evidence_id": "ev_25e364a664b711507d3672fbf93cd5e1a36109516ebd83110ec60b83660e949f",
+      "rea_evidence_instructions_id": "ev_10bb7712b02903ce3e0be85337abdd7a168439dee9ebedfa168556bbeebcd9c8",
+      "rea_evidence_assembly_id": "ev_806d29ecbfd59fd6e1c971ab7d78d4593acef31eb3ed1fa462306e148ddd29db",
+      "ghidra_evidence_address": "0x1848b6100",
+      "semantic_concordance": "100% semantic identity across REA and Ghidra decompilation",
+      "status": "CONFIRMED"
+    }
+  ],
+  "tooling_limitations_and_strategy": {
+    "limitations_identified": [
+      {
+        "issue": "Dyld Shared Cache Container Overhead",
+        "description": "Headless Ghidra auto-analysis on complete monolithic dyld shared cache files (>33 MB TEXT per framework, 4.5 GB total cache) exceeds the 180s MCP client timeout due to full-symbol cross-referencing.",
+        "mitigation_implemented": "Pre-filtering and targeted slicing of target framework classes and methods into focused Mach-O slices or using the Ghidra MCP daemon index to execute queries in under 3 seconds."
+      },
+      {
+        "issue": "Mach-O Segment Alignment in Standalone Extraction",
+        "description": "Dyld shared cache load commands have fileoff relative to the subcache container rather than offset 0 of extracted segments, causing out-of-bounds errors if naive byte carving is used without adjusting LC_SEGMENT_64 structures.",
+        "mitigation_implemented": "Standardized segment fileoff headers to base 0 relative to carved dylib slices before passing to REA."
+      }
+    ],
+    "pipeline_recommendation": "For subsequent Phases (1B through 5), combine the Ghidra MCP daemon for instant symbol navigation and cross-reference queries with REA on targeted framework slices for deep decompiler AST and instruction proof generation."
+  }
+}

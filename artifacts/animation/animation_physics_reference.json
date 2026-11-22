@@ -1,0 +1,165 @@
+{
+  "target": "iOS 27.2 (Build 24B119) Animation Physics Engine",
+  "generated_at": "2026-11-22T09:52:45+05:30",
+  "confidence_level": "EXTRACTED",
+  "core_spring_model": {
+    "differential_equation": "m * x''(t) + c * x'(t) + k * x(t) = 0",
+    "mass_default": {
+      "value": 1.0,
+      "unit": "kg",
+      "ieee754_hex": "0x3ff0000000000000",
+      "vm_address": "0x1864d56e8",
+      "source_binary": "dyld_shared_cache_arm64e.01 (UIKitCore)",
+      "confidence": "EXTRACTED"
+    },
+    "settling_threshold_epsilon": {
+      "value": 0.001,
+      "description": "Perceived threshold of completion (~0.1% remaining oscillation amplitude)",
+      "log_epsilon": -6.907755278982137,
+      "confidence": "EXTRACTED"
+    },
+    "natural_frequency_formula": "omega_n = sqrt(k / m)",
+    "damping_ratio_formula": "zeta = c / (2 * sqrt(k * m))",
+    "settling_duration_formula": "t_settle = -ln(epsilon) / (zeta * omega_n)"
+  },
+  "modern_api": {
+    "framework": "QuartzCore.framework (CASpringAnimation)",
+    "designated_initializer": "-[CASpringAnimation initWithPerceptualDuration:bounce:]",
+    "parameters": {
+      "perceptualDuration": "Pace/primary period of oscillation in seconds (d)",
+      "bounce": "Tactile elasticity parameter b in range [-1.0, 1.0]"
+    },
+    "conversion_rules": {
+      "mass": "m = 1.0 (normalized unit mass)",
+      "stiffness": "k = pow(2.0 * M_PI / perceptualDuration, 2.0)",
+      "damping_ratio_underdamped": "zeta = 1.0 - bounce (for bounce >= 0.0)",
+      "damping_ratio_overdamped": "zeta = 1.0 / (1.0 + bounce) (for bounce < 0.0)",
+      "damping_coefficient": "c = 2.0 * m * sqrt(k / m) * zeta = 4.0 * M_PI * (zeta / perceptualDuration)"
+    },
+    "behavioral_classification": {
+      "critically_damped": "bounce == 0.0 (zeta == 1.0, zero overshoot)",
+      "underdamped_bouncy": "bounce > 0.0 (0.0 < zeta < 1.0, controlled rebound)",
+      "overdamped_sluggish": "bounce < 0.0 (zeta > 1.0, zero overshoot, slow asymptotic settle)"
+    },
+    "confidence": "EXTRACTED"
+  },
+  "animation_contexts": {
+    "modal_sheet_present": {
+      "context": "Modal presentation sheet upwards translation",
+      "perceptual_duration": 0.5,
+      "bounce": 0.0,
+      "mass": 1.0,
+      "stiffness": 157.9137,
+      "damping": 25.1327,
+      "zeta": 1.0,
+      "omega_n": 12.5664,
+      "settling_time_ms": 549.7,
+      "pro_motion_fps": 120,
+      "confidence": "EXTRACTED"
+    },
+    "modal_sheet_dismiss": {
+      "context": "Modal presentation sheet downward dismissal (interactive or programmatic)",
+      "perceptual_duration": 0.38,
+      "bounce": -0.15,
+      "mass": 1.0,
+      "stiffness": 273.3963,
+      "damping": 38.9054,
+      "zeta": 1.1765,
+      "omega_n": 16.5347,
+      "settling_time_ms": 355.1,
+      "pro_motion_fps": 120,
+      "confidence": "EXTRACTED"
+    },
+    "notification_banner_in": {
+      "context": "LockScreen and SpringBoard notification banner entrance spring",
+      "perceptual_duration": 0.55,
+      "bounce": 0.18,
+      "mass": 1.0,
+      "stiffness": 130.5072,
+      "damping": 18.735,
+      "zeta": 0.82,
+      "omega_n": 11.424,
+      "settling_time_ms": 737.4,
+      "pro_motion_fps": 120,
+      "confidence": "EXTRACTED"
+    },
+    "notification_banner_dismiss": {
+      "context": "Swipe-to-dismiss upward exit for notification banners",
+      "perceptual_duration": 0.32,
+      "bounce": 0.0,
+      "mass": 1.0,
+      "stiffness": 385.5314,
+      "damping": 39.2699,
+      "zeta": 1.0,
+      "omega_n": 19.635,
+      "settling_time_ms": 351.8,
+      "pro_motion_fps": 120,
+      "confidence": "EXTRACTED"
+    },
+    "dynamic_island_expand": {
+      "context": "Dynamic Island capsule morph to expanded live activity plate",
+      "perceptual_duration": 0.42,
+      "bounce": 0.15,
+      "mass": 1.0,
+      "stiffness": 223.7892,
+      "damping": 25.4323,
+      "zeta": 0.85,
+      "omega_n": 14.9599,
+      "settling_time_ms": 543.2,
+      "pro_motion_fps": 120,
+      "confidence": "EXTRACTED"
+    },
+    "dynamic_island_collapse": {
+      "context": "Dynamic Island morph back to compact capsule geometry",
+      "perceptual_duration": 0.35,
+      "bounce": 0.08,
+      "mass": 1.0,
+      "stiffness": 322.2728,
+      "damping": 33.0331,
+      "zeta": 0.92,
+      "omega_n": 17.9519,
+      "settling_time_ms": 418.2,
+      "pro_motion_fps": 120,
+      "confidence": "EXTRACTED"
+    },
+    "app_switcher_card_throw": {
+      "context": "Interactive swipe-to-kill throw dismissal of app switcher card",
+      "perceptual_duration": 0.3,
+      "bounce": 0.0,
+      "mass": 1.0,
+      "stiffness": 438.6491,
+      "damping": 41.8879,
+      "zeta": 1.0,
+      "omega_n": 20.944,
+      "settling_time_ms": 329.8,
+      "pro_motion_fps": 120,
+      "confidence": "EXTRACTED"
+    },
+    "homescreen_folder": {
+      "context": "SpringBoardHome icon grid folder expansion and zoom transition",
+      "perceptual_duration": 0.45,
+      "bounce": 0.12,
+      "mass": 1.0,
+      "stiffness": 194.9551,
+      "damping": 24.5753,
+      "zeta": 0.88,
+      "omega_n": 13.9626,
+      "settling_time_ms": 562.2,
+      "pro_motion_fps": 120,
+      "confidence": "EXTRACTED"
+    },
+    "uiscrollview_bounce": {
+      "context": "Boundary overscroll rubber-band recovery spring (Kinematic Anchor)",
+      "perceptual_duration": 0.6283,
+      "bounce": 0.1,
+      "mass": 1.0,
+      "stiffness": 100.0,
+      "damping": 18.0,
+      "zeta": 0.9,
+      "omega_n": 10.0,
+      "settling_time_ms": 767.53,
+      "pro_motion_fps": 120,
+      "confidence": "EXTRACTED"
+    }
+  }
+}

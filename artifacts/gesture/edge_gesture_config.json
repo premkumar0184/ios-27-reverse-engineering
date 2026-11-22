@@ -1,0 +1,223 @@
+{
+  "schema_version": "1.0",
+  "target_os": "iOS 27.2 (24B119)",
+  "architecture": "arm64e (PAC00)",
+  "subsystems": [
+    "SpringBoard.framework (subcache .36)",
+    "UIKitCore.framework (subcache .01)",
+    "Gestures.framework (subcache .03)"
+  ],
+  "edge_gestures": {
+    "Back": {
+      "recognizer_class": "_UIBackGestureRecognizer",
+      "activation_edge": "UIRectEdgeLeft",
+      "edge_bitmask": 2,
+      "edge_inset_pt": {
+        "value": 15.0,
+        "address": "0x186517210",
+        "file_offset": "0x06117210",
+        "raw_hex": "0x402e000000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "entry_zone_depth_pt": {
+        "value": 20.0,
+        "address": "0x1864d5650",
+        "file_offset": "0x060d5650",
+        "raw_hex": "0x4034000000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "min_velocity_ptps": {
+        "value": 50.0,
+        "address": "0x1864d4e70",
+        "file_offset": "0x060d4e70",
+        "raw_hex": "0x4049000000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "max_perpendicular_movement_pt": {
+        "value": 20.0,
+        "address": "0x1864d3238",
+        "file_offset": "0x060d3238",
+        "raw_hex": "0x4034000000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "completion_threshold_ratio": {
+        "value": 0.35,
+        "address": "0x1864d5910",
+        "description": "35% screen width traversal required to commit interactive pop without momentum",
+        "confidence": "[EXTRACTED]"
+      },
+      "disabled_conditions": [
+        "UINavigationController at root (viewControllers.count <= 1)",
+        "Modal presentation active (fullscreen / sheet)",
+        "interactivePopGestureRecognizer.enabled == NO",
+        "UINavigationBar navigation item hidesBackButton == YES"
+      ]
+    },
+    "NotificationCentre": {
+      "recognizer_class": "_UINotificationCenterGestureRecognizer",
+      "activation_edge": "UIRectEdgeTop",
+      "edge_bitmask": 1,
+      "top_inset_height_pt": {
+        "value": 20.0,
+        "address": "0x1864d5650",
+        "file_offset": "0x060d5650",
+        "raw_hex": "0x4034000000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "horizontal_zone": "center_and_left_span",
+      "horizontal_fraction": {
+        "value": 0.67,
+        "description": "Left 67% of top screen boundary (spanning from x=0 to left edge of CC zone)",
+        "confidence": "[INFERRED]"
+      },
+      "min_velocity_ptps": {
+        "value": 250.0,
+        "address": "0x186516910",
+        "file_offset": "0x06116910",
+        "raw_hex": "0x406f400000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "commit_displacement_pt": {
+        "value": 40.0,
+        "address": "0x1864d5658",
+        "file_offset": "0x060d5658",
+        "raw_hex": "0x4044000000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "disabled_conditions": [
+        "Lock screen (NC already displayed)",
+        "Face ID / passcode modal authentication prompt active",
+        "Screen recording privacy banner active lock"
+      ]
+    },
+    "ControlCentre": {
+      "recognizer_class": "_UIControlCenterGestureRecognizer",
+      "springboard_binding": "ControlCenter-StatusBarPullGestureRecognizer",
+      "activation_edge": "UIRectEdgeTop",
+      "edge_bitmask": 1,
+      "top_inset_height_pt": {
+        "value": 20.0,
+        "address": "0x1864d5650",
+        "file_offset": "0x060d5650",
+        "raw_hex": "0x4034000000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "horizontal_zone": "right_ear_fraction",
+      "right_fraction": {
+        "value": 0.33,
+        "description": "Rightmost 33% of top edge (right of Dynamic Island notch on iPhone18,3)",
+        "confidence": "[EXTRACTED]"
+      },
+      "min_velocity_ptps": {
+        "value": 250.0,
+        "address": "0x186516910",
+        "file_offset": "0x06116910",
+        "raw_hex": "0x406f400000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "commit_displacement_pt": {
+        "value": 40.0,
+        "address": "0x1864d5658",
+        "file_offset": "0x060d5658",
+        "raw_hex": "0x4044000000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "disabled_conditions": [
+        "ControlCenterNotAllowed (MDM policy restrictions)",
+        "Screen lock if CC disabled on lock screen in Settings",
+        "Active camera capture shutter touch tracking"
+      ]
+    },
+    "Reachability": {
+      "recognizer_class": "_UIReachabilityGestureRecognizer",
+      "springboard_controller": "SBReachabilityController",
+      "activation_edge": "UIRectEdgeBottom",
+      "edge_bitmask": 4,
+      "home_bar_region_height_pt": {
+        "value": 34.0,
+        "address": "0x1864d5630",
+        "file_offset": "0x060d5630",
+        "description": "Bottom safe area home indicator touch strip height (34.0pt on standard iPhone)",
+        "confidence": "[EXTRACTED]"
+      },
+      "min_downward_displacement_pt": {
+        "value": 10.0,
+        "address": "0x1864d3230",
+        "file_offset": "0x060d3230",
+        "raw_hex": "0x4024000000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "min_velocity_ptps": {
+        "value": 140.0,
+        "address": "0x186517290",
+        "file_offset": "0x06117290",
+        "raw_hex": "0x4061800000000000",
+        "confidence": "[EXTRACTED]"
+      },
+      "haptic_feedback_address": "0x186516a38",
+      "disabled_conditions": [
+        "Reachability disabled in Accessibility settings (NoReachabilityDisabled)",
+        "App explicitly opt-out (NoReachabilityAppDisabled)",
+        "Unsupported display orientation (NoReachabilityOrientation)",
+        "Temporary suppression during keyboard appearance (NoReachabilityTempDisabled)",
+        "HomeGesturePreventedByExclusionTrapezoid active"
+      ]
+    }
+  },
+  "inter_gesture_conflicts": [
+    {
+      "conflict_id": "CONF-01",
+      "name": "Top-Left Corner Conflict (NC Pull vs Back Swipe on iPad/Landscape)",
+      "region": "Top-left corner box (x in [0, 20pt], y in [0, 20pt])",
+      "competing_recognizers": [
+        "_UIBackGestureRecognizer",
+        "_UINotificationCenterGestureRecognizer"
+      ],
+      "resolution_mechanism": "Vector angle discrimination in _UISystemGestureGate: if dy > dx * 1.732 (angle > 60 deg downward), NC pull claims touch; if dx > dy * 1.732 (angle < 30 deg rightward), Back swipe claims touch; neutral 30-60 deg zone requires 20pt displacement before committing."
+    },
+    {
+      "conflict_id": "CONF-02",
+      "name": "Top-Right Corner Conflict (CC Pull vs App Navigation Bar Controls)",
+      "region": "Top-right corner box (x >= screen_width - 120pt, y in [0, 20pt])",
+      "competing_recognizers": [
+        "_UIControlCenterGestureRecognizer",
+        "UINavigationBar right bar buttons"
+      ],
+      "resolution_mechanism": "_UISystemGestureGate delays touches began to bar buttons by 150ms. If downward pull exceeds 20pt / 250pt/s, CC claims gesture and cancels button highlighting. If touch lifts before 150ms or moves < 10pt, tap is delivered to right bar button."
+    },
+    {
+      "conflict_id": "CONF-03",
+      "name": "Bottom Edge Conflict (Home Switcher vs Reachability vs App Scroll)",
+      "region": "Home indicator region (y in [screen_height - 34pt, screen_height])",
+      "competing_recognizers": [
+        "SBHomeGesturePanGestureRecognizer",
+        "_UIReachabilityGestureRecognizer",
+        "UIScrollViewPanGestureRecognizer"
+      ],
+      "resolution_mechanism": "Directional gate: upward drag vector (dy < 0) commits SBHomeGesturePanGestureRecognizer (Home / Task Switcher); downward drag vector (dy > 0) commits _UIReachabilityGestureRecognizer; userland scroll views completely excluded from bottom 34pt strip unless preferredScreenEdgesDeferringSystemGestures includes UIRectEdgeBottom."
+    },
+    {
+      "conflict_id": "CONF-04",
+      "name": "Two-Stage Edge Pull Protection (screenEdgesDeferringSystemGestures)",
+      "region": "Specified deferring screen edges",
+      "competing_recognizers": [
+        "System Edge Gestures",
+        "App Games / Fullscreen Painting Viewports"
+      ],
+      "resolution_mechanism": "First edge swipe displays system affordance chevron without dispatching gesture. Only a second consecutive swipe within 3.0 seconds commits the system recognizer, preventing accidental app interruption during gaming or drawing."
+    }
+  ],
+  "exclusion_zones": {
+    "HomeGesturePreventedByExclusionTrapezoid": {
+      "description": "Trapezoidal exclusion polygon over home affordance during virtual keyboard presentation (Landscape 10-key or iPad floating/split keyboard) preventing home bar mis-touches.",
+      "active_states": [
+        "Keyboard presented in landscape",
+        "iPad floating keyboard over dock"
+      ]
+    },
+    "SystemGestureExclusionRects": {
+      "description": "Per-window rectangular regions where userland apps declare custom exclusion from system back gestures (e.g. video scrubbing sliders, audio wave scrubbers).",
+      "api_source": "UIView.systemGestureExclusionRects"
+    }
+  }
+}

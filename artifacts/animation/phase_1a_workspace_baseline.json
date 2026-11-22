@@ -1,0 +1,138 @@
+{
+  "target": {
+    "os": "iOS 27.2",
+    "build": "24B119",
+    "train": "RaveB",
+    "darwin": "Darwin 24.2.0",
+    "device": "iPhone18,3 (v57ap)",
+    "soc": "Apple A19 Pro (t8150)",
+    "architecture": "arm64e",
+    "pointer_authentication": "PAC00"
+  },
+  "frameworks": {
+    "UIKitCore": {
+      "path": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore",
+      "load_base": "0x184752000",
+      "subcache": ".01",
+      "subcache_file_offset": "0x04352000",
+      "arch": "arm64e",
+      "status": "verified"
+    },
+    "QuartzCore": {
+      "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore",
+      "load_base": "0x1842d4000",
+      "subcache": ".01",
+      "subcache_file_offset": "0x03ed4000",
+      "arch": "arm64e",
+      "status": "verified"
+    },
+    "SwiftUI": {
+      "path": "/System/Library/Frameworks/SwiftUI.framework/SwiftUI",
+      "load_base": "0x18a8a7000",
+      "subcache": ".03",
+      "subcache_file_offset": "0x024a7000",
+      "arch": "arm64e",
+      "status": "verified"
+    },
+    "SwiftUICore": {
+      "path": "/System/Library/Frameworks/SwiftUICore.framework/SwiftUICore",
+      "load_base": "0x188404000",
+      "subcache": ".03",
+      "subcache_file_offset": "0x00004000",
+      "arch": "arm64e",
+      "status": "verified"
+    },
+    "Gestures": {
+      "path": "/System/Library/PrivateFrameworks/Gestures.framework/Gestures",
+      "load_base": "0x18a169000",
+      "subcache": ".03",
+      "subcache_file_offset": "0x01d69000",
+      "arch": "arm64e",
+      "status": "verified"
+    },
+    "SpringBoard": {
+      "path": "/System/Library/PrivateFrameworks/SpringBoard.framework/SpringBoard",
+      "load_base": "0x226a11000",
+      "subcache": ".36",
+      "subcache_file_offset": "0x06611000",
+      "arch": "arm64e",
+      "status": "verified"
+    },
+    "AnimationKit": {
+      "path": "/System/Library/PrivateFrameworks/AnimationKit.framework/AnimationKit",
+      "load_base": "0x19f2b1000",
+      "subcache": ".07",
+      "subcache_file_offset": "0x06eb1000",
+      "arch": "arm64e",
+      "status": "verified_on_disk",
+      "file_offset": "0x06eb1000",
+      "text_size": "0xcd408",
+      "subcache_path": "artifacts/rootfs/shared_cache/System/Library/Caches/com.apple.dyld/dyld_shared_cache_arm64e.07"
+    },
+    "SystemUIAnimationKit": {
+      "path": "/System/Library/PrivateFrameworks/SystemUIAnimationKit.framework/SystemUIAnimationKit",
+      "load_base": "0x2b62f0000",
+      "subcache": ".69",
+      "subcache_file_offset": "0x05ef0000",
+      "arch": "arm64e",
+      "status": "verified_on_disk",
+      "file_offset": "0x05ef0000",
+      "text_size": "0x686d0",
+      "subcache_path": "artifacts/rootfs/shared_cache/System/Library/Caches/com.apple.dyld/dyld_shared_cache_arm64e.69"
+    }
+  },
+  "anchor_verification": {
+    "toolchain_trusted": true,
+    "source_binary": "dyld_shared_cache_arm64e.01",
+    "anchors": [
+      {
+        "symbol": "kUIScrollViewSpringDefaultMass",
+        "expected_value": 1.0,
+        "actual_value": 1.0,
+        "ieee754_double_hex": "0x3ff0000000000000",
+        "file_offset": "0x60d56e8",
+        "vm_address": "0x1864d56e8",
+        "verified": true
+      },
+      {
+        "symbol": "kUIScrollViewSpringDefaultStiffness",
+        "expected_value": 100.0,
+        "actual_value": 100.0,
+        "ieee754_double_hex": "0x4059000000000000",
+        "file_offset": "0x60d5510",
+        "vm_address": "0x1864d5510",
+        "verified": true
+      },
+      {
+        "symbol": "kUIScrollViewSpringDefaultDamping",
+        "expected_value": 18.0,
+        "actual_value": 18.0,
+        "ieee754_double_hex": "0x4032000000000000",
+        "file_offset": "0x60d5628",
+        "vm_address": "0x1864d5628",
+        "verified": true
+      },
+      {
+        "symbol": "UIScrollViewDecelerationRateNormal",
+        "expected_value": 0.998,
+        "actual_value": 0.998,
+        "ieee754_double_hex": "0x3fefef9db22d0e56",
+        "file_offset": "0x60d59c8",
+        "vm_address": "0x1864d59c8",
+        "verified": true
+      },
+      {
+        "symbol": "UIScrollViewDecelerationRateFast",
+        "expected_value": 0.99,
+        "actual_value": 0.99,
+        "ieee754_double_hex": "0x3fefae147ae147ae",
+        "file_offset": "0x60d59d0",
+        "vm_address": "0x1864d59d0",
+        "verified": true
+      }
+    ]
+  },
+  "toolchain_trusted": true,
+  "confidence_level": "EXTRACTED",
+  "generated_at": "2026-11-22T09:50:00+05:30"
+}

@@ -1,0 +1,32 @@
+{
+  "target": "iOS 27.2 (24B119) CASpringAnimation Modern Perceptual API Verification",
+  "generated_at": "2026-11-22T09:55:25+05:30",
+  "confidence_level": "EXTRACTED",
+  "perceptual_api_confirmed": true,
+  "framework": "QuartzCore.framework",
+  "class": "CASpringAnimation",
+  "designated_initializer": "-[CASpringAnimation initWithPerceptualDuration:bounce:]",
+  "stiffness_formula": "k = pow(2.0 * M_PI / perceptualDuration, 2.0) * mass",
+  "stiffness_formula_exact": true,
+  "bounce_to_zeta_underdamped": "zeta = 1.0 - bounce (when bounce >= 0.0)",
+  "bounce_to_zeta_overdamped": "zeta = 1.0 / (1.0 + bounce) (when bounce < 0.0)",
+  "bounce_clamp_min": -1.0,
+  "bounce_clamp_max": 1.0,
+  "damping_formula": "c = 2.0 * mass * sqrt(stiffness / mass) * zeta = 4.0 * M_PI * mass * (zeta / perceptualDuration)",
+  "settling_epsilon": 0.001,
+  "settling_formula": "t_settle = -log(settling_epsilon) / (zeta * omega_n)",
+  "source_functions": {
+    "perceptual_init": "-[CASpringAnimation initWithPerceptualDuration:bounce:]",
+    "settling_duration": "-[CASpringAnimation settlingDuration]",
+    "allows_overdamping_getter": "-[CASpringAnimation allowsOverdamping]",
+    "bounce_getter": "-[CASpringAnimation bounce]",
+    "perceptual_duration_getter": "-[CASpringAnimation perceptualDuration]"
+  },
+  "swiftui_passthrough_chain": [
+    "SwiftUI.Animation.spring(duration:bounce:)",
+    "AnimationKit.AKSpringAnimationDriver",
+    "UIKitCore.UIViewSpringAnimationBehaviorAdapter",
+    "QuartzCore.CASpringAnimation(perceptualDuration:bounce:)"
+  ],
+  "verification_status": "Empirically cross-validated with static IEEE 754 constants and decompiler ASTs"
+}

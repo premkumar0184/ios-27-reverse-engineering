@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "phase": "exclave_phase_1a_workspace_baseline",
+  "target_platform": {
+    "os": "iOS 27.2",
+    "build": "24B119",
+    "release_train": "RaveB",
+    "soc": "t8150 (Apple A19 Pro)",
+    "device_class": "v57ap",
+    "target_hardware": "iPhone18,3",
+    "architecture": "arm64e (PAC00)"
+  },
+  "exclaveos_image": {
+    "source_dmg": "artifacts/crypto/141-08904-238_exclaveos.dmg",
+    "size_bytes": 631242752,
+    "sha256": "c9d40574be65d376906eee095dda0cf92db6608a56629efe865cbd6e4ff9e242",
+    "apfs_volume_name": "RaveB24B119.V57ExclaveOS",
+    "apfs_volume_uuid": "b1597997-17e4-4870-b6e4-d9d21f6f580d",
+    "cluster_size_bytes": 4096,
+    "total_files": 1013,
+    "total_directories": 771,
+    "exclavekit_dyld_cache_path": "System/ExclaveKit/System/Library/dyld/dyld_shared_cache_arm64e",
+    "exclavekit_dyld_cache_size": 189710336,
+    "exclavekit_dyld_symbols_size": 56360960
+  },
+  "exclavecore_bundle": {
+    "source_im4p": "iPhone18,3_27.2_24B119_Restore/Firmware/image4/exclavecore_bundle.t8150.RELEASE.im4p",
+    "size_bytes": 31719658,
+    "sha256": "943592b56455ab9947e0299e29a40fc9274a68dc0548d72711b40c31cf09d731",
+    "dnub_offset": 35,
+    "num_entries": 10
+  },
+  "microkernel_binaries": [
+    {
+      "filename": "00_tightbeam_runtime.macho",
+      "path": "artifacts/firmware/exclavecore_bundle_unpacked/00_tightbeam_runtime.macho",
+      "size_bytes": 7268976,
+      "sha256": "f99cfd71d75e3082a6e3d8125957b7343f4453f5020b9ae3c974a8ac6c4697d4",
+      "role": "Tightbeam RPC Runtime & IPC Dispatcher",
+      "language": "Swift 5 + cL4 C Transports",
+      "base_address": "0xc0000000",
+      "architecture": "arm64e (PAC00)"
+    },
+    {
+      "filename": "01_pmm_server.macho",
+      "path": "artifacts/firmware/exclavecore_bundle_unpacked/01_pmm_server.macho",
+      "size_bytes": 579904,
+      "sha256": "7c8ab0cec4f988bdc4b9727f00c136909ad4bbae6be0f394f0f4756762acc2b8",
+      "role": "Physical Memory Manager (PMM) & Datacube Retyping Server",
+      "language": "C (cL4 Runtime)",
+      "base_address": "0xc0000000",
+      "architecture": "arm64e (PAC00)"
+    },
+    {
+      "filename": "02_vascore_platform.macho",
+      "path": "artifacts/firmware/exclavecore_bundle_unpacked/02_vascore_platform.macho",
+      "size_bytes": 21880432,
+      "sha256": "9042b74f03313fc1b2aac8a1089b10fab689b9c4f03883919178fb64cdfc59a7",
+      "role": "Virtual Address Space (VAS) Core Platform & xrt Concurrency Engine",
+      "language": "C / Assembly",
+      "base_address": "0xc0000000",
+      "architecture": "arm64e (PAC00)"
+    },
+    {
+      "filename": "03_jg_sharedmem_preload.macho",
+      "path": "artifacts/firmware/exclavecore_bundle_unpacked/03_jg_sharedmem_preload.macho",
+      "size_bytes": 131072,
+      "sha256": "922f0d55aeb774246a32058a577a3d2a7d9fe390871a546c777004d24d535bcd",
+      "role": "Jungle Shared Memory Component & EXSurface Root Bridge",
+      "language": "Swift 5 / Preload Executable",
+      "base_address": "0xc0000000",
+      "architecture": "arm64e (PAC00)"
+    }
+  ]
+}

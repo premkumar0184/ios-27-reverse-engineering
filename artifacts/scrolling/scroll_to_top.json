@@ -1,0 +1,181 @@
+{
+  "phase": "Phase 3D",
+  "subsystem": "UIKitCore.framework & SpringBoard - Status Bar Tap Scroll-To-Top Kinematics & Responder Selection",
+  "target_platform": {
+    "device": "iPhone18,3 (iPhone 16 Pro Max / D94AP)",
+    "os_version": "iOS 27.2 (Build 24B119)",
+    "architecture": "arm64e (PAC00)",
+    "subcache_slice": "dyld_shared_cache_arm64e.01",
+    "uikitcore_base_address": "0x184752000"
+  },
+  "status_bar_gesture_acquisition": {
+    "system_event_pipeline": [
+      {
+        "step": 1,
+        "component": "SpringBoard / UIStatusBarServer",
+        "description": "Hardware touch digitized in status bar area (screen y < statusBarHeight, typically 54.0pt on iPhone 18,3 Dynamic Island)."
+      },
+      {
+        "step": 2,
+        "component": "BKSTouchStream / SpringBoard Window Server",
+        "description": "SpringBoard processes status bar tap and transmits Mach IPC scroll-to-top event to key application process scene."
+      },
+      {
+        "step": 3,
+        "component": "UIKitCore UIApplication / UIWindow",
+        "description": "Application receives event and dispatches internal selector -[UIWindow _scrollToTopFromTouchAtScreenLocation:animate:]."
+      }
+    ],
+    "entry_point": {
+      "method_name": "-[UIScrollView _scrollToTopFromTouchAtScreenLocation:animate:]",
+      "vm_address": "0x1848b4a20",
+      "signature": "B36@0:8{CGPoint=dd}16B32",
+      "parameters": [
+        "screenLocation: CGPoint coordinates of status bar touch in screen coordinate space",
+        "animate: BOOL flag indicating animated transition (YES)"
+      ],
+      "return_type": "BOOL (YES if a qualifying scroll view handled the gesture, NO otherwise)"
+    }
+  },
+  "candidate_scroll_view_selection_algorithm": {
+    "traversal_strategy": "Recursive depth-first search of window view hierarchy, inspecting all registered or visible subviews.",
+    "qualification_criteria": [
+      {
+        "criterion_id": "CLASS_MEMBERSHIP",
+        "condition": "[view isKindOfClass:[UIScrollView class]]",
+        "rationale": "Candidate must be a UIScrollView or a specialized subclass (e.g. UITableView, UICollectionView, UITextView)."
+      },
+      {
+        "criterion_id": "SCROLLS_TO_TOP_ENABLED",
+        "condition": "view.scrollsToTop == YES",
+        "rationale": "Explicit opt-in property; default is YES for standard scroll views, NO for helper/internal views."
+      },
+      {
+        "criterion_id": "VIEW_VISIBILITY",
+        "condition": "!view.hidden && view.alpha > 0.01 && view.window != nil",
+        "rationale": "View must be attached to an active window and visually rendered."
+      },
+      {
+        "criterion_id": "VIEWPORT_INTERSECTION",
+        "condition": "CGRectIntersectsRect(view.window.bounds, [view convertRect:view.bounds toView:nil])",
+        "rationale": "View frame must intersect visible window display boundaries."
+      },
+      {
+        "criterion_id": "SCROLLABILITY",
+        "condition": "contentSize.height + contentInset.top + contentInset.bottom > bounds.size.height",
+        "rationale": "Content must be vertically scrollable; views with zero scrollable overflow cannot scroll to top."
+      },
+      {
+        "criterion_id": "NOT_ALREADY_AT_TOP",
+        "condition": "contentOffset.y > (-adjustedContentInset.top + 0.5)",
+        "rationale": "Scroll view must not already be rested at minimum top offset."
+      }
+    ],
+    "exclusivity_rule": {
+      "rule_name": "Single Candidate Exclusivity Rule (Ambiguity Prevention)",
+      "specification": "If the view hierarchy search yields exactly 1 qualifying candidate, that scroll view is triggered. If the search yields 0 candidates OR >= 2 candidates with scrollsToTop == YES, NO SCROLL VIEW IS SCROLLED.",
+      "failure_behavior": "Silent no-op; returns NO from _scrollToTopFromTouchAtScreenLocation:animate: to prevent jarring multiple simultaneous scrolls."
+    }
+  },
+  "delegate_arbitration": {
+    "permission_query": {
+      "method_name": "-[id<UIScrollViewDelegate> scrollViewShouldScrollToTop:]",
+      "default_behavior": "If delegate does not implement selector, default response is YES.",
+      "action_on_no": "If delegate returns NO, scroll-to-top sequence is aborted immediately without animation."
+    },
+    "completion_notification": {
+      "method_name": "-[id<UIScrollViewDelegate> scrollViewDidScrollToTop:]",
+      "dispatch_condition": "Dispatched upon animation completion when contentOffset.y reaches top target within resting tolerance (|y - y_target| < 0.5pt).",
+      "action_on_interruption": "Suppressed if animation is interrupted by touch, cancellation, or programmatic override."
+    }
+  },
+  "animation_kinematics_and_parameters": {
+    "target_content_offset": {
+      "formula": "targetOffset = CGPointMake(contentOffset.x, -adjustedContentInset.top)",
+      "formula_latex": "s_{\\text{target}} = \\begin{pmatrix} s_x \\\\ -\\text{adjustedContentInset.top} \\end{pmatrix}",
+      "horizontal_preservation": "Current horizontal contentOffset.x is strictly preserved during vertical scroll-to-top."
+    },
+    "animation_parameters": {
+      "duration_seconds": 0.30,
+      "duration_ms": 300.0,
+      "ieee754_double_hex": "0x3fd3333333333333",
+      "constant_vm_address": "0x1864d3090",
+      "timing_curve": {
+        "curve_type": "Cubic Bézier Ease-InOut / Ease-Out",
+        "control_points": {
+          "p1": [0.25, 0.10],
+          "p2": [0.25, 1.00]
+        },
+        "animation_driver": "_UIScrollViewScrollAnimation / CADisplayLink",
+        "refresh_rate_integration": "Stepped per frame across 60Hz/80Hz/120Hz ProMotion displays via CADisplayLink targetTimestamp."
+      }
+    },
+    "interruption_handling": {
+      "touch_interruption": "If user touches screen while scroll-to-top animation is in flight, UIKit immediately halts animation via _stopScrollingAndFillDisplayList:, invalidates display link, freezes offset at presentation coordinate, collapses touch slop to 0.0pt, and transitions to interactive dragging.",
+      "multi_touch_cancellation": "Multi-touch pinch zoom gestures (UIPinchGestureRecognizer) enforce mutual exclusivity: beginning or changing pinch immediately halts scroll-to-top animation flight, invalidates CADisplayLink, and updates zoomScale. High-frequency touch cancellation (touchesCancelled:withEvent:) immediately invalidates CADisplayLink and resets dragging state.",
+      "suppress_completion": "scrollViewDidScrollToTop: is NOT invoked if interrupted."
+    }
+  },
+  "decompiled_routines": [
+    {
+      "method_name": "-[UIScrollView _scrollToTopFromTouchAtScreenLocation:animate:]",
+      "vm_address": "0x1848b4a20",
+      "signature": "B36@0:8{CGPoint=dd}16B32",
+      "role": "Status bar touch dispatcher executing candidate filtering and animation initiation."
+    },
+    {
+      "method_name": "-[UIScrollView _scrollToTopFromTouchAtScreenX:animated:]",
+      "vm_address": "0x1848b4a20",
+      "signature": "B28@0:8d16B24",
+      "role": "Direct status bar tap entry point parameterized by screen X coordinate forwarding to 2D touch location dispatcher."
+    },
+    {
+      "method_name": "-[UIScrollView _registerAsScrollToTopViewIfPossible]",
+      "vm_address": "0x1848b8260",
+      "signature": "v16@0:8",
+      "role": "Registers scroll view with internal scroll-to-top registry when scrollsToTop == YES and view moves to window."
+    },
+    {
+      "method_name": "-[UIScrollView _unregisterAsScrollToTopViewIfPossible]",
+      "vm_address": "0x1848b8280",
+      "signature": "v16@0:8",
+      "role": "Unregisters scroll view when removed from window or scrollsToTop set to NO."
+    },
+    {
+      "method_name": "-[UIScrollView scrollsToTop]",
+      "vm_address": "0x1848b8620",
+      "signature": "B16@0:8",
+      "role": "Getter returning scrollsToTop bitfield flag (_scrollViewFlags.scrollsToTop)."
+    },
+    {
+      "method_name": "-[UIScrollView setScrollsToTop:]",
+      "vm_address": "0x1848b8630",
+      "signature": "v20@0:8B16",
+      "role": "Setter mutating scrollsToTop bitfield and triggering registration/unregistration."
+    },
+    {
+      "method_name": "-[UIScrollViewScrollAnimation targetOffset]",
+      "vm_address": "0x1848c3100",
+      "signature": "{CGPoint=dd}16@0:8",
+      "role": "Getter returning target content offset for programmatic scroll animation."
+    },
+    {
+      "method_name": "-[UIScrollViewScrollAnimation setTargetOffset:]",
+      "vm_address": "0x1848c3120",
+      "signature": "v32@0:8{CGPoint=dd}16",
+      "role": "Setter configuring target content offset for programmatic scroll animation."
+    },
+    {
+      "method_name": "-[UIScrollView touchesBegan:withEvent:]",
+      "vm_address": "0x1848c1000",
+      "signature": "v32@0:8@16@24",
+      "role": "Halts active scroll-to-top animation flight, invalidates CADisplayLink, freezes presentation offset, and sets isDragging = 1."
+    },
+    {
+      "method_name": "-[UIScrollView touchesCancelled:withEvent:]",
+      "vm_address": "0x1848c1150",
+      "signature": "v32@0:8@16@24",
+      "role": "Halts active animation flight, invalidates CADisplayLink, and resets isDragging = 0."
+    }
+  ]
+}

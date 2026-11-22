@@ -1,0 +1,430 @@
+{
+  "schema_version": "1.0",
+  "component": "Secure Page Table Monitor (SPTM)",
+  "hardware_target": {
+    "soc": "t8150 (Apple A19 Pro)",
+    "device": "v57ap (iPhone 18,3)",
+    "architecture": "arm64e (ARMv8.6+ Guarded Execution Feature, PAC00)",
+    "os_build": "iOS 27.2 (24B119)",
+    "darwin_version": "Darwin Kernel Version 24.2.0"
+  },
+  "entry_point": "0xfffffff0270bc388",
+  "virtual_load_base": "0xfffffff027004000",
+  "macho_uuid": "6fb95ed6-be8a-39cf-862b-250ba7efd5a5",
+  "privilege_tiers": [
+    {
+      "tier": "Guarded EL2 (GL2)",
+      "component": "Secure Page Table Monitor (SPTM)",
+      "hardware_state": "GXF Enabled, GL2_VBAR, HCR_EL2 with TGE/E2H (VHE)",
+      "capabilities": [
+        "Direct ownership of Stage-2 hardware translation tables (VTTBR_EL2)",
+        "Arbitration of 59 physical frame types across all DRAM partitions",
+        "Programming CTRR (Configurable Text Region Registers) and GAPF (Guarded Address Protection Filter)",
+        "DART/SART stream isolation for coprocessors (ANE, AGX, AOP, SEP)"
+      ]
+    },
+    {
+      "tier": "Guarded EL1 (GL1)",
+      "component": "Trusted Execution Monitor (TXM)",
+      "hardware_state": "GXF Enabled, GL1 Entry/Exit Vectors",
+      "capabilities": [
+        "Code Signing Monitor (CSM) page validation and CDHash verification",
+        "Image4 trust authority evaluation (Apple Root CA & CoreTrust)",
+        "TrustCache registration and revocation",
+        "Dynamic hardware anti-replay nonce management"
+      ]
+    },
+    {
+      "tier": "Standard EL1",
+      "component": "Darwin / XNU Monolithic Kernel",
+      "hardware_state": "Stage-2 translation enforced; read-only to Stage-1 page tables",
+      "capabilities": [
+        "Virtual memory management (delegated to SPTM via sptm_call)",
+        "Process lifecycle, POSIX filesystem, BSD networking, and driver management",
+        "Host IPC mediation for Exclaves via xnuproxy"
+      ]
+    },
+    {
+      "tier": "Standard EL0",
+      "component": "Userland & Microkernel Enclaves",
+      "hardware_state": "Unprivileged task execution",
+      "capabilities": [
+        "Exclave Conclaves (cL4 microkernel private memory isolated by Stage-2)",
+        "Darwin userland apps and system daemons"
+      ]
+    }
+  ],
+  "memory_segments": [
+    {
+      "name": "__TEXT",
+      "vmaddr": "0xfffffff027004000",
+      "vmsize": "0x18000",
+      "vmsize_bytes": 98304,
+      "fileoff": "0x0",
+      "filesize": "0x18000",
+      "filesize_bytes": 98304,
+      "initprot": 5,
+      "maxprot": 5,
+      "sections": [
+        {
+          "name": "__cstring",
+          "segment": "__TEXT",
+          "addr": "0xfffffff0270048b0",
+          "size": "0x16126",
+          "size_bytes": 90406,
+          "offset": "0x8b0"
+        },
+        {
+          "name": "__const",
+          "segment": "__TEXT",
+          "addr": "0xfffffff02701a9e0",
+          "size": "0xa74",
+          "size_bytes": 2676,
+          "offset": "0x169e0"
+        },
+        {
+          "name": "__binname",
+          "segment": "__TEXT",
+          "addr": "0xfffffff02701b454",
+          "size": "0x40",
+          "size_bytes": 64,
+          "offset": "0x17454"
+        },
+        {
+          "name": "__chain_starts",
+          "segment": "__TEXT",
+          "addr": "0xfffffff02701b494",
+          "size": "0x14",
+          "size_bytes": 20,
+          "offset": "0x17494"
+        }
+      ]
+    },
+    {
+      "name": "__DATA_CONST",
+      "vmaddr": "0xfffffff02701c000",
+      "vmsize": "0x8000",
+      "vmsize_bytes": 32768,
+      "fileoff": "0x18000",
+      "filesize": "0x8000",
+      "filesize_bytes": 32768,
+      "initprot": 3,
+      "maxprot": 3,
+      "sections": [
+        {
+          "name": "__const",
+          "segment": "__DATA_CONST",
+          "addr": "0xfffffff02701c000",
+          "size": "0x7c00",
+          "size_bytes": 31744,
+          "offset": "0x18000"
+        }
+      ]
+    },
+    {
+      "name": "__LATE_CONST",
+      "vmaddr": "0xfffffff027024000",
+      "vmsize": "0x90000",
+      "vmsize_bytes": 589824,
+      "fileoff": "0x20000",
+      "filesize": "0x90000",
+      "filesize_bytes": 589824,
+      "initprot": 3,
+      "maxprot": 3,
+      "sections": [
+        {
+          "name": "__late_const",
+          "segment": "__LATE_CONST",
+          "addr": "0xfffffff027024000",
+          "size": "0x8c890",
+          "size_bytes": 575632,
+          "offset": "0x20000"
+        }
+      ]
+    },
+    {
+      "name": "__TEXT_EXEC",
+      "vmaddr": "0xfffffff0270b4000",
+      "vmsize": "0x68000",
+      "vmsize_bytes": 425984,
+      "fileoff": "0xb0000",
+      "filesize": "0x68000",
+      "filesize_bytes": 425984,
+      "initprot": 5,
+      "maxprot": 5,
+      "sections": [
+        {
+          "name": "__text",
+          "segment": "__TEXT_EXEC",
+          "addr": "0xfffffff0270b4000",
+          "size": "0x625f0",
+          "size_bytes": 402928,
+          "offset": "0xb0000"
+        },
+        {
+          "name": "__exc",
+          "segment": "__TEXT_EXEC",
+          "addr": "0xfffffff027118000",
+          "size": "0x2000",
+          "size_bytes": 8192,
+          "offset": "0x114000"
+        }
+      ]
+    },
+    {
+      "name": "__LAST",
+      "vmaddr": "0xfffffff02711c000",
+      "vmsize": "0x4000",
+      "vmsize_bytes": 16384,
+      "fileoff": "0x118000",
+      "filesize": "0x4000",
+      "filesize_bytes": 16384,
+      "initprot": 3,
+      "maxprot": 3,
+      "sections": [
+        {
+          "name": "__pinst",
+          "segment": "__LAST",
+          "addr": "0xfffffff02711c000",
+          "size": "0xc",
+          "size_bytes": 12,
+          "offset": "0x118000"
+        }
+      ]
+    },
+    {
+      "name": "__DATA",
+      "vmaddr": "0xfffffff027120000",
+      "vmsize": "0x10000",
+      "vmsize_bytes": 65536,
+      "fileoff": "0x11c000",
+      "filesize": "0x10000",
+      "filesize_bytes": 65536,
+      "initprot": 3,
+      "maxprot": 3,
+      "sections": [
+        {
+          "name": "__data",
+          "segment": "__DATA",
+          "addr": "0xfffffff027120000",
+          "size": "0xf",
+          "size_bytes": 15,
+          "offset": "0x11c000"
+        },
+        {
+          "name": "__auth_ptr",
+          "segment": "__DATA",
+          "addr": "0xfffffff027120010",
+          "size": "0x18",
+          "size_bytes": 24,
+          "offset": "0x11c010"
+        },
+        {
+          "name": "__bss",
+          "segment": "__DATA",
+          "addr": "0xfffffff027120080",
+          "size": "0x60a8",
+          "size_bytes": 24744,
+          "offset": "0x11c080"
+        },
+        {
+          "name": "__common",
+          "segment": "__DATA",
+          "addr": "0xfffffff027126140",
+          "size": "0x9088",
+          "size_bytes": 37000,
+          "offset": "0x122140"
+        }
+      ]
+    },
+    {
+      "name": "__BOOTDATA",
+      "vmaddr": "0xfffffff027130000",
+      "vmsize": "0x18000",
+      "vmsize_bytes": 98304,
+      "fileoff": "0x12c000",
+      "filesize": "0x18000",
+      "filesize_bytes": 98304,
+      "initprot": 3,
+      "maxprot": 3,
+      "sections": [
+        {
+          "name": "__data",
+          "segment": "__BOOTDATA",
+          "addr": "0xfffffff027130000",
+          "size": "0x18000",
+          "size_bytes": 98304,
+          "offset": "0x12c000"
+        }
+      ]
+    },
+    {
+      "name": "__LINKEDIT",
+      "vmaddr": "0xfffffff027148000",
+      "vmsize": "0x4000",
+      "vmsize_bytes": 16384,
+      "fileoff": "0x144000",
+      "filesize": "0x20",
+      "filesize_bytes": 32,
+      "initprot": 1,
+      "maxprot": 1,
+      "sections": []
+    }
+  ],
+  "initialization_phases": [
+    {
+      "phase": 1,
+      "name": "Early Boot & Hardware Vector Setup",
+      "entrypoint": "0xfffffff0270bc388",
+      "actions": [
+        "Clears general-purpose registers x0..x30",
+        "Establishes temporary execution stack in __BOOTDATA segment",
+        "Disables interrupts via daifset #0xf and issues isb"
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "Execution Level Verification & Virtualization Host Extension (VHE)",
+      "entrypoint": "0xfffffff0270bf0a8",
+      "actions": [
+        "Asserts CurrentEL == 8 (EL2 execution)",
+        "Configures HCR_EL2: sets TGE (bit 27) and E2H (bit 34) to activate VHE",
+        "Zeroes CNTVOFF_EL2 and initializes HCRX_EL2 extension registers"
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "MMU & Stage-1/Stage-2 Translation Table Build",
+      "entrypoint": "0xfffffff0270bf100",
+      "actions": [
+        "Builds 3-level translation tables with 16KB page granule",
+        "Configures TCR_EL1 to 0x310800336511a511",
+        "Derives pointer authentication canary via pacga on 'STACKGRD'",
+        "Enables MMU via SCTLR_EL1 (0x12001010fc14793d)"
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "Hardware Vector Table & Guarded Execution Facility (GXF) Activation",
+      "entrypoint": "0xfffffff0270bf924",
+      "actions": [
+        "Registers __exc vector base (0xfffffff027118000) into GL2_VBAR (S3_6_C15_C10_2)",
+        "Programs GL2 Entry Vector (S3_6_C15_C8_1) and Exit Vector (S3_6_C15_C8_2)",
+        "Activates GXF hardware filtering"
+      ]
+    }
+  ],
+  "exception_vector_table": {
+    "base_address": "0xfffffff027118000",
+    "size_bytes": 8192,
+    "section": "__exc",
+    "slots": [
+      {
+        "slot": 0,
+        "offset": "0x000",
+        "context": "Current EL with SP0",
+        "type": "Synchronous",
+        "target": "0xfffffff0270b8168"
+      },
+      {
+        "slot": 1,
+        "offset": "0x080",
+        "context": "Current EL with SP0",
+        "type": "IRQ / vIRQ",
+        "target": "0xfffffff0270b75fc"
+      },
+      {
+        "slot": 2,
+        "offset": "0x100",
+        "context": "Current EL with SP0",
+        "type": "FIQ / vFIQ",
+        "target": "0xfffffff0270b7718"
+      },
+      {
+        "slot": 3,
+        "offset": "0x180",
+        "context": "Current EL with SP0",
+        "type": "SError / vSError",
+        "target": "0xfffffff0270b7834"
+      },
+      {
+        "slot": 4,
+        "offset": "0x200",
+        "context": "Current EL with SPx",
+        "type": "Synchronous",
+        "target": "0xfffffff0270b83a4"
+      },
+      {
+        "slot": 5,
+        "offset": "0x280",
+        "context": "Current EL with SPx",
+        "type": "IRQ (Panic)",
+        "target": "PANIC_LOOP"
+      },
+      {
+        "slot": 6,
+        "offset": "0x300",
+        "context": "Current EL with SPx",
+        "type": "FIQ (Panic)",
+        "target": "PANIC_LOOP"
+      },
+      {
+        "slot": 7,
+        "offset": "0x380",
+        "context": "Current EL with SPx",
+        "type": "SError (Panic)",
+        "target": "PANIC_LOOP"
+      },
+      {
+        "slot": 8,
+        "offset": "0x400",
+        "context": "Lower EL (Guest Trap)",
+        "type": "Synchronous Hypercall Trap",
+        "target": "0xfffffff0270b7ca4"
+      },
+      {
+        "slot": 9,
+        "offset": "0x480",
+        "context": "Lower EL (Guest Interrupt)",
+        "type": "IRQ / vIRQ",
+        "target": "0xfffffff0270b7950"
+      },
+      {
+        "slot": 10,
+        "offset": "0x500",
+        "context": "Lower EL (Guest Fast Interrupt)",
+        "type": "FIQ / vFIQ",
+        "target": "0xfffffff0270b7a6c"
+      },
+      {
+        "slot": 11,
+        "offset": "0x580",
+        "context": "Lower EL (Guest System Error)",
+        "type": "SError / vSError",
+        "target": "0xfffffff0270b7b88"
+      }
+    ]
+  },
+  "dispatch_architecture": {
+    "total_dispatch_tables": 17,
+    "total_function_ids": 42,
+    "calling_convention": {
+      "trap_instruction": "hvc #0 / gxf_enter",
+      "function_id_reg": "x0",
+      "argument_regs": [
+        "x1",
+        "x2",
+        "x3",
+        "x4",
+        "x5",
+        "x6"
+      ],
+      "return_status_reg": "x0",
+      "output_data_regs": [
+        "x1",
+        "x2",
+        "x3"
+      ]
+    }
+  }
+}

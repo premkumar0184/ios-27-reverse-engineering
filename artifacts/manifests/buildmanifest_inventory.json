@@ -1,0 +1,46 @@
+{
+  "product_version": "27.2",
+  "build_version": "24B119",
+  "restore_identities": [
+    {
+      "IdentityIndex": 0,
+      "DeviceClass": "v57ap",
+      "BuildNumber": "24B119",
+      "BuildTrain": "RaveB",
+      "Variant": "Customer Erase Install (IPSW)",
+      "ComponentsCount": 167
+    },
+    {
+      "IdentityIndex": 1,
+      "DeviceClass": "v57ap",
+      "BuildNumber": "24B119",
+      "BuildTrain": "RaveB",
+      "Variant": "Customer Upgrade Install (IPSW)",
+      "ComponentsCount": 167
+    },
+    {
+      "IdentityIndex": 2,
+      "DeviceClass": "v57ap",
+      "BuildNumber": "24B119",
+      "BuildTrain": "RaveB",
+      "Variant": "Research Customer Erase Install (IPSW)",
+      "ComponentsCount": 167
+    },
+    {
+      "IdentityIndex": 3,
+      "DeviceClass": "v57ap",
+      "BuildNumber": "24B119",
+      "BuildTrain": "RaveB",
+      "Variant": "Research Customer Upgrade Install (IPSW)",
+      "ComponentsCount": 167
+    },
+    {
+      "IdentityIndex": 4,
+      "DeviceClass": "v57ap",
+      "BuildNumber": "24B119",
+      "BuildTrain": "RaveB",
+      "Variant": "Recovery Customer Install",
+      "ComponentsCount": 69
+    }
+  ]
+}

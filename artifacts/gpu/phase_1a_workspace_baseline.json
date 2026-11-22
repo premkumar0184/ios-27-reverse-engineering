@@ -1,0 +1,297 @@
+{
+  "system_environment": {
+    "os_name": "iOS",
+    "os_version": "27.2",
+    "darwin_version": "24.2.0",
+    "build_train": "24B119",
+    "target_hardware": "iPhone18,3",
+    "device_class": "v57ap",
+    "soc": "t8150",
+    "soc_marketing": "Apple A19 Pro",
+    "gpu_generation": "G18",
+    "gpu_variant": "AGX G18P",
+    "root_directory": "/home/prem/Projects/iOS 27"
+  },
+  "anchor_verification": {
+    "toolchain_trusted": true,
+    "restore_image": "iPhone18,3_27.2_24B119_Restore",
+    "kext_catalog_source": "artifacts/kernel/kext_catalog_release.json",
+    "shared_cache_source": "artifacts/rootfs/shared_cache_overview.json"
+  },
+  "firmware_inventory": {
+    "armfw_g18p": {
+      "path": "iPhone18,3_27.2_24B119_Restore/Firmware/agx/armfw_g18p.im4p",
+      "size": 3510409,
+      "sha256": "2c3d3d88483a05264f8163ea12d6139deea760d0ef4993f6c0207cf0f2eb1e6e",
+      "tag": "gfxf",
+      "role": "Graphics Firmware Core 0 (Management, Power, Telemetry & Scheduling)",
+      "payload_size": 3510384,
+      "payload_sha256": "80bc203d95ec9da7b619b827fc768194f73d2f89f293d20c57c2e9e3d3a39f89"
+    },
+    "armfw1_g18p": {
+      "path": "iPhone18,3_27.2_24B119_Restore/Firmware/agx/armfw1_g18p.im4p",
+      "size": 3313873,
+      "sha256": "22b7c5dbfcfe818af2aa96ef6c58dd2ca3ea056835db80892bc0a7a61bd74645",
+      "tag": "gf1f",
+      "role": "Graphics Firmware Core 1 (Context Dispatch, Compute & Render Pipelines)",
+      "payload_size": 3313848,
+      "payload_sha256": "e87f1ae96bdc6ba7729f0843842700b403fc11c8aed5b3b97103e786a1f2a4a6"
+    },
+    "t8150_msrf": {
+      "path": "iPhone18,3_27.2_24B119_Restore/Firmware/msr/t8150.msrf.im4p",
+      "size": 161917,
+      "sha256": "a975ff160716da4fd7e9fd7d209679814588a7e6e4a8bbbbe9f7c4494f2f2c84",
+      "tag": "msrf",
+      "role": "DRAM Memory Subsystem Resource Coprocessor Firmware (Release)",
+      "payload_size": 161892,
+      "payload_sha256": "ef642ee75dfe7a8a6608b647b6f6a0a004cf3dad2ccc02daac5ba863f41c03ee"
+    },
+    "t8150_rmsr": {
+      "path": "iPhone18,3_27.2_24B119_Restore/Firmware/msr/t8150.rmsr.im4p",
+      "size": 161917,
+      "sha256": "f10c3730da096a0b8c3be1c775d4310450f407b72cc74c64ddf1d6b3733899e6",
+      "tag": "rmsr",
+      "role": "DRAM Memory Subsystem Resource Coprocessor Firmware (Research / Recovery)",
+      "payload_size": 161892,
+      "payload_sha256": "ef642ee75dfe7a8a6608b647b6f6a0a004cf3dad2ccc02daac5ba863f41c03ee"
+    }
+  },
+  "kernel_driver_inventory": {
+    "com.apple.AGXFirmwareKextG18PRTBuddy": {
+      "bundle_id": "com.apple.AGXFirmwareKextG18PRTBuddy",
+      "version": "362.5",
+      "bundle_path": "/System/Library/Extensions/AGXFirmwareKextG18PRTBuddy.kext",
+      "dependencies": [
+        "com.apple.AGXFirmwareKextRTBuddy64",
+        "com.apple.driver.RTBuddy",
+        "com.apple.kpi.bsd",
+        "com.apple.kpi.iokit",
+        "com.apple.kpi.libkern",
+        "com.apple.kpi.mach"
+      ],
+      "segments": {
+        "__TEXT": {
+          "vmaddr": "0xfffffe0007122140",
+          "vmsize": 4090,
+          "fileoff": "0x11e140",
+          "filesize": 4090
+        },
+        "__TEXT_EXEC": {
+          "vmaddr": "0xfffffe00084e2990",
+          "vmsize": 12160,
+          "fileoff": "0x14de990",
+          "filesize": 12160
+        },
+        "__DATA": {
+          "vmaddr": "0xfffffe000b970378",
+          "vmsize": 440,
+          "fileoff": "0x496c378",
+          "filesize": 440
+        },
+        "__DATA_CONST": {
+          "vmaddr": "0xfffffe0007f3d4c8",
+          "vmsize": 3880,
+          "fileoff": "0xf394c8",
+          "filesize": 3880
+        },
+        "__LINKEDIT": {
+          "vmaddr": "0xfffffe000bae0000",
+          "vmsize": 474297,
+          "fileoff": "0x4adc000",
+          "filesize": 474297
+        }
+      }
+    },
+    "com.apple.AGXFirmwareKextRTBuddy64": {
+      "bundle_id": "com.apple.AGXFirmwareKextRTBuddy64",
+      "version": "362.5",
+      "bundle_path": "/System/Library/Extensions/AGXFirmwareKextRTBuddy64.kext",
+      "dependencies": [
+        "com.apple.driver.RTBuddy",
+        "com.apple.kpi.bsd",
+        "com.apple.kpi.iokit",
+        "com.apple.kpi.libkern",
+        "com.apple.kpi.mach"
+      ],
+      "segments": {
+        "__TEXT": {
+          "vmaddr": "0xfffffe0007123140",
+          "vmsize": 16384,
+          "fileoff": "0x11f140",
+          "filesize": 16384
+        },
+        "__TEXT_EXEC": {
+          "vmaddr": "0xfffffe00084e5910",
+          "vmsize": 72,
+          "fileoff": "0x14e1910",
+          "filesize": 72
+        },
+        "__DATA": {
+          "vmaddr": "0xfffffe000b970530",
+          "vmsize": 216,
+          "fileoff": "0x496c530",
+          "filesize": 216
+        },
+        "__LINKEDIT": {
+          "vmaddr": "0xfffffe000bae0000",
+          "vmsize": 474297,
+          "fileoff": "0x4adc000",
+          "filesize": 474297
+        }
+      }
+    },
+    "com.apple.AGXG18P": {
+      "bundle_id": "com.apple.AGXG18P",
+      "version": "362.5",
+      "bundle_path": "/System/Library/Extensions/AGXG18P.kext",
+      "dependencies": [
+        "com.apple.driver.AppleARMPlatform",
+        "com.apple.driver.AppleMobileFileIntegrity",
+        "com.apple.driver.RTBuddy",
+        "com.apple.iokit.CoreAnalyticsFamily",
+        "com.apple.iokit.IOGPUFamily",
+        "com.apple.iokit.IOReportFamily",
+        "com.apple.iokit.IOSurface",
+        "com.apple.kec.Libm",
+        "com.apple.kpi.bsd",
+        "com.apple.kpi.iokit",
+        "com.apple.kpi.libkern",
+        "com.apple.kpi.mach",
+        "com.apple.kpi.private",
+        "com.apple.kpi.unsupported"
+      ],
+      "segments": {
+        "__TEXT": {
+          "vmaddr": "0xfffffe0007127140",
+          "vmsize": 88463,
+          "fileoff": "0x123140",
+          "filesize": 88463
+        },
+        "__TEXT_EXEC": {
+          "vmaddr": "0xfffffe00084e5960",
+          "vmsize": 892632,
+          "fileoff": "0x14e1960",
+          "filesize": 892632
+        },
+        "__DATA": {
+          "vmaddr": "0xfffffe000b970610",
+          "vmsize": 25480,
+          "fileoff": "0x496c610",
+          "filesize": 16384
+        },
+        "__DATA_CONST": {
+          "vmaddr": "0xfffffe0007f3e3f0",
+          "vmsize": 95984,
+          "fileoff": "0xf3a3f0",
+          "filesize": 95984
+        },
+        "__LINKEDIT": {
+          "vmaddr": "0xfffffe000bae0000",
+          "vmsize": 474297,
+          "fileoff": "0x4adc000",
+          "filesize": 474297
+        }
+      }
+    },
+    "com.apple.iokit.IOGPUFamily": {
+      "bundle_id": "com.apple.iokit.IOGPUFamily",
+      "version": "162.16.1",
+      "bundle_path": "/System/Library/Extensions/IOGPUFamily.kext",
+      "dependencies": [
+        "com.apple.driver.AppleARMPlatform",
+        "com.apple.driver.AppleMobileFileIntegrity",
+        "com.apple.iokit.IOReportFamily",
+        "com.apple.iokit.IOSurface",
+        "com.apple.kpi.bsd",
+        "com.apple.kpi.iokit",
+        "com.apple.kpi.libkern",
+        "com.apple.kpi.mach",
+        "com.apple.kpi.private",
+        "com.apple.kpi.unsupported"
+      ],
+      "segments": {
+        "__TEXT": {
+          "vmaddr": "0xfffffe00079aab10",
+          "vmsize": 48620,
+          "fileoff": "0x9a6b10",
+          "filesize": 48620
+        },
+        "__TEXT_EXEC": {
+          "vmaddr": "0xfffffe000a0dede0",
+          "vmsize": 280604,
+          "fileoff": "0x30dade0",
+          "filesize": 280604
+        },
+        "__DATA": {
+          "vmaddr": "0xfffffe000ba43088",
+          "vmsize": 3329,
+          "fileoff": "0x4a3f088",
+          "filesize": 3329
+        },
+        "__DATA_CONST": {
+          "vmaddr": "0xfffffe0008329ce0",
+          "vmsize": 39992,
+          "fileoff": "0x1325ce0",
+          "filesize": 39992
+        },
+        "__LINKEDIT": {
+          "vmaddr": "0xfffffe000bae0000",
+          "vmsize": 474297,
+          "fileoff": "0x4adc000",
+          "filesize": 474297
+        }
+      }
+    }
+  },
+  "userland_framework_inventory": {
+    "/System/Library/Frameworks/Metal.framework/Metal": {
+      "index": 174,
+      "address": "0x1a566c000",
+      "address_int": 7069941760,
+      "path": "/System/Library/Frameworks/Metal.framework/Metal",
+      "category": "PublicFramework"
+    },
+    "/System/Library/PrivateFrameworks/IOGPU.framework/IOGPU": {
+      "index": 722,
+      "address": "0x20d2c5000",
+      "address_int": 8810942464,
+      "path": "/System/Library/PrivateFrameworks/IOGPU.framework/IOGPU",
+      "category": "PrivateFramework"
+    },
+    "/System/Library/Extensions/AGXMetalG18P.bundle/AGXMetalG18P": {
+      "index": 1690,
+      "address": "0x2470bc000",
+      "address_int": 9781886976,
+      "path": "/System/Library/Extensions/AGXMetalG18P.bundle/AGXMetalG18P",
+      "category": "Other"
+    },
+    "/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/MPSRayIntersector": {
+      "index": 1820,
+      "address": "0x24ebf9000",
+      "address_int": 9911111680,
+      "path": "/System/Library/Frameworks/MetalPerformanceShaders.framework/Frameworks/MPSRayIntersector.framework/MPSRayIntersector",
+      "category": "PublicFramework"
+    },
+    "/System/Library/PrivateFrameworks/AGXCompilerCore.framework/AGXCompilerCore": {
+      "index": 1987,
+      "address": "0x253452000",
+      "address_int": 9986973696,
+      "path": "/System/Library/PrivateFrameworks/AGXCompilerCore.framework/AGXCompilerCore",
+      "category": "PrivateFramework"
+    },
+    "/System/Library/PrivateFrameworks/AGXGPURawCounter.framework/AGXGPURawCounter": {
+      "index": 1988,
+      "address": "0x25373c000",
+      "address_int": 9990029312,
+      "path": "/System/Library/PrivateFrameworks/AGXGPURawCounter.framework/AGXGPURawCounter",
+      "category": "PrivateFramework"
+    },
+    "/System/Library/PrivateFrameworks/IOAccelerator.framework/IOAccelerator": {
+      "index": 2997,
+      "address": "0x28ce6d000",
+      "address_int": 10953871360,
+      "path": "/System/Library/PrivateFrameworks/IOAccelerator.framework/IOAccelerator",
+      "category": "PrivateFramework"
+    }
+  }
+}

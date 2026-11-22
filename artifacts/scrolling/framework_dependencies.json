@@ -1,0 +1,521 @@
+{
+  "target_metadata": {
+    "system": "iOS 27.2 (Darwin 24.2.0, Build 24B119, Train RaveB)",
+    "hardware": "iPhone18,3 (v57ap, Board ID 0x08, SoC t8150 / Apple A19 Pro)",
+    "candidate_frameworks_count": 13,
+    "system_shell_frameworks_count": 1,
+    "total_frameworks_mapped": 14
+  },
+  "frameworks": {
+    "UIKitCore.framework": {
+      "binary_path": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore",
+      "subcache_slice": ".01",
+      "vm_base_address": "0x184752000",
+      "role_in_scrolling": "Core userland viewport implementation, gesture dispatch, coordinate management, and velocity decay physics.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "QuartzCore.framework",
+          "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "CoreText.framework",
+          "path": "/System/Library/Frameworks/CoreText.framework/CoreText"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "AnimationKit.framework",
+          "path": "/System/Library/PrivateFrameworks/AnimationKit.framework/AnimationKit"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "SwiftUICore.framework",
+          "path": "/System/Library/Frameworks/SwiftUICore.framework/SwiftUICore"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "UIKitServices.framework",
+          "path": "/System/Library/PrivateFrameworks/UIKitServices.framework/UIKitServices"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "WebKitLegacy.framework",
+          "path": "/System/Library/PrivateFrameworks/WebKitLegacy.framework/WebKitLegacy"
+        },
+        {
+          "command": "LC_LOAD_WEAK_DYLIB",
+          "target": "Gestures.framework",
+          "path": "/System/Library/PrivateFrameworks/Gestures.framework/Gestures"
+        },
+        {
+          "command": "LC_REEXPORT_DYLIB",
+          "target": "UIFoundation.framework",
+          "path": "/System/Library/PrivateFrameworks/UIFoundation.framework/UIFoundation"
+        },
+        {
+          "command": "LC_REEXPORT_DYLIB",
+          "target": "CollectionViewCore.framework",
+          "path": "/System/Library/PrivateFrameworks/CollectionViewCore.framework/CollectionViewCore"
+        }
+      ],
+      "outbound_dependencies": [
+        "QuartzCore.framework",
+        "CoreText.framework",
+        "AnimationKit.framework",
+        "SwiftUICore.framework",
+        "UIKitServices.framework",
+        "WebKitLegacy.framework",
+        "Gestures.framework"
+      ],
+      "inbound_dependents": [
+        "UIKit.framework",
+        "WebKit.framework",
+        "WebKitLegacy.framework",
+        "SwiftUI.framework",
+        "SpringBoard.framework"
+      ]
+    },
+    "QuartzCore.framework": {
+      "binary_path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore",
+      "subcache_slice": ".01",
+      "vm_base_address": "0x1842d4000",
+      "role_in_scrolling": "Compositor scheduling, CADisplayLink timing generation, ProMotion 120Hz VFD rate negotiation, and CATransaction layer commits.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "CoreText.framework",
+          "path": "/System/Library/Frameworks/CoreText.framework/CoreText"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "CoreGraphics.framework",
+          "path": "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "Metal.framework",
+          "path": "/System/Library/Frameworks/Metal.framework/Metal"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "IOSurface.framework",
+          "path": "/System/Library/Frameworks/IOSurface.framework/IOSurface"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "Foundation.framework",
+          "path": "/System/Library/Frameworks/Foundation.framework/Foundation"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "CoreFoundation.framework",
+          "path": "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation"
+        }
+      ],
+      "outbound_dependencies": [
+        "CoreText.framework"
+      ],
+      "inbound_dependents": [
+        "UIKitCore.framework",
+        "SwiftUI.framework",
+        "SwiftUICore.framework",
+        "WebKit.framework",
+        "WebKitLegacy.framework",
+        "Gestures.framework",
+        "AnimationKit.framework",
+        "SystemUIAnimationKit.framework",
+        "SpringBoard.framework",
+        "UIKitServices.framework"
+      ]
+    },
+    "SwiftUI.framework": {
+      "binary_path": "/System/Library/Frameworks/SwiftUI.framework/SwiftUI",
+      "subcache_slice": ".03",
+      "vm_base_address": "0x18a8a7000",
+      "role_in_scrolling": "Declarative ScrollView and List abstractions, ScrollPosition state bindings, and _UIHostingScrollView lifecycle orchestration.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "SwiftUICore.framework",
+          "path": "/System/Library/Frameworks/SwiftUICore.framework/SwiftUICore"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "UIKitCore.framework",
+          "path": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "QuartzCore.framework",
+          "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "CoreText.framework",
+          "path": "/System/Library/Frameworks/CoreText.framework/CoreText"
+        }
+      ],
+      "outbound_dependencies": [
+        "SwiftUICore.framework",
+        "UIKitCore.framework",
+        "QuartzCore.framework",
+        "CoreText.framework"
+      ],
+      "inbound_dependents": [
+        "SpringBoard.framework"
+      ]
+    },
+    "SwiftUICore.framework": {
+      "binary_path": "/System/Library/Frameworks/SwiftUICore.framework/SwiftUICore",
+      "subcache_slice": ".03",
+      "vm_base_address": "0x188404000",
+      "role_in_scrolling": "Core declarative geometry primitives, ScrollGeometry struct representations, and ScrollPhase state transitions.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "QuartzCore.framework",
+          "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "CoreFoundation.framework",
+          "path": "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation"
+        }
+      ],
+      "outbound_dependencies": [
+        "QuartzCore.framework"
+      ],
+      "inbound_dependents": [
+        "SwiftUI.framework",
+        "UIKitCore.framework"
+      ]
+    },
+    "WebKit.framework": {
+      "binary_path": "/System/Library/Frameworks/WebKit.framework/WebKit",
+      "subcache_slice": ".07",
+      "vm_base_address": "0x19cbb9000",
+      "role_in_scrolling": "Out-of-process web viewport scrolling via WKScrollView, remote scrolling coordination (RemoteScrollingCoordinatorIOS), and asynchronous hit testing.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "UIKitCore.framework",
+          "path": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "QuartzCore.framework",
+          "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "CoreText.framework",
+          "path": "/System/Library/Frameworks/CoreText.framework/CoreText"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "WebKitLegacy.framework",
+          "path": "/System/Library/PrivateFrameworks/WebKitLegacy.framework/WebKitLegacy"
+        }
+      ],
+      "outbound_dependencies": [
+        "UIKitCore.framework",
+        "QuartzCore.framework",
+        "CoreText.framework",
+        "WebKitLegacy.framework"
+      ],
+      "inbound_dependents": []
+    },
+    "WebKitLegacy.framework": {
+      "binary_path": "/System/Library/PrivateFrameworks/WebKitLegacy.framework/WebKitLegacy",
+      "subcache_slice": ".11",
+      "vm_base_address": "0x1afb20000",
+      "role_in_scrolling": "In-process legacy web view scrolling and action menu disabling via WebActionDisablingScrollView.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "UIKitCore.framework",
+          "path": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "QuartzCore.framework",
+          "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "CoreText.framework",
+          "path": "/System/Library/Frameworks/CoreText.framework/CoreText"
+        }
+      ],
+      "outbound_dependencies": [
+        "UIKitCore.framework",
+        "QuartzCore.framework",
+        "CoreText.framework"
+      ],
+      "inbound_dependents": [
+        "WebKit.framework",
+        "UIKitCore.framework"
+      ]
+    },
+    "UIKit.framework": {
+      "binary_path": "/System/Library/Frameworks/UIKit.framework/UIKit",
+      "subcache_slice": ".46",
+      "vm_base_address": "0x24ff98000",
+      "role_in_scrolling": "Public API umbrella facade re-exporting UIKitCore scrolling symbols to third-party app bundles.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_REEXPORT_DYLIB",
+          "target": "UIKitCore.framework",
+          "path": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore"
+        }
+      ],
+      "outbound_dependencies": [
+        "UIKitCore.framework"
+      ],
+      "inbound_dependents": [
+        "SpringBoard.framework"
+      ]
+    },
+    "Gestures.framework": {
+      "binary_path": "/System/Library/PrivateFrameworks/Gestures.framework/Gestures",
+      "subcache_slice": ".03",
+      "vm_base_address": "0x18a169000",
+      "role_in_scrolling": "Low-level system gesture environment, gesture recognition filtering, and fling velocity estimation models.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "QuartzCore.framework",
+          "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore"
+        }
+      ],
+      "outbound_dependencies": [
+        "QuartzCore.framework"
+      ],
+      "inbound_dependents": [
+        "UIKitCore.framework"
+      ]
+    },
+    "CoreText.framework": {
+      "binary_path": "/System/Library/Frameworks/CoreText.framework/CoreText",
+      "subcache_slice": ".07",
+      "vm_base_address": "0x19a3d7000",
+      "role_in_scrolling": "Text fragment layout, glyph measurement, and scrollable text content frame generation for UITextView.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "CoreGraphics.framework",
+          "path": "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics"
+        }
+      ],
+      "outbound_dependencies": [],
+      "inbound_dependents": [
+        "UIKitCore.framework",
+        "QuartzCore.framework",
+        "SwiftUI.framework",
+        "WebKit.framework",
+        "WebKitLegacy.framework"
+      ]
+    },
+    "IOHIDPointerScrollFilter.plugin": {
+      "binary_path": "/System/Library/HIDPlugins/IOHIDPointerScrollFilter.plugin/IOHIDPointerScrollFilter",
+      "subcache_slice": ".48",
+      "vm_base_address": "0x2529c4000",
+      "role_in_scrolling": "Hardware touch/pointer scroll acceleration curves, non-linear velocity filtering, and kernel-to-backboardd event transformation.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "IOKit.framework",
+          "path": "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit"
+        }
+      ],
+      "outbound_dependencies": [],
+      "inbound_dependents": []
+    },
+    "AnimationKit.framework": {
+      "binary_path": "/System/Library/PrivateFrameworks/AnimationKit.framework/AnimationKit",
+      "subcache_slice": ".07",
+      "vm_base_address": "0x19f2b1000",
+      "role_in_scrolling": "Analytic spring models (AKSpring) and Runge-Kutta numerical integration algorithms for complex fluid animations.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "QuartzCore.framework",
+          "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore"
+        }
+      ],
+      "outbound_dependencies": [
+        "QuartzCore.framework"
+      ],
+      "inbound_dependents": [
+        "UIKitCore.framework",
+        "SystemUIAnimationKit.framework"
+      ]
+    },
+    "SystemUIAnimationKit.framework": {
+      "binary_path": "/System/Library/PrivateFrameworks/SystemUIAnimationKit.framework/SystemUIAnimationKit",
+      "subcache_slice": ".69",
+      "vm_base_address": "0x2b62f0000",
+      "role_in_scrolling": "SpringBoard system switcher fluid animation curves and physical gesture damping models.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "AnimationKit.framework",
+          "path": "/System/Library/PrivateFrameworks/AnimationKit.framework/AnimationKit"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "QuartzCore.framework",
+          "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "UIKitServices.framework",
+          "path": "/System/Library/PrivateFrameworks/UIKitServices.framework/UIKitServices"
+        }
+      ],
+      "outbound_dependencies": [
+        "AnimationKit.framework",
+        "QuartzCore.framework",
+        "UIKitServices.framework"
+      ],
+      "inbound_dependents": [
+        "SpringBoard.framework"
+      ]
+    },
+    "UIKitServices.framework": {
+      "binary_path": "/System/Library/PrivateFrameworks/UIKitServices.framework/UIKitServices",
+      "subcache_slice": ".05",
+      "vm_base_address": "0x197f2b000",
+      "role_in_scrolling": "Display hardware geometry context, display corner radii, and safe area inset telemetry provider.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "QuartzCore.framework",
+          "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore"
+        }
+      ],
+      "outbound_dependencies": [
+        "QuartzCore.framework"
+      ],
+      "inbound_dependents": [
+        "UIKitCore.framework",
+        "SystemUIAnimationKit.framework",
+        "SpringBoard.framework"
+      ]
+    },
+    "SpringBoard.framework": {
+      "binary_path": "/System/Library/PrivateFrameworks/SpringBoard.framework/SpringBoard",
+      "subcache_slice": ".36",
+      "vm_base_address": "0x226a11000",
+      "role_in_scrolling": "System shell viewport coordinator managing SBIconScrollView, SBAppSwitcherScrollView, and system gesture arbitration.",
+      "mach_o_load_commands": [
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "SystemUIAnimationKit.framework",
+          "path": "/System/Library/PrivateFrameworks/SystemUIAnimationKit.framework/SystemUIAnimationKit"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "UIKitServices.framework",
+          "path": "/System/Library/PrivateFrameworks/UIKitServices.framework/UIKitServices"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "UIKit.framework",
+          "path": "/System/Library/Frameworks/UIKit.framework/UIKit"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "CoreText.framework",
+          "path": "/System/Library/Frameworks/CoreText.framework/CoreText"
+        },
+        {
+          "command": "LC_LOAD_DYLIB",
+          "target": "QuartzCore.framework",
+          "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore"
+        }
+      ],
+      "outbound_dependencies": [
+        "SystemUIAnimationKit.framework",
+        "UIKitServices.framework",
+        "UIKit.framework",
+        "CoreText.framework",
+        "QuartzCore.framework"
+      ],
+      "inbound_dependents": []
+    }
+  },
+  "circular_and_inverted_dependencies": [
+    {
+      "pair": [
+        "UIKitCore.framework",
+        "WebKitLegacy.framework"
+      ],
+      "mechanism": "Direct dynamic library linkage circularity. UIKitCore links WebKitLegacy via LC_LOAD_DYLIB to support legacy DOM overflow scrolling containers (UIWebOverflowScrollView), while WebKitLegacy links UIKitCore to inherit UIResponder and UIView class hierarchies.",
+      "impact": "Requires dyld two-level namespace resolution and lazy Objective-C class registration to avoid load-time binding deadlock."
+    },
+    {
+      "pair": [
+        "UIKitCore.framework",
+        "SwiftUICore.framework"
+      ],
+      "mechanism": "Architectural layering inversion. High-level declarative SwiftUICore defines core scroll geometry and phase types, which are linked into lower-level UIKitCore via LC_LOAD_DYLIB to power UIKit-SwiftUI hosting bridges.",
+      "impact": "Enables zero-overhead ABI interoperability where UIKitCore methods can consume and emit SwiftUICore.ScrollGeometry structs directly."
+    },
+    {
+      "pair": [
+        "UIKitCore.framework",
+        "Gestures.framework"
+      ],
+      "mechanism": "Weak library linkage circularity. UIKitCore links Gestures.framework via LC_LOAD_WEAK_DYLIB for low-level fling recognition and gesture environment arbitration, while Gestures relies on UIKit class metadata at runtime.",
+      "impact": "Ensures standalone execution in embedded or minimal execution environments where Gestures.framework may be stubbed or omitted."
+    }
+  ],
+  "architectural_layers": [
+    {
+      "layer_id": "Tier 1: Hardware & Kernel Input",
+      "frameworks": [
+        "IOHIDPointerScrollFilter.plugin"
+      ],
+      "responsibilities": "Hardware touch sensor digitization, touch report aggregation, pointer scroll acceleration curve interpolation, and delivery to backboardd via IOHIDEventSystem."
+    },
+    {
+      "layer_id": "Tier 2: Compositor & Display Timing Engine",
+      "frameworks": [
+        "QuartzCore.framework",
+        "CoreText.framework"
+      ],
+      "responsibilities": "Hardware display synchronization via CADisplayLink, ProMotion 120Hz VFD rate arbitration (CAFrameRateRange), layer tree bounds and CATransaction commits, CoreText glyph fragment layouts."
+    },
+    {
+      "layer_id": "Tier 3: Core UI & Kinematics Engine",
+      "frameworks": [
+        "UIKitCore.framework",
+        "Gestures.framework",
+        "AnimationKit.framework"
+      ],
+      "responsibilities": "UIScrollView pan gesture tracking, delegate dispatch, content offset accumulation, rubber-banding resistance calculation, exponential velocity decay integration (_UIScrollViewDecelerationAnimation), and analytic spring modeling (AKSpring)."
+    },
+    {
+      "layer_id": "Tier 4: Declarative Viewports & High-Level Shell",
+      "frameworks": [
+        "SwiftUI.framework",
+        "SwiftUICore.framework",
+        "WebKit.framework",
+        "WebKitLegacy.framework",
+        "UIKitServices.framework",
+        "UIKit.framework"
+      ],
+      "responsibilities": "Declarative ScrollView and List hosting bridges (_UIHostingScrollView), asynchronous multi-process web scrolling (WKScrollView), public API symbol re-export (UIKit facade), and display safe area contexts."
+    },
+    {
+      "layer_id": "Tier 5: System Shell & Process Compositor",
+      "frameworks": [
+        "SpringBoard.framework",
+        "SystemUIAnimationKit.framework"
+      ],
+      "responsibilities": "System-wide icon scrolling (SBIconScrollView), multitasking card switcher fluid scrolling (SBAppSwitcherScrollView), and system home gesture arbitration."
+    }
+  ]
+}

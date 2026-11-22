@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.0",
+  "phase": "ane_phase_1b_symbol_discovery",
+  "target_os": "iOS 27.2 (24B119)",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "ane_generation": "H18 (Apollo v5)",
+  "client_flow": {
+    "overview": "End-to-end model compilation and inference dispatch architecture from App layer to physical ANE coprocessor",
+    "execution_pipeline_stages": [
+      {
+        "stage": 1,
+        "layer": "Application / Framework Client Layer",
+        "components": [
+          "CoreML.framework",
+          "Vision.framework",
+          "MetalPerformanceShadersGraph.framework"
+        ],
+        "description": "App requests neural graph compilation or inference through public Apple frameworks.",
+        "data_structures": [
+          "MLModel",
+          "MLFeatureProvider",
+          "MLMultiArray"
+        ]
+      },
+      {
+        "stage": 2,
+        "layer": "Intermediate Lowering & Compiler Engine",
+        "components": [
+          "MIL.framework",
+          "MilAneflow.framework",
+          "ANECompiler.framework"
+        ],
+        "description": "MIL graph is translated into ZinIr, optimized via ZinMirOpt, partitioned across clusters, scheduled via ZinCpBasedAllocator, and compiled into .hwx Hardware Executable container.",
+        "data_structures": [
+          "ZinIrContext",
+          "ZinPECodegen",
+          "HWX Container (td, tsk, krn, desc)"
+        ]
+      },
+      {
+        "stage": 3,
+        "layer": "Userland Client Interface",
+        "components": [
+          "AppleNeuralEngine.framework (_ANEClient, _ANEModel, _ANERequest)"
+        ],
+        "description": "Manages model lifecycle, parses .hwx container, prepares input/output IOSurfaces, and maps shared events.",
+        "dispatch_mechanism": "XPC to aned system daemon via _ANEDaemonConnection, or direct kernel client via _ANEVirtualClient for privileged processes."
+      },
+      {
+        "stage": 4,
+        "layer": "Central Daemon Arbitration Layer",
+        "components": [
+          "/usr/libexec/aned (Apple Neural Engine Daemon)"
+        ],
+        "description": "System daemon enforcing sandbox policies, managing global QoS priorities, model cache eviction, and multi-tenant resource arbitration.",
+        "ipc_endpoints": [
+          "com.apple.aned.xpc",
+          "com.apple.aned.fast.xpc"
+        ]
+      },
+      {
+        "stage": 5,
+        "layer": "Kernel Driver User Client",
+        "components": [
+          "AppleH16ANEInterface.kext (H11ANEInUserClient)"
+        ],
+        "description": "IOKit user client translating userland requests into kernel DMA descriptors, mapping IOSurfaces to DART IOMMU, and queuing work.",
+        "dispatch_table": "32 selectors via externalMethod jump table (VM 0xfffffe0008ccdb8c)"
+      },
+      {
+        "stage": 6,
+        "layer": "Kernel Hardware Abstraction Layer (HAL)",
+        "components": [
+          "AppleT8150ANEHAL.kext (AppleT8150ANEHAL)"
+        ],
+        "description": "Physical MMIO register control, clock gating, MPM power domain transitions, and DART IOMMU page table programming for 3 physical ANE clusters (fANE0, fANE1, fANE2).",
+        "hardware_mapping": "MMIO register banks, DART translation table base registers, thermal throttling registers"
+      },
+      {
+        "stage": 7,
+        "layer": "Coprocessor Firmware & Hardware Execution Queues",
+        "components": [
+          "h18_ane_fw_apollo_v5x.raw (Apollo v5 Coprocessor Firmware)"
+        ],
+        "description": "Real-time firmware running on the ANE coprocessor microcontroller, managing hardware command FIFO (Node ID 0x40, granularity 0x10), task stream decoding, and matrix execution.",
+        "hardware_queues": {
+          "fifo_node_id": "0x40",
+          "command_granularity_bytes": 16,
+          "tile_size_bytes": 16384,
+          "matrix_tile_channels": 32,
+          "physical_clusters": 3
+        }
+      }
+    ],
+    "ipc_topology": {
+      "userland_to_daemon": {
+        "transport": "Mach Port / XPC Connection",
+        "protocol": "_ANEDaemonProtocol",
+        "service_name": "com.apple.aned.xpc",
+        "methods": [
+          "compileModel:options:qos:withReply:",
+          "loadModel:options:qos:withReply:",
+          "unloadModel:options:qos:withReply:",
+          "compiledModelExistsFor:withReply:",
+          "purgeCompiledModel:withReply:"
+        ]
+      },
+      "daemon_to_kernel": {
+        "transport": "IOKit User Client (IOConnectCallMethod)",
+        "driver": "AppleH16ANEInterface",
+        "user_client": "H11ANEInUserClient",
+        "key_selectors": [
+          "ANE_UserClientOpen (0)",
+          "ANE_MapIOSurface (2)",
+          "ANE_ProgramCreate (4)",
+          "ANE_ProgramPrepare (5)",
+          "ANE_EnqueueRequest (7)",
+          "ANE_WaitCompletion (8)"
+        ]
+      },
+      "kernel_to_hardware": {
+        "transport": "Direct MMIO Register Writes & DMA Ring Buffers",
+        "hardware_node": "0x40 (Hardware Command FIFO)",
+        "dma_protection": "Apple DART (Device Address Resolution Table / IOMMU)"
+      }
+    }
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "target": "iOS 27.2 (24B119) Animation Physics Subsystem",
+  "generated_at": "2026-11-22T09:51:30+05:30",
+  "confidence_level": "EXTRACTED",
+  "frameworks": {
+    "UIKitCore": {
+      "path": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore",
+      "vm_base_address": "0x184752000",
+      "subcache": ".01",
+      "objc_classes": [
+        "UISpringTimingParameters",
+        "_UITimingFunction",
+        "_UIViewAnimationCoordinator",
+        "UIViewPropertyAnimator",
+        "UIViewSpringAnimationBehaviorAdapter",
+        "UIViewSpringAnimationBehaviorSettings",
+        "UIViewSpringAnimationBehaviorWithResponseFactor",
+        "_UISpringBehavior",
+        "_UIScrollViewSpringAnimation",
+        "UISpringLoadedInteraction"
+      ],
+      "spring_methods": [
+        "initWithMass:stiffness:damping:initialVelocity:",
+        "initWithDampingRatio:initialVelocity:",
+        "initWithPerceptualDuration:bounce:",
+        "setStiffness:",
+        "setDamping:",
+        "setMass:",
+        "settlingDuration"
+      ],
+      "animation_globals": [
+        {
+          "symbol": "kUIScrollViewSpringDefaultMass",
+          "value": 1.0,
+          "vm_address": "0x1864d56e8",
+          "hex": "0x3ff0000000000000",
+          "unit": "kg"
+        },
+        {
+          "symbol": "kUIScrollViewSpringDefaultStiffness",
+          "value": 100.0,
+          "vm_address": "0x1864d5510",
+          "hex": "0x4059000000000000",
+          "unit": "N/m"
+        },
+        {
+          "symbol": "kUIScrollViewSpringDefaultDamping",
+          "value": 18.0,
+          "vm_address": "0x1864d5628",
+          "hex": "0x4032000000000000",
+          "unit": "N*s/m"
+        },
+        {
+          "symbol": "UIScrollViewDecelerationRateNormal",
+          "value": 0.998,
+          "vm_address": "0x1864d59c8",
+          "hex": "0x3fefef9db22d0e56",
+          "unit": "1/ms"
+        },
+        {
+          "symbol": "UIScrollViewDecelerationRateFast",
+          "value": 0.99,
+          "vm_address": "0x1864d59d0",
+          "hex": "0x3fefae147ae147ae",
+          "unit": "1/ms"
+        }
+      ]
+    },
+    "QuartzCore": {
+      "path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore",
+      "vm_base_address": "0x1842d4000",
+      "subcache": ".01",
+      "objc_classes": [
+        "CASpringAnimation",
+        "CABasicAnimation",
+        "CAKeyframeAnimation",
+        "CATransition",
+        "CAMediaTimingFunction",
+        "CAFrameRateRangeGroup"
+      ],
+      "spring_methods": [
+        "initWithPerceptualDuration:bounce:",
+        "perceptualDuration",
+        "bounce",
+        "allowsOverdamping",
+        "settlingDuration",
+        "setMass:",
+        "setStiffness:",
+        "setDamping:",
+        "setInitialVelocity:"
+      ],
+      "animation_globals": [
+        {
+          "symbol": "kCAFrameRateRangeDefault",
+          "description": "Standard 60Hz/120Hz ProMotion range definition",
+          "vm_address": "0x1843b0000"
+        }
+      ]
+    },
+    "AnimationKit": {
+      "path": "/System/Library/PrivateFrameworks/AnimationKit.framework/AnimationKit",
+      "vm_base_address": "0x19f2b1000",
+      "subcache": ".07",
+      "primary_spring_class": "AKSpringAnimationDriver",
+      "objc_classes": [
+        "AKAnimationCoordinator",
+        "AKSpringAnimationDriver",
+        "AKTimingFunctionProvider",
+        "AKFluidSpringBehavior",
+        "AKMotionCurveTransformer"
+      ],
+      "spring_methods": [
+        "initWithDuration:bounce:",
+        "driverWithStiffness:damping:mass:",
+        "interpolatedValueAtProgress:"
+      ],
+      "extracted_spring_channels": [
+        "morphSpring",
+        "mainAbsorbSpring",
+        "positionXSpring",
+        "widthSpring",
+        "heightSpring",
+        "blurInSpring",
+        "frictionBounce",
+        "retargetImpulse",
+        "DPendingRetarget"
+      ],
+      "swift_protocols": [
+        "SpringAnimationBehaviorDescribing",
+        "SpringAnimationBehaviorSettingsType"
+      ]
+    },
+    "SystemUIAnimationKit": {
+      "path": "/System/Library/PrivateFrameworks/SystemUIAnimationKit.framework/SystemUIAnimationKit",
+      "vm_base_address": "0x2b62f0000",
+      "subcache": ".69",
+      "objc_classes": [
+        "SUIAKAnimationCoordinator",
+        "SUIAKSpringSettings",
+        "SUIAKSheetAnimationController",
+        "SUIAKBannerAnimationController",
+        "SUIAKDismissalInteractionDriver"
+      ],
+      "spring_methods": [
+        "settingsWithPerceptualDuration:bounce:",
+        "defaultSheetPresentationSettings",
+        "defaultBannerNotificationSettings",
+        "interactiveDismissalSpringSettings"
+      ],
+      "extracted_context_settings": [
+        "donutMaskPositionAnimationSettings",
+        "circleMaskScaleAnimationSettings",
+        "Mesh Position Animation Settings",
+        "abberationFadeOutAnimationSettings",
+        "sourceImageScaleIntroAnimationSettings",
+        "Color Brightness Outro Animation Settings",
+        "Distance Field Offset Animation Settings",
+        "Light Intensity Animation Settings",
+        "AssistantIsland"
+      ]
+    },
+    "SpringBoard": {
+      "path": "/System/Library/PrivateFrameworks/SpringBoard.framework/SpringBoard",
+      "vm_base_address": "0x226a11000",
+      "subcache": ".36",
+      "objc_classes": [
+        "SBFluidSwitcherAnimationController",
+        "SBAnimationStepper",
+        "SBApplicationLaunchAnimationHelper",
+        "SBHiddenWindowsPillDismissAnimationSwitcherModifier",
+        "SBCoverSheetPresentationManager",
+        "SBAppSwitcherScrollView",
+        "SBIconScrollView",
+        "SBFloatingDockController"
+      ],
+      "spring_methods": [
+        "layoutSettingsForSwitcherModifier:",
+        "animationSettingsForTransition:",
+        "springSettingsForDismissalWithVelocity:"
+      ]
+    },
+    "SwiftUI": {
+      "path": "/System/Library/Frameworks/SwiftUI.framework/SwiftUI",
+      "vm_base_address": "0x18a8a7000",
+      "subcache": ".03",
+      "swift_types": [
+        "SpringAnimation",
+        "FluidSpringAnimation",
+        "SpringAnimationClass",
+        "ScrollDecelerationRate",
+        "ScrollBounceBehavior"
+      ],
+      "spring_methods": [
+        "spring(duration:bounce:)",
+        "interactiveSpring(response:dampingFraction:blendDuration:)",
+        "smooth(duration:extraBounce:)",
+        "snappy(duration:extraBounce:)",
+        "bouncy(duration:extraBounce:)"
+      ]
+    }
+  },
+  "UIKitCore": {
+    "objc_classes": [
+      "UISpringTimingParameters",
+      "UIViewPropertyAnimator",
+      "UIViewSpringAnimationBehaviorAdapter",
+      "UIViewSpringAnimationBehaviorSettings"
+    ]
+  },
+  "QuartzCore": {
+    "objc_classes": [
+      "CASpringAnimation",
+      "CAMediaTimingFunction",
+      "CAFrameRateRangeGroup"
+    ]
+  },
+  "AnimationKit": {
+    "objc_classes": [
+      "AKAnimationCoordinator",
+      "AKSpringAnimationDriver",
+      "AKFluidSpringBehavior"
+    ]
+  }
+}

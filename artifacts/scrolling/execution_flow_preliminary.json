@@ -1,0 +1,269 @@
+{
+  "macro_pipeline": "Hardware Touch -> IOHIDEventSystem -> backboardd -> BKSTouchStream -> UIScrollViewPanGestureRecognizer -> Drag ContentOffset Update -> Release Velocity Estimation -> _UIScrollViewDecelerationAnimation -> CADisplayLink (120Hz ProMotion) -> CATransaction Commit -> GPU Framebuffer Presentation",
+  "phases": {
+    "phase_1_input_and_gesture": {
+      "phase_name": "Input & Gesture Phase",
+      "trigger": "User finger establishes physical contact with capacitive touch screen.",
+      "duration": "0ms - 20ms (until touch movement exceeds slop threshold)",
+      "subsystems": [
+        "IOHIDEventSystem",
+        "backboardd",
+        "BKSTouchStream",
+        "UIKitCore"
+      ],
+      "steps": [
+        {
+          "step_id": 1,
+          "component": "IOHIDEventSystem",
+          "method": "IOHIDEventCreateDigitizerEvent",
+          "address": "0x2529c4120",
+          "operation": "Capacitive touch digitizer generates raw hardware interrupt. Digitizer packet is timestamped and translated to IOHIDEvent digitizer event."
+        },
+        {
+          "step_id": 2,
+          "component": "IOHIDPointerScrollFilter.plugin",
+          "method": "-[IOHIDPointerScrollFilter filterEvent:]",
+          "address": "0x2529c4300",
+          "operation": "Calculates pointer scroll acceleration curve and applies friction scale filter to raw touch report."
+        },
+        {
+          "step_id": 3,
+          "component": "backboardd",
+          "method": "BKSDisplayServicesPostEvent",
+          "address": "0x226a18980",
+          "operation": "backboardd validates process entitlement, performs display orientation translation, and packages touch into BKSTouchStream IPC message."
+        },
+        {
+          "step_id": 4,
+          "component": "UIKitCore (UIApplication)",
+          "method": "-[UIApplication sendEvent:]",
+          "address": "0x184760100",
+          "operation": "Main run loop drains Mach port, wraps message into UIEvent (type: UITouchEventTypeDirect), and routes to key UIWindow."
+        },
+        {
+          "step_id": 5,
+          "component": "UIKitCore (UIWindow)",
+          "method": "-[UIWindow _sendTouchesForEvent:]",
+          "address": "0x184762300",
+          "operation": "Performs recursive hit-testing (-[UIView hitTest:withEvent:]) to identify target view hierarchy containing UIScrollView."
+        },
+        {
+          "step_id": 6,
+          "component": "UIKitCore (UIScrollViewPanGestureRecognizer)",
+          "method": "-[UIScrollViewPanGestureRecognizer touchesBegan:withEvent:]",
+          "address": "0x1848b7800",
+          "operation": "Stores initial touch location, initializes velocity sample ring buffer, and schedules touch delay timer (UIScrollViewDelayedTouchesBeganGestureRecognizer)."
+        },
+        {
+          "step_id": 7,
+          "component": "UIKitCore (UIScrollViewPanGestureRecognizer)",
+          "method": "-[UIScrollViewPanGestureRecognizer touchesMoved:withEvent:]",
+          "address": "0x1848b7880",
+          "operation": "Calculates cumulative euclidean displacement. When displacement exceeds touchSlop (typically 10.0 points), cancels subview touch delivery and transitions state machine from Possible to Began."
+        }
+      ],
+      "state_machine": {
+        "initial_state": "UIGestureRecognizerStatePossible",
+        "intermediate_state": "UIGestureRecognizerStateBegan",
+        "touch_slop_threshold_points": 10.0,
+        "subview_touch_delay_ms": 150.0
+      }
+    },
+    "phase_2_drag_and_tracking": {
+      "phase_name": "Drag & Tracking Phase",
+      "trigger": "Pan gesture enters Began / Changed state as finger translates across viewport.",
+      "duration": "Continuous interactive duration (16.6ms / 8.33ms per frame)",
+      "subsystems": [
+        "UIScrollViewPanGestureRecognizer",
+        "UIScrollView",
+        "QuartzCore"
+      ],
+      "steps": [
+        {
+          "step_id": 8,
+          "component": "UIKitCore (UIScrollView)",
+          "method": "-[UIScrollView _scrollViewWillBeginDragging]",
+          "address": "0x1848b6100",
+          "operation": "Mutates _scrollViewFlags.isDragging = 1. Inspects delegate flags; if respondsToSelector(scrollViewWillBeginDragging:), dispatches delegate callback."
+        },
+        {
+          "step_id": 9,
+          "component": "UIKitCore (UIScrollView)",
+          "method": "-[UIScrollView _panGestureRecognizerMoved:]",
+          "address": "0x1848b6280",
+          "operation": "Queries translation in viewport coordinates via -[UIPanGestureRecognizer translationInView:]. Computes candidate delta offset (dx, dy)."
+        },
+        {
+          "step_id": 10,
+          "component": "UIKitCore (UIScrollView)",
+          "method": "-[UIScrollView _offsetForRubberBandOffset:maxOffset:minOffset:range:]",
+          "address": "0x1848b64a0",
+          "operation": "Evaluates edge boundary conditions. If candidate offset overshoots content bounds and bounces == YES, applies non-linear rubber-band resistance curve: x = (d * c * d_max) / (d_max + c * d)."
+        },
+        {
+          "step_id": 11,
+          "component": "UIKitCore (UIScrollView)",
+          "method": "-[UIScrollView setContentOffset:]",
+          "address": "0x1848b4b80",
+          "operation": "Assigns new content offset point to ivar _contentOffset (+0x100). Invokes internal routine -[UIScrollView _setContentOffset:animated:animation:notify:]."
+        },
+        {
+          "step_id": 12,
+          "component": "UIKitCore (UIScrollView)",
+          "method": "-[UIScrollView _updateBoundsForContentOffset:]",
+          "address": "0x1848b5120",
+          "operation": "Mutates CALayer bounds origin (layer.bounds.origin = contentOffset). Triggers CoreGraphics layout pass and updates scroll indicators."
+        },
+        {
+          "step_id": 13,
+          "component": "UIKitCore (UIScrollView)",
+          "method": "-[UIScrollView _notifyDidScroll]",
+          "address": "0x1848b5280",
+          "operation": "Inspects _scrollViewFlags.delegateScrollViewDidScroll; dispatches -[id<UIScrollViewDelegate> scrollViewDidScroll:] and informs _UIScrollViewScrollObserver."
+        }
+      ],
+      "governing_equations": {
+        "rubber_band_formula": "d_rubber = (d_touch * 0.55 * dimension) / (dimension + 0.55 * d_touch)",
+        "resistance_coefficient_c": 0.55
+      }
+    },
+    "phase_3_ballistic_kinematics": {
+      "phase_name": "Ballistic Kinematics Phase",
+      "trigger": "User lifts finger from display (touchesEnded:withEvent:).",
+      "duration": "300ms - 2500ms (depending on initial release velocity)",
+      "subsystems": [
+        "UIScrollViewPanGestureRecognizer",
+        "UIScrollView",
+        "_UIScrollViewDecelerationAnimation",
+        "CADisplayLink"
+      ],
+      "steps": [
+        {
+          "step_id": 14,
+          "component": "UIKitCore (UIScrollViewPanGestureRecognizer)",
+          "method": "-[UIScrollViewPanGestureRecognizer touchesEnded:withEvent:]",
+          "address": "0x1848b7900",
+          "operation": "Transitions gesture state machine from Changed to Ended. Evaluates release velocity vector using -[UIPanGestureRecognizer velocityInView:]."
+        },
+        {
+          "step_id": 15,
+          "component": "UIKitCore (UIScrollView)",
+          "method": "-[UIScrollView _scrollViewWillEndDraggingWithDeceleration:]",
+          "address": "0x1848b6600",
+          "operation": "Computes projected ballistic rest position: s_proj = v0 / (-ln(d)). Dispatches -[id<UIScrollViewDelegate> scrollViewWillEndDragging:withVelocity:targetContentOffset:]."
+        },
+        {
+          "step_id": 16,
+          "component": "UIKitCore (UIScrollView)",
+          "method": "-[UIScrollView _scrollViewDidEndDraggingForDelegateWithDeceleration:]",
+          "address": "0x1848b6780",
+          "operation": "Mutates _scrollViewFlags.isDragging = 0. Dispatches -[id<UIScrollViewDelegate> scrollViewDidEndDragging:willDecelerate:]."
+        },
+        {
+          "step_id": 17,
+          "component": "UIKitCore (UIScrollView)",
+          "method": "-[UIScrollView _scrollViewWillBeginDecelerating]",
+          "address": "0x1848b6880",
+          "operation": "If velocity exceeds threshold (10.0 pt/s) and not at rest, mutates _scrollViewFlags.isDecelerating = 1. Dispatches -[id<UIScrollViewDelegate> scrollViewWillBeginDecelerating:]."
+        },
+        {
+          "step_id": 18,
+          "component": "UIKitCore (_UIScrollViewDecelerationAnimation)",
+          "method": "-[_UIScrollViewDecelerationAnimation initWithScrollView:velocity:]",
+          "address": "0x1848c7100",
+          "operation": "Instantiates deceleration animation controller. Sets initial kinetic velocity (v0) and selects deceleration rate: Normal (0.998) or Fast (0.990)."
+        },
+        {
+          "step_id": 19,
+          "component": "UIKitCore (_UIScrollViewSpringAnimation)",
+          "method": "-[_UIScrollViewSpringAnimation initWithScrollView:springModel:]",
+          "address": "0x1848c7300",
+          "operation": "If release occurred within rubber-band zone or projected path overshoots boundary, engages damped harmonic oscillator spring return."
+        }
+      ],
+      "governing_equations": {
+        "velocity_decay": "v(t) = v0 * (d ^ t) = v0 * exp(-lambda * t)",
+        "normal_deceleration_rate": 0.998,
+        "fast_deceleration_rate": 0.99,
+        "decay_constant_lambda_normal": 0.002002,
+        "projected_distance_integral": "s_projected = v0 / (-ln(d)) approx v0 * 499.5"
+      }
+    },
+    "phase_4_compositor_and_render": {
+      "phase_name": "Compositor & Render Phase",
+      "trigger": "CADisplayLink VSYNC timer tick fires on main thread.",
+      "duration": "8.33ms interval (120Hz ProMotion VFD boost)",
+      "subsystems": [
+        "CADisplayLink",
+        "CAFrameRateRange",
+        "_UIScrollViewDecelerationAnimation",
+        "CATransaction",
+        "RenderServer"
+      ],
+      "steps": [
+        {
+          "step_id": 20,
+          "component": "QuartzCore (CADisplayLink)",
+          "method": "-[CADisplayLink setPreferredFrameRateRange:]",
+          "address": "0x184310100",
+          "operation": "Boosts ProMotion display refresh to CAFrameRateRange(min: 80Hz, max: 120Hz, preferred: 120Hz) during dynamic deceleration."
+        },
+        {
+          "step_id": 21,
+          "component": "UIKitCore (_UIScrollViewDecelerationAnimation)",
+          "method": "-[_UIScrollViewDecelerationAnimation _stepAnimation]",
+          "address": "0x1848c7180",
+          "operation": "Evaluates elapsed dt since last tick. Integrates current velocity: delta_pos = (v_current * (1 - d^dt)) / (-ln(d)). Updates current offset."
+        },
+        {
+          "step_id": 22,
+          "component": "UIKitCore (_UIScrollViewDecelerationAnimation)",
+          "method": "-[_UIScrollViewDecelerationAnimation _stepAnimation] (Termination Check)",
+          "address": "0x1848c71a0",
+          "operation": "Compares instantaneous speed |v(t)| against stop velocity threshold (0.1 pt/s). If below threshold, stops animation timer."
+        },
+        {
+          "step_id": 23,
+          "component": "UIKitCore (UIScrollView)",
+          "method": "-[UIScrollView _stopDecelerating:]",
+          "address": "0x1848b6940",
+          "operation": "Mutates _scrollViewFlags.isDecelerating = 0. Invalidate CADisplayLink. Resets CAFrameRateRange to standard idle rate (10Hz-60Hz)."
+        },
+        {
+          "step_id": 24,
+          "component": "UIKitCore (UIScrollView)",
+          "method": "-[UIScrollView _scrollViewDidEndDeceleratingForDelegate]",
+          "address": "0x1848b6a20",
+          "operation": "Inspects _scrollViewFlags.delegateScrollViewDidEndDecelerating; dispatches -[id<UIScrollViewDelegate> scrollViewDidEndDecelerating:]."
+        },
+        {
+          "step_id": 25,
+          "component": "QuartzCore (CATransaction)",
+          "method": "+[CATransaction commit]",
+          "address": "0x184315200",
+          "operation": "Packages modified layer bounds tree into render server IPC payload, serialized via shared memory to backboardd render engine."
+        },
+        {
+          "step_id": 26,
+          "component": "QuartzCore (RenderServer)",
+          "method": "CA::Render::Server::render_scene",
+          "address": "0x184320100",
+          "operation": "GPU Metal command encoder executes tiled fragment shading, presenting frame to display controller on hardware VBLANK."
+        }
+      ],
+      "display_timing": {
+        "vfd_promotion_range": {
+          "minimum_hz": 80.0,
+          "maximum_hz": 120.0,
+          "preferred_hz": 120.0
+        },
+        "idle_range": {
+          "minimum_hz": 10.0,
+          "maximum_hz": 60.0,
+          "preferred_hz": 60.0
+        },
+        "stop_velocity_threshold_pts_sec": 0.1
+      }
+    }
+  }
+}

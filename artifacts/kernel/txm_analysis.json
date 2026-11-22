@@ -1,0 +1,665 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "summary": {
+    "component": "Trusted Execution Monitor (TXM)",
+    "target_soc": "t8150",
+    "target_hardware": "iPhone18,3",
+    "version": "7.0.0 (Darwin 27.2 / build 24B119 / module 217.0.2)",
+    "bundle_identifier": "com.apple.security.libimage4.TXMonitor",
+    "base_virtual_address": "0xfffffff017004000",
+    "entry_point": "0xfffffff017084000",
+    "execution_level": "Guarded EL3/EL2",
+    "architectural_role": "Trusted Execution Monitor (TXM) is Apple's hardware-isolated Code Signing Monitor (CSM) and Image4 Trust Evaluation Engine running in Guarded EL1 (GL1) under the Guarded Execution Filter (GXF). In coordination with the Secure Page Table Monitor (SPTM at GL2), TXM cryptographically authenticates all code pages, Image4 manifests, cryptex1 roots, and TrustCaches, dynamically enforcing Stage-2 executable protections and hardware trust domain boundaries across DarwinOS, Exclaves, and XNU kernel."
+  },
+  "metadata": {
+    "source_im4p_release": "iPhone18,3_27.2_24B119_Restore/Firmware/txm.iphoneos.release.im4p",
+    "source_im4p_research": "iPhone18,3_27.2_24B119_Restore/Firmware/txm.iphoneos.research.im4p",
+    "im4p_tag": "trxm",
+    "im4p_file_size_release": 224174,
+    "im4p_file_size_research": 224183,
+    "raw_payload_size": 557088,
+    "uuid": "1eb0eb97-f667-3470-97b9-1cd95d26246f",
+    "build_toolchain": "Apple LLVM 14.0 (clang-1400.0.29.202) / DarwinBuilder 23A344017 / Xcode 2700 (27A225b)"
+  },
+  "macho_structure": {
+    "header": {
+      "magic": "0xfeedfacf (MH_MAGIC_64)",
+      "cputype": "0x0100000c (CPU_TYPE_ARM64)",
+      "cpusubtype": "0xc0000002 (CPU_SUBTYPE_ARM64E)",
+      "filetype": "0x00000002 (MH_EXECUTE)",
+      "ncmds": 11,
+      "sizeofcmds": 1984,
+      "flags": "0x00200001 (MH_NOUNDEFS | MH_PIE)"
+    },
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0xfffffff017004000",
+        "vmsize": "0x0001c000",
+        "fileoff": "0x00000000",
+        "filesize": "0x0001c000",
+        "sections": [
+          {
+            "name": "__cstring",
+            "addr": "0xfffffff017004820",
+            "size": "0x00006516",
+            "offset": "0x00000820"
+          },
+          {
+            "name": "__const",
+            "addr": "0xfffffff01700ad40",
+            "size": "0x00012338",
+            "offset": "0x00006d40"
+          },
+          {
+            "name": "__binname",
+            "addr": "0xfffffff01701d078",
+            "size": "0x00000040",
+            "offset": "0x00019078"
+          },
+          {
+            "name": "__info_plist",
+            "addr": "0xfffffff01701d0b8",
+            "size": "0x000004fa",
+            "offset": "0x000190b8"
+          },
+          {
+            "name": "__chain_starts",
+            "addr": "0xfffffff01701d5b4",
+            "size": "0x00000014",
+            "offset": "0x000195b4"
+          }
+        ]
+      },
+      {
+        "name": "__DATA_CONST",
+        "vmaddr": "0xfffffff017020000",
+        "vmsize": "0x00010000",
+        "fileoff": "0x0001c000",
+        "filesize": "0x00010000",
+        "sections": [
+          {
+            "name": "__const",
+            "addr": "0xfffffff017020000",
+            "size": "0x0000d5c8",
+            "offset": "0x0001c000"
+          },
+          {
+            "name": "__auth_ptr",
+            "addr": "0xfffffff01702d5c8",
+            "size": "0x00000070",
+            "offset": "0x000295c8"
+          }
+        ]
+      },
+      {
+        "name": "__TEXT_EXEC",
+        "vmaddr": "0xfffffff017030000",
+        "vmsize": "0x00050000",
+        "fileoff": "0x0002c000",
+        "filesize": "0x00050000",
+        "sections": [
+          {
+            "name": "__text",
+            "addr": "0xfffffff017030000",
+            "size": "0x00049c28",
+            "offset": "0x0002c000"
+          },
+          {
+            "name": "__exc",
+            "addr": "0xfffffff01707c000",
+            "size": "0x000008a0",
+            "offset": "0x00078000"
+          }
+        ]
+      },
+      {
+        "name": "__TEXT_BOOT_EXEC",
+        "vmaddr": "0xfffffff017080000",
+        "vmsize": "0x00008000",
+        "fileoff": "0x0007c000",
+        "filesize": "0x00008000",
+        "sections": [
+          {
+            "name": "__text",
+            "addr": "0xfffffff017080000",
+            "size": "0x00004060",
+            "offset": "0x0007c000"
+          },
+          {
+            "name": "__bootcode",
+            "addr": "0xfffffff017084060",
+            "size": "0x00000278",
+            "offset": "0x00080060"
+          }
+        ]
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0xfffffff017088000",
+        "vmsize": "0x00004000",
+        "fileoff": "0x00084000",
+        "filesize": "0x00004000",
+        "sections": [
+          {
+            "name": "__data",
+            "addr": "0xfffffff017088000",
+            "size": "0x000002d0",
+            "offset": "0x00084000"
+          },
+          {
+            "name": "__common",
+            "addr": "0xfffffff0170882d0",
+            "size": "0x00000f80",
+            "offset": "0x000842d0"
+          },
+          {
+            "name": "__bss",
+            "addr": "0xfffffff017089250",
+            "size": "0x00000598",
+            "offset": "0x00085250"
+          }
+        ]
+      },
+      {
+        "name": "__LINKEDIT",
+        "vmaddr": "0xfffffff01708c000",
+        "vmsize": "0x00004000",
+        "fileoff": "0x00088000",
+        "filesize": "0x00000020",
+        "sections": []
+      }
+    ]
+  },
+  "embedded_plist": {
+    "cf_bundle_display_name": "Code Signing Monitor Image4 Module",
+    "cf_bundle_executable": "libimage4_TXM.a",
+    "cf_bundle_identifier": "com.apple.security.libimage4.TXMonitor",
+    "cf_bundle_name": "image4_TXM",
+    "cf_bundle_short_version": "7.0.0",
+    "cf_bundle_version": "374",
+    "dt_platform_version": "27.2",
+    "darwin_variant": "RELEASE"
+  },
+  "entrypoints": {
+    "primary_entrypoint": {
+      "virtual_address": "0xfffffff017084000",
+      "file_offset": "0x00080000",
+      "source_load_command": "LC_UNIXTHREAD",
+      "flavor": "ARM_THREAD_STATE64 (flavor=6, count=68)"
+    },
+    "bootcode_entrypoint": {
+      "virtual_address": "0xfffffff017084060",
+      "file_offset": "0x00080060",
+      "section_name": "__TEXT_BOOT_EXEC,__bootcode",
+      "size": "0x00000278"
+    },
+    "exception_base_address": "0xfffffff01707c000"
+  },
+  "exception_vectors": {
+    "vector_table_address": "0xfffffff01707c000",
+    "vector_table_size": "0x000008a0",
+    "slots": [
+      {
+        "slot_index": 0,
+        "offset": "0x000",
+        "virtual_address": "0xfffffff01707c000",
+        "context": "Current EL with SP0",
+        "exception_type": "Synchronous Exception",
+        "handler_type": "DISPATCH_LITERAL",
+        "prologue_instruction": "stp x0, x1, [sp, #-0x10]!",
+        "target_literal_offset": "0xfffffff01707c898",
+        "disassembly": "stp x0, x1, [sp, #-0x10]!; mov x1, #0x3; ldr x0, 0xfffffff01707c898; braaz x0"
+      },
+      {
+        "slot_index": 1,
+        "offset": "0x080",
+        "virtual_address": "0xfffffff01707c080",
+        "context": "Current EL with SP0",
+        "exception_type": "IRQ / vIRQ",
+        "handler_type": "DISPATCH_LITERAL",
+        "prologue_instruction": "stp x0, x1, [sp, #-0x10]!",
+        "target_literal_offset": "0xfffffff01707c890",
+        "disassembly": "stp x0, x1, [sp, #-0x10]!; mov x1, #0x0; ldr x0, 0xfffffff01707c890; braaz x0"
+      },
+      {
+        "slot_index": 2,
+        "offset": "0x100",
+        "virtual_address": "0xfffffff01707c100",
+        "context": "Current EL with SP0",
+        "exception_type": "FIQ / vFIQ",
+        "handler_type": "DISPATCH_LITERAL",
+        "prologue_instruction": "stp x0, x1, [sp, #-0x10]!",
+        "target_literal_offset": "0xfffffff01707c890",
+        "disassembly": "stp x0, x1, [sp, #-0x10]!; mov x1, #0x1; ldr x0, 0xfffffff01707c890; braaz x0"
+      },
+      {
+        "slot_index": 3,
+        "offset": "0x180",
+        "virtual_address": "0xfffffff01707c180",
+        "context": "Current EL with SP0",
+        "exception_type": "SError / vSError",
+        "handler_type": "DISPATCH_LITERAL",
+        "prologue_instruction": "stp x0, x1, [sp, #-0x10]!",
+        "target_literal_offset": "0xfffffff01707c890",
+        "disassembly": "stp x0, x1, [sp, #-0x10]!; mov x1, #0x2; ldr x0, 0xfffffff01707c890; braaz x0"
+      },
+      {
+        "slot_index": 4,
+        "offset": "0x200",
+        "virtual_address": "0xfffffff01707c200",
+        "context": "Current EL with SPx",
+        "exception_type": "Synchronous Exception",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 5,
+        "offset": "0x280",
+        "virtual_address": "0xfffffff01707c280",
+        "context": "Current EL with SPx",
+        "exception_type": "IRQ / vIRQ",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 6,
+        "offset": "0x300",
+        "virtual_address": "0xfffffff01707c300",
+        "context": "Current EL with SPx",
+        "exception_type": "FIQ / vFIQ",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 7,
+        "offset": "0x380",
+        "virtual_address": "0xfffffff01707c380",
+        "context": "Current EL with SPx",
+        "exception_type": "SError / vSError",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 8,
+        "offset": "0x400",
+        "virtual_address": "0xfffffff01707c400",
+        "context": "Lower EL using AArch64",
+        "exception_type": "Synchronous Exception (SMC / HVC / Supervisor Traps)",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 9,
+        "offset": "0x480",
+        "virtual_address": "0xfffffff01707c480",
+        "context": "Lower EL using AArch64",
+        "exception_type": "IRQ / vIRQ",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 10,
+        "offset": "0x500",
+        "virtual_address": "0xfffffff01707c500",
+        "context": "Lower EL using AArch64",
+        "exception_type": "FIQ / vFIQ",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 11,
+        "offset": "0x580",
+        "virtual_address": "0xfffffff01707c580",
+        "context": "Lower EL using AArch64",
+        "exception_type": "SError / vSError",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 12,
+        "offset": "0x600",
+        "virtual_address": "0xfffffff01707c600",
+        "context": "Lower EL using AArch32",
+        "exception_type": "Synchronous Exception",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 13,
+        "offset": "0x680",
+        "virtual_address": "0xfffffff01707c680",
+        "context": "Lower EL using AArch32",
+        "exception_type": "IRQ / vIRQ",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 14,
+        "offset": "0x700",
+        "virtual_address": "0xfffffff01707c700",
+        "context": "Lower EL using AArch32",
+        "exception_type": "FIQ / vFIQ",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 15,
+        "offset": "0x780",
+        "virtual_address": "0xfffffff01707c780",
+        "context": "Lower EL using AArch32",
+        "exception_type": "SError / vSError",
+        "handler_type": "PANIC_LOOP",
+        "prologue_instruction": "mov x0, #0xdead",
+        "target_literal_offset": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      }
+    ]
+  },
+  "smc_dispatch_tables": {
+    "image4_dispatch_handlers": [
+      {
+        "handler_id": 0,
+        "name": "image4_verify_manifest_and_payload",
+        "purpose": "Cryptographically validates an Image4 manifest against signing authorities, checks chip anti-replay nonces, verifies cryptographic hash of payload, and evaluates security domain fusing.",
+        "subpolicies": [
+          "rpnh (root pubkey hash)",
+          "vnum (build version minimum)",
+          "EPRO (effective production)",
+          "ESEC (effective security)",
+          "first-stage anti-replay",
+          "cryptex1 nonce verification",
+          "restore-info anti-replay"
+        ]
+      },
+      {
+        "handler_id": 1,
+        "name": "image4_pin_root",
+        "purpose": "Disallowed/unsupported on production iPhone18,3 variant ('image4 dispatch: pin root not supported on this variant'); rejects arbitrary root authority pinning to prevent trust anchor substitution.",
+        "subpolicies": [
+          "root-ca-lockout",
+          "hardened-trust-anchor-enforcement"
+        ]
+      },
+      {
+        "handler_id": 2,
+        "name": "image4_evaluate_trust",
+        "purpose": "Evaluates candidate certificate chains against Apple Root CA and CoreTrust trust store; disabled for arbitrary external invocation on this variant to enforce strict CSM gating.",
+        "subpolicies": [
+          "coreTrustVerifyChain",
+          "coreTrustVerifySignature",
+          "CTAmfiVerifyCertificateChain"
+        ]
+      },
+      {
+        "handler_id": 3,
+        "name": "image4_parse_manifest_properties",
+        "purpose": "Parses and extracts normalized ASN.1 DER properties from Image4 manifest headers, ensuring 0x2c-byte buffer bounds and validating manifest versioning.",
+        "subpolicies": [
+          "der-decode-validation",
+          "manifest-property-bounds-check",
+          "tag-normalization"
+        ]
+      },
+      {
+        "handler_id": 4,
+        "name": "image4_query_status_properties",
+        "purpose": "Queries current Image4 module state, active boot nonce descriptor, mix-and-match allowance, and secure boot state (8-byte query buffer).",
+        "subpolicies": [
+          "nonce-status-query",
+          "mix-and-match-check",
+          "secure-boot-state-interrogation"
+        ]
+      },
+      {
+        "handler_id": 5,
+        "name": "image4_map_and_authorize_executable",
+        "purpose": "Authorizes code memory mapping into XNU/Exclave address spaces; enforces 16KB (0x4000) page alignment and valid physical memory descriptors before calling SPTM to seal page permissions to executable.",
+        "subpolicies": [
+          "16kb-alignment-verification",
+          "memory-range-overflow-check",
+          "sptm-permission-lock-coordination",
+          "panicked-kernel-mapping-denial"
+        ]
+      }
+    ],
+    "nonce_management_routines": [
+      {
+        "routine_name": "_txm_runtime_set_nonce",
+        "purpose": "Initializes or registers a hardware anti-replay nonce slot during early boot stage from device tree /chosen node.",
+        "security_constraint": "Allowed only during boot expert initialization; rejected after lockdown."
+      },
+      {
+        "routine_name": "_txm_runtime_roll_nonce",
+        "purpose": "Regenerates cryptographic anti-replay nonce for an authenticated domain (e.g. mobile-asset or update-brain).",
+        "security_constraint": "Requires com.apple.private.image4.nonce.propose.mobile-asset or entitlement to roll nonce; rejects unentitled callers."
+      },
+      {
+        "routine_name": "_txm_runtime_copy_nonce",
+        "purpose": "Securely copies the active anti-replay nonce digest for a designated domain into an authorized caller buffer.",
+        "security_constraint": "Prevents buffer overflow via strict digest size assertion (actual <= expected)."
+      }
+    ],
+    "trustcache_management_routines": [
+      {
+        "operation": "load_trust_cache",
+        "entitlement_required": "com.apple.private.pmap.load-trust-cache",
+        "description": "Loads an external or engineered TrustCache module into TXM's guarded memory, verifies its signature against the Image4 root authority, and adds CDHashes to authorized execution tables."
+      },
+      {
+        "operation": "unload_trust_cache",
+        "entitlement_required": "com.apple.private.unload-trust-cache",
+        "description": "Revokes and unmaps an ephemeral TrustCache module, invalidating all associated CDHash entries from the authorized execution table."
+      },
+      {
+        "operation": "validate_cdhash",
+        "entitlement_required": "com.apple.private.amfi.can-execute-cdhash / can-load-cdhash",
+        "description": "Hardware-accelerated lookup verifying whether a candidate Mach-O binary's Code Directory Hash (CDHash) is present in the static boot TrustCache or an authenticated dynamic TrustCache."
+      }
+    ],
+    "core_entitlements_routines": {
+      "validation_primitive": "CEContextInitWithType",
+      "subset_primitive": "CEValidateSubtypeEntitlements / CESelectEntitlementsPass",
+      "restricted_domains": [
+        "com.apple.developer.web-browser-engine.host",
+        "com.apple.developer.web-browser-engine.webcontent",
+        "com.apple.system-task-ports.control",
+        "com.apple.system-task-ports.token.control",
+        "com.apple.private.enable-swift-playgrounds-validation",
+        "com.apple.developer.swift-playgrounds-app.development-build"
+      ]
+    },
+    "system_device_tree_nodes": [
+      "/chosen/debug-enabled",
+      "/chosen/esdm-fuses",
+      "/chosen/chip-id",
+      "/chosen/darwinos-security-environment",
+      "/chosen/cs-system-policy",
+      "/chosen/security-mode-change-enable",
+      "/chosen/amfi-only-platform-code",
+      "/chosen/research-enabled",
+      "/chosen/research ERM",
+      "/chosen/sepfw-load-at-boot",
+      "/chosen/osenvironment",
+      "/chosen/memory-map/TrustCache",
+      "/chosen/iBoot/iboot-build-variant",
+      "/chosen/unique-chip-id",
+      "/chosen/unique-device-id-string",
+      "/product/udid-version",
+      "/defaults/vmm-present"
+    ]
+  },
+  "trust_domain_boundaries": {
+    "guarded_execution_context": {
+      "stack_protection": "Guarded monitor stack initialized with 16KB alignment, guard page offsets, and software stack canaries ('STCKGAD').",
+      "panic_markers": [
+        "TXM [Panic]: provided stack is not page-aligned",
+        "TXM [Panic]: provided thread stack is already in use",
+        "TXM [Panic]: provided thread stack cannot be resumed",
+        "denying executable mapping as the kernel has panicked",
+        "trapped due to a sanitizer runtime violation"
+      ],
+      "reentrancy_isolation": "Monitor execution state tracks thread stack activation flags and prevents concurrent reentrant invocations on a single execution context."
+    },
+    "nonce_domain_segregation": [
+      {
+        "domain_tag": "cryptex1.boot.os",
+        "domain_name": "Cryptex1 SystemOS Boot Domain",
+        "description": "Protects Cryptex1 SystemOS disk image and shared cache binaries against anti-replay and version rollback."
+      },
+      {
+        "domain_tag": "cryptex1.boot.app",
+        "domain_name": "Cryptex1 AppOS Boot Domain",
+        "description": "Enforces independent anti-replay epoch for Cryptex1 system applications and decoupled userland runtimes."
+      },
+      {
+        "domain_tag": "cryptex1.preboot.os",
+        "domain_name": "Cryptex1 PreBoot OS Domain",
+        "description": "Validates preboot recovery environment and hardware bootstrap manifests."
+      },
+      {
+        "domain_tag": "cryptex1.safari-downlevel",
+        "domain_name": "Cryptex1 Safari Downlevel Protection Domain",
+        "description": "Restricts Safari WebKit browser engine version regressions and enforces dedicated downgrade protection."
+      },
+      {
+        "domain_tag": "personalized.cryptex1.update-brain",
+        "domain_name": "Personalized Update Brain Domain",
+        "description": "Authorizes MobileSoftwareUpdate ephemeral brain execution with cryptographic device personalization."
+      },
+      {
+        "domain_tag": "cryptex1.boot.rosetta",
+        "domain_name": "Rosetta Emulation Execution Domain",
+        "description": "Validates translation runtime manifests for x86_64 binary emulation under ARM64E hardware."
+      }
+    ],
+    "darwin_pseudo_expert_interface": {
+      "device_id_providers": [
+        "UniqueDeviceIDv2 query from /chosen/unique-device-id-string",
+        "UniqueChipID query from /chosen/unique-chip-id",
+        "UDID Version query from /product/udid-version"
+      ],
+      "volume_uuid_validators": [
+        "fbe71da1-0834-4d49-9b41-d3fa7f9e4d4f",
+        "9c0fab7e-93cf-4d83-8340-9ea33b5846cc",
+        "d9d5fa63-7084-4346-bada-96e463ad1771",
+        "c7854afa-6894-4864-8d3c-15f6ccc6728d"
+      ],
+      "diavlo_root_ca_provider": "CoreTrust hardware embedded root certificate authority with SHA-384 / SHA-256 trust validation."
+    },
+    "satellite_trust_evaluation": {
+      "enforcement_policy": "Image4 satellite evaluation disables 'vnum', 'EPRO', 'ESEC', 'vuid', 'stng', 'lobo', 'iuob', and 'data' policy overrides.",
+      "disallowed_type_format": "0x%08X",
+      "description": "Satellite trust evaluation ensures coprocessor or secondary image verification cannot alter primary boot policy or bypass root hardware fusing checks."
+    }
+  },
+  "cryptographic_primitives": {
+    "coretrust_verification": [
+      "coreTrustVerifyChain",
+      "coreTrustVerifySignature",
+      "CTAmfiVerifyCertificateChain",
+      "SCVerifySignature"
+    ],
+    "manifest_evaluation_policies": [
+      "rpnh (Root Public Key Hash Verification)",
+      "vnum (Operating System Version Minimum Enforcement)",
+      "EPRO (Effective Production Status Matching)",
+      "ESEC (Effective Security Mode Matching)",
+      "First-stage anti-replay nonce validation",
+      "Cryptex1 anti-replay domain validation",
+      "Restore-info seed anti-replay computation",
+      "Subsequent stage policy and digest chain verification"
+    ],
+    "payload_evaluation_policies": [
+      "Payload type four-character tag matching",
+      "Cryptographic payload digest calculation (SHA-256 / SHA-384)",
+      "Fusing policy four-character tag verification",
+      "Production status and security mode consistency checks",
+      "Auxiliary policy validation based on target hardware model"
+    ]
+  },
+  "differential_release_vs_research": {
+    "total_divergent_bytes": 3981,
+    "code_logic_divergence_count": 0,
+    "instruction_shift_divergence_count": 124,
+    "section_diff_summary": [
+      {
+        "section": "LC_UUID (Mach-O Header)",
+        "segment": "<HEADER>",
+        "diff_bytes": 16,
+        "explanation": "Mach-O header LC_UUID load command build identifier difference (16 bytes)."
+      },
+      {
+        "section": "__cstring",
+        "segment": "__TEXT",
+        "diff_bytes": 3836,
+        "explanation": "One-byte length disparity in version string ('txm.iphoneos.release.TrustedExecutionMonitor_Guarded-217.0.2' [47 bytes] vs 'txm.iphoneos.research.TrustedExecutionMonitor_Guarded-217.0.2' [48 bytes]) shifts all subsequent strings until null alignment padding."
+      },
+      {
+        "section": "__binname",
+        "segment": "__TEXT",
+        "diff_bytes": 4,
+        "explanation": "Binary name string difference: 'txm.iphoneos.release' vs 'txm.iphoneos.research'."
+      },
+      {
+        "section": "__text",
+        "segment": "__TEXT_EXEC",
+        "diff_bytes": 125,
+        "explanation": "Exactly 124 instructions diverge by 4 bytes in immediate operands of 'add xN, xN, #imm12' instructions, compensating for page-relative offset displacements of strings in __cstring. Zero branch targets, security gates, or algorithmic instructions diverge."
+      },
+      {
+        "section": "__exc",
+        "segment": "__TEXT_EXEC",
+        "diff_bytes": 0,
+        "explanation": "Exception vector table is 100% byte-identical between release and research variants."
+      },
+      {
+        "section": "__bootcode",
+        "segment": "__TEXT_BOOT_EXEC",
+        "diff_bytes": 0,
+        "explanation": "Boot execution code is 100% byte-identical between release and research variants."
+      },
+      {
+        "section": "__data / __common / __bss",
+        "segment": "__DATA",
+        "diff_bytes": 0,
+        "explanation": "Data segments are 100% byte-identical between release and research variants."
+      }
+    ],
+    "string_divergence": {
+      "release_exclusive": [
+        "txm.iphoneos.release.TrustedExecutionMonitor_Guarded-217.0.2"
+      ],
+      "research_exclusive": [
+        "txm.iphoneos.research.TrustedExecutionMonitor_Guarded-217.0.2"
+      ]
+    },
+    "plist_comparison": {
+      "identical": true,
+      "notes": "Embedded __info_plist section is 100% byte-identical between release and research images; both declare CFBundleIdentifier com.apple.security.libimage4.TXMonitor and CFBundleShortVersionString 7.0.0."
+    },
+    "architectural_conclusion": "The release and research variants of Apple TXM firmware share identical cryptographic enforcement rules, exception vectors, and SMC dispatch tables. Zero security checks or diagnostic bypasses are compiled into the research binary; all operational divergence is governed dynamically at runtime via the /chosen/research-enabled device-tree entitlement queried during boot initialization."
+  }
+}

@@ -1,0 +1,327 @@
+{
+  "schema_version": "1.0",
+  "target_os": "iOS 27.2 (24B119)",
+  "architecture": "arm64e (PAC00)",
+  "subsystems": [
+    "UIGestureRecognizerArena",
+    "_UIGestureEnvironment",
+    "_UISystemGestureGate",
+    "UIGestureRecognizer"
+  ],
+  "states": {
+    "Possible": {
+      "value": 0,
+      "enum_name": "UIGestureRecognizerStatePossible",
+      "is_terminal": false,
+      "is_tracking": false,
+      "description": "Initial resting state. Touch points and initial timestamps are cached into tracking structures. Cumulative movement is tested against spatial/temporal gates without mutating view state."
+    },
+    "Began": {
+      "value": 1,
+      "enum_name": "UIGestureRecognizerStateBegan",
+      "is_terminal": false,
+      "is_tracking": true,
+      "description": "Continuous gesture recognized. Movement threshold exceeded or ballistic interruption occurred. Competitor subview touches cancelled unless simultaneous recognition is granted."
+    },
+    "Changed": {
+      "value": 2,
+      "enum_name": "UIGestureRecognizerStateChanged",
+      "is_terminal": false,
+      "is_tracking": true,
+      "description": "Continuous interactive update state. Touch displacement, velocity, scale, or rotation updates view state on each digitizer scan tick."
+    },
+    "Ended": {
+      "value": 3,
+      "enum_name": "UIGestureRecognizerStateEnded",
+      "is_terminal": true,
+      "is_tracking": false,
+      "description": "Terminal recognized state. For continuous gestures, touch contact has lifted; release velocity is computed. For discrete gestures (Tap/Swipe), gesture recognition is fully satisfied."
+    },
+    "Cancelled": {
+      "value": 4,
+      "enum_name": "UIGestureRecognizerStateCancelled",
+      "is_terminal": true,
+      "is_tracking": false,
+      "description": "Terminal interrupted state. Aborted by external hardware interrupt, system edge gesture preemption via _UISystemGestureGate, incoming telephone call, or parent view takeover."
+    },
+    "Failed": {
+      "value": 5,
+      "enum_name": "UIGestureRecognizerStateFailed",
+      "is_terminal": true,
+      "is_tracking": false,
+      "description": "Terminal failure state. Input sequence violated recognition constraints (e.g. wander > 10pt before tap up, duration > 250ms, direction mismatch, or delegate veto). Unblocks failure dependents."
+    }
+  },
+  "transitions": [
+    {
+      "transition_id": "TRANS-01",
+      "from": "Possible",
+      "to": "Began",
+      "trigger": "touchesMoved:withEvent:",
+      "predicate": "euclidean_distance(p_curr, p0) >= touchSlopThreshold && _gestureRecognizerShouldBegin == YES && failureRequirementsSatisfied == YES",
+      "applies_to": [
+        "UIPanGestureRecognizer",
+        "UIPinchGestureRecognizer",
+        "UIRotationGestureRecognizer"
+      ],
+      "source_function": "UIPanGestureRecognizer.touchesMoved:withEvent:",
+      "source_address": "0x1848b9100",
+      "side_effects": [
+        "Cancels subview touches via -[UIView touchesCancelled:withEvent:] if cancelsTouchesInView == YES",
+        "Evaluates directional lock constraints",
+        "Dispatches target-action with state Began"
+      ],
+      "confidence": "[EXTRACTED]"
+    },
+    {
+      "transition_id": "TRANS-02",
+      "from": "Possible",
+      "to": "Ended",
+      "trigger": "touchesEnded:withEvent:",
+      "predicate": "duration <= maxTapDuration (250ms) && distance <= allowableMovement (10pt) && tapCount == numberOfTapsRequired && failureRequirementsSatisfied == YES",
+      "applies_to": [
+        "UITapGestureRecognizer"
+      ],
+      "source_function": "UITapGestureRecognizer.touchesEnded:withEvent:",
+      "source_address": "0x1848c3100",
+      "side_effects": [
+        "Dispatches discrete target-action with state Ended (Recognized)",
+        "Triggers state reset on next runloop cycle"
+      ],
+      "confidence": "[EXTRACTED]"
+    },
+    {
+      "transition_id": "TRANS-03",
+      "from": "Possible",
+      "to": "Ended",
+      "trigger": "touchesMoved:withEvent: / touchesEnded:withEvent:",
+      "predicate": "primaryDisplacement >= 20.0pt && secondaryDisplacement <= 15.0pt && velocity >= 250.0pt/s && duration <= 250ms",
+      "applies_to": [
+        "UISwipeGestureRecognizer"
+      ],
+      "source_function": "UISwipeGestureRecognizer.touchesMoved:withEvent:",
+      "source_address": "0x1848c2600",
+      "side_effects": [
+        "Dispatches discrete swipe action",
+        "Cancels competing pans in same hierarchy"
+      ],
+      "confidence": "[EXTRACTED]"
+    },
+    {
+      "transition_id": "TRANS-04",
+      "from": "Possible",
+      "to": "Began",
+      "trigger": "_longPressFired: (UIDelayedAction timer callback)",
+      "predicate": "elapsedTime >= minimumPressDuration (500ms) && distance <= allowableMovement (10.0pt)",
+      "applies_to": [
+        "UILongPressGestureRecognizer"
+      ],
+      "source_function": "UILongPressGestureRecognizer._longPressFired:",
+      "source_address": "0x1848c3400",
+      "side_effects": [
+        "Transition to Began state",
+        "Cancels subview touches",
+        "Fires continuous target-action"
+      ],
+      "confidence": "[EXTRACTED]"
+    },
+    {
+      "transition_id": "TRANS-05",
+      "from": "Possible",
+      "to": "Failed",
+      "trigger": "touchesMoved:withEvent: / touchesEnded:withEvent:",
+      "predicate": "distance > allowableMovement (for Tap) || duration > maxTapDuration || directionMismatch == YES || [delegate shouldBegin] == NO",
+      "applies_to": [
+        "All Gesture Recognizers"
+      ],
+      "source_function": "UIGestureRecognizer._setState:",
+      "source_address": "0x1848c4100",
+      "side_effects": [
+        "Signals _UIGestureEnvironment to evaluate _failureDependents set",
+        "Unblocks waiting gestures in failure dependency DAG"
+      ],
+      "confidence": "[EXTRACTED]"
+    },
+    {
+      "transition_id": "TRANS-06",
+      "from": "Possible",
+      "to": "Cancelled",
+      "trigger": "touchesCancelled:withEvent: / system interruption",
+      "predicate": "systemModalPresented == YES || incomingCallAlert == YES || _UISystemGestureGate recognized",
+      "applies_to": [
+        "All Gesture Recognizers"
+      ],
+      "source_function": "UIGestureRecognizer._cancelIfActive",
+      "source_address": "0x1848c4500",
+      "side_effects": [
+        "Aborts tracking immediately",
+        "Releases touch references"
+      ],
+      "confidence": "[EXTRACTED]"
+    },
+    {
+      "transition_id": "TRANS-07",
+      "from": "Began",
+      "to": "Changed",
+      "trigger": "touchesMoved:withEvent:",
+      "predicate": "state == Began && touchStreamActive == YES",
+      "applies_to": [
+        "UIPanGestureRecognizer",
+        "UIPinchGestureRecognizer",
+        "UIRotationGestureRecognizer"
+      ],
+      "source_function": "UIPanGestureRecognizer.touchesMoved:withEvent:",
+      "source_address": "0x1848b9100",
+      "side_effects": [
+        "Updates translation / scale / rotation delta",
+        "Inserts sample into velocity ring buffer",
+        "Dispatches target-action with state Changed"
+      ],
+      "confidence": "[EXTRACTED]"
+    },
+    {
+      "transition_id": "TRANS-08",
+      "from": "Changed",
+      "to": "Changed",
+      "trigger": "touchesMoved:withEvent:",
+      "predicate": "state == Changed",
+      "applies_to": [
+        "UIPanGestureRecognizer",
+        "UIPinchGestureRecognizer",
+        "UIRotationGestureRecognizer"
+      ],
+      "source_function": "UIPanGestureRecognizer.touchesMoved:withEvent:",
+      "source_address": "0x1848b9100",
+      "side_effects": [
+        "Applies EMA smoothing filter (alpha = 0.85)",
+        "Evaluates rubber-band bounds resistance if applicable",
+        "Dispatches target-action"
+      ],
+      "confidence": "[EXTRACTED]"
+    },
+    {
+      "transition_id": "TRANS-09",
+      "from": "Changed",
+      "to": "Ended",
+      "trigger": "touchesEnded:withEvent:",
+      "predicate": "allTrackingTouchesEnded == YES",
+      "applies_to": [
+        "UIPanGestureRecognizer",
+        "UIPinchGestureRecognizer",
+        "UIRotationGestureRecognizer",
+        "UILongPressGestureRecognizer"
+      ],
+      "source_function": "UIPanGestureRecognizer.touchesEnded:withEvent:",
+      "source_address": "0x1848b9400",
+      "side_effects": [
+        "Evaluates final release velocity vector via OLS regression over ring buffer",
+        "Computes projected deceleration target offset",
+        "Dispatches target-action with state Ended"
+      ],
+      "confidence": "[EXTRACTED]"
+    },
+    {
+      "transition_id": "TRANS-10",
+      "from": "Began / Changed",
+      "to": "Cancelled",
+      "trigger": "touchesCancelled:withEvent:",
+      "predicate": "interruptionDispatched == YES || systemGesturePreempted == YES",
+      "applies_to": [
+        "All Continuous Recognizers"
+      ],
+      "source_function": "UIGestureRecognizer._cancelIfActive",
+      "source_address": "0x1848c4500",
+      "side_effects": [
+        "Clears dragging flags without ballistic momentum fling",
+        "Animates resting spring return if resting outside valid bounds",
+        "Dispatches target-action with state Cancelled"
+      ],
+      "confidence": "[EXTRACTED]"
+    },
+    {
+      "transition_id": "TRANS-11",
+      "from": "Terminal (Ended / Cancelled / Failed)",
+      "to": "Possible",
+      "trigger": "reset (internal runloop tick)",
+      "predicate": "terminalStateReached == YES",
+      "applies_to": [
+        "All Gesture Recognizers"
+      ],
+      "source_function": "UIGestureRecognizer.reset",
+      "source_address": "0x1848c4700",
+      "side_effects": [
+        "Flushes velocity ring buffer",
+        "Resets directional lock state to LockAxisNone",
+        "Clears touch array and restores state to Possible (0)"
+      ],
+      "confidence": "[EXTRACTED]"
+    }
+  ],
+  "arbitration_rules": {
+    "default_winner": "highest_view_z_order_wins",
+    "simultaneous_allowed_by_default": false,
+    "simultaneous_delegation_protocol": "gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:",
+    "simultaneous_evaluation_logic": "delegateA_allows || delegateB_allows",
+    "failure_requirement_chain": true,
+    "failure_dag_evaluation": "Topological sorting over UIGestureGraph; recognizer A remains in Possible with _isPendingRecognition=YES until all required recognizers enter Failed state.",
+    "system_gesture_priority": "System-level edge gestures (Back swipe, Notification Centre, Control Centre, Reachability) register directly in SpringBoard / _UISystemGestureGate, hold touch delivery via delaysTouchesBegan=YES, and preempt userland recognizers unconditionally.",
+    "source_function": "UIGestureRecognizerArena._recognizerShouldBegin",
+    "source_address": "0x1848c5100",
+    "confidence": "[EXTRACTED]"
+  },
+  "priority_ordering": [
+    {
+      "tier": 1,
+      "name": "System Edge Gestures (SpringBoard Gate)",
+      "recognizers": [
+        "_UIBackGestureRecognizer",
+        "_UINotificationCenterGestureRecognizer",
+        "_UIControlCenterGestureRecognizer",
+        "_UIReachabilityGestureRecognizer",
+        "SBHomeGesturePanGestureRecognizer"
+      ],
+      "priority_value": 1000,
+      "preemption_behavior": "Unconditional hardware preemption; holds userland touches via _UISystemGestureGate; cancels active app gestures upon edge commitment."
+    },
+    {
+      "tier": 2,
+      "name": "Screen Edge Recognizers",
+      "recognizers": [
+        "UIScreenEdgePanGestureRecognizer"
+      ],
+      "priority_value": 500,
+      "preemption_behavior": "Captures touches initiating in the 15-20pt display bezel inset; delays internal viewport pan recognition."
+    },
+    {
+      "tier": 3,
+      "name": "Modal & Content Interrupters",
+      "recognizers": [
+        "_UISheetInteractionBackgroundDismissRecognizer",
+        "UIPresentationController dismissal gestures"
+      ],
+      "priority_value": 300,
+      "preemption_behavior": "Preempts underlying content touches when pull-down dismissal vector is initiated."
+    },
+    {
+      "tier": 4,
+      "name": "Direct Subview Userland Recognizers",
+      "recognizers": [
+        "UITapGestureRecognizer (controls/buttons)",
+        "UILongPressGestureRecognizer (context menus)",
+        "UIPanGestureRecognizer (interactive views)"
+      ],
+      "priority_value": 100,
+      "preemption_behavior": "Evaluated in inverse Z-order (deepest subview first). If child recognizer begins, cancels ancestor touches unless simultaneous recognition is granted."
+    },
+    {
+      "tier": 5,
+      "name": "Container Scroll Views & Paging Controllers",
+      "recognizers": [
+        "UIScrollViewPanGestureRecognizer",
+        "_UIScrollViewPinchGestureRecognizer"
+      ],
+      "priority_value": 50,
+      "preemption_behavior": "Delays content touches by 150ms via UIScrollViewDelayedTouchesBeganGestureRecognizer; if touch slop (10pt) is exceeded, cancels subview touches and claims exclusive drag."
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "framework": "UIKitCore.framework",
+    "target": "iPhone18,3_27.2_24B119",
+    "architecture": "arm64e",
+    "subcache_slice": ".01",
+    "vm_base_address": "0x184752000",
+    "generated_at": "2026-11-10T17:00:00+05:30",
+    "specification_version": "1.0.0"
+  },
+  "kinematic_model_classification": {
+    "continuous_decay_model": "Exponential Velocity Decay with Viscous Damping",
+    "differential_equation": "dv/dt = -lambda * v",
+    "differential_equation_latex": "\\frac{dv}{dt} = -\\lambda v = -(1000 \\cdot |\\ln(d)|) v",
+    "velocity_time_function": "v(t) = v_0 * d^(1000 * t) = v_0 * e^(-lambda * t)",
+    "decay_rate_parameter_lambda": "lambda = -1000 * ln(d) (units: s^-1)",
+    "discrete_frame_recurrence": "v_{n+1} = v_n * d^(1000 * Delta_t)",
+    "framerate_invariance_mechanism": "Because the exponent is scaled by elapsed frame delta (Delta_t in seconds), evaluating d^(1000 * Delta_t) ensures identical velocity decay over time regardless of whether CADisplayLink ticks at 60Hz (Delta_t = 16.67ms), 80Hz (Delta_t = 12.50ms), or 120Hz (Delta_t = 8.33ms)"
+  },
+  "deceleration_rate_constants": {
+    "normal": {
+      "constant_name": "UIScrollViewDecelerationRateNormal",
+      "binary_symbol": "_UIScrollViewDecelerationRateNormal",
+      "value_decimal": 0.998,
+      "ieee754_double_hex": "0x3fefef9db22d0e56",
+      "ieee754_single_hex": "0x3f7f7cee",
+      "decay_constant_lambda_per_sec": 2.002002670673079,
+      "decay_factor_per_ms": 0.998,
+      "decay_factor_60hz": 0.9671603592873136,
+      "decay_factor_80hz": 0.9752945203794354,
+      "decay_factor_120hz": 0.9834430939598285,
+      "half_life_sec": 0.346227,
+      "landing_multiplier_Cd": 0.49949983316645474,
+      "constant_vm_address": "0x1864d3030",
+      "constant_file_offset": "0x60d3030",
+      "default_usage": "Default scrolling deceleration rate for standard table views, collection views, and generic viewports"
+    },
+    "fast": {
+      "constant_name": "UIScrollViewDecelerationRateFast",
+      "binary_symbol": "_UIScrollViewDecelerationRateFast",
+      "value_decimal": 0.990,
+      "ieee754_double_hex": "0x3fefae147ae147ae",
+      "ieee754_single_hex": "0x3f7d70a4",
+      "decay_constant_lambda_per_sec": 10.05033585350145,
+      "decay_factor_per_ms": 0.990,
+      "decay_factor_60hz": 0.8456254648771407,
+      "decay_factor_80hz": 0.8819445200155097,
+      "decay_factor_120hz": 0.9195789606518174,
+      "half_life_sec": 0.068968,
+      "landing_multiplier_Cd": 0.09949916247342207,
+      "constant_vm_address": "0x1864d3038",
+      "constant_file_offset": "0x60d3038",
+      "default_usage": "High-friction deceleration rate used for pagination carousels, photo galleries, and picker wheels"
+    },
+    "paging": {
+      "constant_name": "UIScrollViewDecelerationRatePaging",
+      "binary_symbol": "kUIScrollViewDecelerationRatePaging",
+      "value_decimal": 0.985,
+      "ieee754_double_hex": "0x3fef851eb851eb85",
+      "ieee754_single_hex": "0x3f7c28f6",
+      "decay_constant_lambda_per_sec": 15.113063544320297,
+      "decay_factor_per_ms": 0.985,
+      "decay_factor_60hz": 0.7773298642730623,
+      "decay_factor_80hz": 0.8277257179093374,
+      "decay_factor_120hz": 0.8816631240369877,
+      "half_life_sec": 0.045864,
+      "landing_multiplier_Cd": 0.06616792461972624,
+      "constant_vm_address": "0x1864d3040",
+      "constant_file_offset": "0x60d3040",
+      "default_usage": "Internal deceleration rate applied by UIScrollViewPagingController when pagingEnabled == YES"
+    }
+  },
+  "displacement_and_landing_prediction": {
+    "per_frame_displacement_integral": {
+      "formula": "Delta_s = integral_0^(Delta_t) v(t) dt = (v_n / lambda) * (1 - e^(-lambda * Delta_t))",
+      "discrete_computation": "Delta_s = (v_n - v_{n+1}) / (-1000 * ln(d))",
+      "mathematical_equivalence": "Because v_{n+1} = v_n * d^(1000 * Delta_t) = v_n * e^(-lambda * Delta_t), (v_n - v_{n+1}) / lambda exactly equals the continuous definite integral over [t_n, t_{n+1}], eliminating Euler truncation error"
+    },
+    "closed_form_landing_offset_prediction": {
+      "formula": "s_projected = s_0 + integral_0^infinity v(t) dt = s_0 + v_scroll / (-1000 * ln(d))",
+      "landing_offset_formula_latex": "s_{\\text{projected}} = s_0 + \\frac{v_{\\text{scroll}}}{-1000 \\cdot \\ln(d)} = s_0 + C_d \\cdot v_{\\text{scroll}}",
+      "derivation": "integral_0^infinity v_0 * e^(-lambda * t) dt = [ -(v_0 / lambda) * e^(-lambda * t) ]_0^infinity = 0 - (-(v_0 / lambda)) = v_0 / lambda",
+      "used_by": [
+        "-[UIScrollView handlePan:]",
+        "-[_UIScrollViewDecelerationAnimation projectedOffset]",
+        "-[UIScrollViewPagingController targetOffsetForOffset:velocity:]",
+        "-[UIScrollView _pageDecelerationTarget]"
+      ]
+    }
+  },
+  "stopping_conditions": {
+    "terminal_velocity_threshold_pt_per_sec": 0.1,
+    "terminal_velocity_ieee754_double_hex": "0x3fb999999999999a",
+    "evaluation_condition": "sqrt(v_x^2 + v_y^2) < 0.1 pt/s",
+    "terminal_actions": [
+      "Invalidate and destroy CADisplayLink reference",
+      "Clear isDecelerating flag (_scrollViewFlags.isDecelerating = 0)",
+      "Set final contentOffset to presentationLayer position quantized to view scale grid",
+      "Dispatch -[UIScrollViewDelegate scrollViewDidEndDecelerating:] if delegate responds",
+      "Re-enable interactive subview hit-testing"
+    ]
+  },
+  "boundary_collision_detection": {
+    "collision_condition": "s_{n+1} < minContentOffset OR s_{n+1} > maxContentOffset",
+    "bouncing_enabled_action": "Halt deceleration animation immediately, calculate fractional collision time t_collision, transfer residual kinetic momentum v_boundary to breached axes only in _UIScrollViewSpringAnimation, and enter elastic bounce recovery",
+    "bouncing_disabled_action": "Clamp breached axes directly to boundary limits (minOffset / maxOffset), set colliding velocity components to 0.0, preserve perpendicular deceleration, and terminate animation if all velocity arrested",
+    "severe_hang_action": "If dt > 0.500s (e.g. thread hang or app backgrounding), immediately cancel deceleration via _stopScrollingAndFillDisplayList: and dispatch scrollViewDidEndDecelerating:",
+    "cadisplaylink_integration": "Stepped via CADisplayLink callback _UIScrollViewDecelerationDisplayLinkTick utilizing targetTimestamp for presentation-exact integration"
+  },
+  "decompiled_routines": [
+    {
+      "symbol": "-[_UIScrollViewDecelerationAnimation updateVelocity:timestamp:]",
+      "vm_address": "0x1848c7100",
+      "file_offset": "0x44c7100",
+      "signature": "v40@0:8{CGPoint=dd}16d32",
+      "role": "Evaluates per-frame exponential velocity decay: v_{n+1} = v_n * d^(1000 * dt)"
+    },
+    {
+      "symbol": "-[_UIScrollViewDecelerationAnimation projectedOffset]",
+      "vm_address": "0x1848c7250",
+      "file_offset": "0x44c7250",
+      "signature": "{CGPoint=dd}16@0:8",
+      "role": "Calculates projected rest position: s_proj = s0 + v / (-1000 * ln(d))"
+    },
+    {
+      "symbol": "-[UIScrollViewPagingController targetOffsetForOffset:velocity:]",
+      "vm_address": "0x1848c2100",
+      "file_offset": "0x44c2100",
+      "signature": "{CGPoint=dd}48@0:8{CGPoint=dd}16{CGPoint=dd}32",
+      "role": "Snaps projected landing offset to nearest page boundary detent"
+    }
+  ]
+}

@@ -1,0 +1,245 @@
+{
+  "subsystem": "SwiftUI Declarative Scrolling Engine",
+  "target_environment": {
+    "os": "iOS 27.2",
+    "darwin": "Darwin 24.2.0",
+    "build": "24B119",
+    "device": "iPhone18,3",
+    "soc": "t8150",
+    "processor": "A19 Pro",
+    "architecture": "arm64e",
+    "pointer_authentication": "PAC00"
+  },
+  "frameworks": {
+    "SwiftUI.framework": {
+      "path": "/System/Library/Frameworks/SwiftUI.framework/SwiftUI",
+      "subcache": "dyld_shared_cache_arm64e.03",
+      "vm_base_address": "0x18a8a7000",
+      "file_offset": "0x24a7000",
+      "role": "Public declarative UI framework hosting ScrollView, View modifiers, and layout containers"
+    },
+    "SwiftUICore.framework": {
+      "path": "/System/Library/Frameworks/SwiftUICore.framework/SwiftUICore",
+      "subcache": "dyld_shared_cache_arm64e.03",
+      "vm_base_address": "0x188404000",
+      "file_offset": "0x4000",
+      "role": "Foundational primitive framework defining ScrollGeometry, ScrollPhase, and View graph graph-node types"
+    }
+  },
+  "_UIHostingScrollView": {
+    "class_name": "_UIHostingScrollView",
+    "swift_demangled_name": "SwiftUI.HostingScrollView",
+    "superclass": "UIScrollView",
+    "inheritance_chain": [
+      "_UIHostingScrollView",
+      "UIScrollView",
+      "UIView",
+      "UIResponder",
+      "NSObject"
+    ],
+    "subcache_location": {
+      "slice": "dyld_shared_cache_arm64e.03",
+      "symbol_vm_address": "0x18a8b1200",
+      "source_file_reference": "SwiftUI/HostingScrollView_PhoneTVWatch.swift"
+    },
+    "ivars": [
+      {
+        "name": "_bridge",
+        "type": "_SwiftUIScrollViewBridge*",
+        "offset": "+0x138",
+        "size": 8,
+        "description": "Pointer to the SwiftUI coordination bridge maintaining bi-directional state binding"
+      },
+      {
+        "name": "_isProgrammaticUpdate",
+        "type": "bool",
+        "offset": "+0x140",
+        "size": 1,
+        "description": "Echo-suppression guard flag set during programmatic scrollTo operations"
+      },
+      {
+        "name": "_targetBehavior",
+        "type": "id<ScrollTargetBehavior>",
+        "offset": "+0x148",
+        "size": 8,
+        "description": "Active declarative scroll target snapping behavior instance"
+      },
+      {
+        "name": "_geometryListenerRegistered",
+        "type": "bool",
+        "offset": "+0x150",
+        "size": 1,
+        "description": "Indicates active subscription to ScrollGeometry preference updates"
+      },
+      {
+        "name": "_scrollDisabledOverride",
+        "type": "bool",
+        "offset": "+0x151",
+        "size": 1,
+        "description": "Stores scrollDisabled view modifier override independent of isScrollEnabled"
+      }
+    ],
+    "overridden_methods": [
+      {
+        "selector": "setContentOffset:animated:",
+        "address": "0x18a8c4200",
+        "pac_opcode": "0xd503237f",
+        "behavior": "Intercepts content offset mutations, checks _isProgrammaticUpdate to prevent feedback echoes, updates ScrollGeometry, and delegates to super"
+      },
+      {
+        "selector": "_updateScrollPositionAnimated:",
+        "address": "0x18a8c4540",
+        "pac_opcode": "0xd503237f",
+        "behavior": "Internal callback triggered when SwiftUI binding changes; coordinates animation timing curves with CATransaction"
+      },
+      {
+        "selector": "touchesBegan:withEvent:",
+        "address": "0x18a8c5110",
+        "pac_opcode": "0xd503237f",
+        "behavior": "Emits ScrollPhase.interacting transition to SwiftUICore and routes touch to UIKit pan gesture recognizer"
+      },
+      {
+        "selector": "_observeScrollViewDidScroll:",
+        "address": "0x18a8c5890",
+        "pac_opcode": "0xd503237f",
+        "behavior": "Extracts content offset and bounds, constructs new ScrollGeometry struct, and publishes to AttributeGraph"
+      }
+    ]
+  },
+  "_SwiftUIScrollViewBridge": {
+    "class_name": "_SwiftUIScrollViewBridge",
+    "superclass": "NSObject",
+    "vm_address": "0x18a8a7100",
+    "role": "Mediates between value-type SwiftUI AttributeGraph nodes and reference-type UIKitCore views",
+    "synchronization_pipeline": {
+      "interactive_scroll": [
+        "1. User finger movement triggers UIScrollViewPanGestureRecognizer in UIKitCore",
+        "2. UIKitCore updates _contentOffset (+0x100) and calls -[_UIHostingScrollView _observeScrollViewDidScroll:]",
+        "3. Bridge reads contentOffset, contentSize, contentInsets, and boundsSize",
+        "4. Bridge constructs SwiftUICore.ScrollGeometry value struct",
+        "5. Bridge maps offset to bound ScrollPosition value via nearest anchor or raw point",
+        "6. Bridge issues AttributeGraph transaction to re-evaluate downstream SwiftUI views"
+      ],
+      "programmatic_scroll": [
+        "1. Developer mutates $scrollPosition Binding or calls ScrollViewProxy.scrollTo(id, anchor:)",
+        "2. SwiftUI Transaction triggers Bridge updateTargetContentOffset",
+        "3. Bridge calculates target CGPoint from target view frame or anchor coordinate",
+        "4. Bridge sets _isProgrammaticUpdate = true on _UIHostingScrollView",
+        "5. Bridge calls -[_UIHostingScrollView setContentOffset:animated:] within animation transaction",
+        "6. Reciprocal _observeScrollViewDidScroll notifications check _isProgrammaticUpdate and suppress feedback",
+        "7. When deceleration/animation completes, Bridge resets _isProgrammaticUpdate = false"
+      ]
+    }
+  },
+  "ScrollPosition": {
+    "type_name": "SwiftUI.ScrollPosition",
+    "conformance": ["Equatable", "Sendable"],
+    "subcache_location": "dyld_shared_cache_arm64e.03",
+    "vm_address": "0x18a9337e0",
+    "storage_layout": {
+      "target_type": "enum ScrollPositionTarget (point, edge, itemID)",
+      "point_value": "CGPoint (16 bytes)",
+      "edge_value": "enum Edge (top, leading, bottom, trailing) (1 byte)",
+      "anchor_unit_point": "UnitPoint (16 bytes: x double, y double)",
+      "is_positioned": "bool (1 byte)"
+    },
+    "initializers": [
+      {
+        "signature": "init(edge: Edge)",
+        "address": "0x18a933800",
+        "description": "Binds scroll position to a specific container edge"
+      },
+      {
+        "signature": "init(point: CGPoint)",
+        "address": "0x18a933840",
+        "description": "Binds scroll position to an explicit point offset"
+      },
+      {
+        "signature": "init(id: ID, anchor: UnitPoint?)",
+        "address": "0x18a933890",
+        "description": "Binds scroll position to an identifiable item with optional UnitPoint alignment anchor"
+      }
+    ]
+  },
+  "ScrollGeometry": {
+    "type_name": "SwiftUICore.ScrollGeometry",
+    "conformance": ["Equatable", "Sendable"],
+    "subcache_location": "dyld_shared_cache_arm64e.03",
+    "vm_address": "0x18843164c",
+    "struct_size_bytes": 80,
+    "fields": [
+      { "name": "contentOffset", "type": "CGPoint", "offset": 0, "size": 16 },
+      { "name": "contentSize", "type": "CGSize", "offset": 16, "size": 16 },
+      { "name": "contentInsets", "type": "EdgeInsets", "offset": 32, "size": 32 },
+      { "name": "boundsSize", "type": "CGSize", "offset": 64, "size": 16 }
+    ],
+    "derived_properties": [
+      {
+        "name": "visibleRect",
+        "formula": "CGRect(origin: contentOffset, size: boundsSize)"
+      },
+      {
+        "name": "scrollPhase",
+        "formula": "Derived from underlying _scrollViewFlags (idle, interacting, decelerating, animating)"
+      }
+    ]
+  },
+  "ScrollPhase": {
+    "type_name": "SwiftUICore.ScrollPhase",
+    "conformance": ["Equatable", "Sendable"],
+    "cases": [
+      {
+        "name": "idle",
+        "uikit_flag_mapping": "isDragging == 0 && isDecelerating == 0 && programmaticScrollAnimating == 0",
+        "description": "Scroll view is stationary at rest"
+      },
+      {
+        "name": "interacting",
+        "uikit_flag_mapping": "isDragging == 1",
+        "description": "Active finger drag gesture in progress"
+      },
+      {
+        "name": "decelerating",
+        "uikit_flag_mapping": "isDecelerating == 1",
+        "description": "Free inertial deceleration fling animation running"
+      },
+      {
+        "name": "animating",
+        "uikit_flag_mapping": "programmaticScrollAnimating == 1",
+        "description": "Programmatic animated scroll transition running"
+      }
+    ]
+  },
+  "declarative_modifiers": {
+    "scrollTargetBehavior": {
+      "modifier_signature": ".scrollTargetBehavior(_:)",
+      "underlying_implementation": "Configures target content offset snapping via _UIScrollViewSnappingBehavior integration",
+      "built_in_behaviors": [
+        {
+          "name": "paging",
+          "uikit_mapping": "Maps to isPagingEnabled = true or paging snap behavior with 200.0 pt/s velocity threshold"
+        },
+        {
+          "name": "viewAligned",
+          "uikit_mapping": "Registers alignment detents corresponding to child view layout frames and 100.0 pt/s directional bias"
+        }
+      ]
+    },
+    "scrollPosition": {
+      "modifier_signature": ".scrollPosition(_:)",
+      "underlying_implementation": "Establishes bi-directional Binding<ScrollPosition> synchronized via _SwiftUIScrollViewBridge"
+    },
+    "scrollIndicators": {
+      "modifier_signature": ".scrollIndicators(_:)",
+      "underlying_implementation": "Maps .hidden / .visible to showsHorizontalScrollIndicator and showsVerticalScrollIndicator ivars"
+    },
+    "scrollDisabled": {
+      "modifier_signature": ".scrollDisabled(_:)",
+      "underlying_implementation": "Sets _scrollDisabledOverride and toggles isScrollEnabled = !disabled on _UIHostingScrollView"
+    }
+  },
+  "gesture_arbitration": {
+    "architecture": "SwiftUI installs high-priority gesture recognizers on _UIHostingScrollView",
+    "arbitration_rule": "SwiftUI gestures take precedence over child responder gestures unless simultaneousGesture is declared; UIKit pan gesture recognizer retains primary touch routing and delegates simultaneous evaluation via gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"
+  }
+}

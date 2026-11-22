@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.0",
+  "phase": "exclave_phase_3_pmm_datacubes",
+  "component_framework": "Jungle Preload Component System (03_jg_sharedmem_preload.macho)",
+  "shared_memory_segments": [
+    {
+      "segment_name": "sharedmem_backboardd_silmanager_exsurface",
+      "consumer": "BackBoard / backboardd (Sensor Indicator Light Manager)",
+      "role": "Hardware privacy indicator surface buffer (Green/Orange camera/mic dots)",
+      "type": "JgSharedMemoryComponent.ExclavesSegment",
+      "backing_model": "Datacube",
+      "security_class": "Hardware Privacy Surface",
+      "description": "Isolated shared memory buffer backing the status bar privacy indicators, preventing compromised userland graphics drivers from faking or hiding indicator states."
+    },
+    {
+      "segment_name": "sharedmem_backboardd_silmanager_exdata",
+      "consumer": "backboardd",
+      "role": "Sensor indicator control and arbitration telemetry",
+      "type": "JgSharedMemoryComponent.ExclavesSegment",
+      "backing_model": "Datacube",
+      "security_class": "Hardware Privacy Control",
+      "description": "Telemetry and command stream from backboardd to ExclaveOS sensor indicator arbiter."
+    },
+    {
+      "segment_name": "EXSurfaceRoot_ANEEKTest",
+      "consumer": "Apple Neural Engine (AppleNeuralEngine.framework / ANE ExclaveKit)",
+      "role": "ANE Exclave surface test and tensor exchange bridge",
+      "type": "JgEXSurfaceRootComponent",
+      "backing_model": "Datacube Frame Buffer",
+      "security_class": "Hardware Neural Accelerator Bridge",
+      "description": "Secure surface bridge interfacing Apple Neural Engine hardware queues directly with ExclaveKit secure inference enclaves."
+    },
+    {
+      "segment_name": "sharedmem_audio_SoundAnalysisHALEKOutput",
+      "consumer": "CoreAudio HAL / SoundAnalysis",
+      "role": "Secure audio analysis feature extraction output buffer",
+      "type": "JgSharedMemoryComponent.ExclavesSegment",
+      "backing_model": "PMM Shared Pool",
+      "security_class": "Audio Privacy Isolation",
+      "description": "Direct HAL output channel transmitting acoustic classification vectors without exposing raw PCM microphone streams to host Darwin kernel."
+    },
+    {
+      "segment_name": "sharedmem_audio_SiriArbiter",
+      "consumer": "Siri Voice Processing Subsystem",
+      "role": "Acoustic arbitration and secure keyword activation channel",
+      "type": "JgSharedMemoryComponent.ExclavesSegment",
+      "backing_model": "Datacube",
+      "security_class": "Secure Voice Trigger",
+      "description": "Shared buffer for isolated voice command validation and secure acoustic token arbitration."
+    },
+    {
+      "segment_name": "sharedmem_audio_SoundAnalysisRefInput",
+      "consumer": "CoreAudio HAL",
+      "role": "Acoustic reference input channel from XNU",
+      "type": "JgSharedMemoryComponent.XnuSharedSegment",
+      "backing_model": "XNU Donated Shared Segment",
+      "security_class": "Darwin-to-Exclave Bridge",
+      "description": "Bidirectional shared memory segment allowing host Darwin audio drivers to stream acoustic reference frames into ExclaveKit."
+    },
+    {
+      "segment_name": "sharedmem_xcoproc_AOP2_EP53_in",
+      "consumer": "Always-On Processor 2 (AOP2)",
+      "role": "AOP2 Coprocessor Mailbox Endpoint 53 input FIFO",
+      "type": "JgSharedMemoryComponent.ExclavesSegment",
+      "backing_model": "Coprocessor Mailbox Buffer",
+      "security_class": "Hardware Coprocessor Bridge",
+      "description": "Inbound shared memory channel from Always-On Processor hardware mailbox into ExclaveOS sensor hub."
+    },
+    {
+      "segment_name": "sharedmem_xcoproc_AOP2_EP52_out",
+      "consumer": "AOP2",
+      "role": "AOP2 Coprocessor Mailbox Endpoint 52 output FIFO",
+      "type": "JgSharedMemoryComponent.ExclavesSegment",
+      "backing_model": "Coprocessor Mailbox Buffer",
+      "security_class": "Hardware Coprocessor Bridge",
+      "description": "Outbound control channel from ExclaveOS to Always-On Processor coprocessor."
+    },
+    {
+      "segment_name": "sharedmem_perception_feature_detection_polaris_output_buffer",
+      "consumer": "Polaris Biometric Perception Pipeline (Face ID / Vision)",
+      "role": "Facial landmark and iris feature detection output buffer",
+      "type": "JgSharedMemoryComponent.ExclavesSegment",
+      "backing_model": "Datacube",
+      "security_class": "Biometric Privacy Isolation",
+      "description": "Stores encrypted facial biometric embeddings extracted by Polaris vision pipeline in secure enclave memory."
+    },
+    {
+      "segment_name": "sharedmem_ExclaveSEPManager_sksd_in",
+      "consumer": "Secure Enclave Processor Manager (sksd)",
+      "role": "Secure Key Store Daemon passkey exchange buffer",
+      "type": "JgSharedMemoryComponent.ExclavesSegment",
+      "backing_model": "Datacube",
+      "security_class": "Cryptographic Key Storage",
+      "description": "High-security OOL (out-of-line) shared memory channel connecting Secure Key Store daemon with SEP crypto accelerators."
+    }
+  ],
+  "shared_segment_types": {
+    "ExclavesSegment": {
+      "initializer": "JgSharedMemoryComponent.ExclavesSegment.init(nPages:shmemGroup:mappingAttribute:backingModel:shmemID:initRangeStart:initRangeEnd:)",
+      "attributes": [
+        {
+          "name": "nPages",
+          "type": "UInt32",
+          "description": "Page count (16 KB pages)"
+        },
+        {
+          "name": "shmemGroup",
+          "type": "UInt32",
+          "description": "Isolation domain grouping identifier"
+        },
+        {
+          "name": "mappingAttribute",
+          "type": "UInt32",
+          "description": "Memory caching attributes (Cacheable / Uncached / Device)"
+        },
+        {
+          "name": "backingModel",
+          "type": "UInt32",
+          "description": "Physical allocation backend (Datacube vs PMM pool)"
+        },
+        {
+          "name": "shmemID",
+          "type": "UInt64",
+          "description": "Unique 64-bit segment identifier"
+        },
+        {
+          "name": "initRangeStart",
+          "type": "UInt64",
+          "description": "Virtual base address in Conclave VAS"
+        },
+        {
+          "name": "initRangeEnd",
+          "type": "UInt64",
+          "description": "Virtual limit address in Conclave VAS"
+        }
+      ]
+    },
+    "XnuSharedSegment": {
+      "initializer": "JgSharedMemoryComponent.XnuSharedSegment.init(nPages:shmemGroup:mappingAttribute:backingModel:shmemID:initRangeStart:initRangeEnd:xnuPerms:)",
+      "additional_attributes": [
+        {
+          "name": "xnuPerms",
+          "type": "UInt32",
+          "description": "Permissions bitmask enforced by Darwin/XNU kernel (Read = 0x1, Write = 0x2)"
+        }
+      ]
+    }
+  },
+  "exsurface_subsystem": {
+    "name": "JgEXSurfaceRootComponent",
+    "initializer": "JgEXSurfaceRootComponent.EXSurfaceRootComponent.init(segAccess:)",
+    "description": "Hardware-accelerated surface compositor root inside ExclaveOS, managing direct-to-display overlays (e.g. SIL dots) that bypass QuartzCore / WindowServer."
+  },
+  "dart_iommu_mapper": {
+    "name": "JgExclaveDARTMemoryMapperComponent",
+    "initializer": "JgExclaveDARTMemoryMapperComponent.ExclaveDARTMemoryMapperComponent.init(span:segments:identifiers:)",
+    "driver": "AOP2_EXDARTDriver (AOP2 Secure SID DART Driver)",
+    "description": "Controls Apple Silicon DART (Device Address Resolution Table) IOMMU mappings to enforce DMA security between peripheral bus masters and Exclave memory."
+  }
+}

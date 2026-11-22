@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AOP2 ASCwrap Mailbox Handshake & Hardware Protocol Specification",
+  "hardware_doorbell_protocol": {
+    "mmio_base": "0x000000010162c000",
+    "trigger_sequence": [
+      "1. Host or coprocessor formats 64-bit message in local memory.",
+      "2. Writer stores 64-bit word into MBI_OUTBOX_DATA (+0x0028).",
+      "3. Writer executes ARM64 'dmb ishst' memory barrier.",
+      "4. Writer sets target bit in DOORBELL_SET (+0x0000) to trigger destination core interrupt.",
+      "5. Reader receives hardware interrupt (e.g. 0x0166 on AP, 0x0168 on AOP2).",
+      "6. Reader reads MBI_INBOX_DATA (+0x0008), which dequeues message from hardware FIFO.",
+      "7. Reader writes acknowledgment bit to DOORBELL_CLEAR (+0x0004)."
+    ]
+  },
+  "handshake_sequence": {
+    "states": [
+      {
+        "state": "RESET",
+        "description": "AOP2 core held in reset by SoC Power Management IC; DRAM clocks gated."
+      },
+      {
+        "state": "BOOT_INIT",
+        "description": "AOP2 executes RTKit microkernel preload at 0xffffffff00000800; configures EL1 vector tables and MMIO."
+      },
+      {
+        "state": "HELLO_EXCHANGE",
+        "steps": [
+          "AOP2 transmits SYS_HELLO (Opcode 0x01) on EP 0x00 declaring protocol v3, build RaveB24B119.",
+          "Host verifies version compatibility and responds with SYS_HELLO_ACK (Opcode 0x02)."
+        ]
+      },
+      {
+        "state": "ENDPOINT_CONFIGURATION",
+        "steps": [
+          "For each active endpoint (0x01..0x53), host transmits SYS_EP_CONFIG with physical descriptor ring address.",
+          "AOP2 maps shared memory via DART-AOP (SID 0x10) and responds with SYS_EP_READY."
+        ]
+      },
+      {
+        "state": "TIME_SYNCHRONIZATION",
+        "steps": [
+          "Host transmits SYS_TIME_SYNC with current mach_continuous_time timestamp.",
+          "AOP2 synchronizes its 24 MHz hardware counter offset."
+        ]
+      },
+      {
+        "state": "OPERATIONAL_ACTIVE",
+        "description": "All endpoints active; sensor fast-path streams and audio buffers operate autonomously."
+      }
+    ]
+  },
+  "descriptor_rings": {
+    "tx_queue": {
+      "capacity": 64,
+      "entry_size_bytes": 16,
+      "fields": ["command_id (uint32_t)", "flags (uint32_t)", "data_pointer (uint64_t)"]
+    },
+    "rx_queue": {
+      "capacity": 64,
+      "entry_size_bytes": 16,
+      "fields": ["reply_id (uint32_t)", "return_code (uint32_t)", "result_data (uint64_t)"]
+    },
+    "historical_queue": {
+      "capacity": 256,
+      "entry_size_bytes": 64,
+      "role": "Retains motion and audio frames during host sleep; transferred in bulk upon wake."
+    }
+  },
+  "crashdump_protocol": {
+    "panic_trigger": "Triggered upon unrecoverable kernel assertion, memory tag violation, or watchdog expiration.",
+    "register_dump": "AOP2 microkernel dumps PC, SP, FAR_EL1, ESR_EL1, and x0..x30 registers into _rtk_exc_stack.",
+    "panic_notification": "AOP2 sends SYS_CRASHLOG_PANIC (Opcode 0x08) on EP 0x00 and triggers host doorbell.",
+    "host_reclamation": "Host Darwin AppleAOP2 driver extracts crash payload and generates system diagnostic report."
+  }
+}

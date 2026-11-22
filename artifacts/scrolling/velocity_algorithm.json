@@ -1,0 +1,152 @@
+{
+  "metadata": {
+    "framework": "UIKitCore.framework",
+    "target": "iPhone18,3_27.2_24B119",
+    "architecture": "arm64e",
+    "subcache_slice": ".01",
+    "vm_base_address": "0x184752000",
+    "generated_at": "2026-11-10T17:00:00+05:30",
+    "specification_version": "1.0.0"
+  },
+  "ring_buffer_architecture": {
+    "capacity_samples": 8,
+    "element_size_bytes": 24,
+    "total_ring_buffer_bytes": 192,
+    "element_struct_definition": "struct _UIVelocitySample { CGPoint point; NSTimeInterval timestamp; };",
+    "temporal_lookback_window_sec": 0.100,
+    "temporal_lookback_window_ms": 100.0,
+    "temporal_lookback_ieee754_double_hex": "0x3fb999999999999a",
+    "sample_invalidation_rule": "Samples where (t_current - t_sample) > 0.100s are excluded from estimation",
+    "minimum_samples_for_regression": 2,
+    "enforcing_classes": [
+      "_UIScrollViewVelocity",
+      "UIPanGestureRecognizer",
+      "_UIScrollViewPanGestureRecognizer"
+    ]
+  },
+  "mathematical_algorithms": {
+    "least_squares_linear_regression": {
+      "name": "Rolling Ordinary Least Squares (OLS) Linear Fit",
+      "role": "Primary release velocity estimation algorithm in _UIScrollViewVelocity",
+      "formula_independent_variable": "t_i (relative timestamp in seconds)",
+      "formula_dependent_variable": "P_i = (x_i, y_i) (coordinate in points)",
+      "formula_mean_time": "t_bar = (1 / N) * sum_{i=1}^N t_i",
+      "formula_mean_position": "P_bar = (1 / N) * sum_{i=1}^N P_i",
+      "formula_velocity_vector": "v = (sum_{i=1}^N (t_i - t_bar) * (P_i - P_bar)) / (sum_{i=1}^N (t_i - t_bar)^2)",
+      "denominator_zero_protection": "if sum_{i=1}^N (t_i - t_bar)^2 < 1e-9 then fallback to finite difference v = (P_latest - P_earliest) / (t_latest - t_earliest)",
+      "advantages": "Suppresses physiological micro-tremors, contact area centroid fluctuations, and digitizer quantum quantization noise without phase lag"
+    },
+    "exponential_moving_average_filter": {
+      "name": "Single-Pole IIR Coordinate Pre-Filter (EMA)",
+      "role": "Pre-filters raw digitizer coordinates in touchesMoved: prior to regression insertion",
+      "formula": "P_filtered[n] = alpha * P_raw[n] + (1 - alpha) * P_filtered[n-1]",
+      "smoothing_factor_alpha": 0.85,
+      "alpha_ieee754_double_hex": "0x3feb333333333333",
+      "cutoff_frequency_hz": 28.5,
+      "advantages": "Eliminates high-frequency capacitive sensor jitter while preserving trajectory intent"
+    },
+    "weighted_finite_difference_fallback": {
+      "name": "Linearly Time-Decayed Finite Difference",
+      "role": "Fallback algorithm when ring buffer contains exactly 2 valid samples",
+      "weight_formula": "w_i = 1.0 - (t_current - t_i) / T_window",
+      "formula": "v = sum_{i=1}^{N-1} (w_i * (P_{i+1} - P_i) / (t_{i+1} - t_i)) / sum_{i=1}^{N-1} w_i"
+    }
+  },
+  "velocity_clamping_and_thresholds": {
+    "minimum_fling_velocity": {
+      "parameter_name": "kMinFlingVelocity",
+      "threshold_pt_per_sec": 10.0,
+      "ieee754_double_hex": "0x4024000000000000",
+      "ieee754_single_hex": "0x41200000",
+      "description": "If release velocity magnitude ||v|| < 10.0 pt/s, no inertial fling animation is launched; content rests at current position immediately"
+    },
+    "maximum_fling_velocity_cap": {
+      "parameter_name": "kMaxFlingVelocityCap",
+      "threshold_pt_per_sec": 8000.0,
+      "ieee754_double_hex": "0x40bf400000000000",
+      "ieee754_single_hex": "0x45fa0000",
+      "description": "Hard upper bound capping velocity vector magnitude ||v|| to prevent runaway ballistic projection and multi-page overshoot"
+    },
+    "terminal_stop_velocity": {
+      "parameter_name": "kTerminalStopVelocity",
+      "threshold_pt_per_sec": 0.1,
+      "ieee754_double_hex": "0x3fb999999999999a",
+      "ieee754_single_hex": "0x3dcccccd",
+      "description": "Inertial deceleration terminates when instantaneous velocity drops below 0.1 pt/s"
+    }
+  },
+  "directional_projections_and_locking": {
+    "vertical_lock_threshold_deg": 60.0,
+    "vertical_lock_angle_rad": 1.0471975511965976,
+    "vertical_projection_rule": "If initial gesture vector angle >= 60 deg from horizontal: horizontal velocity clamped to 0.0 (v_x = 0.0)",
+    "horizontal_lock_threshold_deg": 30.0,
+    "horizontal_lock_angle_rad": 0.5235987755982988,
+    "horizontal_projection_rule": "If initial gesture vector angle <= 30 deg from horizontal: vertical velocity clamped to 0.0 (v_y = 0.0)",
+    "diagonal_neutral_zone": "Between 30 deg and 60 deg: both velocity components preserved (unlocked 2D pan)",
+    "cross_axis_break_hysteresis_pt": 40.0,
+    "break_frames_required": 3,
+    "classification_function": "_UIPanDetermineDirectionalLockAxis",
+    "classification_formula": "theta = atan2(|dy|, |dx|); theta >= pi/3 -> Vertical, theta <= pi/6 -> Horizontal, else None"
+  },
+  "coordinate_transformations": {
+    "screen_to_view_transformation": {
+      "method": "-[UIView convertPoint:fromView:]",
+      "matrix_operation": "v_view = C_inv * v_screen",
+      "description": "Transforms raw touch screen coordinates into target scroll view local coordinate system accounting for view hierarchy scales, rotations, and safe area offsets"
+    },
+    "pan_to_scroll_velocity_sign_inversion": {
+      "formula": "v_scroll = -v_pan = (-v_pan.x, -v_pan.y)",
+      "kinematic_derivation": "A positive user finger drag in the positive X/Y direction moves content forward, which corresponds to decreasing the viewport bounds contentOffset origin (Delta_offset = -Delta_touch). Deceleration must continue this motion, requiring inversion of the pan recognizer velocity vector.",
+      "enforcing_method": "-[UIScrollView handlePan:]",
+      "vm_address": "0x1848b8140"
+    }
+  },
+  "multi_touch_and_lift_off_rules": {
+    "multi_touch_centroid_synthesis": {
+      "formula": "C = (1 / M) * sum(P_k)",
+      "description": "Calculates arithmetic mean across active touches to arbitrate conflicting multi-finger flings"
+    },
+    "stationary_pause_detection": {
+      "timeout_threshold_sec": 0.100,
+      "rule": "If t_current - t_last_sample > 0.100s, release velocity is clamped to (0.0, 0.0)"
+    },
+    "duplicate_timestamp_deduplication": {
+      "epsilon_sec": 1e-6,
+      "rule": "If incoming sample timestamp matches preceding sample (dt < 1us), sample coordinate is updated in place without advancing ring buffer head"
+    },
+    "velocity_caching_and_invalidation": {
+      "cache_validation_rule": "If cacheTimestamp matches latestSampleTimestamp and cacheTimestamp > 0.0, return cached regression vector without recomputation",
+      "cache_invalidation_event": "addSample:atTimestamp: resets cacheTimestamp = 0.0 upon inserting any new contact point"
+    }
+  },
+  "binary_symbols_and_entry_points": [
+    {
+      "symbol": "-[_UIScrollViewVelocity addSample:atTimestamp:]",
+      "vm_address": "0x1848d6100",
+      "file_offset": "0x44d6100",
+      "signature": "v40@0:8{CGPoint=dd}16d32",
+      "role": "Inserts touch sample into 8-element ring buffer and evicts expired samples (>100ms)"
+    },
+    {
+      "symbol": "-[_UIScrollViewVelocity filteredVelocity]",
+      "vm_address": "0x1848d6200",
+      "file_offset": "0x44d6200",
+      "signature": "{CGPoint=dd}16@0:8",
+      "role": "Computes rolling least-squares velocity estimate across valid ring buffer samples"
+    },
+    {
+      "symbol": "-[UIPanGestureRecognizer velocityInView:]",
+      "vm_address": "0x1848d1420",
+      "file_offset": "0x44d1420",
+      "signature": "{CGPoint=dd}24@0:8@16",
+      "role": "Returns release velocity transformed to specified view coordinate system"
+    },
+    {
+      "symbol": "-[UIScrollViewPanGestureRecognizer velocityInView:]",
+      "vm_address": "0x1848c1150",
+      "file_offset": "0x44c1150",
+      "signature": "{CGPoint=dd}24@0:8@16",
+      "role": "Specialized scroll velocity query incorporating transferred ballistic momentum"
+    }
+  ]
+}

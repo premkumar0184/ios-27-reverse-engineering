@@ -1,0 +1,213 @@
+{
+  "phase": "Phase 3D",
+  "subsystem": "UIKitCore.framework - UIScrollView Paging, Boundary Snapping & Page Target Resolution",
+  "target_platform": {
+    "device": "iPhone18,3 (iPhone 16 Pro Max / D94AP)",
+    "os_version": "iOS 27.2 (Build 24B119)",
+    "architecture": "arm64e (PAC00)",
+    "subcache_slice": "dyld_shared_cache_arm64e.01",
+    "uikitcore_base_address": "0x184752000"
+  },
+  "paging_geometry": {
+    "viewport_derivation": {
+      "horizontal_page_width": {
+        "formula": "W_page = bounds.size.width",
+        "formula_latex": "W_{\\text{page}} = \\text{bounds.size.width}",
+        "description": "Page width matches view frame bounds width excluding content insets."
+      },
+      "vertical_page_height": {
+        "formula": "H_page = bounds.size.height",
+        "formula_latex": "H_{\\text{page}} = \\text{bounds.size.height}",
+        "description": "Page height matches view frame bounds height excluding content insets."
+      },
+      "interpage_spacing": {
+        "formula": "W_effective = bounds.size.width + interpageSpacing",
+        "formula_latex": "W_{\\text{effective}} = \\text{bounds.size.width} + S_{\\text{inter}}",
+        "description": "Optional interpage gutter spacing (default 0.0pt, common in UIPageViewController or carousel layouts)."
+      },
+      "origin_coordinate": {
+        "formula": "s_origin = CGPointMake(-adjustedContentInset.left + pagingOrigin.x, -adjustedContentInset.top + pagingOrigin.y)",
+        "formula_latex": "s_{\\text{origin}} = \\begin{pmatrix} -\\text{adjustedContentInset.left} + x_{\\text{origin}} \\\\ -\\text{adjustedContentInset.top} + y_{\\text{origin}} \\end{pmatrix}",
+        "description": "Base origin anchor for page grid indexing."
+      }
+    },
+    "page_grid_formula": {
+      "coordinate_for_page_index": "s_page(k) = s_origin + k * (page_dimension + interpageSpacing)",
+      "formula_latex": "s_{\\text{page}}(k) = s_{\\text{origin}} + k \\cdot (D_{\\text{page}} + S_{\\text{inter}})",
+      "total_page_count": {
+        "formula": "N_pages = max(1, ceil((contentSize.width - bounds.size.width) / W_effective) + 1)",
+        "formula_latex": "N_{\\text{pages}} = \\max\\left(1, \\left\\lceil \\frac{\\text{contentSize.width} - \\text{bounds.size.width}}{W_{\\text{effective}}} \\right\\rceil + 1\\right)"
+      }
+    }
+  },
+  "target_page_selection_algorithm": {
+    "velocity_threshold": {
+      "threshold_pt_per_sec": 200.0,
+      "threshold_pt_per_ms": 0.200,
+      "ieee754_double_hex": "0x4069000000000000",
+      "constant_vm_address": "0x1864d3080",
+      "description": "Minimum release fling speed required to trigger velocity-based directional page advance."
+    },
+    "displacement_threshold": {
+      "cutoff_fraction": 0.50,
+      "cutoff_percentage": "50%",
+      "description": "Displacement threshold used when release velocity is below velocity_threshold (|v| < 200.0 pt/s). If progress past current page exceeds 50%, target advances to next page."
+    },
+    "selection_logic": {
+      "decision_rules": [
+        {
+          "condition": "abs(velocity) >= velocity_threshold_pt_per_sec",
+          "action": "Directional page advance based on velocity sign: k_target = (velocity > 0) ? (k_current + 1) : k_current",
+          "rule_type": "VelocityDrivenAdvance"
+        },
+        {
+          "condition": "abs(velocity) < velocity_threshold_pt_per_sec",
+          "action": "Displacement cutoff: delta = (contentOffset - s_page(k_current)) / W_effective; k_target = (delta > 0.50) ? (k_current + 1) : k_current",
+          "rule_type": "DisplacementCutoff"
+        }
+      ],
+      "clamping": {
+        "formula": "k_target = clamp(k_target, 0, N_pages - 1)",
+        "formula_latex": "k_{\\text{target}} = \\min(\\max(k_{\\text{target}}, 0), N_{\\text{pages}} - 1)"
+      }
+    },
+    "multi_page_advance_policy": {
+      "standard_paging_limit": {
+        "maximum_page_delta_per_fling": 1,
+        "policy_description": "UIKitCore UIScrollView isPagingEnabled enforces single-page clamping per drag gesture: delta_k in {-1, 0, +1}. High velocity flicks cannot skip multiple pages.",
+        "enforced_by": "-[UIScrollViewPagingController targetOffsetForOffset:velocity:]"
+      },
+      "continuous_detent_skipping": {
+        "supported_in": "UICollectionViewFlowLayout / _UIScrollViewSnappingBehavior",
+        "policy_description": "Custom snap collections allow multi-detent skipping by evaluating projected landing offset s_proj = s0 + v / (-1000 * ln(d)) and snapping to nearest detent."
+      }
+    }
+  },
+  "paging_kinematics_and_deceleration": {
+    "deceleration_friction": {
+      "constant_name": "UIScrollViewDecelerationRatePaging",
+      "symbol": "_UIScrollViewDecelerationRatePaging",
+      "value_decimal": 0.985,
+      "ieee754_double_hex": "0x3fef851eb851eb85",
+      "vm_address": "0x1864d3040",
+      "file_offset": "0x60d3040",
+      "decay_constant_lambda_per_sec": 15.113638,
+      "half_life_seconds": 0.045862,
+      "landing_multiplier_Cd": 0.066165
+    },
+    "animation_coordination": {
+      "ballistic_paging_deceleration": {
+        "animation_class": "_UIScrollViewDecelerationAnimation",
+        "description": "Exponential deceleration using d = 0.985 to brake rapid finger momentum as viewport moves toward target page."
+      },
+      "spring_settling_transition": {
+        "animation_class": "_UIScrollViewSpringAnimation",
+        "trigger_condition": "Viewport enters target page boundary capture basin (|s - s_target| < 20.0 pt) or overshoots target page coordinate.",
+        "spring_parameters": {
+          "mass_kg": 1.0,
+          "stiffness_N_per_m": 100.0,
+          "damping_N_s_per_m": 18.0,
+          "damping_ratio_zeta": 0.90,
+          "undamped_frequency_omega_n": 10.0,
+          "damped_frequency_omega_d": 4.3589
+        },
+        "settling_threshold": {
+          "displacement_pt": 0.5,
+          "velocity_pt_per_sec": 0.5
+        }
+      }
+    }
+  },
+  "decompiled_routines": [
+    {
+      "method_name": "-[UIScrollView isPagingEnabled]",
+      "vm_address": "0x1848b6750",
+      "signature": "B16@0:8",
+      "role": "Returns whether pagination mode is enabled via bitfield flag (_scrollViewFlags.isPagingEnabled)."
+    },
+    {
+      "method_name": "-[UIScrollView setPagingEnabled:]",
+      "vm_address": "0x1848b6780",
+      "signature": "v20@0:8B16",
+      "role": "Enables or disables pagination mode, instantiating _pagingController if needed."
+    },
+    {
+      "method_name": "-[UIScrollView _defaultPagingDecelerationRate]",
+      "vm_address": "0x1848b8640",
+      "signature": "d16@0:8",
+      "role": "Returns 0.985 (0x3fef851eb851eb85) as default deceleration friction for pagination."
+    },
+    {
+      "method_name": "-[UIScrollView _pagingDecelerationRate]",
+      "vm_address": "0x1848b86e0",
+      "signature": "d16@0:8",
+      "role": "Returns custom or default pagination deceleration friction."
+    },
+    {
+      "method_name": "-[UIScrollView _setPagingDecelerationRate:]",
+      "vm_address": "0x1848b8700",
+      "signature": "v24@0:8d16",
+      "role": "Mutates custom pagination deceleration friction with bounds clamping."
+    },
+    {
+      "method_name": "-[UIScrollView _pagingOrigin]",
+      "vm_address": "0x1848b7480",
+      "signature": "{CGPoint=dd}16@0:8",
+      "role": "Returns base CGPoint origin for pagination grid calculation."
+    },
+    {
+      "method_name": "-[UIScrollView setPagingOrigin:]",
+      "vm_address": "0x1848b74a0",
+      "signature": "v32@0:8{CGPoint=dd}16",
+      "role": "Mutates pagination grid origin."
+    },
+    {
+      "method_name": "-[UIScrollView _pagingLeftContentOffset]",
+      "vm_address": "0x1848b7ea0",
+      "signature": "d16@0:8",
+      "role": "Calculates horizontal target content offset for previous page."
+    },
+    {
+      "method_name": "-[UIScrollView _pagingRightContentOffset]",
+      "vm_address": "0x1848b7ec0",
+      "signature": "d16@0:8",
+      "role": "Calculates horizontal target content offset for next page."
+    },
+    {
+      "method_name": "-[UIScrollView _pagingTopContentOffset]",
+      "vm_address": "0x1848b7ee0",
+      "signature": "d16@0:8",
+      "role": "Calculates vertical target content offset for previous page."
+    },
+    {
+      "method_name": "-[UIScrollView _pagingBottomContentOffset]",
+      "vm_address": "0x1848b7f00",
+      "signature": "d16@0:8",
+      "role": "Calculates vertical target content offset for next page."
+    },
+    {
+      "method_name": "-[UIScrollViewPagingController targetOffsetForOffset:velocity:]",
+      "vm_address": "0x1848c2100",
+      "signature": "{CGPoint=dd}48@0:8{CGPoint=dd}16{CGPoint=dd}32",
+      "role": "Calculates snapped target content offset evaluating current offset, velocity vector, thresholds, and single-page clamping."
+    },
+    {
+      "method_name": "-[UIScrollViewPagingController pageForOffset:]",
+      "vm_address": "0x1848c2220",
+      "signature": "q32@0:8{CGPoint=dd}16",
+      "role": "Computes integer page index corresponding to given content offset coordinate."
+    },
+    {
+      "method_name": "-[UIScrollViewPagingController offsetForPage:]",
+      "vm_address": "0x1848c2310",
+      "signature": "{CGPoint=dd}24@0:8q16",
+      "role": "Computes CGPoint content offset for target integer page index."
+    },
+    {
+      "method_name": "-[UIScrollView _pageDecelerationTarget]",
+      "vm_address": "0x1848b7600",
+      "signature": "{CGPoint=dd}16@0:8",
+      "role": "Internal helper on UIScrollView resolving final deceleration landing page."
+    }
+  ]
+}

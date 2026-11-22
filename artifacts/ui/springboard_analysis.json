@@ -1,0 +1,861 @@
+{
+  "metadata": {
+    "bundle_identifier": "com.apple.springboard",
+    "bundle_name": "SpringBoard",
+    "principal_class": "SpringBoard",
+    "version": "50",
+    "short_version": "1.0",
+    "sdk_build": "24B109",
+    "platform_version": "27.2",
+    "device_family": [
+      1,
+      2
+    ],
+    "always_on_display_supported": true,
+    "variable_frame_duration": true,
+    "display_manager_transformer": "SBFBSDisplayTransformer"
+  },
+  "entrypoints": {
+    "macho_uuid": "5c0a8b8a-d2e0-3411-8eba-6f13cb6c9664",
+    "executable_path": "/System/Library/CoreServices/SpringBoard.app/SpringBoard",
+    "trampoline_entryoff": "0x568",
+    "trampoline_target": "_SBSystemAppMain in /System/Library/PrivateFrameworks/SpringBoard.framework/SpringBoard",
+    "framework_virtual_address": "0x226a11000",
+    "pointer_authentication": "arm64e PAC00 (braa x16, x17)"
+  },
+  "mach_services": [
+    {
+      "service_name": "com.apple.siri.activation.presentation",
+      "mach_endpoint": "com.apple.siri.activation.service",
+      "domain": "com.apple.siri.activation",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.siri.activation.signal",
+      "mach_endpoint": "com.apple.siri.activation.service",
+      "domain": "com.apple.siri.activation",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.usernotifications.systemservice",
+      "mach_endpoint": "com.apple.usernotifications.systemservice",
+      "domain": "com.apple.usernotifications.systemservice",
+      "options": {
+        "isAutomatic": true
+      }
+    },
+    {
+      "service_name": "com.apple.posterboardui.externalEditing",
+      "mach_endpoint": "com.apple.posterboardui.services",
+      "domain": "com.apple.posterboardui",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.productivity-gesture-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.accessibility-component-portaling",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.BacklightServices.backlight",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.in-call-presentation-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.web-clip-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.widget-metrics-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.system-notes-presentation-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.app-resizing",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.frontboard.workspace-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {
+        "DefaultWorkspace": "FBSceneManager",
+        "InjectEndpoint": false,
+        "RegisterWorkspaces": [
+          "com.apple.SpringBoard.SceneWorkspace.DruidUI",
+          "com.apple.SpringBoard.SceneWorkspace.InputUI",
+          "com.apple.SpringBoard.SceneWorkspace.OverlayUI",
+          "com.apple.SpringBoard.SceneWorkspace.FullKeyboardAccessUI",
+          "com.apple.SpringBoard.SceneWorkspace.VoiceControlUI",
+          "com.apple.SpringBoard.SceneWorkspace.AssistiveTouchUI",
+          "com.apple.SpringBoard.SceneWorkspace.AccessibilityUIServerUI",
+          "com.apple.SpringBoard.SceneWorkspace.Ensemble",
+          "com.apple.SpringBoard.SceneWorkspace.EyedropperUI",
+          "com.apple.SpringBoard.SceneWorkspace.Moments",
+          "com.apple.SpringBoard.SceneWorkspace.InternalPerfPowerHUD",
+          "com.apple.SpringBoard.SceneWorkspace.PerfPowerHUD",
+          "com.apple.SpringBoard.SceneWorkspace.CameraOverlayUI",
+          "com.apple.SpringBoard.SceneWorkspace.PrototypeTools",
+          "com.apple.SpringBoard.SceneWorkspace.AudioHUD"
+        ]
+      }
+    },
+    {
+      "service_name": "com.apple.springboard.capture-intent",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.bannerkit.banner-host-monitor-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.remote-alert-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.BacklightServices.assertions",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.BacklightServices.diagnostics",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.universal-control",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.external-display-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.bannerkit.banner-source-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.homescreen",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.display-region-blanking-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.continuity-session-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.configuration-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.bannerkit.banner-context-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.system-aperture-scene-request-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.home-screen-configuration-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.capture-application",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.multitasking-shortcut-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.system-component-layout-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.AssistantIsland",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.secure-indicator-elevation-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.mitigation-session-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.capture-button-restriction-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.application-restriction-monitoring-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.frontboard.layout-monitor",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.application-user-quit-monitor-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.smart-cover",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.spotlight-activation-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.system-component-restriction-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.uis.scene-hosting-external-settings-modifier-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.focus-modes-home-screen-settings-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.switcher-demo-commands-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.lockscreen",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.pegasus.background-pip-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.idletimer-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.frontboard.orientation-observer",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.frontboard.system-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.accessibility-window-hosting",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.keyboard-focus-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    },
+    {
+      "service_name": "com.apple.springboard.physical-button-target-monitor-service",
+      "mach_endpoint": "com.apple.frontboard.systemappservices",
+      "domain": "com.apple.frontboard",
+      "options": {}
+    }
+  ],
+  "controllers": [
+    {
+      "class": "SBCoverSheetPresentationManager",
+      "role": "Lock Screen, Cover Sheet, and Notification Center Presentation"
+    },
+    {
+      "class": "SBControlCenterController",
+      "role": "Control Center Module Presentation & Overlay Coordination"
+    },
+    {
+      "class": "SBIconController",
+      "role": "Home Screen Icon Grid, App Library, and Widget Layout Controller"
+    },
+    {
+      "class": "SBFloatingDockController",
+      "role": "iPadOS / Multitasking Floating Dock and Stage Manager Shelf"
+    },
+    {
+      "class": "SBLockScreenManager",
+      "role": "Biometric Authentication (FaceID/TouchID) & Device Passcode Lifecycle"
+    },
+    {
+      "class": "SBAmbientPresentationController",
+      "role": "StandBy / Ambient Mode Display & Night Mode Adaptation"
+    },
+    {
+      "class": "SBAssistantIslandStageGestureManager",
+      "role": "Siri Dynamic Island Presentation and Stage Gesture Dispatch"
+    },
+    {
+      "class": "SBCaptureButtonSuppressionManager",
+      "role": "iPhone 16/17 Physical Camera Control Button Interception & Debounce"
+    },
+    {
+      "class": "SBContinuitySessionManager",
+      "role": "macOS iPhone Mirroring, Remote Display Stream, and Continuity Audio/Input"
+    },
+    {
+      "class": "SBMainWorkspace",
+      "role": "Primary Scene Layout, App Switcher, and Windowing Policy Engine"
+    },
+    {
+      "class": "SBCameraActivationManager",
+      "role": "Lock Screen Swipe / Hardware Button Camera Quick-Launch Broker"
+    },
+    {
+      "class": "SBBannerManager",
+      "role": "System Aperture / Dynamic Island Alerts & BannerKit Coordination"
+    }
+  ],
+  "all_cataloged_controllers": [
+    "SBAVSystemController",
+    "SBAccessibilityUIServerUISceneController",
+    "SBActivationInfoViewController",
+    "SBActivityAmbientFullOverlayViewController",
+    "SBActivityAmbientViewController",
+    "SBActivitySystemApertureBannerViewController",
+    "SBAffordancePresenceController",
+    "SBAirplaneModeController",
+    "SBAlertController",
+    "SBAlertItemDidPrepareNewAlertController",
+    "SBAlertItemsController",
+    "SBAmbientIdleTimerController",
+    "SBAmbientMainDisplayController",
+    "SBAmbientPresentationController",
+    "SBAmbientTransientOverlayViewController",
+    "SBAppClipOverlayViewController",
+    "SBAppSwitcherPageViewController",
+    "SBAppSwitcherPeopleViewController",
+    "SBAppViewController",
+    "SBApplicationController",
+    "SBApplicationPlaceholderController",
+    "SBApplicationRestrictionController",
+    "SBApplicationSceneViewController",
+    "SBAssistantController",
+    "SBAssistantIslandStageController",
+    "SBAssistantIslandStagePlaceholderController",
+    "SBAssistantSceneController",
+    "SBAssistiveTouchUISceneController",
+    "SBAvocadoDebuggingController",
+    "SBBacklightController",
+    "SBBannerBasePresentableViewController",
+    "SBBarSwipeAffordanceController",
+    "SBBluetoothController",
+    "SBBulletinWindowController",
+    "SBCameraOverlayUISceneController",
+    "SBCaptureButtonDropletLaunchViewController",
+    "SBCarDoNotDisturbController",
+    "SBCardItemsController",
+    "SBChargingController",
+    "SBCommandTabController",
+    "SBCommandTabViewController",
+    "SBContinuitySessionStoreDemoController",
+    "SBControlCenterController",
+    "SBCoverSheetPrimarySlidingViewController",
+    "SBCoverSheetSlidingViewController",
+    "SBDashBoardCameraContainerViewController",
+    "SBDashBoardCameraPageViewController",
+    "SBDashBoardCombinedListViewController",
+    "SBDashBoardEmergencyDialerController",
+    "SBDashBoardEmergencyDialerViewController",
+    "SBDashBoardHomeAffordanceController",
+    "SBDashBoardHostedAppViewController",
+    "SBDashBoardPasscodeViewController",
+    "SBDashBoardPluginController",
+    "SBDashBoardPosterSwitcherViewController",
+    "SBDashBoardSetupController",
+    "SBDashBoardSetupViewController",
+    "SBDashBoardStatusBarController",
+    "SBDashBoardViewController",
+    "SBDataRecoveryController",
+    "SBDeckSwitcherViewController",
+    "SBDeviceApplicationSceneViewController",
+    "SBDismissOverlaysAnimationController",
+    "SBDisplayBrightnessController",
+    "SBDisplayLinkController",
+    "SBDodgingResolverViewController",
+    "SBDynamicLightingController",
+    "SBEducationRemoteViewController",
+    "SBElasticHUDViewController",
+    "SBElasticValueViewController",
+    "SBExtendedDisplayController",
+    "SBExternalDisplayCoverSheetController",
+    "SBExternalDisplayCoverSheetViewController",
+    "SBFlashlightPreviewPresentableViewController",
+    "SBFloatingDockController",
+    "SBFloatingDockRootViewController",
+    "SBFloatingDockSuggestionsViewController",
+    "SBFloatingDockViewController",
+    "SBFluidSwitcherAnimationController",
+    "SBFluidSwitcherSpaceTitleItemController",
+    "SBFluidSwitcherViewController",
+    "SBFolderController",
+    "SBFullKeyboardAccessUISceneController",
+    "SBHIDEventDispatchController",
+    "SBHIDUISensorModeController",
+    "SBHLibrarySearchController",
+    "SBHLibraryViewController",
+    "SBHTodayViewController",
+    "SBHUDController",
+    "SBHardwareButtonHintDropletViewController",
+    "SBHearingAidDeviceController",
+    "SBHomeScreenController",
+    "SBHomeScreenOverlayController",
+    "SBHomeScreenOverlayViewController",
+    "SBHomeScreenViewController",
+    "SBIconController",
+    "SBInCallTransientOverlayViewController",
+    "SBInputUISceneController",
+    "SBKeyboardBrightnessController",
+    "SBKeyboardFocusSceneController",
+    "SBKeyboardHomeAffordanceController",
+    "SBLeftOfHomeAppViewController",
+    "SBLegacyRemoteAlertContentHostViewController",
+    "SBLibraryViewController",
+    "SBLiftToWakeController",
+    "SBLockScreenDeviceMotionEffectController",
+    "SBLockScreenViewController",
+    "SBLoginAppContainerViewController",
+    "SBLogoutDebugBlockingViewController",
+    "SBMagSafeSleeveController",
+    "SBMainSwitcherController",
+    "SBManagedDisplayController",
+    "SBMediaController",
+    "SBMedusaHostedKeyboardWindowController",
+    "SBMenuBarViewController",
+    "SBModalLibraryController",
+    "SBModalViewController",
+    "SBModelessSyncController",
+    "SBMotionDetectionWakeController",
+    "SBNCAlertingController",
+    "SBNCScreenController",
+    "SBNCSoundController",
+    "SBNonInteractiveDisplayController",
+    "SBNotificationCenterController",
+    "SBNotificationHomeAffordanceController",
+    "SBPIPContainerViewController",
+    "SBPIPController",
+    "SBPIPInteractionController",
+    "SBPIPMorphAnimatorController",
+    "SBPIPSceneController",
+    "SBPhoneRLController",
+    "SBPlatformController",
+    "SBPowerDownViewController",
+    "SBPreflightController",
+    "SBProductivityGestureController",
+    "SBPrototypeController",
+    "SBReachabilityController",
+    "SBRecentDisplayItemsController",
+    "SBRecordingIndicatorViewController",
+    "SBRemoteTransientOverlayHostViewController",
+    "SBRemoteTransientOverlayViewController",
+    "SBRingerHUDViewController",
+    "SBRootFolderController",
+    "SBSceneViewController",
+    "SBScreenSleepController",
+    "SBScreenWakeAnimationController",
+    "SBServerSBHUDController",
+    "SBSingleSceneController",
+    "SBSoftLockoutController",
+    "SBSoundController",
+    "SBSplashBoardController",
+    "SBSpotlightInitiatingViewController",
+    "SBSpotlightMultiplexingViewController",
+    "SBSpotlightPresentableViewController",
+    "SBSpotlightTransientOverlayViewController",
+    "SBStartupTransitionController",
+    "SBSwitcherAppSuggestionViewController",
+    "SBSwitcherController",
+    "SBSwitcherShelfViewController",
+    "SBSwitcherViewController",
+    "SBSyncController",
+    "SBSystemActionCoachingController",
+    "SBSystemActionCoachingHUDViewController",
+    "SBSystemApertureController",
+    "SBSystemApertureViewController",
+    "SBSystemNotesContentViewController",
+    "SBSystemNotesConventViewController",
+    "SBSystemUISceneController",
+    "SBTapToWakeController",
+    "SBThermalController",
+    "SBTodayViewController",
+    "SBTopAffordanceViewController",
+    "SBTraitsOrientedContentViewController",
+    "SBTransientOverlayViewController",
+    "SBUIActionPlatterViewController",
+    "SBUIAnimationController",
+    "SBUIBlockAnimationController",
+    "SBUIEmergencyCallHostViewController",
+    "SBUIStartupFromBlackAnimationController",
+    "SBUIStartupFromOverlayAnimationController",
+    "SBUIStartupToHomescreenAnimationController",
+    "SBUIStartupToLoginWindowAnimationController",
+    "SBUISwitcherAnimationController",
+    "SBUIViewController",
+    "SBUIWorkspaceAnimationController",
+    "SBUserNotificationRemoteViewController",
+    "SBUserSessionController",
+    "SBVideoOutController",
+    "SBViewController",
+    "SBVoiceControlController",
+    "SBVoiceControlTransientOverlayViewController",
+    "SBVoiceControlViewController",
+    "SBWalletPreArmController",
+    "SBWallpaperController",
+    "SBWidgetExtensionDebuggingController",
+    "SBWindowSceneDidUpdateReachabilityController",
+    "SBiCloudPasscodeRequirementLockoutController",
+    "SBuddyMLController",
+    "SBuddyMLViewController"
+  ],
+  "all_cataloged_managers": [
+    "SBAccountStoreManager",
+    "SBActivityManager",
+    "SBAmbientPresentationReasonTriggerManager",
+    "SBAppInteractionEventSourceManager",
+    "SBAppSuggestionManager",
+    "SBApplicationTestingManager",
+    "SBAssistantIslandStageGestureManager",
+    "SBAudioRecordingManager",
+    "SBBackgroundActivityAssertionServiceManager",
+    "SBBackgroundActivityAttributionManager",
+    "SBBackgroundMultitaskingManager",
+    "SBBannerManager",
+    "SBCameraActivationManager",
+    "SBCaptureApplicationLaunchAssertionManager",
+    "SBCaptureButtonSuppressionManager",
+    "SBConferenceManager",
+    "SBContinuityDisplaySystemGestureManager",
+    "SBContinuityScreenshotManager",
+    "SBContinuitySessionManager",
+    "SBCoverSheetPresentationManager",
+    "SBCoverSheetSceneManager",
+    "SBDDisplayProfileManager",
+    "SBDeviceOrientationUpdateManager",
+    "SBDisplayPortalManager",
+    "SBDraggingSystemManager",
+    "SBEmbeddedScenesConnectionManager",
+    "SBExternalDisplaySystemGestureManager",
+    "SBFaceContactExpectationManager",
+    "SBFlashlightActivityManager",
+    "SBFloatingDockRemoteContentManager",
+    "SBFluidSwitcherDragAndDropManager",
+    "SBFluidSwitcherGestureManager",
+    "SBFocusActivityManager",
+    "SBFocusModesHomeScreenSettingsManager",
+    "SBHAddWidgetSheetConfigurationManager",
+    "SBHIconManager",
+    "SBHomeAffordanceInteractionManager",
+    "SBHomeScreenConfigurationManager",
+    "SBIconDragManager",
+    "SBInCallPresentationManager",
+    "SBInteractiveScreenshotGestureManager",
+    "SBKeyboardDismissalManager",
+    "SBKeyboardSuppressionManager",
+    "SBLayoutStateManager",
+    "SBLiftToWakeManager",
+    "SBLockScreenManager",
+    "SBLockScreenPluginManager",
+    "SBLockdownManager",
+    "SBLockedPointerManager",
+    "SBLogInCallPresentationManager",
+    "SBMainDisplayLayoutStateManager",
+    "SBMenuBarManager",
+    "SBModalUIFluidDismissGestureManager",
+    "SBMousePointerManager",
+    "SBOrientationLockManager",
+    "SBPIPEndStashTabSuppressionGestureManager",
+    "SBPhysicalButtonSceneOverrideManager",
+    "SBPlatterHomeGestureManager",
+    "SBPosterBoardModalEditingManager",
+    "SBPosterBoardUpdateManager",
+    "SBPresentationBinderIndirectAccessManager",
+    "SBProximitySensorManager",
+    "SBRecordingIndicatorDisplayPowerManager",
+    "SBRecordingIndicatorManager",
+    "SBRemoteTransientOverlaySessionManager",
+    "SBRestartManager",
+    "SBSceneManager",
+    "SBSceneRelevancyManager",
+    "SBSceneRenderingEnvironmentManager",
+    "SBSecureAppManager",
+    "SBSetupManager",
+    "SBSoftwareUpdatePasscodePolicyManager",
+    "SBSpotlightDelegateManager",
+    "SBStateDumpManager",
+    "SBStatusBarManager",
+    "SBStatusBarTapManager",
+    "SBSystemActionSuppressionManager",
+    "SBSystemAperturePresentableManager",
+    "SBSystemGestureManager",
+    "SBSystemNotesInteractionManager",
+    "SBSystemNotesManager",
+    "SBSystemPointerInteractionManager",
+    "SBTelephonyManager",
+    "SBTouchRegionManager",
+    "SBTraitArbiterPipelineManager",
+    "SBTraitsEmbeddedDisplayPipelineManager",
+    "SBTraitsParticipantRolePipelineManager",
+    "SBTraitsPipelineManager",
+    "SBTransientOverlayPresentationManager",
+    "SBWaitingForIconManager",
+    "SBWiFiManager",
+    "SBWifiManager",
+    "SBWindowHidingManager",
+    "SBWindowManager",
+    "SBWindowSceneManager",
+    "SBWindowScenePIPManager",
+    "SBWindowSceneStatusBarAssertionManager",
+    "SBWindowSceneStatusBarLayoutManager",
+    "SBWindowSceneStatusBarManager",
+    "SBankManager"
+  ],
+  "classes": {
+    "total_controllers": 199,
+    "total_managers": 100,
+    "total_workspaces": 33,
+    "registered_scene_workspaces": [
+      "com.apple.SpringBoard.SceneWorkspace.DruidUI",
+      "com.apple.SpringBoard.SceneWorkspace.InputUI",
+      "com.apple.SpringBoard.SceneWorkspace.OverlayUI",
+      "com.apple.SpringBoard.SceneWorkspace.FullKeyboardAccessUI",
+      "com.apple.SpringBoard.SceneWorkspace.VoiceControlUI",
+      "com.apple.SpringBoard.SceneWorkspace.AssistiveTouchUI",
+      "com.apple.SpringBoard.SceneWorkspace.AccessibilityUIServerUI",
+      "com.apple.SpringBoard.SceneWorkspace.Ensemble",
+      "com.apple.SpringBoard.SceneWorkspace.EyedropperUI",
+      "com.apple.SpringBoard.SceneWorkspace.Moments",
+      "com.apple.SpringBoard.SceneWorkspace.InternalPerfPowerHUD",
+      "com.apple.SpringBoard.SceneWorkspace.PerfPowerHUD",
+      "com.apple.SpringBoard.SceneWorkspace.CameraOverlayUI",
+      "com.apple.SpringBoard.SceneWorkspace.PrototypeTools",
+      "com.apple.SpringBoard.SceneWorkspace.AudioHUD"
+    ],
+    "workspaces_catalog": [
+      "SBActivateAppClipFromPlaceholderWorkspace",
+      "SBActivateAppUnderLockScreenWorkspace",
+      "SBAppClipPlaceholderWorkspace",
+      "SBAppResizeWorkspace",
+      "SBAppToAppWorkspace",
+      "SBAssistantIslandWorkspace",
+      "SBCoverSheetToAppsWorkspace",
+      "SBDeckSwitcherPanGestureWorkspace",
+      "SBDragAndDropWorkspace",
+      "SBEmptyWorkspace",
+      "SBFSceneWorkspace",
+      "SBFluidSwitcherGestureWorkspace",
+      "SBHandleScenelessWorkspace",
+      "SBInCallSceneUpdateWorkspace",
+      "SBInteractiveScreenshotCommitWorkspace",
+      "SBLiveWindowResizeGestureWorkspace",
+      "SBMainWorkspace",
+      "SBModalUIFluidDismissGestureWorkspace",
+      "SBPIPSceneContentSceneUpdateWorkspace",
+      "SBPreviousWorkspace",
+      "SBRestartManagerWorkspace",
+      "SBSceneLayoutWorkspace",
+      "SBSuspendedSceneWorkspace",
+      "SBSuspendedScenelessWorkspace",
+      "SBSuspendedWorkspace",
+      "SBSwitchAppSystemGestureWorkspace",
+      "SBSystemGestureWorkspace",
+      "SBToAppsWorkspace",
+      "SBTransientOverlayDismissAllToAppsWorkspace",
+      "SBTransientOverlayDismissAllWorkspace",
+      "SBTransientOverlayDismissWorkspace",
+      "SBTransientOverlayPresentWorkspace",
+      "SBWakeToInCallWorkspace"
+    ]
+  },
+  "window_server_integration": {
+    "window_server": "backboardd",
+    "scene_manager": "FBSceneManager (FrontBoard)",
+    "display_refresh": "120Hz ProMotion (CAEnableVariableFrameDuration)",
+    "always_on_display": "BacklightServices (AOD)",
+    "camera_control_hardware": "com.apple.springboard.capture-intent"
+  },
+  "default_home_screen_layout": {
+    "source_file": "DefaultIconState.plist",
+    "page_1_smart_stack_widgets_count": 2,
+    "smart_stack_definitions": [
+      {
+        "allowsExternalSuggestions": true,
+        "allowsSuggestions": true,
+        "elements": [
+          {
+            "bundleIdentifier": "com.apple.weather.widget",
+            "containerBundleIdentifier": "com.apple.weather",
+            "elementType": "widget",
+            "widgetIdentifier": "com.apple.weather",
+            "widgetSuggestionSource": "onboarding"
+          },
+          {
+            "bundleIdentifier": "com.apple.Maps.GeneralMapsWidget",
+            "containerBundleIdentifier": "com.apple.Maps",
+            "elementType": "widget",
+            "widgetIdentifier": "com.apple.Maps",
+            "widgetSuggestionSource": "onboarding"
+          },
+          {
+            "bundleIdentifier": "com.apple.mobilenotes.WidgetExtension",
+            "containerBundleIdentifier": "com.apple.mobilenotes",
+            "elementType": "widget",
+            "widgetIdentifier": "com.apple.mobilenotes.FolderWidget",
+            "widgetSuggestionSource": "onboarding"
+          }
+        ],
+        "gridSize": "small",
+        "iconType": "custom"
+      },
+      {
+        "allowsExternalSuggestions": true,
+        "allowsSuggestions": true,
+        "elements": [
+          {
+            "bundleIdentifier": "com.apple.mobilecal.CalendarWidgetExtension",
+            "containerBundleIdentifier": "com.apple.mobilecal",
+            "elementType": "widget",
+            "widgetIdentifier": "com.apple.CalendarWidget.CalendarUpNextWidget",
+            "widgetSuggestionSource": "onboarding"
+          },
+          {
+            "bundleIdentifier": "com.apple.news.widget",
+            "containerBundleIdentifier": "com.apple.news",
+            "elementType": "widget",
+            "widgetIdentifier": "today",
+            "widgetSuggestionSource": "onboarding"
+          },
+          {
+            "bundleIdentifier": "com.apple.mobileslideshow.PhotosReliveWidget",
+            "containerBundleIdentifier": "com.apple.mobileslideshow",
+            "elementType": "widget",
+            "widgetIdentifier": "com.apple.mobileslideshow.PhotosReliveWidget",
+            "widgetSuggestionSource": "onboarding"
+          }
+        ],
+        "gridSize": "small",
+        "iconType": "custom"
+      }
+    ],
+    "page_1_default_applications": [
+      "com.apple.facetime",
+      "com.apple.mobilecal",
+      "com.apple.mobileslideshow",
+      "com.apple.camera",
+      "com.apple.mobilemail",
+      "com.apple.mobilenotes",
+      "com.apple.mobiletimer",
+      "com.apple.Maps",
+      "com.apple.tv",
+      "com.apple.news",
+      "com.apple.AppStore",
+      "com.apple.games",
+      "com.apple.Health",
+      "com.apple.Passbook",
+      "com.apple.SiriApp",
+      "com.apple.Preferences"
+    ]
+  }
+}

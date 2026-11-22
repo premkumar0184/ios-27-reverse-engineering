@@ -1,0 +1,242 @@
+{
+  "metadata": {
+    "framework": "UIKitCore.framework",
+    "target": "iPhone18,3_27.2_24B119",
+    "architecture": "arm64e",
+    "subcache_slice": ".01",
+    "vm_base_address": "0x184752000",
+    "generated_at": "2026-11-17T09:46:00+05:30",
+    "specification_version": "1.1.0"
+  },
+  "boundary_geometry_calculation": {
+    "routines": {
+      "minimum_content_offset": {
+        "method": "-[UIScrollView _minimumContentOffset]",
+        "virtual_address": "0x1848b7f40",
+        "return_type": "CGPoint",
+        "formula": {
+          "x": "-adjustedContentInset.left",
+          "y": "-adjustedContentInset.top"
+        },
+        "description": "Calculates top-left bounding origin derived from adjusted content insets; shifts downward when UIRefreshControl is pinned"
+      },
+      "maximum_content_offset": {
+        "method": "-[UIScrollView _maximumContentOffset]",
+        "virtual_address": "0x1848b7f60",
+        "return_type": "CGPoint",
+        "formula": {
+          "x": "max(_minimumContentOffset.x, contentSize.width + adjustedContentInset.right - bounds.size.width)",
+          "y": "max(_minimumContentOffset.y, contentSize.height + adjustedContentInset.bottom - bounds.size.height)"
+        },
+        "description": "Calculates bottom-right bounding origin clamped to min offset if content smaller than viewport"
+      },
+      "clamped_content_offset": {
+        "method": "-[UIScrollView _clampedContentOffsetForContentOffset:]",
+        "virtual_address": "0x1848b7fa0",
+        "return_type": "CGPoint",
+        "formula": {
+          "x": "clamp(proposedOffset.x, _minimumContentOffset.x, _maximumContentOffset.x)",
+          "y": "clamp(proposedOffset.y, _minimumContentOffset.y, _maximumContentOffset.y)"
+        },
+        "description": "Clamps arbitrary proposed contentOffset within valid non-overscrolled scroll bounds"
+      },
+      "adjusted_content_offset_if_necessary": {
+        "method": "-[UIScrollView _adjustedContentOffsetIfNecessary]",
+        "virtual_address": "0x1848b7fc0",
+        "return_type": "CGPoint",
+        "formula": {
+          "tracking_or_decelerating": "contentOffset (active overscroll preserved during touch tracking or deceleration)",
+          "idle_state": "clamp(contentOffset, _minimumContentOffset, _maximumContentOffset)"
+        },
+        "description": "Adjusts and clamps current contentOffset during layout mutations (bounds resize, contentSize change, insets update); preserves active overscroll while user is tracking"
+      }
+    },
+    "adjusted_content_inset_rules": {
+      "method": "-[UIScrollView _adjustedContentInset]",
+      "virtual_address": "0x1848b7800",
+      "formula": "adjustedContentInset = contentInset + safeAreaAdjustment",
+      "adjustment_behavior_modes": {
+        "UIScrollViewContentInsetAdjustmentAutomatic": {
+          "raw_value": 0,
+          "rule": "Includes safeAreaInsets if view is scrollable or embedded in a navigation/tab bar hierarchy"
+        },
+        "UIScrollViewContentInsetAdjustmentScrollableAxes": {
+          "raw_value": 1,
+          "rule": "Includes safeAreaInsets along an axis only if content exceeds bounds or alwaysBounce is set for that axis"
+        },
+        "UIScrollViewContentInsetAdjustmentNever": {
+          "raw_value": 2,
+          "rule": "adjustedContentInset equals raw contentInset; ignores safeAreaInsets completely"
+        },
+        "UIScrollViewContentInsetAdjustmentAlways": {
+          "raw_value": 3,
+          "rule": "Always adds full safeAreaInsets to contentInset regardless of scrollability"
+        }
+      }
+    }
+  },
+  "ballistic_vs_drag_transitions": {
+    "active_drag_overscroll": {
+      "interaction_state": "User finger in contact with digitizer (isTracking == YES, isDragging == YES)",
+      "evaluation_mechanism": "Dynamic static evaluation per touch event in handlePan:",
+      "formula_applied": "f(x) rational rubber-band equation directly applied to unconstrained pan translation",
+      "time_integration": "None (position is strictly kinematically coupled to finger displacement)",
+      "release_transition": "Upon touch up, if offset is outside boundaries, initial velocity v0 is measured by 8-sample ring buffer and handed off to _UIScrollViewSpringAnimation"
+    },
+    "touch_release_overscroll_restitution": {
+      "interaction_state": "User lifts finger while in overscroll state (isDragging transitions to NO, isDecelerating transitions to YES)",
+      "evaluation_mechanism": "Launches _UIScrollViewSpringAnimation with non-zero initial displacement",
+      "axis_specific_policy_gating": "Evaluates canBounceHorizontal and canBounceVertical independently; non-permitted axes are immediately pinned to equilibrium boundary, while only permitted axes schedule spring restitution",
+      "initial_conditions": {
+        "initial_displacement_x0": "currentContentOffset - equilibriumBoundaryOffset (non-zero displacement)",
+        "initial_velocity_v0": "Residual finger release velocity sampled from 8-entry pan velocity ring buffer"
+      },
+      "spring_handoff": "Restitutes back toward boundary equilibrium via underdamped harmonic oscillator ODE (zeta = 0.90); halts when |x| < 0.5 pt and |v| < 0.5 pt/s"
+    },
+    "ballistic_momentum_overscroll": {
+      "interaction_state": "Finger released, inertial deceleration animation running (isDecelerating == YES)",
+      "evaluation_mechanism": "Inertial exponential decay stepping via CADisplayLink ticks",
+      "boundary_collision_detection": "Offset trajectory crosses minContentOffset or maxContentOffset during interval [t_n, t_{n+1}]",
+      "momentum_handoff_algorithm": {
+        "step_1_fractional_collision_time": "f = (s_boundary - s_n) / Delta_s",
+        "step_2_impact_velocity": "v_boundary = v_n * d^(1000 * f * Delta_t)",
+        "step_3_position_pin": "Pin contentOffset to s_boundary",
+        "step_4_spring_launch": "Halt deceleration animation immediately, launch _UIScrollViewSpringAnimation with x0 = 0.0 and initial velocity v0 = v_boundary",
+        "step_5_kinetic_compression": "The virtual spring compresses into overscroll up to X_max = abs(v_boundary) / omega_d, then rebounds back to s_boundary equilibrium"
+      },
+      "formula_usage": "Momentum overscroll does NOT use the drag rational curve dynamically per frame; it transitions directly to the second-order ODE spring simulation"
+    }
+  },
+  "bounce_back_spring_parameters": {
+    "harmonic_oscillator_ode": "m * x_ddot + c * x_dot + k * x = 0",
+    "ode_regime": "Underdamped harmonic oscillator (zeta = 0.90)",
+    "lifecycle_routine": {
+      "method": "-[_UIScrollViewSpringAnimation updatePosition:timestamp:]",
+      "virtual_address": "0x1848c8100",
+      "description": "Evaluates closed-form ODE per axis on each frame tick, updates target UIScrollView contentOffset, checks position and velocity settling thresholds, snaps to equilibriumOffset, and clears isDecelerating bit"
+    },
+    "parameters": {
+      "mass_m": {
+        "value": 1.0,
+        "units": "kg",
+        "ieee754_double_hex": "0x3ff0000000000000",
+        "symbol": "m",
+        "vm_address": "0x1864d3048",
+        "file_offset": "0x60d3048"
+      },
+      "stiffness_k": {
+        "default_value": 100.0,
+        "pull_to_refresh_value": 180.0,
+        "units": "N/m",
+        "ieee754_double_hex": "0x4059000000000000",
+        "symbol": "k",
+        "vm_address": "0x1864d3050",
+        "file_offset": "0x60d3050"
+      },
+      "damping_c": {
+        "value": 18.0,
+        "default_value": 18.0,
+        "pull_to_refresh_value": 24.14953415699773,
+        "units": "N*s/m",
+        "ieee754_double_hex": "0x4032000000000000",
+        "symbol": "c",
+        "vm_address": "0x1864d3060",
+        "file_offset": "0x60d3060"
+      },
+      "critical_damping_cc": {
+        "value": 20.0,
+        "default_value": 20.0,
+        "pull_to_refresh_value": 26.832815729997478,
+        "units": "N*s/m",
+        "ieee754_double_hex": "0x4034000000000000",
+        "formula": "2 * sqrt(k * m)"
+      },
+      "damping_ratio_zeta": {
+        "value": 0.90,
+        "dimensionless": true,
+        "ieee754_double_hex": "0x3feccccccccccccd",
+        "symbol": "zeta",
+        "formula": "c / (2 * sqrt(k * m)) = 18.0 / 20.0"
+      },
+      "undamped_natural_frequency_omega_n": {
+        "value_rad_per_sec": 10.0,
+        "default_value_rad_per_sec": 10.0,
+        "pull_to_refresh_value_rad_per_sec": 13.416407864998739,
+        "ieee754_double_hex": "0x4024000000000000",
+        "symbol": "omega_n",
+        "formula": "sqrt(k / m)"
+      },
+      "damped_angular_frequency_omega_d": {
+        "value_rad_per_sec": 4.358898943540674,
+        "default_value_rad_per_sec": 4.358898943540674,
+        "pull_to_refresh_value_rad_per_sec": 5.848076606883688,
+        "ieee754_double_hex": "0x40116f8334644df9",
+        "symbol": "omega_d",
+        "formula": "omega_n * sqrt(1.0 - zeta^2)"
+      }
+    },
+    "settling_and_rest_conditions": {
+      "displacement_epsilon_pt": 0.5,
+      "velocity_epsilon_pt_per_sec": 0.5,
+      "settling_duration_formula": "t_settle = -ln(epsilon / max_amplitude) / (zeta * omega_n)",
+      "settling_action": "Snap contentOffset to equilibrium boundary and clear isDecelerating bit"
+    }
+  },
+  "policy_flags_and_edge_cases": {
+    "flags": {
+      "bounces": {
+        "type": "BOOL",
+        "bitfield_offset": "0xd0",
+        "bit_position": 2,
+        "description": "Master switch controlling whether contentOffset can exceed minimum/maximum bounds",
+        "when_disabled": "Strict clamping to [minOffset, maxOffset]; zero momentum transfer on boundary impact"
+      },
+      "alwaysBounceVertical": {
+        "type": "BOOL",
+        "bitfield_offset": "0xd0",
+        "bit_position": 3,
+        "description": "Enables vertical overscroll dragging and bounce even if contentSize.height <= bounds.size.height"
+      },
+      "alwaysBounceHorizontal": {
+        "type": "BOOL",
+        "bitfield_offset": "0xd0",
+        "bit_position": 4,
+        "description": "Enables horizontal overscroll dragging and bounce even if contentSize.width <= bounds.size.width"
+      },
+      "bouncesZoom": {
+        "type": "BOOL",
+        "bitfield_offset": "0xd0",
+        "bit_position": 5,
+        "description": "Enables rubber-band scaling beyond minimumZoomScale and maximumZoomScale",
+        "method": "-[UIScrollView _zoomRubberBandScaleForScale:]",
+        "virtual_address": "0x1848b7ba0",
+        "damping_coefficient_c_zoom": 0.25,
+        "below_min_formula": "minScale - ln(1.0 + (minScale - s) / minScale) * c_zoom * minScale",
+        "above_max_formula": "maxScale + ln(1.0 + (s - maxScale) / maxScale) * c_zoom * maxScale",
+        "when_disabled": "Strict clamping to [minimumZoomScale, maximumZoomScale]"
+      }
+    },
+    "edge_cases": {
+      "content_smaller_than_viewport": {
+        "condition": "contentSize.height <= bounds.size.height or contentSize.width <= bounds.size.width",
+        "geometry_behavior": "maxOffset collapses to minOffset along that axis",
+        "scroll_decision_table": {
+          "bounces_YES_alwaysBounce_YES": "Draggable with immediate rubber-band resistance in both directions; springs back to minOffset",
+          "bounces_YES_alwaysBounce_NO": "Non-scrollable along this axis; pan gestures pass through to parent view; strictly pinned at minOffset",
+          "bounces_NO_alwaysBounce_ANY": "Non-scrollable along this axis; strictly pinned at minOffset"
+        }
+      },
+      "zero_content_size": {
+        "condition": "contentSize == CGSizeZero",
+        "geometry_behavior": "minOffset = (-adjustedContentInset.left, -adjustedContentInset.top), maxOffset = minOffset",
+        "handling": "Handled symmetrically as content_smaller_than_viewport with 0pt dimension"
+      },
+      "pull_to_refresh_pinning": {
+        "component": "UIRefreshControl",
+        "top_boundary_shift": "minOffset.y shifts downward by refreshControlHeight (typically -60.0 pt)",
+        "stiffness_override": "Virtual spring stiffness increases from k = 100.0 N/m to k = 180.0 N/m",
+        "momentum_interaction": "Ballistic flings striking the pinned refresh boundary rebound with higher restitution frequency omega_n = 13.42 rad/s"
+      }
+    }
+  }
+}

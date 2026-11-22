@@ -1,0 +1,275 @@
+{
+  "subsystem": "IOHIDPointerScrollFilter.plugin",
+  "target_environment": {
+    "os_version": "iOS 27.2",
+    "darwin_version": "Darwin 24.2.0",
+    "build": "24B119",
+    "train": "RaveB",
+    "device": "iPhone18,3",
+    "soc": "t8150",
+    "marketing_name": "Apple A19 Pro",
+    "instruction_set": "arm64e",
+    "pointer_authentication": "PAC00"
+  },
+  "binary_mapping": {
+    "image_path": "/System/Library/HIDPlugins/IOHIDPointerScrollFilter.plugin/IOHIDPointerScrollFilter",
+    "subcache_filename": "dyld_shared_cache_arm64e.48",
+    "subcache_index": 47,
+    "subcache_extension": ".48",
+    "subcache_vm_base": "0x250400000",
+    "subcache_file_offset": "0x25c4000",
+    "subcache_file_offset_int": 39600128,
+    "subcache_uuid": "2b0abe0c-1c3c-398f-90ff-b0beed9be26a",
+    "vm_base_address": "0x2529c4000",
+    "vm_base_address_int": 9975906304,
+    "text_segment": {
+      "vm_address": "0x2529c4000",
+      "vm_size": "0xa9fc",
+      "file_offset": "0x25c4000",
+      "protection": "r-x"
+    },
+    "sections": {
+      "__text": {
+        "addr": "0x2529c4a98",
+        "size": "0x8420",
+        "offset": "0x25c4a98"
+      },
+      "__const": {
+        "addr": "0x2529cd690",
+        "size": "0x406",
+        "offset": "0x25cd690"
+      },
+      "__cstring": {
+        "addr": "0x2529cda96",
+        "size": "0x6de",
+        "offset": "0x25cda96"
+      },
+      "__oslogstring": {
+        "addr": "0x2529ce174",
+        "size": "0x41f",
+        "offset": "0x25ce174"
+      }
+    }
+  },
+  "plugin_architecture": {
+    "factory_entry_point": "IOHIDPointerScrollFilterFactory",
+    "factory_address": "0x2529c4a98",
+    "plugin_type_uuid": "0539c277-3e4b-4b21-995c-567c9f6920f0",
+    "plugin_interface_uuid": "c005b53d-2495-46ff-bc07-7e61a6fa3478",
+    "com_interface": "IOHIDServiceFilterPlugInInterface",
+    "class_name": "IOHIDPointerScrollFilter",
+    "class_hierarchy": [
+      "IUnknown",
+      "IOHIDServiceFilterPlugInInterface",
+      "IOHIDPointerScrollFilter"
+    ],
+    "object_size_bytes": 184,
+    "state_layout": {
+      "+0x00": "vtable_ptr (PACDA signed, discriminator 0x7e02 for filter, 0x9ff6 for accelerator)",
+      "+0x08": "ref_count (int32_t)",
+      "+0x10": "service_ref (IOHIDServiceRef)",
+      "+0x18": "dispatch_queue (dispatch_queue_t)",
+      "+0x20": "run_loop (CFRunLoopRef)",
+      "+0x28": "service_id (uint64_t)",
+      "+0x30": "pointer_accelerator_ptr (IOHIDPointerAccelerator*)",
+      "+0x38": "scroll_accelerator_ptr (IOHIDScrollAccelerator*)",
+      "+0x40": "scroll_accelerator_table_x (IOHIDTableAcceleration*)",
+      "+0x48": "scroll_accelerator_table_y (IOHIDTableAcceleration*)",
+      "+0x50": "scroll_accelerator_table_z (IOHIDTableAcceleration*)",
+      "+0x58": "client_property_dictionary (CFMutableDictionaryRef)",
+      "+0x60": "pointer_curves (CFArrayRef)",
+      "+0x68": "scroll_curves (CFArrayRef)",
+      "+0x70": "acceleration_table (CFDataRef)",
+      "+0x78": "iohid_service_filter_debug (os_log_t)",
+      "+0x80": "scroll_acceleration_value (double, IEEE 754)",
+      "+0x88": "pointer_acceleration_value (double, IEEE 754)",
+      "+0x90": "pointer_acceleration_minimum (double, IEEE 754)",
+      "+0x98": "scroll_resolution (double, default 10.0)",
+      "+0xa0": "pointer_resolution (double, default 400.0)",
+      "+0xa4": "is_pointer_acceleration_enabled (uint8_t)",
+      "+0xa5": "is_scroll_acceleration_enabled (uint8_t)",
+      "+0xa6": "use_linear_mouse_scaling (uint8_t)",
+      "+0xa7": "natural_scrolling_inverted (uint8_t)",
+      "+0xa8": "momentum_dispatch_timer (dispatch_source_t)",
+      "+0xb0": "momentum_dispatch_rate_ms (uint64_t, default 10ms)"
+    }
+  },
+  "virtual_method_table": {
+    "vtable_base_address": "0x26dd6ad58",
+    "section_base_address": "0x26dd6ac60",
+    "pac_discriminator": "0x7e02",
+    "accelerator_pac_discriminator": "0x9ff6",
+    "signing_mode": "PACDA",
+    "methods": [
+      {
+        "slot": 0,
+        "offset": "0x00",
+        "symbol": "IOHIDPointerScrollFilter::QueryInterface",
+        "address": "0x2529c56b4",
+        "pac_opcode": "0xd503237f",
+        "signature": "HRESULT (void*, REFIID, void**)"
+      },
+      {
+        "slot": 1,
+        "offset": "0x08",
+        "symbol": "IOHIDPointerScrollFilter::AddRef",
+        "address": "0x2529c56f0",
+        "pac_opcode": "0xd503237f",
+        "signature": "ULONG (void*)"
+      },
+      {
+        "slot": 2,
+        "offset": "0x10",
+        "symbol": "IOHIDPointerScrollFilter::Release",
+        "address": "0x2529c572c",
+        "pac_opcode": "0xd503237f",
+        "signature": "ULONG (void*)"
+      },
+      {
+        "slot": 3,
+        "offset": "0x18",
+        "symbol": "IOHIDPointerScrollFilter::open",
+        "address": "0x2529c51ec",
+        "pac_opcode": "0xd503237f",
+        "signature": "IOReturn (IOHIDPointerScrollFilter*, IOHIDServiceRef, IOOptionBits)"
+      },
+      {
+        "slot": 4,
+        "offset": "0x20",
+        "symbol": "IOHIDPointerScrollFilter::close",
+        "address": "0x2529c52f4",
+        "pac_opcode": "0xd503237f",
+        "signature": "IOReturn (IOHIDPointerScrollFilter*, IOHIDServiceRef, IOOptionBits)"
+      },
+      {
+        "slot": 5,
+        "offset": "0x28",
+        "symbol": "IOHIDPointerScrollFilter::scheduleWithDispatchQueue",
+        "address": "0x2529c5444",
+        "pac_opcode": "0xd503237f",
+        "signature": "void (IOHIDPointerScrollFilter*, dispatch_queue_t)"
+      },
+      {
+        "slot": 6,
+        "offset": "0x30",
+        "symbol": "IOHIDPointerScrollFilter::unscheduleFromDispatchQueue",
+        "address": "0x2529c54a8",
+        "pac_opcode": "0xd503237f",
+        "signature": "void (IOHIDPointerScrollFilter*, dispatch_queue_t)"
+      },
+      {
+        "slot": 7,
+        "offset": "0x38",
+        "symbol": "IOHIDPointerScrollFilter::copyProperty",
+        "address": "0x2529c50b4",
+        "pac_opcode": "0xd503237f",
+        "signature": "CFTypeRef (IOHIDPointerScrollFilter*, CFStringRef)"
+      },
+      {
+        "slot": 8,
+        "offset": "0x40",
+        "symbol": "IOHIDPointerScrollFilter::setProperty",
+        "address": "0x2529c4a9c",
+        "pac_opcode": "0xd503237f",
+        "signature": "Boolean (IOHIDPointerScrollFilter*, CFStringRef, CFTypeRef)"
+      },
+      {
+        "slot": 9,
+        "offset": "0x48",
+        "symbol": "IOHIDPointerScrollFilter::filter",
+        "address": "0x2529ca294",
+        "pac_opcode": "0xd503237f",
+        "signature": "IOHIDEventRef (IOHIDPointerScrollFilter*, IOHIDServiceRef, IOHIDEventRef)"
+      }
+    ]
+  },
+  "accelerator_dispatch": {
+    "accelerator_vtable": "0x26dd6ac70",
+    "accelerator_vtable_pac_discriminator": "0x9ff6",
+    "virtual_call_branch_discriminator": "0x9dcf",
+    "table_acceleration_vtable": "0x26dd6aec0",
+    "table_acceleration_pac_discriminator": "0x7166",
+    "accelerate_method_offset": "0x10",
+    "subroutine_addresses": {
+      "constructor": "0x2529c57c8",
+      "setupAcceleration": "0x2529cb58c",
+      "createTableAccelerator": "0x2529c64e8",
+      "getMultiplierForDelta": "0x2529c85e4",
+      "interpolateCurve": "0x2529c6668",
+      "startMomentumTimer": "0x2529cc434",
+      "stopMomentumTimer": "0x2529cc4c0"
+    }
+  },
+  "property_keys": [
+    "HIDPointerAcceleration",
+    "HIDScrollAcceleration",
+    "HIDMouseAcceleration",
+    "HIDMouseScrollAcceleration",
+    "HIDTrackpadScrollAcceleration",
+    "HIDTrackpadAcceleration",
+    "HIDScrollAccelerationType",
+    "HIDPointerAccelerationType",
+    "HIDUseLinearScalingMouseAcceleration",
+    "UserPointerAccelCurvesKey",
+    "UserScrollAccelCurvesKey",
+    "HIDPointerAccelerationMultiplier",
+    "HIDSupportsPointerAcceleration",
+    "HIDSupportsScrollAcceleration",
+    "HIDPointerReportRate",
+    "HIDScrollReportRate",
+    "HIDPointerAccelerationAlgorithm",
+    "HIDScrollAccelerationAlgorithm",
+    "HIDPointerAccelerationMinimum",
+    "DropAccelPropertyEvents",
+    "IOHIDAcclerationStatsDelayMS",
+    "ScrollMomentumDispatchRate",
+    "HIDPointerAccelerationTable",
+    "HIDAccelCurves",
+    "HIDScrollAccelerationTable",
+    "HIDScrollAccelCurves",
+    "HIDPointerResolution",
+    "HIDScrollResolution",
+    "HIDScrollResolutionX",
+    "HIDScrollResolutionY",
+    "HIDScrollResolutionZ",
+    "HIDScrollAccelerationTableX",
+    "HIDScrollAccelerationTableY",
+    "HIDScrollAccelerationTableZ"
+  ],
+  "event_constants": {
+    "kIOHIDEventTypePointer": 17,
+    "kIOHIDEventTypeScroll": 6,
+    "kIOHIDEventTypeDigitizer": 11,
+    "kIOHIDEventFieldPointerX": 1114112,
+    "kIOHIDEventFieldPointerY": 1114113,
+    "kIOHIDEventFieldScrollX": 393216,
+    "kIOHIDEventFieldScrollY": 393217,
+    "kIOHIDEventFieldScrollZ": 393218,
+    "kIOHIDEventFieldScrollIsPixels": 393219,
+    "kIOHIDEventFlagIsAccelerated": 65536,
+    "kIOHIDEventFlagIsPixelUnits": 8,
+    "scroll_phase_bitmasks": {
+      "kIOHIDEventScrollPhaseNone": 0,
+      "kIOHIDEventScrollPhaseBegan": 1,
+      "kIOHIDEventScrollPhaseChanged": 2,
+      "kIOHIDEventScrollPhaseEnded": 4,
+      "kIOHIDEventScrollMomentumBegan": 8,
+      "kIOHIDEventScrollMomentumChanged": 16,
+      "kIOHIDEventScrollMomentumEnded": 32
+    }
+  },
+  "normalization_parameters": {
+    "discrete_mouse_wheel": {
+      "detent_line_multiplier": 3.0,
+      "line_to_point_conversion_factor": 10.0,
+      "effective_points_per_detent": 30.0,
+      "shift_modifier_swaps_xy": true
+    },
+    "continuous_trackpad": {
+      "sub_pixel_accumulator": true,
+      "default_resolution_dpi": 400.0,
+      "default_scroll_resolution": 10.0,
+      "natural_scrolling_default": true
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Secure Enclave Hardware Key Ladder & Cryptographic Engine Specification",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "key_ladder": {
+    "architecture": "Hardware-enforced derivation hierarchy with zero-software-exposure root registers",
+    "root_keys": {
+      "UID0": {
+        "name": "Die Unique ID",
+        "length_bits": 256,
+        "type": "Fused Silicon OTP",
+        "exposure": "Write-only internal bus to AES engine. Inaccessible to software.",
+        "role": "Silicon identity binding; ensures filesystem decryption only succeeds on the exact originating chip."
+      },
+      "GID0": {
+        "name": "Group ID",
+        "length_bits": 256,
+        "type": "SoC Family Silicon OTP",
+        "exposure": "Write-only internal bus to AES engine. Inaccessible to software.",
+        "role": "Family-level trust assertion and production firmware envelope decryption."
+      }
+    },
+    "kdf_primitive": {
+      "standard": "NIST SP 800-108 Counter Mode",
+      "prf": "AES-CMAC-256",
+      "formula": "K_out = CMAC_K_in(Counter || Label || 0x00 || Context || Length)"
+    },
+    "hierarchy_levels": [
+      {
+        "level": 0,
+        "name": "Silicon Root",
+        "keys": ["UID0", "GID0"],
+        "hardware_gate": "Hardwired to cryptographic core; zero software bus access."
+      },
+      {
+        "level": 1,
+        "name": "Device Key Encryption Key (Device KEK)",
+        "derivation": "NIST SP 800-108 CMAC(UID0, 'DeviceKeyEncryptionKey' || Nonce)",
+        "role": "Root key for encrypting file system keybags and device identity tokens."
+      },
+      {
+        "level": 2,
+        "name": "Class Protection Keys (Class A through D)",
+        "derivation": "KDF(Device KEK, Class_Identifier || Passcode_Secret)",
+        "role": "Per-class volume and file encryption keys."
+      },
+      {
+        "level": 3,
+        "name": "Hardware-Enforced Passcode Iteration",
+        "algorithm": "scrypt / PBKDF2 with silicon backoff delays",
+        "derivation": "scrypt(Passcode, Salt, N=32768, r=8, p=1) bound to UID0",
+        "role": "Prevents offline brute-force attacks against user passcodes."
+      }
+    ]
+  },
+  "aes_engine": {
+    "cipher_modes": [
+      "AES-256-XTS (APFS storage encryption and Memory Encryption Engine MEE)",
+      "AES-256-GCM (Authenticated message encapsulation and backup bag encryption)",
+      "AES-256-CBC (Legacy storage compatibility and biometric templates)"
+    ],
+    "key_registers": "Write-only internal registers loaded via hardware key ladder or TRNG. Inaccessible to AP, SPTM, or sepOS.",
+    "direct_hardware_bindings": [
+      {
+        "binding": "fs_unwrap_media_key_from_uid",
+        "role": "Direct APFS media key unwrapping via hardware UID ladder."
+      },
+      {
+        "binding": "fs_unwrap_media_key_from_class",
+        "role": "Data Protection Class Key derivation bound to user passcode and hardware UID."
+      },
+      {
+        "binding": "Memory Encryption Engine (MEE)",
+        "role": "Real-time, low-latency AES-XTS encryption of all data written to external Secure DRAM carveouts."
+      }
+    ]
+  },
+  "public_key_accelerator": {
+    "coprocessor_name": "PKA (Public Key Accelerator)",
+    "supported_curves_and_algorithms": [
+      "NIST P-256 (secp256r1) ECDSA / ECDH",
+      "NIST P-384 (secp384r1) ECDSA / ECDH",
+      "Ed25519 (RFC 8032 Edwards-curve Digital Signature Algorithm)",
+      "RSA 2048 / 4096-bit modular exponentiation and PKCS#1 / PSS verification"
+    ],
+    "hardware_countermeasures": [
+      "Constant-time point multiplication and modular inversion immune to timing side-channels",
+      "Hardware register blinding and power analysis countermeasures",
+      "Secure In-Memory Key Acceleration (SIKA) (DeviceTree sika-support: 0x1)"
+    ],
+    "use_cases": [
+      "Pearl Face ID: Biometric match token signature and attestation",
+      "Apple Pay: EMV dynamic data authentication (DDA) cryptogram signing",
+      "FIDO2 / WebAuthn: Passkey generation and challenge signing",
+      "Secure Boot: Image4 manifest certificate validation"
+    ]
+  }
+}

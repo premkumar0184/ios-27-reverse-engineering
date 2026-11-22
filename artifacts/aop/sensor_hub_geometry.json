@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Continuous Sensor Hub, Ultra-Low-Power AOD & Voice Trigger Hardware Geometry",
+  "imu_pipeline": {
+    "sensor_type": "6-Axis Inertial Measurement Unit (IMU: 3-Axis Accelerometer + 3-Axis Gyroscope)",
+    "supported_sampling_frequencies_hz": [100, 200, 400, 800],
+    "default_operating_frequency_hz": 100,
+    "high_performance_frequency_hz": 800,
+    "sample_record_size_bytes": 64,
+    "sample_record_fields": [
+      {"offset": 0, "size": 8, "type": "uint64_t", "name": "timestamp_mach_continuous", "description": "Mach continuous absolute timestamp (24 MHz hardware timebase)"},
+      {"offset": 8, "size": 4, "type": "float32_t", "name": "accel_x_g", "description": "Linear acceleration along X-axis in standard gravity (g)"},
+      {"offset": 12, "size": 4, "type": "float32_t", "name": "accel_y_g", "description": "Linear acceleration along Y-axis in standard gravity (g)"},
+      {"offset": 16, "size": 4, "type": "float32_t", "name": "accel_z_g", "description": "Linear acceleration along Z-axis in standard gravity (g)"},
+      {"offset": 20, "size": 4, "type": "float32_t", "name": "gyro_x_rads", "description": "Angular velocity around X-axis in radians per second (rad/s)"},
+      {"offset": 24, "size": 4, "type": "float32_t", "name": "gyro_y_rads", "description": "Angular velocity around Y-axis in radians per second (rad/s)"},
+      {"offset": 28, "size": 4, "type": "float32_t", "name": "gyro_z_rads", "description": "Angular velocity around Z-axis in radians per second (rad/s)"},
+      {"offset": 32, "size": 4, "type": "float32_t", "name": "die_temperature_celsius", "description": "Sensor die internal temperature in degrees Celsius"},
+      {"offset": 36, "size": 4, "type": "uint32_t", "name": "sequence_number", "description": "Monotonically increasing hardware sample sequence counter"},
+      {"offset": 40, "size": 4, "type": "uint32_t", "name": "status_flags", "description": "Data validity, clipping indicator, and power mode flags"},
+      {"offset": 44, "size": 20, "type": "uint8_t[20]", "name": "reserved_padding", "description": "Alignment padding to 64-byte hardware cacheline boundary"}
+    ]
+  },
+  "fastpath_ring_buffer": {
+    "driver": "AppleSPUFastpathDriver",
+    "buffer_structure_name": "FastPathRingBuffer",
+    "total_allocation_bytes": 16384,
+    "header_size_bytes": 64,
+    "entry_capacity": 254,
+    "entry_size_bytes": 64,
+    "wrap_mask": "0x00ff",
+    "synchronization_protocol": "Lock-free single-producer single-consumer (SPSC) with acquire/release memory barriers",
+    "header_layout": {
+      "producer_head_idx": {"offset": 0, "size": 4, "role": "Written exclusively by AOP2 hardware/firmware upon sample generation"},
+      "consumer_tail_idx": {"offset": 4, "size": 4, "role": "Written exclusively by host Darwin kernel AppleSPUFastpathDriver upon draining"},
+      "buffer_capacity": {"offset": 8, "size": 4, "value": 254},
+      "dropped_samples_counter": {"offset": 12, "size": 4, "role": "Overrun counter incremented when head catches tail"}
+    }
+  },
+  "ambient_light_sensor": {
+    "driver": "AppleSPUALSColorDriver / AppleSPUALSLuxDriver",
+    "sampling_rate_hz": 10,
+    "channels": ["Clear", "Red", "Green", "Blue", "Infrared"],
+    "telemetry_format": "Fixed-point milli-lux (lux = raw_integer / 1000)",
+    "conversion_formula": "lux = ((clear_counts - ir_counts * ir_rejection_factor) * lux_coefficient * gain_multiplier) / integration_time_ms",
+    "device_tree_properties": {
+      "gain_settings": [1, 4, 16, 64],
+      "integration_times_ms": [50, 100, 200, 400],
+      "auto_gain_thresholds": {"low_clip": 200, "high_clip": 60000}
+    }
+  },
+  "always_on_display": {
+    "subsystem": "Display Co-Processor (DCP) 1Hz Frame Streamer",
+    "control_node": "/device-tree/arm-io/aop/iop-aop-nub/dcp-control",
+    "driver": "AppleSPUDCPDriver",
+    "hardware_buffer_properties": {
+      "buffer_address_property": "aop-dcp-buffer-address",
+      "buffer_size_property": "aop-dcp-buffer-size",
+      "buffer_size_bytes": 262144,
+      "color_depth": "16-bit RGB565 / Low-Power Palette Sub-sampled",
+      "resolution": "Partial update rectangle (e.g. 460x120 pixels for status/clock elements)"
+    },
+    "refresh_rate_hz": 1.0,
+    "refresh_period_ms": 1000,
+    "direct_path": "AOP2 writes directly to DCP frame buffer via shared DMA; host GPU and display engine remain completely powered down."
+  },
+  "local_siri_voice_trigger": {
+    "driver": "AppleAOPAudioLPMicInDevice / AppleAOPVoiceTriggerUserClient",
+    "channel_control": {
+      "supported_channels_property": "kAppleAOPLPMicSupportedChannels",
+      "enabled_channels_property": "kAppleAOPLPMicEnabledChannels",
+      "voice_trigger_channels_property": "kAppleAOPLPMicVoiceTriggerChannels",
+      "history_channels_property": "kAppleAOPLPMicHistoryChannels"
+    },
+    "acoustic_parameters": {
+      "audio_format": "16-bit Linear PCM, Mono, Little-Endian",
+      "sampling_rate_hz": 16000,
+      "bytes_per_sample": 2,
+      "data_rate_bytes_per_sec": 32000,
+      "buffer_duration_seconds": 3.0,
+      "circular_buffer_size_bytes": 96000,
+      "storage_location": "AOP2 Dedicated Low-Power Retention SRAM Carveout",
+      "power_consumption_mw": 1.85
+    },
+    "wake_trigger_sequence": [
+      "1. Low-power PDM/I2S mic feeds continuous 16kHz audio stream into AOP2 SRAM circular FIFO.",
+      "2. On-chip lightweight acoustic model executes VAD (Voice Activity Detection) and Keyword Spotting (KWS).",
+      "3. Upon keyword trigger detection, AOP2 asserts host wake doorbell (spu_wake_reason: voice_trigger).",
+      "4. Host AppleAOPAudio retrieves the 3.0-second historical audio buffer to provide seamless pre-trigger acoustic context to CoreSpeech."
+    ]
+  }
+}

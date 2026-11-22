@@ -1,0 +1,496 @@
+{
+  "metadata": {
+    "framework": "UIKitCore.framework",
+    "classes": [
+      "UIPanGestureRecognizer",
+      "UIScrollViewPanGestureRecognizer"
+    ],
+    "target": "iPhone18,3_27.2_24B119",
+    "architecture": "arm64e",
+    "pac_enforcement": "PAC00 (pacibsp / autibsp Key B)",
+    "subcache_slice": ".01",
+    "vm_base_address": "0x184752000",
+    "specification_version": "1.0.0"
+  },
+  "states": {
+    "UIGestureRecognizerStatePossible": {
+      "raw_value": 0,
+      "description": "Initial resting state. Touch points and initial timestamps are acquired into historical ring buffer. Gesture evaluates cumulative displacement against device-specific touch slop threshold without mutating viewport contentOffset.",
+      "is_terminal": false,
+      "is_tracking": false
+    },
+    "UIGestureRecognizerStateBegan": {
+      "raw_value": 1,
+      "description": "Gesture recognition threshold satisfied (displacement >= touchSlop or momentum interruption bypass). Subview content touches cancelled. UIScrollView flags updated (isDragging = 1), delegate notified via scrollViewWillBeginDragging:.",
+      "is_terminal": false,
+      "is_tracking": true
+    },
+    "UIGestureRecognizerStateChanged": {
+      "raw_value": 2,
+      "description": "Continuous interactive drag state. Touch translation updates viewport content offset on every input event (120Hz/60Hz). Directional lock clamping applied if active. Rubber-band resistance evaluated when overshooting viewport bounds.",
+      "is_terminal": false,
+      "is_tracking": true
+    },
+    "UIGestureRecognizerStateEnded": {
+      "raw_value": 3,
+      "description": "Normal terminal state. All active touches lifted from display. Release velocity evaluated from ring buffer. Projected rest offset computed, delegate notified via scrollViewWillEndDragging:withVelocity:targetContentOffset:.",
+      "is_terminal": true,
+      "is_tracking": false
+    },
+    "UIGestureRecognizerStateCancelled": {
+      "raw_value": 4,
+      "description": "Interrupted terminal state. Gesture tracking aborted by external interruption (incoming telephone call, notification center pull, system modal presentation, or competitor gesture recognizer takeover). Drag state cleared without momentum fling.",
+      "is_terminal": true,
+      "is_tracking": false
+    },
+    "UIGestureRecognizerStateFailed": {
+      "raw_value": 5,
+      "description": "Failure terminal state. Touch sequence terminated before satisfying recognition criteria (e.g., finger lifted before reaching touch slop, gestureRecognizerShouldBegin: returned NO, or directional lock blocked active scroll axis).",
+      "is_terminal": true,
+      "is_tracking": false
+    }
+  },
+  "events": {
+    "touchesBegan:withEvent:": {
+      "pac00_address": "0x1848c1000",
+      "file_offset": "0x44c1000",
+      "description": "Initial digitizer contact packet dispatched by UIWindow hit-test hierarchy. Caches initial touch location, seeds velocity ring buffer, and arms touch delay timers."
+    },
+    "touchesMoved:withEvent:": {
+      "pac00_address": "0x1848c1150",
+      "file_offset": "0x44c1150",
+      "description": "Dispatched on continuous coordinate updates. Accumulates displacement vector, executes touch slop discrimination, applies directional locking, and updates contentOffset."
+    },
+    "touchesEnded:withEvent:": {
+      "pac00_address": "0x1848c1300",
+      "file_offset": "0x44c1300",
+      "description": "Dispatched when final active touch contact leaves display surface. Samples historical velocity ring buffer, resolves ballistic fling launch, or triggers spring rebound."
+    },
+    "touchesCancelled:withEvent:": {
+      "pac00_address": "0x1848c1450",
+      "file_offset": "0x44c1450",
+      "description": "Dispatched when hardware touch delivery is invalidated by system-level modal takeover or parent gesture preemption. Restores bounds origin without ballistic fling."
+    },
+    "_touchDelayTimerFired": {
+      "pac00_address": "0x1848d3100",
+      "file_offset": "0x44d3100",
+      "description": "Dispatched after 150ms timeout by UIScrollViewDelayedTouchesBeganGestureRecognizer. Delivers deferred touchesBegan to interactive content subviews if slop is not yet crossed."
+    },
+    "_forcePanGestureToEndImmediately": {
+      "pac00_address": "0x1848b7380",
+      "file_offset": "0x44b7380",
+      "description": "Programmatic override routine forcing active tracking recognizer directly into Ended or Cancelled state (e.g. on setContentOffset:animated: or user interaction disabling)."
+    },
+    "reset": {
+      "pac00_address": "0x1848c14f0",
+      "file_offset": "0x44c14f0",
+      "description": "Internal lifecycle cleanup executed upon transitioning to terminal states (Ended, Cancelled, Failed). Flushes velocity ring buffer, resets directional lock, and returns to Possible."
+    },
+    "_updateGestureState": {
+      "pac00_address": "0x1848d1600",
+      "file_offset": "0x44d1600",
+      "description": "Internal state coordinator invoked during touch tracking to test slop thresholds, check directional lock constraints, consult delegate admissibility, and mutate the FSM state."
+    }
+  },
+  "transitions": [
+    {
+      "transition_id": "TRANS-01",
+      "from_state": "UIGestureRecognizerStatePossible",
+      "to_state": "UIGestureRecognizerStatePossible",
+      "trigger_event": "touchesBegan:withEvent:",
+      "condition": "!isDecelerating && delaysContentTouches == YES",
+      "actions": [
+        "Store initial touch coordinate p0 = locationInView(self.view)",
+        "Store initial touch timestamp t0 = touch.timestamp",
+        "Clear velocity sample ring buffer; insert initial sample (p0, t0)",
+        "Arm 150ms delay timer via UIScrollViewDelayedTouchesBeganGestureRecognizer",
+        "Retain state as Possible (0)"
+      ]
+    },
+    {
+      "transition_id": "TRANS-02",
+      "from_state": "UIGestureRecognizerStatePossible",
+      "to_state": "UIGestureRecognizerStateBegan",
+      "trigger_event": "touchesBegan:withEvent:",
+      "condition": "isDecelerating == 1 (Ballistic Interruption)",
+      "actions": [
+        "Detect touch acquisition during active inertial deceleration",
+        "Halt CADisplayLink deceleration animation immediately via -[UIScrollView _stopScrollingAndZoomingAnimations]",
+        "Pin _contentOffset to current presentation layer offset; set isDecelerating = 0",
+        "Bypass touch slop requirement (effective threshold = 0.0 pt)",
+        "Mutate state to Began (1)",
+        "Invoke -[UIScrollView _scrollViewWillBeginDragging] (isDragging = 1, notify delegate)"
+      ]
+    },
+    {
+      "transition_id": "TRANS-03",
+      "from_state": "UIGestureRecognizerStatePossible",
+      "to_state": "UIGestureRecognizerStatePossible",
+      "trigger_event": "touchesMoved:withEvent:",
+      "condition": "euclidean_distance(p_curr, p0) < touchSlopThreshold",
+      "actions": [
+        "Compute displacement delta vector: dx = x_curr - x0, dy = y_curr - y0",
+        "Evaluate cumulative euclidean displacement: dr = sqrt(dx^2 + dy^2)",
+        "Insert sample (p_curr, t_curr) into velocity sample ring buffer",
+        "Retain state as Possible (0)"
+      ]
+    },
+    {
+      "transition_id": "TRANS-04",
+      "from_state": "UIGestureRecognizerStatePossible",
+      "to_state": "UIGestureRecognizerStateBegan",
+      "trigger_event": "touchesMoved:withEvent:",
+      "condition": "euclidean_distance(p_curr, p0) >= touchSlopThreshold && _gestureRecognizerShouldBegin == YES",
+      "actions": [
+        "Displacement satisfies touch slop (10.0pt finger / 4.0pt pencil / 2.0pt trackpad)",
+        "Evaluate directionalLockEnabled; assign axis lock if vector angle exceeds discrimination boundary",
+        "Cancel subview touches: cancel pending delay timer and dispatch touchesCancelled to subviews",
+        "Mutate state to Began (1)",
+        "Invoke -[UIScrollView handlePan:] target action",
+        "Invoke -[UIScrollView _scrollViewWillBeginDragging] (isDragging = 1, notify delegate)"
+      ]
+    },
+    {
+      "transition_id": "TRANS-05",
+      "from_state": "UIGestureRecognizerStatePossible",
+      "to_state": "UIGestureRecognizerStateFailed",
+      "trigger_event": "touchesMoved:withEvent:",
+      "condition": "euclidean_distance(p_curr, p0) >= touchSlopThreshold && _gestureRecognizerShouldBegin == NO",
+      "actions": [
+        "-[UIScrollView _gestureRecognizerShouldBegin:] returns NO (axis disabled, bounds locked, or delegate veto)",
+        "Mutate state to Failed (5)",
+        "Dispatch no drag notifications; allow subviews to retain exclusive touch handling"
+      ]
+    },
+    {
+      "transition_id": "TRANS-06",
+      "from_state": "UIGestureRecognizerStatePossible",
+      "to_state": "UIGestureRecognizerStateFailed",
+      "trigger_event": "touchesEnded:withEvent:",
+      "condition": "state == Possible && dr < touchSlopThreshold",
+      "actions": [
+        "Touch contact released before satisfying touch slop distance",
+        "Mutate state to Failed (5)",
+        "If delay timer active, flush deferred touches to subview (registered as tap/click)"
+      ]
+    },
+    {
+      "transition_id": "TRANS-07",
+      "from_state": "UIGestureRecognizerStatePossible",
+      "to_state": "UIGestureRecognizerStateFailed",
+      "trigger_event": "touchesCancelled:withEvent:",
+      "condition": "state == Possible",
+      "actions": [
+        "Touch interrupted while still evaluating slop",
+        "Invalidate delay timers",
+        "Mutate state to Failed (5)"
+      ]
+    },
+    {
+      "transition_id": "TRANS-08",
+      "from_state": "UIGestureRecognizerStateBegan",
+      "to_state": "UIGestureRecognizerStateChanged",
+      "trigger_event": "touchesMoved:withEvent:",
+      "condition": "state == Began",
+      "actions": [
+        "Update translation in view: translation = (p_curr - p0) - slopOffset",
+        "Insert timestamped coordinate into velocity ring buffer",
+        "Apply directional lock axis clamp (zero perpendicular component if locked)",
+        "Mutate state to Changed (2)",
+        "Invoke -[UIScrollView handlePan:] -> update _contentOffset, alter CALayer bounds origin, call _notifyDidScroll"
+      ]
+    },
+    {
+      "transition_id": "TRANS-09",
+      "from_state": "UIGestureRecognizerStateChanged",
+      "to_state": "UIGestureRecognizerStateChanged",
+      "trigger_event": "touchesMoved:withEvent:",
+      "condition": "state == Changed",
+      "actions": [
+        "Compute incremental coordinate delta: dp = p_curr - p_prev",
+        "Apply EMA coordinate filter: p_smoothed = alpha * p_curr + (1 - alpha) * p_prev (alpha = 0.85)",
+        "Update velocity ring buffer (100ms window, capacity 8)",
+        "Evaluate boundary constraints; if overshooting and bounces == YES, apply rubberBand formula",
+        "Retain state as Changed (2)",
+        "Invoke -[UIScrollView handlePan:] -> assign _contentOffset (+0x100), dispatch scrollViewDidScroll:"
+      ]
+    },
+    {
+      "transition_id": "TRANS-10",
+      "from_state": "UIGestureRecognizerStateChanged",
+      "to_state": "UIGestureRecognizerStateEnded",
+      "trigger_event": "touchesEnded:withEvent:",
+      "condition": "state == Changed",
+      "actions": [
+        "Evaluate release velocity vector via -[UIPanGestureRecognizer velocityInView:]",
+        "Mutate state to Ended (3)",
+        "Invoke -[UIScrollView handlePan:] with UIGestureRecognizerStateEnded",
+        "Compute projected rest offset: s_proj = s0 + v0 / -ln(d)",
+        "Dispatch -[delegate scrollViewWillEndDragging:withVelocity:targetContentOffset:]",
+        "Mutate _scrollViewFlags.isDragging = 0; dispatch scrollViewDidEndDragging:willDecelerate:",
+        "If |v0| >= 10.0 pt/s: set isDecelerating = 1, instantiate _UIScrollViewDecelerationAnimation, attach CADisplayLink (120Hz VFD)",
+        "If boundary overshot: instantiate _UIScrollViewSpringAnimation for rubber-band rebound"
+      ]
+    },
+    {
+      "transition_id": "TRANS-11",
+      "from_state": "UIGestureRecognizerStateBegan",
+      "to_state": "UIGestureRecognizerStateEnded",
+      "trigger_event": "touchesEnded:withEvent:",
+      "condition": "state == Began",
+      "actions": [
+        "Touch lifted immediately upon entering Began state (stationary release)",
+        "Mutate state to Ended (3)",
+        "Velocity evaluated as (0, 0); no deceleration animation initiated",
+        "Mutate _scrollViewFlags.isDragging = 0; dispatch scrollViewDidEndDragging:willDecelerate:NO"
+      ]
+    },
+    {
+      "transition_id": "TRANS-12",
+      "from_state": "UIGestureRecognizerStateChanged",
+      "to_state": "UIGestureRecognizerStateCancelled",
+      "trigger_event": "touchesCancelled:withEvent:",
+      "condition": "state == Changed || state == Began",
+      "actions": [
+        "External system interrupt aborts gesture recognition",
+        "Mutate state to Cancelled (4)",
+        "Invoke -[UIScrollView handlePan:] with UIGestureRecognizerStateCancelled",
+        "Mutate _scrollViewFlags.isDragging = 0; abort drag tracking without fling",
+        "If currently outside bounds, animate back to nearest valid offset via resting spring"
+      ]
+    },
+    {
+      "transition_id": "TRANS-13",
+      "from_state": "UIGestureRecognizerStateChanged",
+      "to_state": "UIGestureRecognizerStateEnded",
+      "trigger_event": "_forcePanGestureToEndImmediately",
+      "condition": "Programmatic interruption invocation",
+      "actions": [
+        "Target invoked by -[UIScrollView _forcePanGestureToEndImmediately]",
+        "Synthesize release state; set velocity to (0, 0)",
+        "Mutate state to Ended (3)",
+        "Mutate _scrollViewFlags.isDragging = 0"
+      ]
+    },
+    {
+      "transition_id": "TRANS-14",
+      "from_state": "Terminal (Ended / Cancelled / Failed)",
+      "to_state": "UIGestureRecognizerStatePossible",
+      "trigger_event": "reset",
+      "condition": "Lifecycle cleanup upon terminal transition",
+      "actions": [
+        "Invoke -[UIGestureRecognizer reset]",
+        "Clear historical velocity sample array and ring buffer pointers",
+        "Reset directional lock axis state to LockAxisNone (0)",
+        "Clear touch identifiers and tracking touch pointers",
+        "Reset state to Possible (0) ready for subsequent touch stream"
+      ]
+    }
+  ],
+  "decompiled_routines": [
+    {
+      "routine": "-[UIScrollViewPanGestureRecognizer touchesBegan:withEvent:]",
+      "address": "0x1848c1000",
+      "file_offset": "0x44c1000",
+      "pac_entry": "0x1848c1024: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848c12f8: autibsp (0xd50323ff)",
+      "summary": "Inspects deceleration state of parent UIScrollView (_scrollView at ivar +0x80). If isDecelerating == 1, terminates CADisplayLink and triggers immediate ballistic handoff into Began state. Otherwise, stores touch coordinate and schedules 150ms subview delay timer."
+    },
+    {
+      "routine": "-[UIScrollViewPanGestureRecognizer touchesMoved:withEvent:]",
+      "address": "0x1848c1150",
+      "file_offset": "0x44c1150",
+      "pac_entry": "0x1848c1150: stp x29, x30, [sp, #0x40]",
+      "pac_exit": "0x1848c12e4: ldp x29, x30, [sp], #0x40; autibsp; ret",
+      "summary": "Evaluates cumulative translation. Distinguishes touch device types (finger 10pt, pencil 4pt, trackpad 2pt). When threshold is exceeded, verifies _gestureRecognizerShouldBegin: and directional lock. Cancels subview touches and dispatches handlePan:."
+    },
+    {
+      "routine": "-[UIScrollViewPanGestureRecognizer touchesEnded:withEvent:]",
+      "address": "0x1848c1300",
+      "file_offset": "0x44c1300",
+      "pac_entry": "0x1848c1310: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848c1448: autibsp (0xd50323ff)",
+      "summary": "Samples the rolling velocity ring buffer, calculates release velocity vector in viewport coordinates, transitions state to Ended (3), and passes final motion metrics to UIScrollView momentum animation launcher."
+    },
+    {
+      "routine": "-[UIScrollViewPanGestureRecognizer touchesCancelled:withEvent:]",
+      "address": "0x1848c1450",
+      "file_offset": "0x44c1450",
+      "pac_entry": "0x1848c1450: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848c14ec: autibsp (0xd50323ff)",
+      "summary": "Handles external input cancellation. Mutates state to Cancelled (4), clears active dragging flags, and triggers spring snap-back if viewport is rested in rubber-band zone."
+    },
+    {
+      "routine": "-[UIScrollView handlePan:]",
+      "address": "0x1848b8140",
+      "file_offset": "0x44b8140",
+      "pac_entry": "0x1848b8140: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848b8240: autibsp (0xd50323ff)",
+      "summary": "Central UIScrollView gesture action target. Routes Began, Changed, Ended, and Cancelled states. Computes delta offsets, evaluates rubber-banding logarithmic dampening, mutates _contentOffset at +0x100, updates layer bounds origin, and broadcasts telemetry."
+    },
+    {
+      "routine": "-[UIScrollView _gestureRecognizerShouldBegin:]",
+      "address": "0x1848b7890",
+      "file_offset": "0x44b7890",
+      "pac_entry": "0x1848b7890: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848b7950: autibsp (0xd50323ff)",
+      "summary": "Pre-flight validation executed prior to gesture recognition. Verifies axis capabilities (_canScrollX, _canScrollY), verifies bounds vs contentSize limits, and consults delegate gestureRecognizerShouldBegin:."
+    },
+    {
+      "routine": "-[UIPanGestureRecognizer _updateGestureState]",
+      "address": "0x1848d1600",
+      "file_offset": "0x44d1600",
+      "pac_entry": "0x1848d1600: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848d16f0: autibsp (0xd50323ff)",
+      "summary": "Internal state coordinator evaluating hardware touch slop thresholds, directional locking constraints, delegate pre-flight vetoes, and triggering transition dispatches."
+    },
+    {
+      "routine": "-[UIScrollView _scrollViewWillBeginDragging]",
+      "address": "0x1848b6100",
+      "file_offset": "0x44b6100",
+      "pac_entry": "0x1848b6100: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848b614c: autibsp (0xd50323ff)",
+      "summary": "Sets isDragging = 1 in _scrollViewFlags (+0xd0) and dispatches scrollViewWillBeginDragging: delegate callback."
+    },
+    {
+      "routine": "-[UIScrollView _stopScrollingAndFillDisplayList:]",
+      "address": "0x1848b7040",
+      "file_offset": "0x44b7040",
+      "pac_entry": "0x1848b7040: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848b70ec: autibsp (0xd50323ff)",
+      "summary": "Halts active deceleration CADisplayLink timer, pins presentation layer origin to _contentOffset, flushes pending render frames, and clears isDecelerating flag."
+    },
+    {
+      "routine": "-[UIScrollView _smoothScrollDisplayLink:]",
+      "address": "0x1848b7120",
+      "file_offset": "0x44b7120",
+      "pac_entry": "0x1848b7120: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848b7220: autibsp (0xd50323ff)",
+      "summary": "CADisplayLink target tick handler integrating deceleration physics steps at 120Hz/60Hz; interrupted and detached immediately upon new touchesBegan: touch contact."
+    },
+    {
+      "routine": "-[UIScrollView touchesShouldCancelInContentView:]",
+      "address": "0x1848b7a00",
+      "file_offset": "0x44b7a00",
+      "pac_entry": "0x1848b7a00: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848b7a60: autibsp (0xd50323ff)",
+      "summary": "Arbitrates touch ownership between viewport scrolling and subviews; returns YES for UIButtons/generic views to cancel highlighting, returns NO for complex controls (sliders, switches)."
+    },
+    {
+      "routine": "-[UIScrollView _gestureRecognizer:shouldReceiveTouch:]",
+      "address": "0x1848b85a0",
+      "file_offset": "0x44b85a0",
+      "pac_entry": "0x1848b85a0: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848b8600: autibsp (0xd50323ff)",
+      "summary": "Hit-tests touch coordinates against scroll indicator knob frames; defers to UIScrollViewKnobLongPressGestureRecognizer if touch lands on knob."
+    },
+    {
+      "routine": "-[UIScrollView _gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:]",
+      "address": "0x1848b8550",
+      "file_offset": "0x44b8550",
+      "pac_entry": "0x1848b8550: pacibsp (0xd503237f)",
+      "pac_exit": "0x1848b8598: autibsp (0xd50323ff)",
+      "summary": "Configures concurrent gesture arbitration; permits simultaneous recognition with _UIScrollViewPinchGestureRecognizer and SwiftUI hosting bridges, enforces exclusivity against competing pans."
+    }
+  ],
+  "pac00_entry_points": [
+    {
+      "symbol": "-[UIScrollViewPanGestureRecognizer touchesBegan:withEvent:]",
+      "address": "0x1848c1000",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollViewPanGestureRecognizer touchesMoved:withEvent:]",
+      "address": "0x1848c1150",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollViewPanGestureRecognizer touchesEnded:withEvent:]",
+      "address": "0x1848c1300",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollViewPanGestureRecognizer touchesCancelled:withEvent:]",
+      "address": "0x1848c1450",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIPanGestureRecognizer _updateGestureState]",
+      "address": "0x1848d1600",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollView handlePan:]",
+      "address": "0x1848b8140",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollView _gestureRecognizerShouldBegin:]",
+      "address": "0x1848b7890",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollView _scrollViewWillBeginDragging]",
+      "address": "0x1848b6100",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollView _stopScrollingAndFillDisplayList:]",
+      "address": "0x1848b7040",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollView _smoothScrollDisplayLink:]",
+      "address": "0x1848b7120",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollView touchesShouldCancelInContentView:]",
+      "address": "0x1848b7a00",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollView _gestureRecognizer:shouldReceiveTouch:]",
+      "address": "0x1848b85a0",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollView _gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:]",
+      "address": "0x1848b8550",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    },
+    {
+      "symbol": "-[UIScrollView _forcePanGestureToEndImmediately]",
+      "address": "0x1848b7380",
+      "pac_key": "PAC_KEY_B_INSTRUCTION",
+      "opcode_hex": "0xd503237f",
+      "disassembly": "pacibsp"
+    }
+  ]
+}

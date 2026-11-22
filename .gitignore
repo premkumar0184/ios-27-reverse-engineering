@@ -1,0 +1,39 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.DS_Store
+
+# Large restore bundles and raw disk images
+iPhone18,3_27.2_24B119_Restore/
+*.dmg
+*.dmg.aea
+*.aea
+*.apfs
+*.raw
+*.bin
+*.im4p
+*.car
+
+# Raw extracted filesystems and crypto dumps
+artifacts/crypto/
+artifacts/rootfs/
+artifacts/firmware/*.raw
+artifacts/firmware/exclavecore_bundle_unpacked/
+artifacts/ui/Applications/
+artifacts/ui/assets/
+artifacts/scrolling/UIKitCore*
+artifacts/kernel/*.raw
+
+# Android keyboard subproject and Ghidra repositories
+ios27-keyboard-android/
+*.rep/
+*.gpr
+
+# Execution logs and local caches
+logs/
+cache/
+.agents/
+.agent_rules/
+graphify-out/

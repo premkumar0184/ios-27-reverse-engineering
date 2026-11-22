@@ -1,0 +1,130 @@
+{
+  "architecture_metadata": {
+    "family": "Apple AGX",
+    "generation": "G18",
+    "variant": "G18P (Pro)",
+    "internal_codename": "PI_300",
+    "silicon_target": "t8150 (A19 Pro)",
+    "process_node": "TSMC N3P (3nm)",
+    "gpu_page_size_bytes": 16384
+  },
+  "compute_core_clusters": {
+    "cluster_type": "FSTP (Fixed-Function Shader & Tile Processing Cluster)",
+    "total_clusters": 6,
+    "simd_execution_width": 32,
+    "simd_model": "SIMD32 Divergence-Tolerant Warp Architecture",
+    "unified_shading_clusters": {
+      "name": "USC",
+      "total_uscs": 6,
+      "alu_pipes_per_usc": {
+        "fp32_alu": 128,
+        "fp16_alu": 256,
+        "int32_alu": 64,
+        "special_function_unit_sfu": 32
+      },
+      "register_file_geometry": {
+        "registers_per_threadgroup": 1024,
+        "register_width_bits": 32,
+        "dynamic_partitioning": "16-bit packed or 32-bit scalar",
+        "max_threads_per_threadgroup": 1024
+      },
+      "threadgroup_sram_bytes": 131072,
+      "threadgroup_sram_kb": 128,
+      "matrix_execution_unit": {
+        "name": "MXU",
+        "power_domain": "DPWR_USC_MXU",
+        "precision_support": [
+          "FP16",
+          "BF16",
+          "INT8",
+          "INT4"
+        ],
+        "ops_per_clock_fp16": 256
+      }
+    },
+    "tile_processing_hardware": {
+      "tile_accelerator": "TA (Tile Accelerator Channel)",
+      "scene_allocator": "Parameter Scene Allocator (MList, MTileArray, VHeap Table)",
+      "tile_sizes_pixels": [
+        "16x16",
+        "32x32"
+      ],
+      "color_target_buffers": 8,
+      "depth_stencil_onchip": true
+    },
+    "cache_hierarchy": {
+      "l1_instruction_cache_kb": 64,
+      "l1_instruction_periodic_flush": "agf_timer_usc_inst_cf",
+      "l1_texture_data_cache_kb": 128,
+      "system_level_cache_slice_mb": 24
+    }
+  },
+  "ray_tracing_hardware": {
+    "ray_intersection_accelerator": {
+      "name": "RIA",
+      "power_domain": "DPWR_USC_RIA",
+      "embedded_location": "Integrated within each USC cluster",
+      "telemetry_counter": "ria_stalls"
+    },
+    "bvh_traversal_engine": {
+      "architecture": "Hardware BVH Tree Traversal Engine",
+      "tree_types": [
+        "BVH2",
+        "BVH4"
+      ],
+      "traversal_mode": "Autonomous silicon traversal with hardware stack",
+      "stack_depth": 32,
+      "box_intersection_units_per_usc": 4,
+      "box_test_latency_cycles": 1,
+      "features": [
+        "Axis-Aligned Bounding Box (AABB) 4-way parallel evaluation",
+        "Node transform matrix multiplication in-flight",
+        "Sub-tree culling and priority ordered traversal"
+      ]
+    },
+    "primitive_intersection_engine": {
+      "triangle_intersection_units_per_usc": 2,
+      "algorithm": "Watertight M\u00f6ller-Trumbore / Barycentric test",
+      "supported_primitives": [
+        "Triangles",
+        "Procedural AABBs",
+        "Curve Primitives"
+      ],
+      "barycentric_output_precision": "FP32"
+    },
+    "coherence_and_sorting": {
+      "ray_coherence_sorter": "Hardware Ray Sorting & Compaction Buffer",
+      "divergence_mitigation": "Dynamic warp regrouping across threadgroups",
+      "shadow_ray_early_termination": true
+    }
+  },
+  "mesh_shading_pipeline": {
+    "pipeline_stages": [
+      "Object Shader (Task/Amplification)",
+      "Mesh Shader (Primitive & Vertex Generation)",
+      "Hardware Back-Face & Frustum Culling",
+      "Tile Parameter Buffer Assembly (IVDM / TA)"
+    ],
+    "workgroup_limits": {
+      "max_threads_per_object_shader": 256,
+      "max_threads_per_mesh_shader": 256,
+      "max_output_vertices": 256,
+      "max_output_primitives": 512,
+      "meshlet_shared_memory_bytes": 16384
+    },
+    "data_masters_interaction": {
+      "vertex_data_master": "IVDM / GVDM",
+      "primitive_data_master": "PDM",
+      "compute_data_master": "CDM"
+    }
+  },
+  "power_and_scaling": {
+    "power_domains": [
+      "DPWR_USC_MXU",
+      "DPWR_USC_RIA",
+      "USC_GUPM",
+      "USC_UMA_CORE"
+    ],
+    "frequency_scaling": "APS_USC (Advanced Performance Scaling)"
+  }
+}

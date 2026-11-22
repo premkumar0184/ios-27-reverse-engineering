@@ -1,0 +1,192 @@
+{
+  "framework_query": "SpringBoard",
+  "matched_image_path": "/System/Library/PrivateFrameworks/SpringBoard.framework/SpringBoard",
+  "category": "PrivateFramework",
+  "vm_base_address": "0x226a11000",
+  "vm_base_address_int": 9238024192,
+  "subcache_index": 35,
+  "subcache_extension": ".36",
+  "subcache_filename": "dyld_shared_cache_arm64e.36",
+  "subcache_vm_base": "0x220400000",
+  "subcache_file_offset": "0x6611000",
+  "subcache_file_offset_int": 107024384,
+  "subcache_uuid": "cb1e246e-dcad-359e-931b-831e4d1cbd1b",
+  "segment_count": 7,
+  "segments": [
+    {
+      "segname": "__TEXT",
+      "vmaddr": "0x226a11000",
+      "vmaddr_int": 9238024192,
+      "vmsize": "0xd23cd0",
+      "vmsize_bytes": 13778128,
+      "fileoff": "0x6611000",
+      "fileoff_int": 107024384,
+      "filesize": "0xd23cd0",
+      "protection": "r-x"
+    },
+    {
+      "segname": "__DATA_CONST",
+      "vmaddr": "0x268a17a90",
+      "vmaddr_int": 10345347728,
+      "vmsize": "0x850f0",
+      "vmsize_bytes": 545008,
+      "fileoff": "0x8f7a90",
+      "fileoff_int": 9403024,
+      "filesize": "0x850f0",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__AUTH_CONST",
+      "vmaddr": "0x26b673550",
+      "vmaddr_int": 10391860560,
+      "vmsize": "0x318a68",
+      "vmsize_bytes": 3246696,
+      "fileoff": "0x3553550",
+      "fileoff_int": 55915856,
+      "filesize": "0x318a68",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__AUTH",
+      "vmaddr": "0x276d56398",
+      "vmaddr_int": 10583630744,
+      "vmsize": "0xda70",
+      "vmsize_bytes": 55920,
+      "fileoff": "0xcc36398",
+      "fileoff_int": 214131608,
+      "filesize": "0xda70",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__DATA",
+      "vmaddr": "0x27252b6b0",
+      "vmaddr_int": 10507957936,
+      "vmsize": "0x32280",
+      "vmsize_bytes": 205440,
+      "fileoff": "0x840b6b0",
+      "fileoff_int": 138458800,
+      "filesize": "0x32280",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__DATA_DIRTY",
+      "vmaddr": "0x2763ccf48",
+      "vmaddr_int": 10573631304,
+      "vmsize": "0x29578",
+      "vmsize_bytes": 169336,
+      "fileoff": "0xc2acf48",
+      "fileoff_int": 204132168,
+      "filesize": "0x29578",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__LINKEDIT",
+      "vmaddr": "0x2e6940000",
+      "vmaddr_int": 12458393600,
+      "vmsize": "0x298ec000",
+      "vmsize_bytes": 697221120,
+      "fileoff": "0x4000",
+      "fileoff_int": 16384,
+      "filesize": "0x298ec000",
+      "protection": "r--"
+    }
+  ],
+  "sections": [
+    {
+      "sectname": "__text",
+      "addr": "0x226a18980",
+      "size": "0xb18b84",
+      "offset": "0x6618980"
+    },
+    {
+      "sectname": "__init_offsets",
+      "addr": "0x227531504",
+      "size": "0x4",
+      "offset": "0x7131504"
+    },
+    {
+      "sectname": "__objc_methlist",
+      "addr": "0x227531508",
+      "size": "0xbe6c0",
+      "offset": "0x7131508"
+    },
+    {
+      "sectname": "__const",
+      "addr": "0x2275efbd0",
+      "size": "0x11380",
+      "offset": "0x71efbd0"
+    },
+    {
+      "sectname": "__oslogstring",
+      "addr": "0x227600f50",
+      "size": "0x660a4",
+      "offset": "0x7200f50"
+    },
+    {
+      "sectname": "__cstring",
+      "addr": "0x227666ff4",
+      "size": "0x85b58",
+      "offset": "0x7266ff4"
+    },
+    {
+      "sectname": "__gcc_except_tab",
+      "addr": "0x2276ecb4c",
+      "size": "0x18890",
+      "offset": "0x72ecb4c"
+    },
+    {
+      "sectname": "__ustring",
+      "addr": "0x2277053dc",
+      "size": "0xd04",
+      "offset": "0x73053dc"
+    },
+    {
+      "sectname": "__dlopen_cstrs",
+      "addr": "0x2277060e0",
+      "size": "0x373",
+      "offset": "0x73060e0"
+    },
+    {
+      "sectname": "__unwind_info",
+      "addr": "0x227706454",
+      "size": "0x2e830",
+      "offset": "0x7306454"
+    },
+    {
+      "sectname": "__eh_frame",
+      "addr": "0x227734c88",
+      "size": "0x48",
+      "offset": "0x7334c88"
+    },
+    {
+      "sectname": "__objc_stubs",
+      "addr": "0x227734cd0",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__auth_stubs",
+      "addr": "0x227734cd0",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_classname",
+      "addr": "0x227734cd0",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_methname",
+      "addr": "0x227734cd0",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_methtype",
+      "addr": "0x227734cd0",
+      "size": "0x0",
+      "offset": "0x0"
+    }
+  ]
+}

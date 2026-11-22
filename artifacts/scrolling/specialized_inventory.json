@@ -1,0 +1,233 @@
+{
+  "inventory_name": "iOS 27 Specialized Scrolling Implementations Master Inventory",
+  "target_environment": {
+    "os": "iOS 27.2",
+    "darwin": "Darwin 24.2.0",
+    "build": "24B119",
+    "device": "iPhone18,3",
+    "soc": "t8150",
+    "processor": "A19 Pro",
+    "architecture": "arm64e",
+    "pointer_authentication": "PAC00"
+  },
+  "subsystems": {
+    "swiftui_declarative": {
+      "framework": "SwiftUI.framework / SwiftUICore.framework",
+      "classes": [
+        {
+          "name": "_UIHostingScrollView",
+          "superclass": "UIScrollView",
+          "subcache": "dyld_shared_cache_arm64e.03",
+          "vm_address": "0x18a8b1200",
+          "role": "Direct UIScrollView subclass hosting SwiftUI layout graphs and managing UIKit pan gesture arbitration"
+        },
+        {
+          "name": "_SwiftUIScrollViewBridge",
+          "superclass": "NSObject",
+          "subcache": "dyld_shared_cache_arm64e.03",
+          "vm_address": "0x18a8a7100",
+          "role": "Bi-directional state synchronization bridge between SwiftUI AttributeGraph and UIKit imperative scroll views"
+        },
+        {
+          "name": "SwiftUI.ScrollPosition",
+          "conformance": ["Equatable", "Sendable"],
+          "subcache": "dyld_shared_cache_arm64e.03",
+          "vm_address": "0x18a9337e0",
+          "role": "Declarative scroll position target and binding value type"
+        },
+        {
+          "name": "SwiftUICore.ScrollGeometry",
+          "conformance": ["Equatable", "Sendable"],
+          "subcache": "dyld_shared_cache_arm64e.03",
+          "vm_address": "0x18843164c",
+          "role": "Immutable value type capturing viewport layout geometry and scroll phase"
+        }
+      ]
+    },
+    "webkit_asynchronous": {
+      "framework": "WebKit.framework / WebKitLegacy.framework",
+      "classes": [
+        {
+          "name": "WKScrollView",
+          "superclass": "UIScrollView",
+          "subcache": "dyld_shared_cache_arm64e.07",
+          "vm_address": "0x19cbd2100",
+          "role": "Subclass of UIScrollView managing out-of-process viewport scrolling and split delegate routing"
+        },
+        {
+          "name": "RemoteScrollingCoordinatorIOS",
+          "superclass": "RemoteScrollingCoordinator",
+          "subcache": "dyld_shared_cache_arm64e.07",
+          "vm_address": "0x19cbee400",
+          "role": "Master cross-process scrolling coordinator linking UIProcess and WebProcess"
+        },
+        {
+          "name": "ScrollingTreeFrameScrollingNodeIOS",
+          "superclass": "ScrollingTreeScrollingNodeIOS",
+          "subcache": "dyld_shared_cache_arm64e.07",
+          "vm_address": "0x19cbf4120",
+          "role": "UIProcess scrolling tree node updating root web viewport CALayer transforms asynchronously"
+        },
+        {
+          "name": "WebActionDisablingScrollView",
+          "superclass": "UIScrollView",
+          "subcache": "dyld_shared_cache_arm64e.11",
+          "vm_address": "0x1afb35040",
+          "role": "Legacy web overflow scrolling container suppressing standard UIKit callout actions"
+        }
+      ]
+    },
+    "uitextview_textkit": {
+      "framework": "UIKitCore.framework",
+      "classes": [
+        {
+          "name": "UITextView",
+          "superclass": "UIScrollView",
+          "subcache": "dyld_shared_cache_arm64e.01",
+          "vm_address": "0x1848cc100",
+          "role": "Direct UIScrollView subclass integrating TextKit 2 layout managers and text selection gesture recognizers"
+        },
+        {
+          "name": "_UITextViewportLayoutController",
+          "superclass": "NSObject",
+          "subcache": "dyld_shared_cache_arm64e.01",
+          "vm_address": "0x18491e200",
+          "role": "On-demand viewport line fragment generator coordinating visible text rendering with scroll offset"
+        }
+      ],
+      "kinetic_parameters": {
+        "auto_scroll_ramping_formula": {
+          "formula_latex": "v(d) = v_{\\max} \\cdot \\left(\\frac{d_{\\text{edge}} - d}{d_{\\text{edge}}}\\right)^p",
+          "parameters": {
+            "v_max": {
+              "value_pt_per_sec": 1400.0,
+              "description": "Maximum selection drag auto-scroll velocity cap"
+            },
+            "d_edge": {
+              "value_pt": 44.0,
+              "description": "Viewport boundary detection band depth"
+            },
+            "p": {
+              "value": 2.0,
+              "description": "Quadratic ramping exponent producing smooth entry acceleration"
+            },
+            "caret_padding": {
+              "value_pt": 8.0,
+              "description": "Safety margin between cursor insertion point and viewport border"
+            }
+          },
+          "narrow_viewport_normalization": {
+            "formula_latex": "d_{\\text{edge, eff}} = \\min\\left(d_{\\text{edge}}, \\frac{H_{\\text{eff}}}{2}\\right)",
+            "description": "Dynamic proximity band depth normalization preventing overlapping top/bottom drag zones in compact viewports"
+          },
+          "selection_drag_velocity_2d": {
+            "formula_latex": "\\vec{v} = (v_x, v_y) \\text{ where } v_i = \\pm v_{\\max} \\cdot \\left(\\frac{d_{\\text{edge}, i} - d_i}{d_{\\text{edge}, i}}\\right)^p",
+            "description": "2D selection drag auto-scrolling allowing simultaneous horizontal and vertical viewport translation"
+          }
+        },
+        "multi_container_geometry": {
+          "coordinate_mapping": "Global canvas origin plus local text container frame translation: P_viewport = P_caret_local + Origin_container - padding",
+          "cross_container_transition": "Multi-axis step animation triggered upon caret line wrap across non-contiguous text containers",
+          "exclusion_path_slicing": "NSTextLayoutFragment slices line fragments around circular/polygonal obstacles; caret target projection offsets by slice start coordinate: P_global = Origin_container + P_slice_start + localOffset - padding",
+          "multi_obstacle_boolean_slicing": "Exact 1D interval union of multiple overlapping or disjoint exclusion obstacles [x_{L,i}, x_{R,i}], followed by boolean difference [0, W] \\setminus \\bigcup I_i to compute non-overlapping line fragment text slices"
+        }
+      }
+    },
+    "uicollectionview_prefetching": {
+      "framework": "UIKitCore.framework",
+      "classes": [
+        {
+          "name": "UICollectionView",
+          "superclass": "UIScrollView",
+          "subcache": "dyld_shared_cache_arm64e.01",
+          "vm_address": "0x1848e1000",
+          "role": "Direct UIScrollView subclass managing item cell layout, reuse queues, and orthogonal scrolling sections"
+        },
+        {
+          "name": "_UICollectionViewPrefetchingContext",
+          "superclass": "NSObject",
+          "subcache": "dyld_shared_cache_arm64e.01",
+          "vm_address": "0x1848e7340",
+          "role": "Prefetching state engine computing velocity-proportional item lookahead windows and scheduling background cell loads"
+        },
+        {
+          "name": "_UICollectionViewOrthogonalScrollView",
+          "superclass": "UIScrollView",
+          "subcache": "dyld_shared_cache_arm64e.01",
+          "vm_address": "0x1848f2100",
+          "role": "Nested isolated UIScrollView instance hosting compositional layout orthogonal scrolling sections"
+        },
+        {
+          "name": "_UICollectionViewOrthogonalScrollerSectionController",
+          "superclass": "NSObject",
+          "subcache": "dyld_shared_cache_arm64e.01",
+          "vm_address": "0x1848f4300",
+          "role": "Section controller managing gesture arbitration and offset synchronization between parent and orthogonal scrollers"
+        }
+      ],
+      "prefetch_parameters": {
+        "lookahead_window_formula": {
+          "formula_latex": "W_{\\text{lookahead}} = \\min\\left(W_{\\max}, \\max\\left(W_{\\min}, |v_{\\text{scroll}}| \\cdot \\Delta t_{\\text{lead}}\\right)\\right)",
+          "parameters": {
+            "W_min_ratio": {
+              "value": 1.5,
+              "description": "Minimum lookahead window distance relative to viewport dimension (1.5x bounds)"
+            },
+            "delta_t_lead": {
+              "value_sec": 0.25,
+              "description": "Lead prefetch time horizon representing typical asynchronous cell preparation latency"
+            },
+            "W_max_ratio": {
+              "value": 4.0,
+              "description": "Maximum lookahead clamp relative to viewport dimension preventing unbounded memory growth"
+            },
+            "ballistic_cancellation_velocity": {
+              "value_pt_per_sec": 3000.0,
+              "description": "Velocity threshold above which in-flight prefetching requests are cancelled to prioritize 120Hz frame rendering"
+            }
+          }
+        },
+        "directional_lookahead_interval": {
+          "forward_window_latex": "[y_{\\text{offset}} + H, y_{\\text{offset}} + H + W]",
+          "backward_window_latex": "[y_{\\text{offset}} - W, y_{\\text{offset}}]",
+          "reversal_cancellation": "In-flight prefetch requests in opposing direction are invalidated upon sgn(v_t) != sgn(v_{t-1})"
+        },
+        "orthogonal_directional_locking": {
+          "vertical_lock_angle_deg": 60.0,
+          "horizontal_lock_angle_deg": 30.0,
+          "indeterminate_zone_hysteresis": "Maintains currently locked scroller across [30 deg, 60 deg] until cross-axis displacement breaches 40.0pt threshold"
+        }
+      }
+    },
+    "accessibility_and_keyboard": {
+      "framework": "UIKitCore.framework / UIAccessibility.framework",
+      "classes": [
+        {
+          "name": "UIScrollView(UIAccessibilityActioning)",
+          "superclass": "Category on UIScrollView",
+          "subcache": "dyld_shared_cache_arm64e.01",
+          "vm_address": "0x1848b8140",
+          "role": "VoiceOver accessibility gesture receiver dispatching accessibilityScroll: protocol requests"
+        }
+      ],
+      "accessibility_scroll_directions": {
+        "UIAccessibilityScrollDirectionRight": 1,
+        "UIAccessibilityScrollDirectionLeft": 2,
+        "UIAccessibilityScrollDirectionUp": 3,
+        "UIAccessibilityScrollDirectionDown": 4,
+        "UIAccessibilityScrollDirectionNext": 5,
+        "UIAccessibilityScrollDirectionPrevious": 6
+      },
+      "navigation_heuristics": {
+        "page_turn_overlap_pt": 44.0,
+        "page_turn_step_formula": "Delta_s = bounds_dimension - 44.0",
+        "keyboard_discrete_step_pt": 40.0,
+        "keyboard_page_step_formula": "Delta_s = bounds_dimension - 40.0",
+        "keyboard_animation_duration_sec": 0.25,
+        "detent_status_formula": "k = min(N, max(1, floor((y + 0.5 * H_page) / H_page) + 1))",
+        "boundary_feedback_alert": "kAudioFeedbackBoundaryHit sound 1052 and haptic rejection notification triggered when delta_offset < 0.5pt",
+        "keyboard_repeat_state_machine": "Initial repeat delay T_{initial} = 0.40s (400ms), followed by 30Hz key repeat frequency (Delta t = 0.0333s) with continuous velocity ramping up to terminal 2400.0 pt/s (v(t) = min(2400, 1200 + 1600 * t_{active}))"
+      }
+    }
+  }
+}

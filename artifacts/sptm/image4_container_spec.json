@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "specification": "Apple Image4 (IM4P) Payload Container Architecture",
+  "parser_specification": {
+    "encoding": "ASN.1 DER Sequence",
+    "magic_tag": "0x16 (IA5String) -> 'IM4P'",
+    "type_tag": "0x16 (IA5String) -> 4-character FourCC code",
+    "desc_tag": "0x16 (IA5String) -> Build/Version descriptor string",
+    "payload_tag": "0x04 (OCTET STRING) -> Compressed / Raw Binary Data",
+    "compression_formats_supported": [
+      "lzfse (bvx2 magic)",
+      "complzss",
+      "raw Mach-O"
+    ]
+  },
+  "containers": [
+    {
+      "asset_id": "sptm",
+      "fourcc_tag": "sptm",
+      "description": "1",
+      "im4p_size_bytes": 216333,
+      "payload_offset": 25,
+      "payload_length_bytes": 215991,
+      "compression_type": "lzfse",
+      "decompressed_size_bytes": 1327136,
+      "sha256_im4p": "4a21de2683b3944039ce1ca0977d69c2705585f45b5658fcc67b9d755c0ed9d6",
+      "sha256_raw": "995affca44c65058814bf6b5ba1e93cd66198ce94f8bbfd7ff061951bc318c4f"
+    },
+    {
+      "asset_id": "txm",
+      "fourcc_tag": "trxm",
+      "description": "1",
+      "im4p_size_bytes": 224183,
+      "payload_offset": 25,
+      "payload_length_bytes": 223863,
+      "compression_type": "lzfse",
+      "decompressed_size_bytes": 557088,
+      "sha256_im4p": "efb686b1b74d5e24945e89528158365a3f6f38f835805308687789eacdad1ad4",
+      "sha256_raw": "3a4c60e4ac1e6fde5b7564ae6d786c7c818fa75b2c44066fae57a26973895fd7"
+    },
+    {
+      "asset_id": "iboot",
+      "fourcc_tag": "ibot",
+      "description": "mBoot-20457.42.5",
+      "im4p_size_bytes": 1887607,
+      "payload_offset": 40,
+      "payload_length_bytes": 1887557,
+      "compression_type": "lzfse",
+      "decompressed_size_bytes": 4284024,
+      "sha256_im4p": "e37b68ef196e2bfd8888c0a206ac5780d7066ed5807b18dee9da5fdbccf101b4",
+      "sha256_raw": "c64d44257b9d474c123579453815ee7ce29a5967e86f7678ae1543a83d8a8b95"
+    },
+    {
+      "asset_id": "llb",
+      "fourcc_tag": "illb",
+      "description": "mBoot-20457.42.5",
+      "im4p_size_bytes": 1888097,
+      "payload_offset": 40,
+      "payload_length_bytes": 1887557,
+      "compression_type": "lzfse",
+      "decompressed_size_bytes": 4284024,
+      "sha256_im4p": "a78a535a2ff66c44b50876fdeeaec1481f18493aa2708e017d01ed932b4801e0",
+      "sha256_raw": "c64d44257b9d474c123579453815ee7ce29a5967e86f7678ae1543a83d8a8b95"
+    },
+    {
+      "asset_id": "devicetree",
+      "fourcc_tag": "dtre",
+      "description": "EmbeddedDeviceTrees-12661.42.3",
+      "im4p_size_bytes": 68878,
+      "payload_offset": 54,
+      "payload_length_bytes": 68814,
+      "compression_type": "lzfse",
+      "decompressed_size_bytes": 365632,
+      "sha256_im4p": "e022314b6b7f3d06b8143ad7606bf8b587cc8d0fa9434caf8f6314183763e37d",
+      "sha256_raw": "ffd8ef07a4a8d5f90865077005a8f78cfdc1d142f8e897acd4b040232fd971f9"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "ring_buffers": {
+    "data_master_submission_ring": {
+      "template_class": "AGXAcceleratorRing<AGFIAcceleratorDataMasterEntry>",
+      "entry_size_bytes": 64,
+      "capacity_entries": 1024,
+      "total_buffer_size_bytes": 65536,
+      "index_methods": {
+        "read_index": "getReadIndex()",
+        "write_index": "getWriteIndex()",
+        "cfi_index": "getCFIIndex()"
+      },
+      "wrapping_behavior": "Power-of-two modulo ring pointer arithmetic with overflow guard checks"
+    },
+    "device_control_ring": {
+      "template_class": "AGXAcceleratorRing<AGFIAcceleratorDeviceControlEntry>",
+      "entry_size_bytes": 32,
+      "capacity_entries": 256,
+      "total_buffer_size_bytes": 8192,
+      "index_methods": {
+        "read_index": "getReadIndex()",
+        "write_index": "getWriteIndex()"
+      }
+    },
+    "host_kick_ring": {
+      "trace_method": "addHostKickTraceToRing(uint64_t)",
+      "capacity_entries": 512,
+      "overflow_sentinel": "Host Kick trace buffer is full (w=%u, r=%u, s=%u)"
+    },
+    "firmware_event_ring": {
+      "drain_method": "drainFirmwareEventRing(AGFIFirmwareRole)",
+      "validator_class": "AGXFirmwareRingValidator",
+      "supported_events": [
+        {
+          "event_name": "kAGFIFirmwareEventTypeFWTrace",
+          "struct": "AGXSTrace",
+          "description": "Coprocessor internal debug and execution timing trace"
+        },
+        {
+          "event_name": "kAGFIFirmwareEventTypeStampsUpdated",
+          "struct": "AGFIFirmwareEventStampUpdate",
+          "description": "Completion timestamp monotonic advancement"
+        },
+        {
+          "event_name": "kAGFIFirmwareEventTypeFirmwareAlive",
+          "struct": "AGFIFirmwareEventAlive",
+          "description": "RTBuddy coprocessor heartbeat pulse"
+        },
+        {
+          "event_name": "kAGFIFirmwareEventTypeGPURestart",
+          "struct": "AGFIFirmwareEventHWRecovery",
+          "description": "Hardware hang detected, initiates channel context recovery"
+        },
+        {
+          "event_name": "kAGFIFirmwareEventTypeAllocatePMMemory",
+          "struct": "AGFIFirmwareEventPMRequestMemory",
+          "description": "Asynchronous request to grow Parameter Memory for complex scenes"
+        },
+        {
+          "event_name": "kAGFIFirmwareEventTypeChannelError",
+          "struct": "AGFIChannelErrorEventArgs",
+          "description": "Illegal instruction, MMU fault, or bus abort on active channel"
+        },
+        {
+          "event_name": "kAGFIFirmwareEventTypeUMAAsyncAlloc",
+          "struct": "AGFIFirmwareEventUMARequestMemory",
+          "description": "Asynchronous UMA private memory pool allocation"
+        },
+        {
+          "event_name": "kAGFIFirmwareEventTypeSharedEventSignalComplete",
+          "struct": "AGFIFirmwareEventSharedEventSignalComplete",
+          "description": "Metal SharedEvent signaled in hardware"
+        },
+        {
+          "event_name": "kAGFIFirmwareEventTypeRTCompletionEvent",
+          "struct": "AGFIFirmwareEventRTCompletionInfo",
+          "description": "Hardware Ray Tracing acceleration query completed"
+        }
+      ]
+    }
+  },
+  "fence_synchronization": {
+    "iofence": {
+      "class_name": "AGXIOFenceData",
+      "allocation_method": "createIOFenceWithTransaction",
+      "iosurface_tracking": {
+        "method": "saveIOSurfaceInfo(IOSurface *, uint32_t)",
+        "max_debug_surfaces": "AGXK_IOFENCE_DEBUG_MAX_SURFACE_COUNT",
+        "pending_counter": "fNumPendingFences"
+      },
+      "completion_callback": "submitForFenceComplete(AGXIOFenceData *)"
+    },
+    "block_fence": {
+      "class_name": "AGXBlockFence",
+      "ring_entry": "AGXBlockFenceRingEntry",
+      "functional_barrier": "Synchronizes pipeline transition from Vertex/Tile Accelerator pass to Fragment Rasterization pass"
+    },
+    "shared_event_timeout": {
+      "timeout_format": "Timeout SharedEvent: late eval wait timed out sharedID=%llu waitValue=%llu completedValue=%llu stampIdx=%d stamp=0x%llx",
+      "mitigation": "Fallback path evaluation or GPU channel restart"
+    }
+  }
+}

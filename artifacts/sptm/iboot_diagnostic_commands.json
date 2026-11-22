@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "component": "iBoot / LLB Research Release Diagnostic Commands & Boot Arguments",
+  "bootloader_build": "mBoot-20457.42.5 (RESEARCH_RELEASE)",
+  "diagnostic_shell": {
+    "prompt": "iBoot:v57>",
+    "line_editor": "VT100 serial terminal with command history buffer",
+    "command_delimiter": "Semicolon or newline",
+    "max_command_length_bytes": 512
+  },
+  "diagnostic_commands": {
+    "reboot": {
+      "syntax": "reboot [reason]",
+      "handler": "0x376120",
+      "description": "Commands PMGR power controller to perform cold or warm hardware reset."
+    },
+    "setenv": {
+      "syntax": "setenv <var> <value>",
+      "handler": "0x380940",
+      "description": "Sets volatile or NVRAM boot environment variable."
+    },
+    "getenv": {
+      "syntax": "getenv <var>",
+      "handler": "0x3809c0",
+      "description": "Retrieves current value of boot environment variable."
+    },
+    "saveenv": {
+      "syntax": "saveenv",
+      "handler": "0x380a40",
+      "description": "Flushes volatile environment variable modifications to non-volatile storage."
+    },
+    "reset": {
+      "syntax": "reset",
+      "handler": "0x376180",
+      "description": "Initiates CPU pipeline reset and warm reboot."
+    },
+    "nvram": {
+      "syntax": "nvram <get|set|dump>",
+      "handler": "0x381200",
+      "description": "Direct low-level NVRAM dictionary inspection and manipulation."
+    },
+    "devicetree": {
+      "syntax": "devicetree <dump|find|set>",
+      "handler": "0x374e00",
+      "description": "Inspects or dynamically patches embedded DeviceTree node properties."
+    },
+    "fsboot": {
+      "syntax": "fsboot <path>",
+      "handler": "0x378400",
+      "description": "Loads and boots signed bootloader or kernel image from local filesystem."
+    },
+    "usb": {
+      "syntax": "usb <start|stop|status>",
+      "handler": "0x390100",
+      "description": "Initializes or interrogates USB Type-C / DFU communication controller."
+    },
+    "go": {
+      "syntax": "go <address>",
+      "handler": "0x378900",
+      "description": "Transfers bare-metal execution control to designated memory address."
+    },
+    "pmgr": {
+      "syntax": "pmgr <clk|volt|tunables>",
+      "handler": "0x376500",
+      "description": "Power Manager static tunables and clock mesh diagnostics."
+    },
+    "memory": {
+      "syntax": "memory <dump|test|map>",
+      "handler": "0x375100",
+      "description": "DRAM physical memory integrity test and range dumper."
+    },
+    "stage2_dump": {
+      "syntax": "stage2_dump <vmid>",
+      "handler": "0x382400",
+      "description": "Research diagnostic: dumps Stage-2 translation descriptors for designated VMID."
+    }
+  },
+  "boot_arguments": [
+    {
+      "flag": "-v",
+      "type": "BOOLEAN",
+      "description": "Verbose console logging during boot."
+    },
+    {
+      "flag": "debug=0x14e",
+      "type": "BITFIELD",
+      "description": "Kernel debugger control mask (DB_PRT | DB_SLT | DB_NMI | DB_HALT)."
+    },
+    {
+      "flag": "cs_enforcement_disable=1",
+      "type": "BOOLEAN",
+      "description": "Disables AMFI userland code signing enforcement on research builds."
+    },
+    {
+      "flag": "alt.kc=<path>",
+      "type": "STRING",
+      "description": "Overrides default kernelcache path with alternate research image."
+    },
+    {
+      "flag": "alt.sptm=<path>",
+      "type": "STRING",
+      "description": "Overrides default SPTM firmware with alternate research monitor."
+    },
+    {
+      "flag": "alt.txm=<path>",
+      "type": "STRING",
+      "description": "Overrides default TXM firmware with alternate research monitor."
+    },
+    {
+      "flag": "no-ctrr",
+      "type": "BOOLEAN",
+      "description": "Disables hardware Configurable Text Region Register write-locking."
+    },
+    {
+      "flag": "no-ktrr",
+      "type": "BOOLEAN",
+      "description": "Disables hardware Kernel Text Read-Only Region locking."
+    },
+    {
+      "flag": "kaslr-off",
+      "type": "BOOLEAN",
+      "description": "Disables Kernel Address Space Layout Randomization (sets slide to 0)."
+    },
+    {
+      "flag": "kaslr-slide=<offset>",
+      "type": "HEX_VALUE",
+      "description": "Forces explicit KASLR slide offset during kernel initialization."
+    },
+    {
+      "flag": "force-research-policy",
+      "type": "BOOLEAN",
+      "description": "Forces TXM and AMFI to evaluate research execution policy entitlements."
+    },
+    {
+      "flag": "debug-uarts=1",
+      "type": "INTEGER",
+      "description": "Redirects early boot and monitor diagnostic messages to serial UART."
+    },
+    {
+      "flag": "apt-carveout-size-mb=<size>",
+      "type": "INTEGER",
+      "description": "Configures dynamic physical DRAM carveout for Apple Processing Targets."
+    }
+  ]
+}

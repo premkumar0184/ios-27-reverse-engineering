@@ -1,0 +1,436 @@
+[
+  {
+    "index": 0,
+    "filename": "00_roottask_iop_asc7.macho",
+    "file_offset": 69657,
+    "size_bytes": 147456,
+    "sha256": "c06fdd3dbdae8188342ee4ff86556794677fd729bff11b25d307c357eee7bb5a",
+    "uuid": "2e915a01a6613afbb04aa81aae792a70",
+    "cputype": "0x100000c",
+    "cpusubtype": "0x80000002",
+    "filetype": 2,
+    "id_dylib": "",
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0x8000000",
+        "vmsize": "0x22000",
+        "filesize": "0x22000"
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0x8022000",
+        "vmsize": "0x4000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__DATA_CONST",
+        "vmaddr": "0x8026000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      },
+      {
+        "name": "__LINKEDIT",
+        "vmaddr": "0x8026000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      }
+    ]
+  },
+  {
+    "index": 1,
+    "filename": "01_motion_expert_app.macho",
+    "file_offset": 208921,
+    "size_bytes": 536288,
+    "sha256": "fde6c4dd26899862e4f5cc1bfd115470404cb9381a3d3169e9a5abccedc051d6",
+    "uuid": "b035344a292d3a16bcf80ffcab64a775",
+    "cputype": "0x100000c",
+    "cpusubtype": "0x80000002",
+    "filetype": 2,
+    "id_dylib": "",
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0x10f3000",
+        "vmsize": "0x19000",
+        "filesize": "0x19000"
+      },
+      {
+        "name": "__DATA_CONST",
+        "vmaddr": "0x110c000",
+        "vmsize": "0x3000",
+        "filesize": "0x3000"
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0x110f000",
+        "vmsize": "0x11a000",
+        "filesize": "0xc000"
+      },
+      {
+        "name": "APPCONFIG",
+        "vmaddr": "0x1229000",
+        "vmsize": "0x3000",
+        "filesize": "0x3000"
+      },
+      {
+        "name": "METADATA",
+        "vmaddr": "0x122c000",
+        "vmsize": "0x1000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__DATA_SHARED_RW",
+        "vmaddr": "0x122d000",
+        "vmsize": "0x14000",
+        "filesize": "0x14000"
+      },
+      {
+        "name": "__OS_LOG",
+        "vmaddr": "0x1241000",
+        "vmsize": "0x1000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__LINKEDIT",
+        "vmaddr": "0x1242000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      },
+      {
+        "name": "__DATA_CONST_0",
+        "vmaddr": "0x107a000",
+        "vmsize": "0x5000",
+        "filesize": "0x5000"
+      },
+      {
+        "name": "__DATA_0",
+        "vmaddr": "0x107f000",
+        "vmsize": "0x3000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__OS_LOG_0",
+        "vmaddr": "0x1082000",
+        "vmsize": "0x2000",
+        "filesize": "0x2000"
+      }
+    ]
+  },
+  {
+    "index": 2,
+    "filename": "02_aon_location_app.macho",
+    "file_offset": 311321,
+    "size_bytes": 477184,
+    "sha256": "f0815cc22b1998c3f76f06244afc2fa0ed945e5c0dc4c6dc75b34407f1f360d5",
+    "uuid": "c52a816d0e0733cb87db9ab57586ac39",
+    "cputype": "0x100000c",
+    "cpusubtype": "0x80000002",
+    "filetype": 2,
+    "id_dylib": "",
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0x10f3000",
+        "vmsize": "0x1e000",
+        "filesize": "0x1e000"
+      },
+      {
+        "name": "__DATA_CONST",
+        "vmaddr": "0x1111000",
+        "vmsize": "0x3000",
+        "filesize": "0x3000"
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0x1114000",
+        "vmsize": "0x14a000",
+        "filesize": "0x12000"
+      },
+      {
+        "name": "__CMA",
+        "vmaddr": "0x1000f3000",
+        "vmsize": "0x1000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "APPCONFIG",
+        "vmaddr": "0x125e000",
+        "vmsize": "0x3000",
+        "filesize": "0x3000"
+      },
+      {
+        "name": "METADATA",
+        "vmaddr": "0x1261000",
+        "vmsize": "0x1000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__OS_LOG",
+        "vmaddr": "0x1262000",
+        "vmsize": "0x3000",
+        "filesize": "0x3000"
+      },
+      {
+        "name": "__LINKEDIT",
+        "vmaddr": "0x1265000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      },
+      {
+        "name": "__DATA_CONST_0",
+        "vmaddr": "0x107a000",
+        "vmsize": "0x5000",
+        "filesize": "0x5000"
+      },
+      {
+        "name": "__DATA_0",
+        "vmaddr": "0x107f000",
+        "vmsize": "0x3000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__OS_LOG_0",
+        "vmaddr": "0x1082000",
+        "vmsize": "0x2000",
+        "filesize": "0x2000"
+      }
+    ]
+  },
+  {
+    "index": 3,
+    "filename": "03_audio_hotword_app.macho",
+    "file_offset": 434201,
+    "size_bytes": 753976,
+    "sha256": "374437d522a0b9c7f907b3d2e063b707a9812253b6c32e28eb22037b28f6841c",
+    "uuid": "46699d8af0e633b595d262b5cce92e9c",
+    "cputype": "0x100000c",
+    "cpusubtype": "0x80000002",
+    "filetype": 2,
+    "id_dylib": "",
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0x10f3000",
+        "vmsize": "0x5f000",
+        "filesize": "0x5f000"
+      },
+      {
+        "name": "__DATA_CONST",
+        "vmaddr": "0x1152000",
+        "vmsize": "0x2000",
+        "filesize": "0x2000"
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0x1154000",
+        "vmsize": "0x6b000",
+        "filesize": "0x9000"
+      },
+      {
+        "name": "APPCONFIG",
+        "vmaddr": "0x11bf000",
+        "vmsize": "0x3000",
+        "filesize": "0x3000"
+      },
+      {
+        "name": "METADATA",
+        "vmaddr": "0x11c2000",
+        "vmsize": "0x1000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__OS_LOG",
+        "vmaddr": "0x11c3000",
+        "vmsize": "0x1000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__LINKEDIT",
+        "vmaddr": "0x11c4000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      },
+      {
+        "name": "__DATA_CONST_0",
+        "vmaddr": "0x107a000",
+        "vmsize": "0x5000",
+        "filesize": "0x5000"
+      },
+      {
+        "name": "__DATA_0",
+        "vmaddr": "0x107f000",
+        "vmsize": "0x3000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__OS_LOG_0",
+        "vmaddr": "0x1082000",
+        "vmsize": "0x2000",
+        "filesize": "0x2000"
+      }
+    ]
+  },
+  {
+    "index": 4,
+    "filename": "04_rtkit_exclave_bridge.macho",
+    "file_offset": 823321,
+    "size_bytes": 326560,
+    "sha256": "e4ddd6789b393b7df6d33a9eee3c72bc228a9d3b24a219d8487b185457b726e2",
+    "uuid": "3fbec0c7266a3f2db4b55319055c9d5f",
+    "cputype": "0x100000c",
+    "cpusubtype": "0x80000002",
+    "filetype": 2,
+    "id_dylib": "",
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0x10f3000",
+        "vmsize": "0x10000",
+        "filesize": "0x10000"
+      },
+      {
+        "name": "__DATA_CONST",
+        "vmaddr": "0x1103000",
+        "vmsize": "0x2000",
+        "filesize": "0x2000"
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0x1105000",
+        "vmsize": "0xa0000",
+        "filesize": "0xa000"
+      },
+      {
+        "name": "APPCONFIG",
+        "vmaddr": "0x11a5000",
+        "vmsize": "0x3000",
+        "filesize": "0x3000"
+      },
+      {
+        "name": "METADATA",
+        "vmaddr": "0x11a8000",
+        "vmsize": "0x1000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__DATA_SHARED_RW",
+        "vmaddr": "0x11a9000",
+        "vmsize": "0x4000",
+        "filesize": "0x4000"
+      },
+      {
+        "name": "__OS_LOG",
+        "vmaddr": "0x11ad000",
+        "vmsize": "0x1000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__LINKEDIT",
+        "vmaddr": "0x11ae000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      },
+      {
+        "name": "__DATA_CONST_0",
+        "vmaddr": "0x107a000",
+        "vmsize": "0x5000",
+        "filesize": "0x5000"
+      },
+      {
+        "name": "__DATA_0",
+        "vmaddr": "0x107f000",
+        "vmsize": "0x3000",
+        "filesize": "0x1000"
+      },
+      {
+        "name": "__OS_LOG_0",
+        "vmaddr": "0x1082000",
+        "vmsize": "0x2000",
+        "filesize": "0x2000"
+      }
+    ]
+  },
+  {
+    "index": 5,
+    "filename": "05_applespu_v57aop2_dylib.macho",
+    "file_offset": 888857,
+    "size_bytes": 532480,
+    "sha256": "7e870e7a78b3c3805b66b99147b15ffe3d0c99c53cd7c74547e0ff32fa17917a",
+    "uuid": "f9f5696af4df397e928d32e29f0f263e",
+    "cputype": "0x100000c",
+    "cpusubtype": "0x80000002",
+    "filetype": 6,
+    "id_dylib": "/Library/Caches/com.apple.xbs/3BE9CCA0-6F5F-443C-8CAE-1B8AFA48EEDF/TemporaryDirectory.rkJaJS/Binaries/AppleSPUFirmwareBuilder/install/Symbols/RELEASE/v57aop2/DYLIB/v57aop2.dylib",
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0x1000000",
+        "vmsize": "0x7a000",
+        "filesize": "0x7a000"
+      },
+      {
+        "name": "__DATA_CONST",
+        "vmaddr": "0x107a000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0x107f000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      },
+      {
+        "name": "__OS_LOG",
+        "vmaddr": "0x1082000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      },
+      {
+        "name": "APPCONFIG",
+        "vmaddr": "0x1084000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      },
+      {
+        "name": "__LINKEDIT",
+        "vmaddr": "0x1084000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      }
+    ]
+  },
+  {
+    "index": 6,
+    "filename": "06_rtkit_microkernel_preload.macho",
+    "file_offset": 5439513,
+    "size_bytes": 81920,
+    "sha256": "0249b48c368cc833ecf0b324d6072e9376489d9f655d802fd50b930e79e6cd49",
+    "uuid": "05c35c6100d33aaebc5d4c4c29405445",
+    "cputype": "0x100000c",
+    "cpusubtype": "0x80000002",
+    "filetype": 5,
+    "id_dylib": "",
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0xffffffff00000000",
+        "vmsize": "0x11000",
+        "filesize": "0x11000"
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0xffffffff00011000",
+        "vmsize": "0x8000",
+        "filesize": "0x2000"
+      },
+      {
+        "name": "__IMAGE_END",
+        "vmaddr": "0xffffffff00019000",
+        "vmsize": "0x0",
+        "filesize": "0x0"
+      }
+    ]
+  }
+]

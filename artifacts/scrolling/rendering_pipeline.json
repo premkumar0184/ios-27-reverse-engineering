@@ -1,0 +1,248 @@
+{
+  "subsystem": "QuartzCore & UIKitCore Frame Scheduling & Compositor Pipeline",
+  "target_environment": {
+    "os_version": "iOS 27.2",
+    "darwin_version": "Darwin 24.2.0",
+    "build": "24B119",
+    "device_identifier": "iPhone18,3",
+    "model": "v57ap",
+    "board_id": "0x08",
+    "soc": "t8150",
+    "processor": "Apple A19 Pro",
+    "architecture": "arm64e",
+    "abi": "PAC00",
+    "display_refresh_rate_hz": 120.0,
+    "display_technology": "ProMotion Variable Frame Display (VFD)"
+  },
+  "frameworks": [
+    {
+      "name": "QuartzCore.framework",
+      "binary_path": "artifacts/rootfs/shared_cache/System/Library/Caches/com.apple.dyld/dyld_shared_cache_arm64e.01",
+      "subcache_slice": ".01",
+      "vm_base_address": "0x1842d4000",
+      "role": "CoreAnimation rendering tree, display synchronization timing (CADisplayLink), transaction batching (CATransaction), and layer compositor transforms."
+    },
+    {
+      "name": "UIKitCore.framework",
+      "binary_path": "artifacts/rootfs/shared_cache/System/Library/Caches/com.apple.dyld/dyld_shared_cache_arm64e.01",
+      "subcache_slice": ".01",
+      "vm_base_address": "0x184752000",
+      "role": "UIScrollView viewport management, kinetic deceleration controllers, smooth scroll display link lifecycle, and indicator overlay presentation."
+    }
+  ],
+  "cadisplaylink_lifecycle": {
+    "class_name": "CADisplayLink",
+    "initialization": {
+      "method": "+[CADisplayLink displayLinkWithTarget:selector:]",
+      "address": "0x184310100",
+      "signature": "@32@0:8@16:24",
+      "caller": "-[UIScrollView _smoothScrollDisplayLink:]",
+      "caller_address": "0x1848b7120",
+      "target": "UIScrollView instance (self)",
+      "selector": "_smoothScrollWithTimestamp:"
+    },
+    "runloop_modes": {
+      "active_touch_tracking": {
+        "mode_name": "UITrackingRunLoopMode",
+        "cf_mode_string": "UITrackingRunLoopMode",
+        "address": "0x1847c2340",
+        "description": "Engaged while user finger is in contact with screen and pan gesture recognizer is actively tracking touches. Ensures scrolling events take precedence over background timer dispatches."
+      },
+      "ballistic_deceleration": {
+        "mode_name": "NSRunLoopCommonModes",
+        "cf_mode_string": "kCFRunLoopCommonModes",
+        "address": "0x1847c2380",
+        "description": "Engaged during free-flight momentum deceleration. Allows display link to fire across tracking, default, and modal run loop modes without frame drops when secondary controls or gestures begin."
+      },
+      "default_idle": {
+        "mode_name": "NSDefaultRunLoopMode",
+        "cf_mode_string": "kCFRunLoopDefaultMode",
+        "address": "0x1847c23c0",
+        "description": "Standard idle runloop mode for low-priority non-interactive updates."
+      }
+    },
+    "frame_callback_dispatch_chain": {
+      "step_1_vsync": {
+        "source": "Hardware VSYNC Interrupt / Display Pipe",
+        "action": "Triggers CADisplayLink dispatch source on Main RunLoop."
+      },
+      "step_2_display_link_tick": {
+        "method": "-[UIScrollView _smoothScrollDisplayLink:]",
+        "address": "0x1848b7120",
+        "action": "Receives CADisplayLink tick, reads timestamp (0x184310550) and targetTimestamp (0x184310500)."
+      },
+      "step_3_timestep_derivation": {
+        "formula": "dt = displayLink.targetTimestamp - displayLink.timestamp",
+        "action": "Calculates variable inter-frame duration dt, adapting dynamically to ProMotion 120Hz/80Hz/60Hz fluctuations."
+      },
+      "step_4_update_deceleration_time": {
+        "method": "-[UIScrollView _updateDecelerationLastTime:]",
+        "address": "0x1848b7600",
+        "action": "Stores targetTimestamp into _lastDecelerationTime and verifies elapsed time sanity (clamps dt to MAX_DECELERATION_DT = 0.10s to prevent unbounded time dilation or stalls under thermal frame drops).",
+        "max_deceleration_dt_sec": 0.10
+      },
+      "step_5_animation_step": {
+        "method": "-[_UIScrollViewDecelerationAnimation stepAnimation]",
+        "address": "0x1848c7180",
+        "action": "Integrates exponential velocity decay v(t) = v0 * d^(1000*dt) and computes delta displacement."
+      },
+      "step_6_content_offset_mutation": {
+        "method": "-[UIScrollView setContentOffset:]",
+        "address": "0x1848b4b80",
+        "action": "Assigns new content offset, checks bounds boundaries, and delegates to _updateBoundsForContentOffset:."
+      },
+      "step_7_bounds_compositor_update": {
+        "method": "-[UIScrollView _updateBoundsForContentOffset:]",
+        "address": "0x1848b5120",
+        "action": "Wraps layer mutation in CATransaction with disabled actions and sets CALayer bounds origin."
+      },
+      "step_8_delegate_notification": {
+        "method": "-[UIScrollView _notifyDidScroll]",
+        "address": "0x1848b5280",
+        "action": "Dispatches -[id<UIScrollViewDelegate> scrollViewDidScroll:] and triggers scroll indicator position updates."
+      }
+    },
+    "lifecycle_termination": {
+      "invalidation_method": "-[CADisplayLink invalidate]",
+      "address": "0x184310700",
+      "conditions": [
+        "Instantaneous velocity drops below terminal threshold (0.1 pt/s).",
+        "Boundary rubber-band spring returns to equilibrium (distance < 0.05 pt and speed < 0.05 pt/s).",
+        "User touches the screen during free-flight deceleration (ballistic touch interception).",
+        "Programmatic offset change with animation=NO or explicit stopScrolling call."
+      ]
+    }
+  },
+  "compositor_transforms": {
+    "bounds_translation": {
+      "target_class": "CALayer",
+      "method": "-[CALayer setBounds:]",
+      "address": "0x184315100",
+      "signature": "v48@0:8{CGRect={CGPoint=dd}{CGSize=dd}}16",
+      "origin_mapping": {
+        "x": "contentOffset.x",
+        "y": "contentOffset.y"
+      },
+      "size_mapping": {
+        "width": "bounds.size.width",
+        "height": "bounds.size.height"
+      },
+      "coordinate_mechanism": "Shifting CALayer bounds origin shifts the internal rendering coordinate system. Subviews positioned at (subview.x, subview.y) are drawn on the physical screen at (subview.x - contentOffset.x, subview.y - contentOffset.y)."
+    },
+    "sublayer_transform": {
+      "target_class": "CALayer",
+      "method": "-[CALayer setSublayerTransform:]",
+      "address": "0x184315200",
+      "signature": "v144@0:8{CATransform3D=dddddddddddddddd}16",
+      "usage": "Applies affine and 3D perspective transforms to all sublayers simultaneously. Utilized during pinch-to-zoom (CATransform3DMakeScale(zoomScale, zoomScale, 1.0)) and stereoscopic depth effects."
+    },
+    "implicit_animation_suppression": {
+      "transaction_begin": "+[CATransaction begin] (0x184316100)",
+      "disable_actions": "+[CATransaction setDisableActions:YES] (0x184316300)",
+      "transaction_commit": "+[CATransaction commit] (0x184316200)",
+      "rationale": "By default, CoreAnimation layer property mutations outside an animation block generate implicit 0.25-second CABasicAnimation transitions. During interactive gestures and CADisplayLink ticks, this implicit action must be strictly disabled to prevent frame lag, visual stutter, and rubber-band oscillation."
+    },
+    "render_server_batching": {
+      "ipc_mechanism": "Mach Port / Shared Memory Transaction Ring",
+      "target_process": "backboardd (CoreAnimation Render Server)",
+      "commit_timing": "At end of RunLoop iteration during CATransaction commit phase. Modified layer tree geometry is serialized into render tree commands and submitted to GPU compositor queue."
+    },
+    "subpixel_grid_quantization": {
+      "method": "UIRoundToViewScale",
+      "address": "0x184762100",
+      "display_scale": 3.0,
+      "quantum_pt": 0.3333333333333333,
+      "drift_mitigation": "Rounds continuous floating-point offsets to nearest 1/3 pt physical device pixel boundaries on iPhone 18,3 @3x Retina display, eliminating cumulative rounding drift across long-horizon numerical simulation."
+    }
+  },
+  "model_vs_presentation_authority": {
+    "model_layer": {
+      "role": "Authoritative target state store. Reflects userland properties: layer.bounds.origin = contentOffset.",
+      "getter": "-[CALayer modelLayer] (0x184315350)"
+    },
+    "presentation_layer": {
+      "role": "Instantaneous in-flight rendering state currently composited on the physical OLED panel.",
+      "getter": "-[CALayer presentationLayer] (0x184315300)"
+    },
+    "ballistic_transit_divergence": {
+      "description": "During high-velocity inertial flings (velocities up to 7000 pt/s), the presentation layer origin moves frame-by-frame along the exponential decay trajectory.",
+      "interruption_catching": {
+        "tolerance_pt": 0.001,
+        "mechanism": "When user touches the screen during deceleration, -[UIScrollView _stopScrollingAndFillDisplayList:] queries [self.layer presentationLayer].bounds.origin. It pins _contentOffset to this exact floating-point position before invalidating the display link, guaranteeing zero pixel jump upon touch acquisition."
+      }
+    },
+    "hit_testing_divergence": {
+      "method": "-[UIScrollView hitTest:withEvent:]",
+      "address": "0x1848b7920",
+      "resolution_logic": "If _scrollViewFlags.isDecelerating is active and velocity exceeds touch-catch threshold (50.0 pt/s), touch events do not pass through to interactive child views (such as buttons or links). The scroll view consumes the touch to halt momentum. For low velocities, touch coordinates are converted through the presentation layer coordinate space using -[CALayer convertPoint:fromLayer:] to ensure accurate hit target identification.",
+      "horizontal_indicator_arbitration": "Both vertical and horizontal scroll indicator hit frames are evaluated with minimum 44.0pt touch target padding prior to momentum catch evaluation.",
+      "multitouch_mutual_exclusion": "Active pinch-to-zoom gestures (isZooming == true) suppress scroll indicator touch acquisition, while active scroll indicator scrubbing locks out concurrent pinch gestures."
+    }
+  },
+  "promotion_vfd_boosting": {
+    "ca_frame_rate_range_definition": {
+      "struct_name": "CAFrameRateRange",
+      "size_bytes": 12,
+      "fields": [
+        {"name": "minimum", "type": "float", "offset": "0x0"},
+        {"name": "maximum", "type": "float", "offset": "0x4"},
+        {"name": "preferred", "type": "float", "offset": "0x8"}
+      ],
+      "constructor": "+[CAFrameRateRange rangeWithMinimum:maximum:preferred:] (0x184311100)"
+    },
+    "velocity_rate_tiers": [
+      {
+        "tier_name": "Peak Fluidity (Active Drag / High Fling)",
+        "velocity_threshold_pt_per_sec": ">= 500.0",
+        "frame_rate_range": {
+          "minimum_hz": 80.0,
+          "preferred_hz": 120.0,
+          "maximum_hz": 120.0
+        },
+        "frame_interval_ms": 8.33,
+        "power_rationale": "Maximizes touch responsiveness and visual sharpness during rapid movement."
+      },
+      {
+        "tier_name": "Balanced Fluidity (Medium Deceleration)",
+        "velocity_threshold_pt_per_sec": "100.0 to 500.0",
+        "frame_rate_range": {
+          "minimum_hz": 60.0,
+          "preferred_hz": 80.0,
+          "maximum_hz": 120.0
+        },
+        "frame_interval_ms": 12.5,
+        "power_rationale": "Smooth transition between peak refresh and standard display refresh."
+      },
+      {
+        "tier_name": "Battery Conservative (Low Deceleration)",
+        "velocity_threshold_pt_per_sec": "0.1 to 100.0",
+        "frame_rate_range": {
+          "minimum_hz": 30.0,
+          "preferred_hz": 60.0,
+          "maximum_hz": 60.0
+        },
+        "frame_interval_ms": 16.67,
+        "power_rationale": "Saves GPU energy as motion approaches rest."
+      },
+      {
+        "tier_name": "Static Idle Rest",
+        "velocity_threshold_pt_per_sec": "< 0.1",
+        "frame_rate_range": {
+          "minimum_hz": 10.0,
+          "preferred_hz": 30.0,
+          "maximum_hz": 60.0
+        },
+        "frame_interval_ms": 33.33,
+        "power_rationale": "Display panel idles down to minimum refresh rate (10Hz) when no motion is occurring."
+      }
+    ],
+    "timestep_invariance": {
+      "continuous_decay_model": "v(t) = v0 * d^(1000*t)",
+      "friction_coefficient_d": 0.998,
+      "variable_timestep_discrete_recurrence": "v_{n+1} = v_n * d^(1000 * dt)",
+      "integrated_displacement_formula": "delta_s = v_n * (d^(1000 * dt) - 1.0) / (1000.0 * ln(d))",
+      "thermal_jitter_invariance": "Because the sum of integrated displacements over any arbitrary sequence of variable dt partitions is an exact telescoping sum equal to (v_0 - v_end) / (-1000 * ln(d)), physical distance is mathematically conserved to < 1e-9 pt across simulated thermal throttling frame drops (e.g. erratic 4ms to 66ms intervals).",
+      "invariance_proof": "The continuous trajectory integral from t_0 to t_k is identical regardless of whether the interval [t_0, t_k] is partitioned into uniform 60Hz steps (dt = 0.01667s), uniform 120Hz steps (dt = 0.00833s), or arbitrary variable intervals. Total displacement depends strictly on total elapsed time, ensuring physics consistency across ProMotion display adaptations."
+    }
+  }
+}

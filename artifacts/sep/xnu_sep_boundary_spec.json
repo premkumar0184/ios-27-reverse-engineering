@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "XNU Driver Boundary, Kernel Stacks & Userland KeyStore Specification",
+  "target_platform": "iOS 27.2 (Darwin 24.2.0, Build 24B119) / Apple A19 Pro (t8150)",
+  "kernel_drivers": {
+    "AppleSEPManager": {
+      "kext_identifier": "com.apple.driver.AppleSEPManager",
+      "class_name": "AppleSEPManager",
+      "super_class": "IOService",
+      "role": "Master kernel driver managing ASCwrap-v6 mailbox MMIO mappings, interrupt handling, and service endpoint routing.",
+      "key_methods": [
+        "AppleSEPManager::start",
+        "AppleSEPManager::sendMailboxCommand",
+        "AppleSEPManager::handleMailboxInterrupt",
+        "AppleSEPManager::allocateSharedBuffer",
+        "AppleSEPManager::reseedXNUPRNG"
+      ]
+    },
+    "AppleSEPKeyStore": {
+      "kext_identifier": "com.apple.driver.AppleSEPKeyStore",
+      "class_name": "AppleSEPKeyStore",
+      "super_class": "IOService",
+      "role": "Kernel AppleKeyStore (AKS) mediator; translates VFS mount/unmount and locking events into SEP mailbox requests.",
+      "key_methods": [
+        "AppleSEPKeyStore::loadBag",
+        "AppleSEPKeyStore::saveBag",
+        "AppleSEPKeyStore::unwrapKey",
+        "AppleSEPKeyStore::wrapKey",
+        "AppleSEPKeyStore::dropClassKeys",
+        "AppleSEPKeyStore::verifyPasscode"
+      ]
+    },
+    "AppleSEPARTStorage": {
+      "kext_identifier": "com.apple.driver.AppleSEPARTStorage",
+      "class_name": "AppleSEPARTStorage",
+      "super_class": "IOService",
+      "role": "Interface to Effaceable Storage; manages Anti-Replay Token verification and nonces.",
+      "key_methods": [
+        "AppleSEPARTStorage::loadART",
+        "AppleSEPARTStorage::commitART",
+        "AppleSEPARTStorage::getNewNonce"
+      ]
+    },
+    "AppleSEPXART": {
+      "kext_identifier": "com.apple.driver.AppleSEPXART",
+      "class_name": "AppleSEPXART",
+      "super_class": "IOService",
+      "role": "External Anti-Replay Token (xART) Gigalocker NAND partition driver.",
+      "key_methods": [
+        "AppleSEPXART::syncGigalocker",
+        "AppleSEPXART::readEpochTable",
+        "AppleSEPXART::writeJournalEntry"
+      ]
+    },
+    "AppleCredentialManager": {
+      "kext_identifier": "com.apple.driver.AppleCredentialManager",
+      "class_name": "AppleCredentialManager",
+      "super_class": "IOService",
+      "role": "Hardware credential manager routing FIDO2/WebAuthn passkey operations to SEP.",
+      "key_methods": [
+        "AppleCredentialManager::generatePasskeyPair",
+        "AppleCredentialManager::signChallenge",
+        "AppleCredentialManager::attestKey"
+      ]
+    }
+  },
+  "userland_frameworks": {
+    "libaks": {
+      "path": "/usr/lib/libaks.dylib",
+      "role": "Userland C library exposing low-level AppleKeyStore functions to security daemons (securityd, passd, biometrickitd).",
+      "exported_apis": [
+        "aks_load_bag",
+        "aks_save_bag",
+        "aks_create_key_bag",
+        "aks_unwrap_key",
+        "aks_wrap_key",
+        "aks_drop_class_keys",
+        "aks_verify_passcode",
+        "aks_change_passcode"
+      ]
+    },
+    "Security": {
+      "framework": "/System/Library/Frameworks/Security.framework",
+      "role": "High-level keychain, cryptographic item storage, and certificate evaluation APIs."
+    },
+    "LocalAuthentication": {
+      "framework": "/System/Library/Frameworks/LocalAuthentication.framework",
+      "role": "Public Biometric and Passcode UI authentication context (LAContext)."
+    }
+  }
+}

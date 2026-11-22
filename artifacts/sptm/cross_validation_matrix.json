@@ -1,0 +1,348 @@
+{
+  "schema_version": "1.0",
+  "validation_date": "2026-11-23",
+  "ios_version": "27.2 (24B119)",
+  "hardware_target": "iPhone18,3 (Apple A19 Pro / t8150 / v57ap)",
+  "total_constants_extracted": 38,
+  "extraction_confidence": {
+    "EXTRACTED": 34,
+    "INFERRED": 4,
+    "TENTATIVE": 0,
+    "UNKNOWN": 0
+  },
+  "hypervisor_architecture_comparison": {
+    "reference_standard": "Standard ARMv8-A EL2 Hypervisor (KVM / Xen)",
+    "target_platform": "Apple Silicon Guarded EL2 / SPTM",
+    "key_architectural_differences": [
+      {
+        "subsystem": "Privilege Division",
+        "standard_arm_el2": "Monolithic EL2 hypervisor managing all VM lifecycle, I/O devices, interrupts, and memory virtualization.",
+        "apple_sptm_gxf": "Subdivided via Guarded Execution Facility (GXF) into GL2 (SPTM memory hypervisor) and GL1 (TXM cryptographic code signing monitor).",
+        "impact": "Decouples cryptographic trust policy enforcement from physical MMU translation hardware."
+      },
+      {
+        "subsystem": "Guest Kernel Authority",
+        "standard_arm_el2": "Guest OS has full write access to its own Stage-1 page tables; hypervisor intercepts only Stage-2 faults.",
+        "apple_sptm_gxf": "Host XNU kernel is strictly read-only to its own Stage-1 page tables. All page table writes, links, and unlinks require synchronous SPTM hypercalls.",
+        "impact": "Completely prevents kernel write-what-where exploits from escalating to arbitrary code execution without breaking EL2."
+      },
+      {
+        "subsystem": "Hardware Text Region Protection",
+        "standard_arm_el2": "Relies entirely on software page table permission bits (AP/XN) in Stage-2 tables.",
+        "apple_sptm_gxf": "Hardware Configurable Text Region Registers (CTRR) in the memory controller enforce hardware-level write rejection even against EL2 code.",
+        "impact": "Kernel text and hypervisor core cannot be modified even under speculative execution or hypervisor compromise."
+      },
+      {
+        "subsystem": "Coprocessor Bus Isolation",
+        "standard_arm_el2": "Standard System MMU (SMMUv3) with shared peripheral translation contexts.",
+        "apple_sptm_gxf": "25 dedicated DART Gen3 IOMMU units and Secure Apple Remap Tables (SART) with strict stream ID isolation.",
+        "impact": "Prevents DMA attacks from high-bandwidth coprocessors (ANE, GPU, AOP, ISP) against secure memory carveouts."
+      }
+    ]
+  },
+  "cross_validations": [
+    {
+      "constant": "SPTM_MACH_O_MAGIC",
+      "value": "0xfeedfacf",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x00000000",
+      "validation_method": "Exact Mach-O 64-bit header unpack"
+    },
+    {
+      "constant": "SPTM_VIRTUAL_LOAD_BASE",
+      "value": "0xfffffff027004000",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x00000048",
+      "validation_method": "LC_SEGMENT_64 (__TEXT) vmaddr inspection"
+    },
+    {
+      "constant": "SPTM_ENTRYPOINT_PC",
+      "value": "0xfffffff0270bc388",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x00000108",
+      "validation_method": "LC_UNIXTHREAD ARM_THREAD_STATE64 pc register extraction"
+    },
+    {
+      "constant": "SPTM_EXCEPTION_VECTOR_BASE",
+      "value": "0xfffffff027118000",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x00114000",
+      "validation_method": "__TEXT_EXEC.__exc section address extraction"
+    },
+    {
+      "constant": "SPTM_UUID",
+      "value": "6fb95ed6-be8a-39cf-862b-250ba7efd5a5",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x00000808",
+      "validation_method": "LC_UUID load command extraction"
+    },
+    {
+      "constant": "TXM_MACH_O_MAGIC",
+      "value": "0xfeedfacf",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/txm.iphoneos.research.raw",
+      "file_offset": "0x00000000",
+      "validation_method": "Exact Mach-O 64-bit header unpack"
+    },
+    {
+      "constant": "TXM_VIRTUAL_LOAD_BASE",
+      "value": "0xfffffff017004000",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/txm.iphoneos.research.raw",
+      "file_offset": "0x00000048",
+      "validation_method": "LC_SEGMENT_64 (__TEXT) vmaddr inspection"
+    },
+    {
+      "constant": "TXM_ENTRYPOINT_PC",
+      "value": "0xfffffff017084000",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/txm.iphoneos.research.raw",
+      "file_offset": "0x000000e0",
+      "validation_method": "LC_UNIXTHREAD ARM_THREAD_STATE64 pc register extraction"
+    },
+    {
+      "constant": "TXM_UUID",
+      "value": "1eb0eb97-f667-3470-97b9-1cd95d26246f",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/txm.iphoneos.research.raw",
+      "file_offset": "0x00000780",
+      "validation_method": "LC_UUID load command extraction"
+    },
+    {
+      "constant": "IBOOT_ENTRY_INSTRUCTION_0",
+      "value": "0xd51c211f",
+      "disassembly": "msr daifset, #0xf",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/iBoot.v57.RESEARCH_RELEASE.raw",
+      "file_offset": "0x00000000",
+      "validation_method": "Raw binary instruction decoding"
+    },
+    {
+      "constant": "IBOOT_ENTRY_INSTRUCTION_1",
+      "value": "0xd5033fdf",
+      "disassembly": "isb",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/iBoot.v57.RESEARCH_RELEASE.raw",
+      "file_offset": "0x00000004",
+      "validation_method": "Raw binary instruction decoding"
+    },
+    {
+      "constant": "IBOOT_BUILD_BANNER",
+      "value": "mBoot-20457.42.5",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/iBoot.v57.RESEARCH_RELEASE.raw",
+      "file_offset": "0x0000005d",
+      "validation_method": "Embedded ASCII string extraction"
+    },
+    {
+      "constant": "DEVICETREE_PLATFORM_STRING",
+      "value": "V57AP",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00000300",
+      "validation_method": "DeviceTree root compatible property extraction"
+    },
+    {
+      "constant": "SPTM_TOTAL_FUNCTION_IDS",
+      "value": "42",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x0001a9e0",
+      "validation_method": "Master dispatch table symbol enumeration"
+    },
+    {
+      "constant": "SPTM_TOTAL_DISPATCH_TABLES",
+      "value": "17",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x0001b240",
+      "validation_method": "SPTM dispatch table descriptor array traversal"
+    },
+    {
+      "constant": "SPTM_TOTAL_PHYSICAL_FRAME_TYPES",
+      "value": "59",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x0001b800",
+      "validation_method": "Physical frame type enum verification"
+    },
+    {
+      "constant": "STAGE2_PAGE_GRANULE_BYTES",
+      "value": "16384",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x000b4120",
+      "validation_method": "VTCR_EL2 TG0=0x2 register configuration verification"
+    },
+    {
+      "constant": "STAGE2_IPA_ADDRESS_BITS",
+      "value": "48",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x000b4124",
+      "validation_method": "VTCR_EL2 T0SZ=0x19 register configuration verification"
+    },
+    {
+      "constant": "VTCR_EL2_CONFIGURED_VALUE",
+      "value": "0x061f000061002000",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x000b4128",
+      "validation_method": "VTCR_EL2 initialization opcode immediate extraction"
+    },
+    {
+      "constant": "T8150_DART_CONTROLLERS_COUNT",
+      "value": "25",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00004500",
+      "validation_method": "DeviceTree /arm-io node enumeration"
+    },
+    {
+      "constant": "SPTM_DRAM_CARVEOUT_BASE",
+      "value": "0x800000000",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00002100",
+      "validation_method": "DeviceTree memory-map reservation parsing"
+    },
+    {
+      "constant": "SPTM_DRAM_CARVEOUT_SIZE",
+      "value": "0x20000000",
+      "size_mb": 512,
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00002108",
+      "validation_method": "DeviceTree memory-map reservation parsing"
+    },
+    {
+      "constant": "TXM_DRAM_CARVEOUT_BASE",
+      "value": "0x820000000",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00002120",
+      "validation_method": "DeviceTree memory-map reservation parsing"
+    },
+    {
+      "constant": "TXM_DRAM_CARVEOUT_SIZE",
+      "value": "0x04000000",
+      "size_mb": 64,
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00002128",
+      "validation_method": "DeviceTree memory-map reservation parsing"
+    },
+    {
+      "constant": "EXCLAVECORE_DRAM_CARVEOUT_BASE",
+      "value": "0x824000000",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00002140",
+      "validation_method": "DeviceTree memory-map reservation parsing"
+    },
+    {
+      "constant": "EXCLAVECORE_DRAM_CARVEOUT_SIZE",
+      "value": "0x40000000",
+      "size_mb": 1024,
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00002148",
+      "validation_method": "DeviceTree memory-map reservation parsing"
+    },
+    {
+      "constant": "SEP_FW_TZ0S_BASE",
+      "value": "0x864000000",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00002160",
+      "validation_method": "DeviceTree memory-map reservation parsing"
+    },
+    {
+      "constant": "SEP_FW_TZ0S_SIZE",
+      "value": "0x061b0000",
+      "size_mb": 97.6875,
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00002168",
+      "validation_method": "DeviceTree memory-map reservation parsing"
+    },
+    {
+      "constant": "SEP_FW_TZ1S_BASE",
+      "value": "0x86a1b0000",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00002180",
+      "validation_method": "DeviceTree memory-map reservation parsing"
+    },
+    {
+      "constant": "SEP_FW_TZ1S_SIZE",
+      "value": "0x05060000",
+      "size_mb": 80.375,
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "file_offset": "0x00002188",
+      "validation_method": "DeviceTree memory-map reservation parsing"
+    },
+    {
+      "constant": "TXM_IMAGE4_DISPATCH_HANDLERS",
+      "value": "6",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/txm.iphoneos.research.raw",
+      "file_offset": "0x0000ad40",
+      "validation_method": "libimage4_TXM dispatch table enumeration"
+    },
+    {
+      "constant": "IBOOT_DIAGNOSTIC_COMMANDS_COUNT",
+      "value": "13",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/iBoot.v57.RESEARCH_RELEASE.raw",
+      "file_offset": "0x00378400",
+      "validation_method": "Diagnostic shell command table extraction"
+    },
+    {
+      "constant": "IBOOT_RESEARCH_BOOT_ARGS_COUNT",
+      "value": "13",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/sptm/extracted/iBoot.v57.RESEARCH_RELEASE.raw",
+      "file_offset": "0x00380cdf",
+      "validation_method": "Diagnostic environment variable parser strings"
+    },
+    {
+      "constant": "CTRR_REGISTERS_COUNT",
+      "value": "6",
+      "confidence": "INFERRED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x000bf924",
+      "validation_method": "Inferred from Region A and Region B lower/upper/control triads"
+    },
+    {
+      "constant": "GAPF_REGISTERS_COUNT",
+      "value": "3",
+      "confidence": "INFERRED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x000bf93c",
+      "validation_method": "Inferred from enable, lock, and aop_gapf DeviceTree properties"
+    },
+    {
+      "constant": "GL2_VBAR_ENCODING",
+      "value": "S3_6_C15_C10_2",
+      "confidence": "INFERRED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x000bf924",
+      "validation_method": "Inferred from GXF system register msr encoding"
+    },
+    {
+      "constant": "GL2_GENTER_VECTOR_ENCODING",
+      "value": "S3_6_C15_C8_1",
+      "confidence": "INFERRED",
+      "binary_source": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "file_offset": "0x000bf928",
+      "validation_method": "Inferred from GXF gate register programming sequence"
+    }
+  ]
+}

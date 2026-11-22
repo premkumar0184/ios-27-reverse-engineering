@@ -1,0 +1,69 @@
+{
+  "tile_memory": {
+    "spatial_dimensions": {
+      "tile_sizes_pixels": [
+        "16x16",
+        "32x32"
+      ],
+      "color_attachments_max": 8,
+      "depth_stencil_attachment": "1x 32-bit Depth / 8-bit Stencil on-chip"
+    },
+    "scene_allocation_architecture": {
+      "subsystem": "Parameter Scene Allocations (MList, MTileArray, VHeap Table)",
+      "mlist": {
+        "name": "Macro-tile Primitive List",
+        "description": "Dynamic linked list of vertex pointers and primitive packets bucketed per macro-tile"
+      },
+      "mtilearray": {
+        "name": "Macro-tile Array",
+        "description": "Two-dimensional screen-space tile grid referencing head and tail pointers of MList chains"
+      },
+      "vheap": {
+        "name": "Vertex Heap Table",
+        "description": "Dynamically growing parameter buffer heap managing overflow and scene complexity"
+      }
+    },
+    "tile_accelerator": {
+      "channel_class": "AGX\u00b7PI_300\u00b7P\u00b7A0\u00b7TAChannelSKSM",
+      "primitive_binning": "Coarse-rasterization bounding box evaluation placing primitives into MTileArray",
+      "onchip_sram_kb_per_usc": 128
+    }
+  },
+  "lossless_compression": {
+    "coprocessor_firmware": {
+      "binary": "t8150.msrf.im4p",
+      "fourcc_tag": "msrf",
+      "platform": "IOSurfaceAccelerator_Firmware / MSR23-MSR25",
+      "core_architecture": "baremetal_m3 (ARMv7-M Cortex-M3 microcontroller)",
+      "code_provenance": "/Sources/IOSurfaceAccelerator_Firmware/Firmware/RTK/src/device/msr23/"
+    },
+    "pixel_accelerator_pipeline": {
+      "decoder": {
+        "source_module": "pa_fmt_decoder.c",
+        "supported_formats": [
+          "Apple Lossless Compression (ALC / AFBC)",
+          "ASTC (Adaptive Scalable Texture Compression) LDR/HDR",
+          "Lossless Depth/Stencil Packets (Z32F / S8)",
+          "YUV420 10-bit P010 Tile Compression"
+        ]
+      },
+      "pipeline_stages": {
+        "pa_pipeline": "Pixel Accelerator Pipeline \u2014 streams and compresses raster tiles",
+        "pa_block_attr": "Tile Block Attribute evaluation \u2014 calculates entropy and packing density",
+        "pa_create_tile": "Create Tile \u2014 generates compressed 16x16 pixel payload blocks",
+        "pa_ncbuffer": "Non-Coherent Buffer manager \u2014 arbitrates uncached DRAM writes"
+      }
+    },
+    "tile_descriptor_cache": {
+      "cache_mapping_table": "_TD_CACHE_MAPPING",
+      "block_enable_mask": "_DEFAULT_BLOCK_EN_LIST",
+      "compression_ratio_typical": "2.2:1 to 3.8:1 on complex color/depth buffers"
+    },
+    "dram_interface": {
+      "module": "VmComponents4Dram",
+      "request_function": "dram_requests",
+      "flush_routine": "supervisor_poll_flush",
+      "fabric_link": "Fender Chinook (AGXArmFenderChinook) to GM GIFAF"
+    }
+  }
+}

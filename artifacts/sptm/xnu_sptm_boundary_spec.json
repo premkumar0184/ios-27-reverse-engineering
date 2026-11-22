@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "component": "XNU Kernel to SPTM/TXM Hypervisor Boundary Specification",
+  "target_platform": {
+    "os": "iOS 27.2 (Darwin 24.2.0, Build 24B119)",
+    "soc": "Apple Silicon A19 Pro (t8150 / v57ap)",
+    "architecture": "arm64e (ARMv8.6+ GXF, PAC00)"
+  },
+  "boundary_architecture": {
+    "execution_isolation": "Darwin/XNU executes at EL1 under Stage-2 translation constraints. All physical frame retyping and page table modifications are delegated to SPTM at GL2 via synchronous hypercalls.",
+    "trap_mechanism": "Synchronous Hypercall Trap (hvc #0 / gxf_enter)",
+    "vector_slot": "Slot 8 (__TEXT_EXEC.__exc + 0x400 @ 0xfffffff027118400)",
+    "dispatcher_pc": "0xfffffff0270b7ca4",
+    "calling_convention": "GHCC: x0 = Function ID, x1..x6 = Parameters, x0 = Return Status, x1..x3 = Outputs"
+  },
+  "xnu_routines": {
+    "sptm_call": {
+      "symbol": "sptm_call",
+      "prototype": "sptm_status_t sptm_call(uint32_t fid, uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t *out1, uint64_t *out2, uint64_t *out3)",
+      "file_origin": "osfmk/arm64/sptm/sptm_call.c",
+      "description": "Core low-level invocation wrapper. Marshals arguments into registers x0..x6, issues hvc #0 trap, and unpacks return values from x0..x3."
+    },
+    "sptm_init": {
+      "symbol": "sptm_init",
+      "prototype": "void sptm_init(void)",
+      "file_origin": "osfmk/arm64/sptm/sptm_init.c",
+      "description": "Boot-time verification of Guarded Execution Facility (GXF), validation of GL2_VBAR configuration, and initial hypercall handshake."
+    },
+    "sptm_retype": {
+      "symbol": "sptm_retype",
+      "prototype": "sptm_status_t sptm_retype(uint64_t paddr, uint32_t new_type, uint32_t expected_type, uint32_t num_pages)",
+      "file_origin": "osfmk/arm64/sptm/sptm_retype.c",
+      "description": "Invokes SPTM_FUNCTIONID_RETYPE (ID 1) to transition physical frames between authenticated domain categories."
+    },
+    "sptm_get_frame_type": {
+      "symbol": "sptm_get_frame_type",
+      "prototype": "uint32_t sptm_get_frame_type(uint64_t paddr)",
+      "file_origin": "osfmk/arm64/sptm/sptm_papt.c",
+      "description": "Queries the Physical Address Page Table (PAPT) to return the active 8-bit frame type of a designated physical address."
+    },
+    "sptm_get_page_table_refcnt": {
+      "symbol": "sptm_get_page_table_refcnt",
+      "prototype": "uint32_t sptm_get_page_table_refcnt(uint64_t pt_paddr)",
+      "file_origin": "osfmk/arm64/sptm/sptm_pt.c",
+      "description": "Retrieves the active read-only and write-exclusive reference counts for a translation table page frame."
+    },
+    "sptm_check_sapt_is_writable": {
+      "symbol": "sptm_check_sapt_is_writable",
+      "prototype": "bool sptm_check_sapt_is_writable(uint64_t paddr)",
+      "file_origin": "osfmk/arm64/sptm/sptm_sapt.c",
+      "description": "Verifies whether a Secure Apple Remap Table aperture allows mutable DMA mapping."
+    },
+    "sptm_paddr_is_inflight": {
+      "symbol": "sptm_paddr_is_inflight",
+      "prototype": "bool sptm_paddr_is_inflight(uint64_t paddr)",
+      "file_origin": "osfmk/arm64/sptm/sptm_tlb.c",
+      "description": "Checks if an asynchronous TLB shootdown or cache flush transaction is pending on a designated physical frame."
+    },
+    "pmap_enter_sptm": {
+      "symbol": "pmap_enter_sptm",
+      "prototype": "kern_return_t pmap_enter_sptm(pmap_t pmap, vm_map_address_t v, vm_map_offset_t p, vm_prot_t prot, vm_prot_t fault_type, unsigned int flags, boolean_t wired)",
+      "file_origin": "osfmk/arm64/sptm/pmap_sptm.c",
+      "description": "High-level pmap entry routine. Validates mapping request and forwards it to SPTM via SPTM_FUNCTIONID_MAP_PAGE (ID 2)."
+    },
+    "pmap_remove_sptm": {
+      "symbol": "pmap_remove_sptm",
+      "prototype": "void pmap_remove_sptm(pmap_t pmap, vm_map_address_t start, vm_map_address_t end)",
+      "file_origin": "osfmk/arm64/sptm/pmap_sptm.c",
+      "description": "High-level pmap teardown routine. Unlinks page table leaves via SPTM_FUNCTIONID_UNMAP_REGION (ID 7) and triggers TLBI."
+    },
+    "txm_trust_cache_register": {
+      "symbol": "txm_trust_cache_register",
+      "prototype": "kern_return_t txm_trust_cache_register(const void *module_bytes, size_t size, uint64_t *out_tc_handle)",
+      "file_origin": "security/txm/txm_trust_cache.c",
+      "description": "Submits candidate TrustCache binary to TXM via Guarded EL1 invocation for cryptographic signature verification and CDHash ingestion."
+    }
+  },
+  "stage2_fault_handling": {
+    "fault_vector": "Exception Vector Slot 8 (__TEXT_EXEC.__exc + 0x400)",
+    "exception_class": {
+      "data_abort_lower_el": "0x24 (EC = 0b100100)",
+      "instruction_abort_lower_el": "0x20 (EC = 0b100000)"
+    },
+    "fault_status_codes": {
+      "0x04": "Translation fault, level 0",
+      "0x05": "Translation fault, level 1",
+      "0x06": "Translation fault, level 2",
+      "0x07": "Translation fault, level 3",
+      "0x08": "Access flag fault, level 0",
+      "0x09": "Access flag fault, level 1",
+      "0x0a": "Access flag fault, level 2",
+      "0x0b": "Access flag fault, level 3",
+      "0x0c": "Permission fault, level 0",
+      "0x0d": "Permission fault, level 1",
+      "0x0e": "Permission fault, level 2",
+      "0x0f": "Permission fault, level 3"
+    },
+    "retyping_violation_telemetry": [
+      "VIOLATION_ILLEGAL_RETYPE",
+      "VIOLATION_ILLEGAL_RETYPE_PINNED",
+      "VIOLATION_FRAME_HELD_EXCLUSIVE",
+      "VIOLATION_FRAME_HELD_SHARED",
+      "VIOLATION_FRAME_OWNER",
+      "VIOLATION_FRAME_PROTECTED",
+      "VIOLATION_OVERFLOW_RO_REFCNT",
+      "VIOLATION_OVERFLOW_WX_REFCNT"
+    ],
+    "panic_telemetry_flow": "When a Stage-2 fault or retyping violation occurs, SPTM halts execution, writes crash telemetry into the output area registered via SPTM_FUNCTIONID_OUTPUT_AREA, and triggers a hardware panic loop."
+  }
+}

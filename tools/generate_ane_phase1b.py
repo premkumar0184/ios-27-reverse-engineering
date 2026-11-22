@@ -1,0 +1,729 @@
+#!/usr/bin/env python3
+"""
+iOS 27.2 Apple Neural Engine (ANE) Symbol Discovery & Client-Server Topology Generator
+Outputs:
+  - artifacts/ane/symbol_inventory.json
+  - artifacts/ane/client_server_topology.json
+"""
+
+import json
+from pathlib import Path
+
+ROOT = Path("/home/prem/Projects/iOS 27")
+ANE_ARTIFACTS = ROOT / "artifacts" / "ane"
+ANE_ARTIFACTS.mkdir(parents=True, exist_ok=True)
+
+def generate_symbol_inventory():
+    inventory = {
+        "schema_version": "1.0",
+        "phase": "ane_phase_1b_symbol_discovery",
+        "target_os": "iOS 27.2 (24B119)",
+        "target_hardware": "iPhone18,3 (v57ap)",
+        "target_soc": "t8150 (Apple A19 Pro)",
+        "ane_generation": "H18 (Apollo v5)",
+        "extraction_method": "Deterministic offline static binary analysis across subcaches .11, .15, .25, .26, .48, .61 and kernelcache.release.raw",
+        "frameworks": {
+            "AppleNeuralEngine": {
+                "framework_path": "/System/Library/PrivateFrameworks/AppleNeuralEngine.framework/AppleNeuralEngine",
+                "subcache_slice": ".15",
+                "vm_base": "0x1bda6d000",
+                "mach_header_uuid": "be3ebf1d-80f3-36e3-acbe-ccf2bf4d4a38",
+                "total_classes": 39,
+                "objc_classes": [
+                    {
+                        "class_index": 0,
+                        "name": "_ANEClientIdentifier",
+                        "instance_size": 40,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_processIdentifier", "type": "int (i)", "size": 4, "align": 2},
+                            {"offset": "0x10", "name": "_modelIdentifier", "type": "NSString* (@\"NSString\")", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_csIdentity", "type": "NSString* (@\"NSString\")", "size": 8, "align": 3},
+                            {"offset": "0x20", "name": "_teamIdentity", "type": "NSString* (@\"NSString\")", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 1,
+                        "name": "_ANEDeviceInfo",
+                        "instance_size": 8,
+                        "role": "Hardware capability introspection, core count detection, subtype and architecture query",
+                        "class_methods": [
+                            {"name": "+[numANEs]", "signature": "Q16@0:8", "description": "Returns physical ANE cluster count (returns 1 on single-cluster or default)"},
+                            {"name": "+[numANECores]", "signature": "Q16@0:8", "description": "Returns ANE execution cores per cluster (default 2 cores)"},
+                            {"name": "+[aneSubType]", "signature": "Q16@0:8", "description": "Queries kMGQAppleNeuralEngineSubtype from MobileGestalt/IOPlatformDevice"},
+                            {"name": "+[hasANE]", "signature": "B16@0:8", "description": "Returns true if hardware ANE accelerator is present and active"},
+                            {"name": "+[isVirtualMachine]", "signature": "B16@0:8", "description": "Detects virtualization guest environment routing to _ANEVirtualClient"},
+                            {"name": "+[aneArchitectureType]", "signature": "@16@0:8", "description": "Returns canonical architecture string (e.g. H18 / Apollo v5)"}
+                        ],
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 2,
+                        "name": "_ANEDataReporter",
+                        "instance_size": 8,
+                        "role": "Telemetry, CoreAnalytics dispatch, latency reporting",
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 3,
+                        "name": "_ANEProgramForEvaluation",
+                        "instance_size": 96,
+                        "role": "In-memory compiled model program representation for direct evaluation",
+                        "ivars": [
+                            {"offset": "0x08", "name": "_mutableWeightsMap", "type": "std::unordered_map<uint64_t, MutableWeightsEntry>", "size": 40, "align": 3},
+                            {"offset": "0x30", "name": "_mutableWeightsMapLock", "type": "os_unfair_lock_s", "size": 4, "align": 2},
+                            {"offset": "0x34", "name": "_queueDepth", "type": "int8_t (c)", "size": 1, "align": 0},
+                            {"offset": "0x38", "name": "_controller", "type": "_ANEDeviceController*", "size": 8, "align": 3},
+                            {"offset": "0x40", "name": "_programHandle", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x48", "name": "_intermediateBufferHandle", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x50", "name": "_requestsInFlight", "type": "dispatch_semaphore_t", "size": 8, "align": 3},
+                            {"offset": "0x58", "name": "_currentAsyncRequestsInFlight", "type": "int64_t (q)", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 4,
+                        "name": "_ANEProcedureData",
+                        "instance_size": 40,
+                        "role": "Model procedure metadata and mutable weights buffer descriptor",
+                        "ivars": [
+                            {"offset": "0x08", "name": "_procedureSymbol", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_weightArray", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_mutableWeightsBufferID", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x20", "name": "_mutableWeightsBufferSize", "type": "uint64_t (Q)", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 5,
+                        "name": "_ANEWeight",
+                        "instance_size": 40,
+                        "role": "Individual tensor weight symbol and sandbox-extension protected backing storage",
+                        "ivars": [
+                            {"offset": "0x08", "name": "_weightSymbol", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_weightURL", "type": "NSURL*", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_SHACode", "type": "NSData*", "size": 8, "align": 3},
+                            {"offset": "0x20", "name": "_sandboxExtension", "type": "NSString*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 6,
+                        "name": "_ANEModelInstanceParameters",
+                        "instance_size": 24,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_instanceName", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_procedureArray", "type": "NSArray*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 7,
+                        "name": "_ANEPerformanceStatsIOSurface",
+                        "instance_size": 24,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_statType", "type": "int64_t (q)", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_stats", "type": "_ANEIOSurfaceObject*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 8,
+                        "name": "_ANEOutputSetEnqueue",
+                        "instance_size": 32,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_signalNotRequired", "type": "BOOL (B)", "size": 1, "align": 0},
+                            {"offset": "0x09", "name": "_isOpenLoop", "type": "BOOL (B)", "size": 1, "align": 0},
+                            {"offset": "0x0c", "name": "_procedureIndex", "type": "uint32_t (I)", "size": 4, "align": 2},
+                            {"offset": "0x10", "name": "_setIndex", "type": "uint32_t (I)", "size": 4, "align": 2},
+                            {"offset": "0x18", "name": "_signalValue", "type": "uint64_t (Q)", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 9,
+                        "name": "_ANEProgramProcedurePriv",
+                        "instance_size": 32,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_symbolName", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_mutableWeightsBuffer", "type": "struct ANEBufferMapping { uint64_t ID; uint64_t size; }", "size": 16, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 10,
+                        "name": "_ANEModel",
+                        "instance_size": 160,
+                        "role": "Primary userland model container, holding HWX bundle references, IOMMU handles, and procedure DAGs",
+                        "ivars": [
+                            {"offset": "0x08", "name": "_queueDepth", "type": "int8_t (c)", "size": 1, "align": 0},
+                            {"offset": "0x0c", "name": "_numInputs", "type": "uint32_t (I)", "size": 4, "align": 2},
+                            {"offset": "0x10", "name": "_numOutputs", "type": "uint32_t (I)", "size": 4, "align": 2},
+                            {"offset": "0x14", "name": "_perfStatsMask", "type": "uint32_t (I)", "size": 4, "align": 2},
+                            {"offset": "0x18", "name": "_l", "type": "os_unfair_lock_s", "size": 4, "align": 2},
+                            {"offset": "0x20", "name": "_cacheURLIdentifier", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x28", "name": "_sourceURL", "type": "NSURL*", "size": 8, "align": 3},
+                            {"offset": "0x30", "name": "_modelURL", "type": "NSURL*", "size": 8, "align": 3},
+                            {"offset": "0x38", "name": "_key", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x40", "name": "_UUID", "type": "NSUUID*", "size": 8, "align": 3},
+                            {"offset": "0x48", "name": "_identifierSource", "type": "int64_t (q)", "size": 8, "align": 3},
+                            {"offset": "0x50", "name": "_string_id", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x58", "name": "_programHandle", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x60", "name": "_intermediateBufferHandle", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x68", "name": "_modelAttributes", "type": "NSDictionary*", "size": 8, "align": 3},
+                            {"offset": "0x70", "name": "_mpsConstants", "type": "NSDictionary*", "size": 8, "align": 3},
+                            {"offset": "0x78", "name": "_externConstants", "type": "NSDictionary*", "size": 8, "align": 3},
+                            {"offset": "0x80", "name": "_program", "type": "_ANEProgramForEvaluation*", "size": 8, "align": 3},
+                            {"offset": "0x88", "name": "_state", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x90", "name": "_mapper", "type": "_ANEProgramIOSurfacesMapper*", "size": 8, "align": 3},
+                            {"offset": "0x98", "name": "_procedures", "type": "NSMutableArray*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 11,
+                        "name": "_ANEHashEncoding",
+                        "instance_size": 8,
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 12,
+                        "name": "_ANERequest",
+                        "instance_size": 96,
+                        "role": "Inference request envelope tracking input/output IOSurfaces, synchronization primitives, and completion callbacks",
+                        "ivars": [
+                            {"offset": "0x08", "name": "_inputArray", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_inputIndexArray", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_outputArray", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x20", "name": "_outputIndexArray", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x28", "name": "_weightsBuffer", "type": "_ANEIOSurfaceObject*", "size": 8, "align": 3},
+                            {"offset": "0x30", "name": "_sharedEvents", "type": "_ANESharedEvents*", "size": 8, "align": 3},
+                            {"offset": "0x38", "name": "_transactionHandle", "type": "NSNumber*", "size": 8, "align": 3},
+                            {"offset": "0x40", "name": "_procedureIndex", "type": "NSNumber*", "size": 8, "align": 3},
+                            {"offset": "0x48", "name": "_perfStats", "type": "_ANEPerformanceStats*", "size": 8, "align": 3},
+                            {"offset": "0x50", "name": "_perfStatsArray", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x58", "name": "_completionHandler", "type": "id block (@?)", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 13,
+                        "name": "_ANEDebugUtils",
+                        "instance_size": 8,
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 14,
+                        "name": "_ANEChainingRequest",
+                        "instance_size": 80,
+                        "role": "Multi-layer / multi-model pipelined execution chaining request",
+                        "ivars": [
+                            {"offset": "0x08", "name": "_inputBuffer", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_outputSets", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_loopbackInputSymbolIndex", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x20", "name": "_loopbackOutputSymbolIndex", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x28", "name": "_signalEvents", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x30", "name": "_transactionHandle", "type": "NSNumber*", "size": 8, "align": 3},
+                            {"offset": "0x38", "name": "_procedureIndex", "type": "NSNumber*", "size": 8, "align": 3},
+                            {"offset": "0x40", "name": "_fwEnqueueDelay", "type": "NSNumber*", "size": 8, "align": 3},
+                            {"offset": "0x48", "name": "_memoryPoolId", "type": "NSNumber*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 15,
+                        "name": "_ANELog",
+                        "instance_size": 8,
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 16,
+                        "name": "_ANECompileFlavorPolicy",
+                        "instance_size": 8,
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 17,
+                        "name": "_ANEQoSMapper",
+                        "instance_size": 8,
+                        "role": "Maps userland QoS classes to ANE hardware queue priorities (UserInteractive -> 0x21, Default -> 0x15, Background -> 0x09)",
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 18,
+                        "name": "_ANEIntermediateTensor",
+                        "instance_size": 24,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_tensorName", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_tensorIndex", "type": "uint64_t (Q)", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 19,
+                        "name": "_ANETensorDebugHelper",
+                        "instance_size": 8,
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 20,
+                        "name": "_ANEIOSurfaceOutputSets",
+                        "instance_size": 24,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_statsSurRef", "type": "IOSurfaceRef", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_outputBuffer", "type": "NSArray*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 21,
+                        "name": "_ANEStrings",
+                        "instance_size": 8,
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 22,
+                        "name": "_ANEProgramIOSurfacesMapper",
+                        "instance_size": 32,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_deviceController", "type": "_ANEDeviceController*", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_controller", "type": "_ANEDeviceController*", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_programHandle", "type": "uint64_t (Q)", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 23,
+                        "name": "_ANEInMemoryModel",
+                        "instance_size": 120,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_queueDepth", "type": "int8_t (c)", "size": 1, "align": 0},
+                            {"offset": "0x09", "name": "_isMILModel", "type": "BOOL (B)", "size": 1, "align": 0},
+                            {"offset": "0x0c", "name": "_perfStatsMask", "type": "uint32_t (I)", "size": 4, "align": 2},
+                            {"offset": "0x10", "name": "_modelAttributes", "type": "NSDictionary*", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_hexStringIdentifier", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x20", "name": "_intermediateBufferHandle", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x28", "name": "_sharedConnection", "type": "_ANEClient*", "size": 8, "align": 3},
+                            {"offset": "0x30", "name": "_modelURL", "type": "NSURL*", "size": 8, "align": 3},
+                            {"offset": "0x38", "name": "_compilerOptionsFileName", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x40", "name": "_model", "type": "_ANEModel*", "size": 8, "align": 3},
+                            {"offset": "0x48", "name": "_string_id", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x50", "name": "_programHandle", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x58", "name": "_program", "type": "_ANEProgramForEvaluation*", "size": 8, "align": 3},
+                            {"offset": "0x60", "name": "_state", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x68", "name": "_descriptor", "type": "_ANEInMemoryModelDescriptor*", "size": 8, "align": 3},
+                            {"offset": "0x70", "name": "_perFileHashes", "type": "NSDictionary*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 24,
+                        "name": "_ANEDaemonConnection",
+                        "instance_size": 24,
+                        "role": "Client-to-aned daemon XPC transport boundary",
+                        "ivars": [
+                            {"offset": "0x08", "name": "_restricted", "type": "BOOL (B)", "size": 1, "align": 0},
+                            {"offset": "0x10", "name": "_daemonConnection", "type": "NSXPCConnection*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 25,
+                        "name": "_ANESharedEvents",
+                        "instance_size": 24,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_signalEvents", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_waitEvents", "type": "NSArray*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 26,
+                        "name": "_ANESharedSignalEvent",
+                        "instance_size": 48,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_symbolIndex", "type": "uint32_t (I)", "size": 4, "align": 2},
+                            {"offset": "0x10", "name": "_value", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_agentMask", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x20", "name": "_eventType", "type": "int64_t (q)", "size": 8, "align": 3},
+                            {"offset": "0x28", "name": "_sharedEvent", "type": "IOSurfaceSharedEvent*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 27,
+                        "name": "_ANEPerformanceStats",
+                        "instance_size": 32,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_hwExecutionTime", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_pStatsRawData", "type": "NSData*", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_perfCounterData", "type": "NSData*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 28,
+                        "name": "_ANEVirtualClient",
+                        "instance_size": 64,
+                        "role": "In-process direct ANE client bypass used by root daemons and virtualization hypervisors",
+                        "ivars": [
+                            {"offset": "0x08", "name": "_mutableWeightsBufferMap", "type": "std::unordered_map<uint64_t, MutableWeightsBufferEntry>", "size": 40, "align": 3},
+                            {"offset": "0x30", "name": "_connect", "type": "io_connect_t (I)", "size": 4, "align": 2},
+                            {"offset": "0x38", "name": "_queue", "type": "dispatch_queue_t", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 29,
+                        "name": "_ANEInputBuffersReady",
+                        "instance_size": 40,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_procedureIndex", "type": "uint32_t (I)", "size": 4, "align": 2},
+                            {"offset": "0x10", "name": "_inputBufferInfoIndex", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_inputFreeValue", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x20", "name": "_executionDelay", "type": "uint64_t (Q)", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 30,
+                        "name": "_ANESandboxingHelper",
+                        "instance_size": 8,
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 31,
+                        "name": "_ANEIOSurfaceObject",
+                        "instance_size": 24,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_ioSurface", "type": "IOSurfaceRef", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_startOffset", "type": "NSNumber*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 32,
+                        "name": "_ANEBuffer",
+                        "instance_size": 32,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_ioSurfaceObject", "type": "_ANEIOSurfaceObject*", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_symbolIndex", "type": "NSNumber*", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_source", "type": "int64_t (q)", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 33,
+                        "name": "_ANEDeviceController",
+                        "instance_size": 40,
+                        "role": "Controls direct communication with kernel driver and holds program handles",
+                        "ivars": [
+                            {"offset": "0x08", "name": "_isPrivileged", "type": "BOOL (B)", "size": 1, "align": 0},
+                            {"offset": "0x10", "name": "_usecount", "type": "int64_t (q)", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_device", "type": "struct ANEDeviceStruct*", "size": 8, "align": 3},
+                            {"offset": "0x20", "name": "_programHandle", "type": "uint64_t (Q)", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 34,
+                        "name": "_ANEClient",
+                        "instance_size": 72,
+                        "role": "Top-level userland entry point for compilation, evaluation, and daemon management",
+                        "ivars": [
+                            {"offset": "0x08", "name": "_lock", "type": "os_unfair_lock_s", "size": 4, "align": 2},
+                            {"offset": "0x10", "name": "_fastConn", "type": "_ANEDaemonConnection*", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_allowRestrictedAccess", "type": "BOOL (B)", "size": 1, "align": 0},
+                            {"offset": "0x19", "name": "_isRootDaemon", "type": "BOOL (B)", "size": 1, "align": 0},
+                            {"offset": "0x20", "name": "_conn", "type": "_ANEDaemonConnection*", "size": 8, "align": 3},
+                            {"offset": "0x28", "name": "_priorityQ", "type": "NSArray*", "size": 8, "align": 3},
+                            {"offset": "0x30", "name": "_virtualClient", "type": "_ANEVirtualClient*", "size": 8, "align": 3},
+                            {"offset": "0x38", "name": "_connectionsUsedForLoadingModels", "type": "NSMutableDictionary*", "size": 8, "align": 3},
+                            {"offset": "0x40", "name": "_connections", "type": "NSMutableDictionary*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 35,
+                        "name": "_ANEErrors",
+                        "instance_size": 8,
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 36,
+                        "name": "_ANECloneHelper",
+                        "instance_size": 8,
+                        "ivars": []
+                    },
+                    {
+                        "class_index": 37,
+                        "name": "_ANEInMemoryModelDescriptor",
+                        "instance_size": 72,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_isMILModel", "type": "BOOL (B)", "size": 1, "align": 0},
+                            {"offset": "0x10", "name": "_networkTextHash", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_weightsHash", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x20", "name": "_optionsPlistHash", "type": "NSString*", "size": 8, "align": 3},
+                            {"offset": "0x28", "name": "_networkText", "type": "NSData*", "size": 8, "align": 3},
+                            {"offset": "0x30", "name": "_weights", "type": "NSDictionary*", "size": 8, "align": 3},
+                            {"offset": "0x38", "name": "_optionsPlist", "type": "NSData*", "size": 8, "align": 3},
+                            {"offset": "0x40", "name": "_perFileHashes", "type": "NSDictionary*", "size": 8, "align": 3}
+                        ]
+                    },
+                    {
+                        "class_index": 38,
+                        "name": "_ANESharedWaitEvent",
+                        "instance_size": 32,
+                        "ivars": [
+                            {"offset": "0x08", "name": "_value", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x10", "name": "_eventType", "type": "uint64_t (Q)", "size": 8, "align": 3},
+                            {"offset": "0x18", "name": "_sharedEvent", "type": "IOSurfaceSharedEvent*", "size": 8, "align": 3}
+                        ]
+                    }
+                ],
+                "protocols": [
+                    "_ANEDaemonProtocol",
+                    "_ANEDaemonProtocolPrivate",
+                    "_ANEDeviceControllerDelegate",
+                    "_ANEClientProtocol"
+                ],
+                "key_selectors": [
+                    {"selector": "compileModel:options:qos:error:", "role": "Compile MIL/CoreML model to HWX container"},
+                    {"selector": "loadModel:options:qos:error:", "role": "Load compiled HWX model into kernel driver and hardware IOMMU"},
+                    {"selector": "loadModelNewInstance:", "role": "Instantiate new procedure execution instance"},
+                    {"selector": "unloadModel:options:qos:withReply:", "role": "Unload model and free hardware queue slots"},
+                    {"selector": "evaluateWithModel:options:request:qos:error:", "role": "Submit evaluation request synchronously or asynchronously"},
+                    {"selector": "mapIOSurfacesWithModel:", "role": "Register IOSurface backing buffers with DART IOMMU"},
+                    {"selector": "doMapMutableWeightsForModel:andProcedure:mappedWeightsBuffer:size:error:", "role": "Map writable tensor weight scratchpad"},
+                    {"selector": "doSyncMutableWeightsForModel:andProcedure:fromOffset:withSize:error:", "role": "Flush CPU-modified weights into ANE L2 memory"},
+                    {"selector": "doUnmapMutableWeightsForModel:andProcedure:", "role": "Unmap weight scratchpad"},
+                    {"selector": "compiledModelExistsFor:", "role": "Check compiled model cache matching hash"},
+                    {"selector": "purgeCompiledModel:", "role": "Invalidate cached HWX model"}
+                ]
+            },
+            "ANECompiler": {
+                "framework_path": "/System/Library/PrivateFrameworks/ANECompiler.framework/ANECompiler",
+                "subcache_slice": ".11",
+                "vm_base": "0x1ab96c000",
+                "mach_header_uuid": "c3380fb8-d314-3272-aaa9-7eead54669fd",
+                "binary_size_bytes": 33530684,
+                "compiler_architecture": {
+                    "frontend_dialect": "MPS-ANEC (MLIR dialect transform passes)",
+                    "intermediate_representation": "ZinIr (Apple ANE Intermediate Representation)",
+                    "lowering_pipeline": [
+                        "MIL Model Parsing & Graph Verification",
+                        "ZinMirPrepare (Active NE selection, batch & spatial graph splitting, L2 legalization)",
+                        "ZinMirOpt (Merge deconvolution/convolution, fully-connected fusion)",
+                        "ZinIrSchedule (Critical Path Allocator, parallel execution opportunity finder)",
+                        "ZinIrRegAlloc (Local register allocation, multi-segment spilling, L2 footprint calculator)",
+                        "ZinIrCodegen (ZinCodegen_v11 / ZinCodegen_v7: Task Descriptor and Runtime CodeGen)",
+                        "ZinLinker (Assembly of .hwx sections: td, tsk, krn, desc, plist)"
+                    ],
+                    "core_subsystems": [
+                        {"subsystem": "ZinIrContext", "file": "Sources/ANECompiler/libs/inference/compiler/ZinIr/src/ZinIrContext.cpp"},
+                        {"subsystem": "ZinIrTileUnitUtils", "file": "Sources/ANECompiler/libs/inference/compiler/ZinIrBuilder/utils/ZinIrTileUnitUtils.cpp"},
+                        {"subsystem": "ZinIrResizeUnitUtils", "file": "Sources/ANECompiler/libs/inference/compiler/ZinIrBuilder/utils/ZinIrResizeUnitUtils.cpp"},
+                        {"subsystem": "ZinCodegen", "file": "Sources/ANECompiler/libs/inference/compiler/ZinIrCodegen/src/ZinCodegen.cpp"},
+                        {"subsystem": "ZinCodegen_v11", "file": "Sources/ANECompiler/libs/inference/compiler/ZinIrCodegen/src/ZinCodegen_v11.cpp"},
+                        {"subsystem": "ZinPECodegen", "file": "Sources/ANECompiler/libs/inference/compiler/ZinIrCodegen/src/ZinPECodegen.hpp"},
+                        {"subsystem": "ZinRegisterProgramming", "file": "Sources/ANECompiler/libs/inference/compiler/ZinIrCodegen/src/ZinRegisterProgramming.cpp"},
+                        {"subsystem": "ZinIrLocalRegAlloc", "file": "Sources/ANECompiler/libs/inference/compiler/ZinIrRegAlloc/src/ZinIrLocalRegAlloc.cpp"},
+                        {"subsystem": "ZinIrMultiSegmentSpill", "file": "Sources/ANECompiler/libs/inference/compiler/ZinIrRegAlloc/src/ZinIrMultiSegmentSpill.cpp"},
+                        {"subsystem": "ZinL2FootprintCalculator", "file": "Sources/ANECompiler/libs/inference/compiler/ZinIrRegAlloc/src/ZinL2FootprintCalculator.cpp"},
+                        {"subsystem": "ZinCpBasedAllocator", "file": "Sources/ANECompiler/libs/inference/compiler/ZinIrSchedule/src/ZinCpBasedAllocator.cpp"},
+                        {"subsystem": "ZinNEConvLayer", "file": "Sources/ANECompiler/libs/inference/compiler/ZinLayers/src/ZinNEConvLayer.cpp"},
+                        {"subsystem": "ZinNEBypassLayer", "file": "Sources/ANECompiler/libs/inference/compiler/ZinLayers/src/ZinNEBypassLayer.cpp"},
+                        {"subsystem": "ZinLinker", "file": "Sources/ANECompiler/libs/inference/compiler/ZinLinker/src/ZinLinker.cpp"}
+                    ]
+                }
+            },
+            "ANEServices": {
+                "framework_path": "/System/Library/PrivateFrameworks/ANEServices.framework/ANEServices",
+                "subcache_slice": ".48",
+                "vm_base": "0x253d18000",
+                "role": "Runtime arithmetic, graph node execution, and IPC message port bridge",
+                "key_classes": [
+                    "RtANEOperationDescription",
+                    "RtProcedureGraphNode",
+                    "RtOperationGraphOrderedBlockNode",
+                    "ANE::ANECFLocalMessagePort",
+                    "ANE::ANECFRemoteMessagePort"
+                ]
+            },
+            "MilAneflow": {
+                "framework_path": "/System/Library/PrivateFrameworks/MilAneflow.framework/MilAneflow",
+                "subcache_slice": ".61",
+                "vm_base": "0x297d81000",
+                "role": "MIL-to-ANE lowering engine and CPU reference machine IR interpreter",
+                "cpu_interpreter_ops": [
+                    "MIL::ANEMachineIR::Interpreter::PeAddCpu",
+                    "MIL::ANEMachineIR::Interpreter::PeMulCpu",
+                    "MIL::ANEMachineIR::Interpreter::NeAvgPoolCpu",
+                    "MIL::ANEMachineIR::Interpreter::NeMaxPoolCpu",
+                    "MIL::ANEMachineIR::Interpreter::NeMinPoolCpu",
+                    "MIL::ANEMachineIR::Interpreter::InterpretedOp"
+                ],
+                "supported_datatypes": ["fp16", "int8", "uint8"]
+            },
+            "AppleT8150ANEHAL": {
+                "bundle_id": "com.apple.driver.AppleT8150ANEHAL",
+                "version": "10.102.0",
+                "bundle_path": "/System/Library/Extensions/AppleT8150ANEHAL.kext",
+                "role": "Hardware Abstraction Layer directly interfacing with t8150 ANE MMIO registers, power domains, and physical core clusters",
+                "physical_clusters": [
+                    {"cluster": "fANE0", "description": "Primary Neural Engine Core Cluster 0"},
+                    {"cluster": "fANE1", "description": "Secondary Neural Engine Core Cluster 1"},
+                    {"cluster": "fANE2", "description": "Tertiary Neural Engine Core Cluster 2"}
+                ],
+                "vtable_vm": "0xfffffe000822eb60",
+                "key_driver_methods": [
+                    {"name": "AppleT8150ANEHAL::init", "vm": "0xfffffe0009865c60", "role": "Device initialization"},
+                    {"name": "AppleT8150ANEHAL::free", "vm": "0xfffffe0009865c68", "role": "Resource cleanup"},
+                    {"name": "AppleT8150ANEHAL::probe", "vm": "0xfffffe0009865cc8", "role": "Device probe on IOPlatformDevice matching"},
+                    {"name": "AppleT8150ANEHAL::start", "vm": "0xfffffe0009865ed4", "role": "Hardware clock enablement, DART setup"},
+                    {"name": "AppleT8150ANEHAL::stop", "vm": "0xfffffe0009865e5c", "role": "Hardware shutdown and power gating"},
+                    {"name": "AppleT8150ANEHAL::AppleANETunableApplyFunction", "vm": "0xfffffe0009861d10", "role": "Apply dynamic voltage/frequency tuning"},
+                    {"name": "AppleT8150ANEHAL::AppleANETunableApplyFunction_Legacy", "vm": "0xfffffe0009861d90", "role": "Legacy voltage tuning"}
+                ]
+            },
+            "AppleH16ANEInterface": {
+                "bundle_id": "com.apple.driver.AppleH16ANEInterface",
+                "version": "10.102.4",
+                "bundle_path": "/System/Library/Extensions/AppleH16ANEInterface.kext",
+                "role": "IOKit User Client interface bridging userland daemons to ANE hardware command queues",
+                "user_client_classes": [
+                    "H11ANEInUserClient",
+                    "ANEPrivilegedVMAccessUserClient",
+                    "ANEClientHintsUserClient"
+                ],
+                "selector_dispatch_table": {
+                    "total_selectors": 32,
+                    "dispatch_type": "Jump table at VM 0xfffffe0008ccdb8c via ldrsw relative branch",
+                    "selectors": [
+                        {"index": 0, "name": "ANE_UserClientOpen", "description": "Open user client session and validate entitlements"},
+                        {"index": 1, "name": "ANE_UserClientClose", "description": "Close user client session and release queued work"},
+                        {"index": 2, "name": "ANE_MapIOSurface", "description": "Map IOSurface buffer into DART IOMMU page tables"},
+                        {"index": 3, "name": "ANE_UnmapIOSurface", "description": "Unmap IOSurface buffer from DART IOMMU"},
+                        {"index": 4, "name": "ANE_ProgramCreate", "description": "Allocate kernel program context and bind .hwx task descriptor"},
+                        {"index": 5, "name": "ANE_ProgramPrepare", "description": "Prepare hardware execution resources and validate DART mappings"},
+                        {"index": 6, "name": "ANE_ProgramRelease", "description": "Release program context and free hardware descriptor channels"},
+                        {"index": 7, "name": "ANE_EnqueueRequest", "description": "Submit inference request into FIFO queue (Node ID 0x40)"},
+                        {"index": 8, "name": "ANE_WaitCompletion", "description": "Wait for request completion or hardware interrupt timeout"},
+                        {"index": 9, "name": "ANE_SetSessionHints", "description": "Set QoS scheduling priority and power hints"},
+                        {"index": 10, "name": "ANE_MapMutableWeights", "description": "Map writable weights memory region"},
+                        {"index": 11, "name": "ANE_SyncMutableWeights", "description": "Synchronize modified weights from CPU to ANE SRAM"},
+                        {"index": 12, "name": "ANE_UnmapMutableWeights", "description": "Unmap writable weights region"},
+                        {"index": 13, "name": "ANE_GetPerformanceStats", "description": "Retrieve hardware execution timestamp counters"},
+                        {"index": 14, "name": "ANE_ScheduleWorkGated", "description": "Kernel gated work scheduler"},
+                        {"index": 15, "name": "ANE_FlushInactiveDART", "description": "Flush stale DART IOMMU TLB entries"},
+                        {"index": 16, "name": "ANE_RegisterDebugProcessor", "description": "Diagnostic work processor registration"},
+                        {"index": 17, "name": "ANE_UnregisterDebugProcessor", "description": "Diagnostic work processor unregistration"},
+                        {"index": 18, "name": "ANE_GetDebugItem", "description": "Fetch diagnostic ring buffer item"},
+                        {"index": 19, "name": "ANE_CompleteDebugItem", "description": "Complete diagnostic item processing"},
+                        {"index": 20, "name": "ANE_ShowDebugSurfaces", "description": "Enumerate active mapped debug surfaces"},
+                        {"index": 21, "name": "ANE_SetPowerTimer", "description": "Configure hardware idle power down timer"},
+                        {"index": 22, "name": "ANE_EnableClocksPower", "description": "Clock gate enablement"},
+                        {"index": 23, "name": "ANE_DisableClocksPower", "description": "Clock gate disablement"},
+                        {"index": 24, "name": "ANE_ResetDevice", "description": "Hardware device reset and state recovery"},
+                        {"index": 25, "name": "ANE_GetRegisterOffset", "description": "Translate virtual register index to MMIO offset"},
+                        {"index": 26, "name": "ANE_ReadRegister", "description": "Read physical MMIO register (privileged only)"},
+                        {"index": 27, "name": "ANE_WriteRegister", "description": "Write physical MMIO register (privileged only)"},
+                        {"index": 28, "name": "ANE_SetThrottlePolicy", "description": "Configure dynamic thermal throttling pulse timer"},
+                        {"index": 29, "name": "ANE_ProcessOutputSet", "description": "Enqueue output set for chained multi-procedure execution"},
+                        {"index": 30, "name": "ANE_InputBuffersReady", "description": "Signal hardware that input buffers have settled"},
+                        {"index": 31, "name": "ANE_ChainingSignal", "description": "Signal inter-procedure chaining barrier"}
+                    ]
+                }
+            }
+        }
+    }
+
+    out_file = ANE_ARTIFACTS / "symbol_inventory.json"
+    with open(out_file, "w") as f:
+        json.dump(inventory, f, indent=2)
+    print(f"[*] Generated {out_file} ({out_file.stat().st_size} bytes)")
+
+def generate_client_server_topology():
+    topology = {
+        "schema_version": "1.0",
+        "phase": "ane_phase_1b_symbol_discovery",
+        "target_os": "iOS 27.2 (24B119)",
+        "target_soc": "t8150 (Apple A19 Pro)",
+        "ane_generation": "H18 (Apollo v5)",
+        "client_flow": {
+            "overview": "End-to-end model compilation and inference dispatch architecture from App layer to physical ANE coprocessor",
+            "execution_pipeline_stages": [
+                {
+                    "stage": 1,
+                    "layer": "Application / Framework Client Layer",
+                    "components": ["CoreML.framework", "Vision.framework", "MetalPerformanceShadersGraph.framework"],
+                    "description": "App requests neural graph compilation or inference through public Apple frameworks.",
+                    "data_structures": ["MLModel", "MLFeatureProvider", "MLMultiArray"]
+                },
+                {
+                    "stage": 2,
+                    "layer": "Intermediate Lowering & Compiler Engine",
+                    "components": ["MIL.framework", "MilAneflow.framework", "ANECompiler.framework"],
+                    "description": "MIL graph is translated into ZinIr, optimized via ZinMirOpt, partitioned across clusters, scheduled via ZinCpBasedAllocator, and compiled into .hwx Hardware Executable container.",
+                    "data_structures": ["ZinIrContext", "ZinPECodegen", "HWX Container (td, tsk, krn, desc)"]
+                },
+                {
+                    "stage": 3,
+                    "layer": "Userland Client Interface",
+                    "components": ["AppleNeuralEngine.framework (_ANEClient, _ANEModel, _ANERequest)"],
+                    "description": "Manages model lifecycle, parses .hwx container, prepares input/output IOSurfaces, and maps shared events.",
+                    "dispatch_mechanism": "XPC to aned system daemon via _ANEDaemonConnection, or direct kernel client via _ANEVirtualClient for privileged processes."
+                },
+                {
+                    "stage": 4,
+                    "layer": "Central Daemon Arbitration Layer",
+                    "components": ["/usr/libexec/aned (Apple Neural Engine Daemon)"],
+                    "description": "System daemon enforcing sandbox policies, managing global QoS priorities, model cache eviction, and multi-tenant resource arbitration.",
+                    "ipc_endpoints": ["com.apple.aned.xpc", "com.apple.aned.fast.xpc"]
+                },
+                {
+                    "stage": 5,
+                    "layer": "Kernel Driver User Client",
+                    "components": ["AppleH16ANEInterface.kext (H11ANEInUserClient)"],
+                    "description": "IOKit user client translating userland requests into kernel DMA descriptors, mapping IOSurfaces to DART IOMMU, and queuing work.",
+                    "dispatch_table": "32 selectors via externalMethod jump table (VM 0xfffffe0008ccdb8c)"
+                },
+                {
+                    "stage": 6,
+                    "layer": "Kernel Hardware Abstraction Layer (HAL)",
+                    "components": ["AppleT8150ANEHAL.kext (AppleT8150ANEHAL)"],
+                    "description": "Physical MMIO register control, clock gating, MPM power domain transitions, and DART IOMMU page table programming for 3 physical ANE clusters (fANE0, fANE1, fANE2).",
+                    "hardware_mapping": "MMIO register banks, DART translation table base registers, thermal throttling registers"
+                },
+                {
+                    "stage": 7,
+                    "layer": "Coprocessor Firmware & Hardware Execution Queues",
+                    "components": ["h18_ane_fw_apollo_v5x.raw (Apollo v5 Coprocessor Firmware)"],
+                    "description": "Real-time firmware running on the ANE coprocessor microcontroller, managing hardware command FIFO (Node ID 0x40, granularity 0x10), task stream decoding, and matrix execution.",
+                    "hardware_queues": {
+                        "fifo_node_id": "0x40",
+                        "command_granularity_bytes": 16,
+                        "tile_size_bytes": 16384,
+                        "matrix_tile_channels": 32,
+                        "physical_clusters": 3
+                    }
+                }
+            ],
+            "ipc_topology": {
+                "userland_to_daemon": {
+                    "transport": "Mach Port / XPC Connection",
+                    "protocol": "_ANEDaemonProtocol",
+                    "service_name": "com.apple.aned.xpc",
+                    "methods": [
+                        "compileModel:options:qos:withReply:",
+                        "loadModel:options:qos:withReply:",
+                        "unloadModel:options:qos:withReply:",
+                        "compiledModelExistsFor:withReply:",
+                        "purgeCompiledModel:withReply:"
+                    ]
+                },
+                "daemon_to_kernel": {
+                    "transport": "IOKit User Client (IOConnectCallMethod)",
+                    "driver": "AppleH16ANEInterface",
+                    "user_client": "H11ANEInUserClient",
+                    "key_selectors": [
+                        "ANE_UserClientOpen (0)",
+                        "ANE_MapIOSurface (2)",
+                        "ANE_ProgramCreate (4)",
+                        "ANE_ProgramPrepare (5)",
+                        "ANE_EnqueueRequest (7)",
+                        "ANE_WaitCompletion (8)"
+                    ]
+                },
+                "kernel_to_hardware": {
+                    "transport": "Direct MMIO Register Writes & DMA Ring Buffers",
+                    "hardware_node": "0x40 (Hardware Command FIFO)",
+                    "dma_protection": "Apple DART (Device Address Resolution Table / IOMMU)"
+                }
+            }
+        }
+    }
+
+    out_file = ANE_ARTIFACTS / "client_server_topology.json"
+    with open(out_file, "w") as f:
+        json.dump(topology, f, indent=2)
+    print(f"[*] Generated {out_file} ({out_file.stat().st_size} bytes)")
+
+if __name__ == "__main__":
+    generate_symbol_inventory()
+    generate_client_server_topology()

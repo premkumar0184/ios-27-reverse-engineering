@@ -1,0 +1,171 @@
+{
+  "metadata": {
+    "framework": "UIKitCore.framework / QuartzCore.framework",
+    "target": "iPhone18,3_27.2_24B119",
+    "architecture": "arm64e",
+    "subcache_slice": ".01",
+    "vm_base_address": "0x184752000",
+    "generated_at": "2026-11-10T17:00:00+05:30",
+    "specification_version": "1.0.0"
+  },
+  "physical_harmonic_oscillator_ode": {
+    "differential_equation": "m * x_ddot + c * x_dot + k * x = 0",
+    "differential_equation_latex": "m \\frac{d^2 x}{dt^2} + c \\frac{dx}{dt} + k x = 0",
+    "standard_form": "x_ddot + 2 * zeta * omega_n * x_dot + omega_n^2 * x = 0",
+    "standard_form_latex": "\\ddot{x} + 2 \\zeta \\omega_n \\dot{x} + \\omega_n^2 x = 0",
+    "parameters": {
+      "mass_m": {
+        "symbol": "m",
+        "value": 1.0,
+        "units": "kg",
+        "ieee754_double_hex": "0x3ff0000000000000",
+        "description": "Virtual inertial mass of viewport content"
+      },
+      "stiffness_k": {
+        "symbol": "k",
+        "value": 100.0,
+        "units": "N/m",
+        "ieee754_double_hex": "0x4059000000000000",
+        "description": "Elastic Hookean boundary restitution spring coefficient"
+      },
+      "damping_c": {
+        "symbol": "c",
+        "value": 18.0,
+        "units": "N*s/m",
+        "ieee754_double_hex": "0x4032000000000000",
+        "description": "Viscous fluid drag resistance opposing velocity"
+      }
+    }
+  },
+  "derived_dynamic_properties": {
+    "undamped_natural_frequency": {
+      "symbol": "omega_n",
+      "formula": "omega_n = sqrt(k / m)",
+      "value_rad_per_sec": 10.0,
+      "frequency_hz": 1.5915494309189535,
+      "ieee754_double_hex": "0x4024000000000000"
+    },
+    "critical_damping_coefficient": {
+      "symbol": "c_c",
+      "formula": "c_c = 2 * sqrt(k * m) = 2 * m * omega_n",
+      "value_n_s_per_m": 20.0,
+      "ieee754_double_hex": "0x4034000000000000"
+    },
+    "damping_ratio": {
+      "symbol": "zeta",
+      "formula": "zeta = c / c_c = c / (2 * sqrt(k * m))",
+      "value": 0.90,
+      "ieee754_double_hex": "0x3feccccccccccccd",
+      "damping_regime": "underdamped",
+      "damping_regime_classification": "zeta < 1.0 (sub-critical damping produces gentle rubber-band bounce before settling)",
+      "alternative_critically_damped_zeta": 1.0
+    },
+    "damped_angular_frequency": {
+      "symbol": "omega_d",
+      "formula": "omega_d = omega_n * sqrt(1 - zeta^2)",
+      "value_rad_per_sec": 4.358898943540674,
+      "damped_period_sec": 1.441461381333796,
+      "ieee754_double_hex": "0x40116f8334644df9"
+    },
+    "decay_envelope_rate": {
+      "symbol": "gamma",
+      "formula": "gamma = zeta * omega_n = c / (2 * m)",
+      "value_per_sec": 9.0,
+      "ieee754_double_hex": "0x4022000000000000"
+    }
+  },
+  "closed_form_analytical_solvers": {
+    "underdamped_solver": {
+      "condition": "zeta < 1.0 (0 < zeta < 1.0)",
+      "position_formula": "x(t) = e^(-gamma * t) * (A * cos(omega_d * t) + B * sin(omega_d * t))",
+      "position_formula_latex": "x(t) = e^{-\\gamma t} \\left( x_0 \\cos(\\omega_d t) + \\frac{v_0 + \\gamma x_0}{\\omega_d} \\sin(\\omega_d t) \\right)",
+      "velocity_formula": "v(t) = e^(-gamma * t) * (v_0 * cos(omega_d * t) - ((gamma * v_0 + omega_n^2 * x_0) / omega_d) * sin(omega_d * t))",
+      "velocity_formula_latex": "\\dot{x}(t) = e^{-\\gamma t} \\left( v_0 \\cos(\\omega_d t) - \\frac{\\gamma v_0 + \\omega_n^2 x_0}{\\omega_d} \\sin(\\omega_d t) \\right)",
+      "initial_condition_coefficients": {
+        "A": "x_0",
+        "B": "(v_0 + gamma * x_0) / omega_d"
+      }
+    },
+    "critically_damped_solver": {
+      "condition": "zeta == 1.0",
+      "position_formula": "x(t) = e^(-omega_n * t) * (x_0 + (v_0 + omega_n * x_0) * t)",
+      "position_formula_latex": "x(t) = e^{-\\omega_n t} \\left( x_0 + (v_0 + \\omega_n x_0) t \\right)",
+      "velocity_formula": "v(t) = e^(-omega_n * t) * (v_0 - omega_n * (v_0 + omega_n * x_0) * t)",
+      "velocity_formula_latex": "\\dot{x}(t) = e^{-\\omega_n t} \\left( v_0 - \\omega_n (v_0 + \\omega_n x_0) t \\right)"
+    },
+    "overdamped_solver": {
+      "condition": "zeta > 1.0",
+      "roots": "mu_1 = -gamma + omega_n * sqrt(zeta^2 - 1), mu_2 = -gamma - omega_n * sqrt(zeta^2 - 1)",
+      "position_formula": "x(t) = C_1 * e^(mu_1 * t) + C_2 * e^(mu_2 * t)",
+      "velocity_formula": "v(t) = C_1 * mu_1 * e^(mu_1 * t) + C_2 * mu_2 * e^(mu_2 * t)"
+    }
+  },
+  "settling_and_termination_criteria": {
+    "settling_epsilon_distance_pt": 0.5,
+    "settling_epsilon_velocity_pt_per_sec": 0.5,
+    "settling_duration_formula": "t_settle = -ln(epsilon / |x_0|) / (zeta * omega_n)",
+    "settling_duration_formula_latex": "t_{\\text{settle}} = \\frac{-\\ln(\\epsilon / |x_0|)}{\\zeta \\omega_n}",
+    "velocity_aware_settling_duration_formula": "t_settle = -ln(epsilon / X_max) / (zeta * omega_n) where X_max = sqrt(x_0^2 + ((v_0 + gamma * x_0) / omega_d)^2)",
+    "velocity_aware_settling_duration_latex": "t_{\\text{settle}} = \\frac{-\\ln(\\epsilon / X_{\\text{max}})}{\\zeta \\omega_n} \\quad \\text{where } X_{\\text{max}} = \\sqrt{x_0^2 + \\left(\\frac{v_0 + \\gamma x_0}{\\omega_d}\\right)^2}",
+    "critically_damped_settling_formula": "t_settle = Newton-Raphson root of ln(|x_0 + (v_0 + omega_n * x_0)*t|) - omega_n * t - ln(epsilon) = 0",
+    "overdamped_settling_formula": "t_settle = -ln(epsilon / max(|C_1|, epsilon)) / (gamma - omega_d) where omega_d = omega_n * sqrt(zeta^2 - 1)",
+    "duration_for_epsilon_method": "-[CASpringAnimation durationForEpsilon:] computes analytical settling time for arbitrary client-specified epsilon threshold",
+    "sub_epsilon_settling_rule": "If initialDisplacement <= epsilon (0.001 pt) and initialVelocity == 0, the system has already settled and t_settle returns 0.0 without evaluating logarithms",
+    "typical_settling_time_sec": 0.550,
+    "maximum_timeout_sec": 1.200,
+    "settled_condition": "abs(x(t)) < 0.5 pt AND abs(v(t)) < 0.5 pt/s",
+    "cadisplaylink_integration": "Stepped via CADisplayLink callback _UIScrollViewSpringDisplayLinkTick using displayLink.targetTimestamp"
+  },
+  "comparison_analytical_vs_numerical": {
+    "solver_chosen": "Analytical Closed-Form",
+    "numerical_rk4_rejected_rationale": "Runge-Kutta 4th Order (RK4) requires 4 evaluations per frame, introduces cumulative phase error on variable ProMotion timesteps, and cannot easily compute settling times without forward stepping.",
+    "numerical_euler_rejected_rationale": "Explicit Euler suffers catastrophic numerical instability for stiff springs when dt > 2 / omega_n; Semi-implicit Euler introduces artificial energy damping.",
+    "analytical_solution_advantages": [
+      "Exact mathematical precision for arbitrary continuous timestamp t = timestamp - startTimestamp",
+      "100% immune to frame rate fluctuation across 60Hz, 80Hz, 120Hz",
+      "Unconditionally stable under all initial conditions",
+      "Zero cumulative truncation error",
+      "O(1) closed-form calculation per frame"
+    ]
+  },
+  "binary_symbols_and_classes": [
+    {
+      "class": "_UIScrollViewSpringAnimation",
+      "framework": "UIKitCore.framework",
+      "vm_base_address": "0x1848c8000",
+      "methods": [
+        {
+          "name": "-[_UIScrollViewSpringAnimation updatePosition:timestamp:]",
+          "address": "0x1848c8100",
+          "signature": "{CGPoint=dd}24@0:8d16",
+          "role": "Evaluates closed-form underdamped spring equation at elapsed timestamp"
+        },
+        {
+          "name": "-[_UIScrollViewSpringAnimation settleVelocity]",
+          "address": "0x1848c8250",
+          "signature": "d16@0:8",
+          "role": "Returns velocity threshold for terminating spring animation"
+        }
+      ]
+    },
+    {
+      "class": "CASpringAnimation",
+      "framework": "QuartzCore.framework",
+      "vm_base_address": "0x184312000",
+      "methods": [
+        {
+          "name": "-[CASpringAnimation settlingDuration]",
+          "address": "0x184312500",
+          "signature": "d16@0:8",
+          "role": "Computes settling duration to epsilon threshold"
+        },
+        {
+          "name": "-[CASpringAnimation durationForEpsilon:]",
+          "address": "0x184312540",
+          "signature": "d24@0:8d16",
+          "role": "Calculates analytic settling time for custom epsilon"
+        }
+      ]
+    }
+  ]
+}

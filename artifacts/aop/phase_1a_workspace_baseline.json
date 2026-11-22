@@ -1,0 +1,183 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Always-On Processor 2 (AOP2) Workspace Baseline & Firmware Asset Catalog",
+  "target_device": {
+    "model": "iPhone18,3",
+    "device_class": "v57ap",
+    "soc": "t8150",
+    "marketing_name": "Apple A19 Pro",
+    "os_version": "iOS 27.2",
+    "build": "24B119",
+    "build_train": "RaveB",
+    "kernel_version": "Darwin 24.2.0"
+  },
+  "firmware_assets": {
+    "aop2_firmware": {
+      "path": "iPhone18,3_27.2_24B119_Restore/Firmware/AOP2/aop2fw-v57aop2.RELEASE.im4p",
+      "size_bytes": 5603353,
+      "tag": "aop2",
+      "wrapper": "Apple Image4 (IM4P)",
+      "sha256": "5970b3c2a5ac94fc8b13b337b687e32c0690b7f2ce458e777ae8b98f229e1e71",
+      "format": "Apple BUNDLE (DNUB)",
+      "num_sub_binaries": 7,
+      "description": "Production 64-bit Always-On Processor 2 (AOP2) RTKit microkernel firmware bundle containing root task, sensor apps, audio hotword task, and ExclaveOS bridge."
+    },
+    "aop1_firmware": {
+      "path": "iPhone18,3_27.2_24B119_Restore/Firmware/AOP/aopfw-v57aop.RELEASE.im4p",
+      "size_bytes": 5148697,
+      "tag": "aopf",
+      "wrapper": "Apple Image4 (IM4P)",
+      "sha256": "564c25205cd3839b19e906f93c75240351aec0efc961fed53bebee04749462f8",
+      "format": "Apple BUNDLE (DNUB)",
+      "description": "Production Always-On Processor 1 (AOP1) legacy/fallback firmware container."
+    },
+    "boot_chime_audio": {
+      "path": "iPhone18,3_27.2_24B119_Restore/Firmware/embeddedaudioresources/image4/v57-boot-chime.im4p",
+      "size_bytes": 582555,
+      "tag": "bchm",
+      "wrapper": "Apple Image4 (IM4P)",
+      "sha256": "89adb62068f08a3a91a60a24be4cc1314e48306c1eae3cdbdac3b00430ad3cbe",
+      "description": "Embedded low-power audio resource asset for boot chime played directly by AOP2 audio pipeline."
+    },
+    "kernel_drivers": {
+      "kernelcache_path": "artifacts/kernel/kernelcache.release.raw",
+      "apple_aop2": "com.apple.driver.AppleAOP2",
+      "apple_spu": "com.apple.driver.AppleSPU",
+      "apple_embedded_audio": "com.apple.driver.AppleEmbeddedAudio",
+      "apple_aop_audio": "com.apple.driver.AppleAOPAudio"
+    }
+  },
+  "hardware_context": {
+    "processor_core": {
+      "architecture": "ARM64e / Apple Custom Ultra-Low-Power Embedded Core",
+      "pointer_authentication": "PAC00",
+      "features": ["PAC00", "ARM64_V8", "Preemptive Scheduling", "Dedicated SRAM Carveout", "Low-Power Audio Ring Buffers"]
+    },
+    "dart_iommu": {
+      "device_tree_node": "/device-tree/arm-io/dart-aop",
+      "compatible": "dart,t8110",
+      "mmio_base": "0x0000000100fc0000",
+      "mmio_size": "0x0000c000",
+      "mmio_size_bytes": 49152,
+      "interrupt": "0x0183",
+      "stream_ids": [
+        {"id": 0, "name": "mapper-aop", "role": "AOP1 host shared memory mapping channel"},
+        {"id": 1, "name": "mapper-exclave-aop", "role": "AOP1 ExclaveOS secure bridge channel"},
+        {"id": 16, "name": "mapper-aop2", "role": "AOP2 high-speed host shared memory mapping channel"},
+        {"id": 17, "name": "mapper-exclave-aop2", "role": "AOP2 ExclaveOS direct DART bridge channel (sharedmem_xcoproc_AOP2_EP53_in)"},
+        {"id": 8, "name": "mapper-admac-base-ns", "role": "ADMAC Audio Non-Secure Base DMA"},
+        {"id": 10, "name": "mapper-admac-leap-ns", "role": "ADMAC Audio Non-Secure LEAP DMA"},
+        {"id": 9, "name": "mapper-admac-base-s", "role": "ADMAC Audio Secure Base DMA"},
+        {"id": 11, "name": "mapper-admac-leap-s", "role": "ADMAC Audio Secure LEAP DMA"},
+        {"id": 3, "name": "mapper-scm", "role": "System Control & Management channel"}
+      ],
+      "exclave_sids": [1, 17, 11, 9]
+    },
+    "mailbox_interfaces": {
+      "aop2_host_mailbox": {
+        "device_tree_node": "/device-tree/arm-io/aop2",
+        "compatible": "iop,ascwrap-v6",
+        "reg_ranges": [
+          {"base": "0x0000000101600000", "size": "0x00088000", "role": "ASCwrap Mailbox & Control registers"},
+          {"base": "0x0000000101050000", "size": "0x00004000", "role": "Secondary Mailbox Control"},
+          {"base": "0x000000010162c000", "size": "0x0003c008", "role": "Doorbell & Interrupt Aggregation"}
+        ],
+        "interrupts": ["0x0166", "0x0165", "0x0168", "0x0167"]
+      },
+      "aop2_exclave_mailbox": {
+        "device_tree_node": "/device-tree/arm-io/aop2-exclave-mailbox",
+        "compatible": "iop,secure-rtbuddy-proxy",
+        "reg_ranges": [
+          {"base": "0x000000035167c000", "size": "0x00004000", "role": "Secure ExclaveOS Mailbox Proxy Doorbell"}
+        ],
+        "interrupts": ["0x016c", "0x0169"]
+      }
+    }
+  },
+  "extracted_sub_binaries": [
+    {
+      "index": 0,
+      "filename": "00_roottask_iop_asc7.macho",
+      "file_offset": 69657,
+      "size_bytes": 147456,
+      "sha256": "c06fdd3dbdae81881648a049d554a9fc553ef5f2f53489e223b24fdb07a6858e",
+      "uuid": "2e915a01a6613afbb04aa81aae792a70",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 2,
+      "role": "AOP2 RootTask for IOP_ASC7 coprocessor subsystem initialization and task supervisor."
+    },
+    {
+      "index": 1,
+      "filename": "01_motion_expert_app.macho",
+      "file_offset": 208921,
+      "size_bytes": 536288,
+      "sha256": "fde6c4dd268998622c8152cb5b16b412b1897d8c5f0f35e0c660f993708a0d42",
+      "uuid": "b035344a292d3a16bcf80ffcab64a775",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 2,
+      "role": "AppleFirmwareKit Motion App (ap-motionx-ep) managing 6-axis IMU fast-path streaming."
+    },
+    {
+      "index": 2,
+      "filename": "02_aon_location_app.macho",
+      "file_offset": 311321,
+      "size_bytes": 477184,
+      "sha256": "f0815cc22b1998c3ee09b68a514d7a4628f8fca754bf94fb77d337f74b4ea910",
+      "uuid": "c52a816d0e0733cb87db9ab57586ac39",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 2,
+      "role": "Always-On Location & Activity Classifier (AONLocationApp.cpp) running on-chip geofencing and step detection."
+    },
+    {
+      "index": 3,
+      "filename": "03_audio_hotword_app.macho",
+      "file_offset": 434201,
+      "size_bytes": 753976,
+      "sha256": "374437d522a0b9c7ae46e913a48e788bcadfc0db34098925565342a35368a2bf",
+      "uuid": "46699d8af0e633b595d262b5cce92e9c",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 2,
+      "role": "Always-On Audio & Siri Hotword Engine (ap-audio-ep) with 3.0s circular acoustic SRAM buffer."
+    },
+    {
+      "index": 4,
+      "filename": "04_rtkit_exclave_bridge.macho",
+      "file_offset": 823321,
+      "size_bytes": 326560,
+      "sha256": "e4ddd6789b393b7d5196f7e8a93bebf2d5ce1101ce6b4859ba6d434947ce73fa",
+      "uuid": "3fbec0c7266a3f2db4b55319055c9d5f",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 2,
+      "role": "RTKit-to-ExclaveOS Bridge (RTKExclaveTBEndpoint) routing sensor privacy state to ExclaveOS via DART SID 0x11."
+    },
+    {
+      "index": 5,
+      "filename": "05_applespu_v57aop2_dylib.macho",
+      "file_offset": 888857,
+      "size_bytes": 532480,
+      "sha256": "7e870e7a78b3c3809ea64aa7e58dfb6cf1be513a9d90ecbe6143c4a242f36f66",
+      "uuid": "f9f5696af4df397e928d32e29f0f263e",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 6,
+      "role": "AppleSPUFirmwareBuilder runtime dylib (v57aop2.dylib) hosting SPU driver table and system object dispatch."
+    },
+    {
+      "index": 6,
+      "filename": "06_rtkit_microkernel_preload.macho",
+      "file_offset": 5439513,
+      "size_bytes": 81920,
+      "sha256": "0249b48c368cc83325c3fe80a65bb7b9875bb5649938b8be881b2da96b341bb2",
+      "uuid": "05c35c6100d33aaebc5d4c4c29405445",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 5,
+      "role": "RTKit Microkernel Preload binary executing at 0xffffffff00000000 (preemptive scheduler, exception vectors, and memory initialization)."
+    }
+  ]
+}

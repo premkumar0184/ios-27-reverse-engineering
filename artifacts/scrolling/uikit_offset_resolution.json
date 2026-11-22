@@ -1,0 +1,17 @@
+{
+  "framework_query": "UIKit",
+  "matched_image_path": "/System/Library/Frameworks/UIKit.framework/UIKit",
+  "category": "PublicFramework",
+  "vm_base_address": "0x24ff98000",
+  "vm_base_address_int": 9931685888,
+  "subcache_index": 45,
+  "subcache_extension": ".46",
+  "subcache_filename": "dyld_shared_cache_arm64e.46",
+  "subcache_vm_base": "0x248400000",
+  "subcache_file_offset": "0x7b98000",
+  "subcache_file_offset_int": 129597440,
+  "subcache_uuid": "d39f0a86-603c-32ee-b570-0920bc36e174",
+  "segment_count": 7,
+  "segments": [],
+  "sections": []
+}

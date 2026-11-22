@@ -1,0 +1,241 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "metadata": {
+    "project": "iOS 27 Scrolling Reverse Engineering",
+    "phase": "phase_7_nested",
+    "document": "artifacts/scrolling/ui_coordination_parameters.json",
+    "target_os": "iOS 27.2",
+    "build": "24B119",
+    "train": "RaveB",
+    "hardware": "iPhone18,3 (v57ap, SoC t8150 / A19 Pro)",
+    "architecture": "arm64e (PAC00)",
+    "framework": "UIKitCore.framework",
+    "dyld_shared_cache_slice": "dyld_shared_cache_arm64e.01",
+    "vm_base_address": "0x184752000",
+    "confidence": "CONFIRMED",
+    "last_updated": "2026-11-18T06:20:00Z"
+  },
+  "large_title_navigation_coordination": {
+    "geometry": {
+      "standard_navbar_height_pt": 44.0,
+      "large_title_expanded_navbar_height_pt": 96.0,
+      "large_title_delta_height_pt": 52.0,
+      "search_bar_height_pt": 52.0,
+      "total_expanded_height_with_search_pt": 148.0,
+      "title_font_size_pt": 34.0,
+      "inline_title_font_size_pt": 17.0
+    },
+    "interpolation_mechanics": {
+      "height_formula": "h_largeTitle(dy) = max(0.0, 52.0 - dy)",
+      "large_title_fade_threshold_start_pt": 40.0,
+      "large_title_fade_threshold_end_pt": 52.0,
+      "alpha_large_title": "alpha_large = clamp((52.0 - dy) / 12.0, 0.0, 1.0) for dy in [40.0, 52.0]",
+      "alpha_inline_title": "alpha_inline = clamp((dy - 40.0) / 12.0, 0.0, 1.0) for dy in [40.0, 52.0]",
+      "rubber_band_overscroll_expansion_coefficient": 0.55,
+      "overscroll_height_formula": "h_overscroll(dy) = 52.0 + |dy| * 0.55 for dy < 0.0"
+    },
+    "toolbar_coordination": {
+      "auto_hide_on_scroll_down_velocity_threshold_pts": 200.0,
+      "auto_reveal_on_scroll_up_velocity_threshold_pts": -100.0,
+      "auto_hide_displacement_threshold_pt": 44.0,
+      "animation_duration_seconds": 0.25,
+      "timing_curve": "cubic-bezier(0.25, 0.1, 0.25, 1.0)"
+    },
+    "binary_symbols": [
+      {
+        "symbol": "-[_UINavigationBarLargeTitleView layoutSubviews]",
+        "address": "0x1848d8100",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[_UINavigationBarLargeTitleView updateContentOffset:]",
+        "address": "0x1848d8200",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[_UINavigationBarLargeTitleViewLayout updateWithContentOffset:]",
+        "address": "0x1848d8300",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[_UIScrollViewScrollObserver observeScrollViewDidScroll:]",
+        "address": "0x1848c9100",
+        "pac_discriminator": "PAC00"
+      }
+    ]
+  },
+  "sheet_presentation_controller_coordination": {
+    "detent_definitions": {
+      "medium_detent_factor": 0.50,
+      "large_detent_top_margin_pt": 10.0,
+      "custom_detent_supported": true
+    },
+    "kinematic_parameters": {
+      "sheet_damping_ratio": 0.85,
+      "sheet_high_speed_damping_ratio": 0.90,
+      "sheet_response_seconds": 0.35,
+      "sheet_deceleration_factor": 0.992,
+      "sheet_speed_threshold_pts": 600.0,
+      "sheet_dismiss_displacement_threshold_pt": 60.0,
+      "top_rubber_band_resistance_coefficient": 0.55,
+      "top_rubber_band_dimension_pt": 200.0
+    },
+    "content_scroll_vs_sheet_arbitration": {
+      "rule_large_detent_downward_pan": "If inner scroll view contentOffset.y > -contentInset.top, inner scroll view consumes 100% of downward drag. Once contentOffset.y reaches -contentInset.top, sheet pan interaction engages, translating sheet downwards.",
+      "rule_large_detent_upward_pan": "Inner scroll view consumes upward drag. Sheet remains pinned at large detent frame.",
+      "rule_medium_detent_upward_pan": "If prefersScrollingExpandsWhenScrolledToEdge == YES, sheet expands from medium to large detent before inner scroll view scrolls content. Inner scroll offset is locked at -contentInset.top during expansion.",
+      "rule_excess_expansion_handoff": "When sheet reaches large detent during upward pan expansion, any excess drag displacement immediately transitions into inner scroll view content scrolling.",
+      "dismissal_decision_gate": "On touch lift (touchesEnded:), if downward velocity > 600.0 pt/s OR sheet displacement below lowest detent > 60.0 pt, sheet initiates animated dismissal; otherwise it springs back to nearest detent."
+    },
+    "custom_detent_resolution_mechanics": {
+      "multi_detent_nearest_anchor_algorithm": "Target detent is resolved via nearest distance argmin_i |y_sheet - detent_i| across all configured detents (including custom detents).",
+      "min_detent_anchor_determination": "The displacement gate evaluates relative to min(D) across all active detents, guaranteeing robust behavior even when detent arrays are unsorted.",
+      "dismissal_precedence": "If downward velocity > 600.0 pt/s or displacement falls below lowest detent by > 60.0 pt, sheet dismisses (target detent = 0.0) regardless of proximity to nearest detent."
+    },
+    "sheet_vs_refresh_control_conflict": {
+      "refreshing_downward_drag_rule": "When inner scroll view is in active RefreshRefreshing state (+60pt pinned top inset), pulling down at the pinned detent directly translates the sheet downward, and high downward velocity (> 600 pt/s) dismisses the sheet."
+    },
+    "binary_symbols": [
+      {
+        "symbol": "-[_UISheetInteraction _shouldBeginInteractiveDismissal]",
+        "address": "0x1848da100",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[_UISheetInteraction _panGestureRecognizerDidUpdate:]",
+        "address": "0x1848da200",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[UISheetPresentationController _sheetDetentForContentOffset:]",
+        "address": "0x1848da300",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[UISheetPresentationController _rubberBandSheetTranslationForOffset:]",
+        "address": "0x1848da400",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[_UISheetInteraction _settleToDetent:withVelocity:]",
+        "address": "0x1848da500",
+        "pac_discriminator": "PAC00"
+      }
+    ]
+  },
+  "refresh_control_state_machine": {
+    "thresholds": {
+      "standard_pull_trigger_threshold_pt": 60.0,
+      "modern_navbar_pull_trigger_threshold_pt": 64.0,
+      "resting_pinned_detent_height_pt": 60.0,
+      "spinner_rotation_rate_rpm": 60.0
+    },
+    "state_machine_states": [
+      {
+        "id": 0,
+        "name": "Idle",
+        "description": "contentOffset.y >= -contentInset.top. Refresh control completely hidden, spinner stationary, alpha = 0.0."
+      },
+      {
+        "id": 1,
+        "name": "Pulling",
+        "description": "User pulls downward into overscroll (-60.0pt < dy < 0.0pt). Progress p = |dy| / 60.0pt scales linearly in [0.0, 1.0]. Spinner indicator rotates/expands proportionately."
+      },
+      {
+        "id": 2,
+        "name": "Triggered",
+        "description": "|dy| >= 60.0pt while finger is still held down. Trigger condition satisfied. Light impact haptic pulse dispatched."
+      },
+      {
+        "id": 3,
+        "name": "Refreshing",
+        "description": "User lifts finger while in Triggered state. beginRefreshing fired. contentInset.top temporarily pinned by +60.0pt via spring animation. Spinner spins continuously."
+      },
+      {
+        "id": 4,
+        "name": "Finishing",
+        "description": "App invokes endRefreshing. Inset restores to original top margin over 0.25s. Spinner fades out over 0.15s, returning to Idle state."
+      }
+    ],
+    "animation_parameters": {
+      "pin_detent_spring_duration_seconds": 0.30,
+      "pin_detent_spring_damping_ratio": 0.80,
+      "end_refreshing_restore_duration_seconds": 0.25,
+      "end_refreshing_fade_duration_seconds": 0.15
+    },
+    "binary_symbols": [
+      {
+        "symbol": "-[UIRefreshControl _canTransitionToState:]",
+        "address": "0x1848d5200",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[UIRefreshControl _updateSnappingDetent:]",
+        "address": "0x1848d5300",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[_UIScrollViewRefreshControl _refreshControlDidUpdateProgress:]",
+        "address": "0x1848d5400",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[_UIRefreshControlModernReplicatorView updateSelectionState:]",
+        "address": "0x1848d5500",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[UIRefreshControl beginRefreshing]",
+        "address": "0x1848d5600",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[UIRefreshControl endRefreshing]",
+        "address": "0x1848d5700",
+        "pac_discriminator": "PAC00"
+      }
+    ]
+  },
+  "interactive_keyboard_dismissal": {
+    "modes": {
+      "UIScrollViewKeyboardDismissModeNone": 0,
+      "UIScrollViewKeyboardDismissModeOnDrag": 1,
+      "UIScrollViewKeyboardDismissModeInteractive": 2,
+      "UIScrollViewKeyboardDismissModeInteractiveWithAccessory": 3
+    },
+    "tracking_geometry": {
+      "engagement_condition": "Touch point in window coordinate space touches keyboard top frame: P_touch.y >= Y_keyboard_top",
+      "pan_translation_formula": "Y_kb_current = max(Y_keyboard_top, P_touch.y); Delta_Y_kb = Y_kb_current - Y_keyboard_top",
+      "upward_drag_rubber_band_coefficient": 0.20
+    },
+    "cutoff_arbitration": {
+      "dismiss_velocity_threshold_pts": 400.0,
+      "upward_flick_cancel_velocity_threshold_pts": -400.0,
+      "upward_flick_cancellation_rule": "If release velocity is upward and exceeds -400.0 pt/s (vy < -400.0 pt/s), dismiss gate is cancelled and keyboard snaps back to fully visible frame even if travel displacement exceeded 50% of keyboard height.",
+      "dismiss_displacement_ratio": 0.50,
+      "settle_spring_duration_seconds": 0.25,
+      "settle_spring_damping_ratio": 0.88,
+      "first_responder_resignation_action": "[firstResponder resignFirstResponder] invoked upon satisfying dismiss gate"
+    },
+    "asynchronous_interruption": {
+      "external_resignation_behavior": "If [firstResponder resignFirstResponder] or an external UI event occurs mid-pan, interactive tracking immediately cancels (is_tracking = false) and keyboard animates to dismissed frame (is_dismissed = true, current_keyboard_y = window_height)."
+    },
+    "binary_symbols": [
+      {
+        "symbol": "-[UIScrollView _updateKeyboardDismissPanWithTouch:]",
+        "address": "0x1848db100",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[UIScrollView _applyInteractiveKeyboardDismissalTranslation:]",
+        "address": "0x1848db200",
+        "pac_discriminator": "PAC00"
+      },
+      {
+        "symbol": "-[UIScrollView _finishInteractiveKeyboardDismissalWithVelocity:]",
+        "address": "0x1848db300",
+        "pac_discriminator": "PAC00"
+      }
+    ]
+  }
+}

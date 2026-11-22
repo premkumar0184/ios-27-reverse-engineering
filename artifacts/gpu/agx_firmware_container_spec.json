@@ -1,0 +1,599 @@
+{
+  "container_format": "Apple Image4 Payload (IM4P) ASN.1 Wrapper",
+  "asn1_structure": "SEQUENCE { IA5String 'IM4P', IA5String FourCC, IA5String description, OCTET STRING payload }",
+  "header_length_bytes": 25,
+  "fourcc_catalog": {
+    "gfxf": {
+      "name": "Graphics Firmware Core 0",
+      "subsystem": "AGX G18P Coprocessor Scheduler & Telemetry",
+      "binary": "armfw_g18p.im4p",
+      "sub_container_magic": "rkosftab",
+      "sub_container_entries": 3
+    },
+    "gf1f": {
+      "name": "Graphics Firmware Core 1",
+      "subsystem": "AGX G18P Coprocessor Context & Compute Dispatch",
+      "binary": "armfw1_g18p.im4p",
+      "sub_container_magic": "rkosftab",
+      "sub_container_entries": 3
+    },
+    "msrf": {
+      "name": "Memory Subsystem Resource (Release)",
+      "subsystem": "DRAM Memory Compression & Fabric Interface",
+      "binary": "t8150.msrf.im4p",
+      "format": "Mach-O 32-bit (ARMv7k / CPU_SUBTYPE_ARM_V7K)"
+    },
+    "rmsr": {
+      "name": "Memory Subsystem Resource (Research/Recovery)",
+      "subsystem": "DRAM Memory Compression & Diagnostics",
+      "binary": "t8150.rmsr.im4p",
+      "format": "Mach-O 32-bit (ARMv7k / CPU_SUBTYPE_ARM_V7K)"
+    }
+  },
+  "im4p_containers": {
+    "armfw_g18p": {
+      "file_path": "iPhone18,3_27.2_24B119_Restore/Firmware/agx/armfw_g18p.im4p",
+      "total_size": 3510409,
+      "sha256": "2c3d3d88483a05264f8163ea12d6139deea760d0ef4993f6c0207cf0f2eb1e6e",
+      "fourcc_tag": "gfxf",
+      "description": "Graphics Firmware Core 0 (Management, Power, Telemetry & Scheduling)",
+      "header_bytes_hex": "30833590841604494d34501604676678661601310483359070",
+      "payload_offset": 25,
+      "payload_size": 3510384,
+      "payload_sha256": "80bc203d95ec9da7b619b827fc768194f73d2f89f293d20c57c2e9e3d3a39f89",
+      "rkosftab": {
+        "magic": "rkosftab",
+        "entry_count": 3,
+        "entries": [
+          {
+            "tag": "a000",
+            "offset": 96,
+            "offset_hex": "0x60",
+            "size": 1170096,
+            "size_hex": "0x11dab0",
+            "reserved": 0,
+            "sha256": "669a5c2acc07c9680a7425933c6e4ae8fca16287625945540a5faace098e6107",
+            "macho": {
+              "format": "Mach-O 64-bit",
+              "magic": "0xfeedfacf",
+              "cputype": "0x100000c",
+              "cputype_name": "CPU_TYPE_ARM64",
+              "cpusubtype": "0x80000002",
+              "filetype": 5,
+              "ncmds": 8,
+              "segments": [
+                {
+                  "name": "__TEXT",
+                  "vmaddr": "0xfffffc0000000000",
+                  "vmaddr_int": 18446739675663040512,
+                  "vmsize": 327680,
+                  "vmsize_hex": "0x50000",
+                  "fileoff": 16384,
+                  "fileoff_hex": "0x4000",
+                  "filesize": 327680,
+                  "maxprot": 5,
+                  "initprot": 5
+                },
+                {
+                  "name": "__DATA",
+                  "vmaddr": "0xfffffc0000050000",
+                  "vmaddr_int": 18446739675663368192,
+                  "vmsize": 786432,
+                  "vmsize_hex": "0xc0000",
+                  "fileoff": 344064,
+                  "fileoff_hex": "0x54000",
+                  "filesize": 786432,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_SHARED_RO",
+                  "vmaddr": "0xfffffc0000110000",
+                  "vmaddr_int": 18446739675664154624,
+                  "vmsize": 32768,
+                  "vmsize_hex": "0x8000",
+                  "fileoff": 1130496,
+                  "fileoff_hex": "0x114000",
+                  "filesize": 32768,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_CONST",
+                  "vmaddr": "0xfffffc0000118000",
+                  "vmaddr_int": 18446739675664187392,
+                  "vmsize": 0,
+                  "vmsize_hex": "0x0",
+                  "fileoff": 1163264,
+                  "fileoff_hex": "0x11c000",
+                  "filesize": 0,
+                  "maxprot": 3,
+                  "initprot": 3
+                }
+              ]
+            }
+          },
+          {
+            "tag": "b000",
+            "offset": 1170192,
+            "offset_hex": "0x11db10",
+            "size": 1170096,
+            "size_hex": "0x11dab0",
+            "reserved": 0,
+            "sha256": "3a37fd8aca5e5b6c9b30f1b9c2d8d7f39a9c025a19f20c3df7893ea5506e4554",
+            "macho": {
+              "format": "Mach-O 64-bit",
+              "magic": "0xfeedfacf",
+              "cputype": "0x100000c",
+              "cputype_name": "CPU_TYPE_ARM64",
+              "cpusubtype": "0x80000002",
+              "filetype": 5,
+              "ncmds": 8,
+              "segments": [
+                {
+                  "name": "__TEXT",
+                  "vmaddr": "0xfffffc0000000000",
+                  "vmaddr_int": 18446739675663040512,
+                  "vmsize": 327680,
+                  "vmsize_hex": "0x50000",
+                  "fileoff": 16384,
+                  "fileoff_hex": "0x4000",
+                  "filesize": 327680,
+                  "maxprot": 5,
+                  "initprot": 5
+                },
+                {
+                  "name": "__DATA",
+                  "vmaddr": "0xfffffc0000050000",
+                  "vmaddr_int": 18446739675663368192,
+                  "vmsize": 786432,
+                  "vmsize_hex": "0xc0000",
+                  "fileoff": 344064,
+                  "fileoff_hex": "0x54000",
+                  "filesize": 786432,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_SHARED_RO",
+                  "vmaddr": "0xfffffc0000110000",
+                  "vmaddr_int": 18446739675664154624,
+                  "vmsize": 32768,
+                  "vmsize_hex": "0x8000",
+                  "fileoff": 1130496,
+                  "fileoff_hex": "0x114000",
+                  "filesize": 32768,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_CONST",
+                  "vmaddr": "0xfffffc0000118000",
+                  "vmaddr_int": 18446739675664187392,
+                  "vmsize": 0,
+                  "vmsize_hex": "0x0",
+                  "fileoff": 1163264,
+                  "fileoff_hex": "0x11c000",
+                  "filesize": 0,
+                  "maxprot": 3,
+                  "initprot": 3
+                }
+              ]
+            }
+          },
+          {
+            "tag": "a010",
+            "offset": 2340288,
+            "offset_hex": "0x23b5c0",
+            "size": 1170096,
+            "size_hex": "0x11dab0",
+            "reserved": 0,
+            "sha256": "165c6b185f7a3d27c6cfedb20639fa1a38da7fa3959f99cde66d4e4c11e2734f",
+            "macho": {
+              "format": "Mach-O 64-bit",
+              "magic": "0xfeedfacf",
+              "cputype": "0x100000c",
+              "cputype_name": "CPU_TYPE_ARM64",
+              "cpusubtype": "0x80000002",
+              "filetype": 5,
+              "ncmds": 8,
+              "segments": [
+                {
+                  "name": "__TEXT",
+                  "vmaddr": "0xfffffc0000000000",
+                  "vmaddr_int": 18446739675663040512,
+                  "vmsize": 327680,
+                  "vmsize_hex": "0x50000",
+                  "fileoff": 16384,
+                  "fileoff_hex": "0x4000",
+                  "filesize": 327680,
+                  "maxprot": 5,
+                  "initprot": 5
+                },
+                {
+                  "name": "__DATA",
+                  "vmaddr": "0xfffffc0000050000",
+                  "vmaddr_int": 18446739675663368192,
+                  "vmsize": 786432,
+                  "vmsize_hex": "0xc0000",
+                  "fileoff": 344064,
+                  "fileoff_hex": "0x54000",
+                  "filesize": 786432,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_SHARED_RO",
+                  "vmaddr": "0xfffffc0000110000",
+                  "vmaddr_int": 18446739675664154624,
+                  "vmsize": 32768,
+                  "vmsize_hex": "0x8000",
+                  "fileoff": 1130496,
+                  "fileoff_hex": "0x114000",
+                  "filesize": 32768,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_CONST",
+                  "vmaddr": "0xfffffc0000118000",
+                  "vmaddr_int": 18446739675664187392,
+                  "vmsize": 0,
+                  "vmsize_hex": "0x0",
+                  "fileoff": 1163264,
+                  "fileoff_hex": "0x11c000",
+                  "filesize": 0,
+                  "maxprot": 3,
+                  "initprot": 3
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "macho": null
+    },
+    "armfw1_g18p": {
+      "file_path": "iPhone18,3_27.2_24B119_Restore/Firmware/agx/armfw1_g18p.im4p",
+      "total_size": 3313873,
+      "sha256": "22b7c5dbfcfe818af2aa96ef6c58dd2ca3ea056835db80892bc0a7a61bd74645",
+      "fourcc_tag": "gf1f",
+      "description": "Graphics Firmware Core 1 (Context Dispatch, Compute & Render Pipelines)",
+      "header_bytes_hex": "30833290cc1604494d345016046766316616013104833290b8",
+      "payload_offset": 25,
+      "payload_size": 3313848,
+      "payload_sha256": "e87f1ae96bdc6ba7729f0843842700b403fc11c8aed5b3b97103e786a1f2a4a6",
+      "rkosftab": {
+        "magic": "rkosftab",
+        "entry_count": 3,
+        "entries": [
+          {
+            "tag": "a000",
+            "offset": 96,
+            "offset_hex": "0x60",
+            "size": 1104584,
+            "size_hex": "0x10dac8",
+            "reserved": 0,
+            "sha256": "f08c92e3da689c5b60d9ed8d5e84588439116ef846898566277ab0ef946452b7",
+            "macho": {
+              "format": "Mach-O 64-bit",
+              "magic": "0xfeedfacf",
+              "cputype": "0x100000c",
+              "cputype_name": "CPU_TYPE_ARM64",
+              "cpusubtype": "0x80000002",
+              "filetype": 5,
+              "ncmds": 8,
+              "segments": [
+                {
+                  "name": "__TEXT",
+                  "vmaddr": "0xfffffc0000000000",
+                  "vmaddr_int": 18446739675663040512,
+                  "vmsize": 311296,
+                  "vmsize_hex": "0x4c000",
+                  "fileoff": 16384,
+                  "fileoff_hex": "0x4000",
+                  "filesize": 311296,
+                  "maxprot": 5,
+                  "initprot": 5
+                },
+                {
+                  "name": "__DATA",
+                  "vmaddr": "0xfffffc000004c000",
+                  "vmaddr_int": 18446739675663351808,
+                  "vmsize": 737280,
+                  "vmsize_hex": "0xb4000",
+                  "fileoff": 327680,
+                  "fileoff_hex": "0x50000",
+                  "filesize": 737280,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_SHARED_RO",
+                  "vmaddr": "0xfffffc0000100000",
+                  "vmaddr_int": 18446739675664089088,
+                  "vmsize": 32768,
+                  "vmsize_hex": "0x8000",
+                  "fileoff": 1064960,
+                  "fileoff_hex": "0x104000",
+                  "filesize": 32768,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_CONST",
+                  "vmaddr": "0xfffffc0000108000",
+                  "vmaddr_int": 18446739675664121856,
+                  "vmsize": 0,
+                  "vmsize_hex": "0x0",
+                  "fileoff": 1097728,
+                  "fileoff_hex": "0x10c000",
+                  "filesize": 0,
+                  "maxprot": 3,
+                  "initprot": 3
+                }
+              ]
+            }
+          },
+          {
+            "tag": "b000",
+            "offset": 1104680,
+            "offset_hex": "0x10db28",
+            "size": 1104584,
+            "size_hex": "0x10dac8",
+            "reserved": 0,
+            "sha256": "512160b0a0daecd59bec0c265bea57ed5c81e92c590e30ed2bb7841bbaba3ee6",
+            "macho": {
+              "format": "Mach-O 64-bit",
+              "magic": "0xfeedfacf",
+              "cputype": "0x100000c",
+              "cputype_name": "CPU_TYPE_ARM64",
+              "cpusubtype": "0x80000002",
+              "filetype": 5,
+              "ncmds": 8,
+              "segments": [
+                {
+                  "name": "__TEXT",
+                  "vmaddr": "0xfffffc0000000000",
+                  "vmaddr_int": 18446739675663040512,
+                  "vmsize": 311296,
+                  "vmsize_hex": "0x4c000",
+                  "fileoff": 16384,
+                  "fileoff_hex": "0x4000",
+                  "filesize": 311296,
+                  "maxprot": 5,
+                  "initprot": 5
+                },
+                {
+                  "name": "__DATA",
+                  "vmaddr": "0xfffffc000004c000",
+                  "vmaddr_int": 18446739675663351808,
+                  "vmsize": 737280,
+                  "vmsize_hex": "0xb4000",
+                  "fileoff": 327680,
+                  "fileoff_hex": "0x50000",
+                  "filesize": 737280,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_SHARED_RO",
+                  "vmaddr": "0xfffffc0000100000",
+                  "vmaddr_int": 18446739675664089088,
+                  "vmsize": 32768,
+                  "vmsize_hex": "0x8000",
+                  "fileoff": 1064960,
+                  "fileoff_hex": "0x104000",
+                  "filesize": 32768,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_CONST",
+                  "vmaddr": "0xfffffc0000108000",
+                  "vmaddr_int": 18446739675664121856,
+                  "vmsize": 0,
+                  "vmsize_hex": "0x0",
+                  "fileoff": 1097728,
+                  "fileoff_hex": "0x10c000",
+                  "filesize": 0,
+                  "maxprot": 3,
+                  "initprot": 3
+                }
+              ]
+            }
+          },
+          {
+            "tag": "a010",
+            "offset": 2209264,
+            "offset_hex": "0x21b5f0",
+            "size": 1104584,
+            "size_hex": "0x10dac8",
+            "reserved": 0,
+            "sha256": "b16b710bca604f22b8a92cc610e903e19a58455c824796dbc27e2789e758e8c4",
+            "macho": {
+              "format": "Mach-O 64-bit",
+              "magic": "0xfeedfacf",
+              "cputype": "0x100000c",
+              "cputype_name": "CPU_TYPE_ARM64",
+              "cpusubtype": "0x80000002",
+              "filetype": 5,
+              "ncmds": 8,
+              "segments": [
+                {
+                  "name": "__TEXT",
+                  "vmaddr": "0xfffffc0000000000",
+                  "vmaddr_int": 18446739675663040512,
+                  "vmsize": 311296,
+                  "vmsize_hex": "0x4c000",
+                  "fileoff": 16384,
+                  "fileoff_hex": "0x4000",
+                  "filesize": 311296,
+                  "maxprot": 5,
+                  "initprot": 5
+                },
+                {
+                  "name": "__DATA",
+                  "vmaddr": "0xfffffc000004c000",
+                  "vmaddr_int": 18446739675663351808,
+                  "vmsize": 737280,
+                  "vmsize_hex": "0xb4000",
+                  "fileoff": 327680,
+                  "fileoff_hex": "0x50000",
+                  "filesize": 737280,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_SHARED_RO",
+                  "vmaddr": "0xfffffc0000100000",
+                  "vmaddr_int": 18446739675664089088,
+                  "vmsize": 32768,
+                  "vmsize_hex": "0x8000",
+                  "fileoff": 1064960,
+                  "fileoff_hex": "0x104000",
+                  "filesize": 32768,
+                  "maxprot": 3,
+                  "initprot": 3
+                },
+                {
+                  "name": "__DATA_CONST",
+                  "vmaddr": "0xfffffc0000108000",
+                  "vmaddr_int": 18446739675664121856,
+                  "vmsize": 0,
+                  "vmsize_hex": "0x0",
+                  "fileoff": 1097728,
+                  "fileoff_hex": "0x10c000",
+                  "filesize": 0,
+                  "maxprot": 3,
+                  "initprot": 3
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "macho": null
+    }
+  },
+  "msr_containers": {
+    "t8150_msrf": {
+      "file_path": "iPhone18,3_27.2_24B119_Restore/Firmware/msr/t8150.msrf.im4p",
+      "total_size": 161917,
+      "sha256": "a975ff160716da4fd7e9fd7d209679814588a7e6e4a8bbbbe9f7c4494f2f2c84",
+      "fourcc_tag": "msrf",
+      "description": "DRAM Memory Subsystem Resource Coprocessor Firmware (Release)",
+      "header_bytes_hex": "30830278781604494d345016046d7372661601310483027864",
+      "payload_offset": 25,
+      "payload_size": 161892,
+      "payload_sha256": "ef642ee75dfe7a8a6608b647b6f6a0a004cf3dad2ccc02daac5ba863f41c03ee",
+      "rkosftab": null,
+      "macho": {
+        "format": "Mach-O 32-bit",
+        "magic": "0xfeedface",
+        "cputype": "0xc",
+        "cputype_name": "CPU_TYPE_ARM",
+        "cpusubtype": "0xf",
+        "filetype": 5,
+        "ncmds": 6,
+        "segments": [
+          {
+            "name": "__TEXT",
+            "vmaddr": "0x00100000",
+            "vmaddr_int": 1048576,
+            "vmsize": 71624,
+            "vmsize_hex": "0x117c8",
+            "fileoff": 804,
+            "fileoff_hex": "0x324",
+            "filesize": 71624,
+            "maxprot": 5,
+            "initprot": 5
+          },
+          {
+            "name": "__DATA",
+            "vmaddr": "0x10000200",
+            "vmaddr_int": 268435968,
+            "vmsize": 52464,
+            "vmsize_hex": "0xccf0",
+            "fileoff": 72428,
+            "fileoff_hex": "0x11aec",
+            "filesize": 52392,
+            "maxprot": 3,
+            "initprot": 3
+          },
+          {
+            "name": "__DMEM",
+            "vmaddr": "0x10000000",
+            "vmaddr_int": 268435456,
+            "vmsize": 264,
+            "vmsize_hex": "0x108",
+            "fileoff": 124820,
+            "fileoff_hex": "0x1e794",
+            "filesize": 264,
+            "maxprot": 3,
+            "initprot": 3
+          }
+        ]
+      }
+    },
+    "t8150_rmsr": {
+      "file_path": "iPhone18,3_27.2_24B119_Restore/Firmware/msr/t8150.rmsr.im4p",
+      "total_size": 161917,
+      "sha256": "f10c3730da096a0b8c3be1c775d4310450f407b72cc74c64ddf1d6b3733899e6",
+      "fourcc_tag": "rmsr",
+      "description": "DRAM Memory Subsystem Resource Coprocessor Firmware (Research / Recovery)",
+      "header_bytes_hex": "30830278781604494d34501604726d73721601310483027864",
+      "payload_offset": 25,
+      "payload_size": 161892,
+      "payload_sha256": "ef642ee75dfe7a8a6608b647b6f6a0a004cf3dad2ccc02daac5ba863f41c03ee",
+      "rkosftab": null,
+      "macho": {
+        "format": "Mach-O 32-bit",
+        "magic": "0xfeedface",
+        "cputype": "0xc",
+        "cputype_name": "CPU_TYPE_ARM",
+        "cpusubtype": "0xf",
+        "filetype": 5,
+        "ncmds": 6,
+        "segments": [
+          {
+            "name": "__TEXT",
+            "vmaddr": "0x00100000",
+            "vmaddr_int": 1048576,
+            "vmsize": 71624,
+            "vmsize_hex": "0x117c8",
+            "fileoff": 804,
+            "fileoff_hex": "0x324",
+            "filesize": 71624,
+            "maxprot": 5,
+            "initprot": 5
+          },
+          {
+            "name": "__DATA",
+            "vmaddr": "0x10000200",
+            "vmaddr_int": 268435968,
+            "vmsize": 52464,
+            "vmsize_hex": "0xccf0",
+            "fileoff": 72428,
+            "fileoff_hex": "0x11aec",
+            "filesize": 52392,
+            "maxprot": 3,
+            "initprot": 3
+          },
+          {
+            "name": "__DMEM",
+            "vmaddr": "0x10000000",
+            "vmaddr_int": 268435456,
+            "vmsize": 264,
+            "vmsize_hex": "0x108",
+            "fileoff": 124820,
+            "fileoff_hex": "0x1e794",
+            "filesize": 264,
+            "maxprot": 3,
+            "initprot": 3
+          }
+        ]
+      }
+    }
+  }
+}

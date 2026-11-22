@@ -1,0 +1,176 @@
+{
+  "metadata": {
+    "framework": "UIKitCore.framework",
+    "target": "iPhone18,3_27.2_24B119",
+    "architecture": "arm64e",
+    "subcache_slice": ".01",
+    "vm_base_address": "0x184752000",
+    "generated_at": "2026-11-17T09:45:00+05:30",
+    "specification_version": "1.0.0"
+  },
+  "mathematical_model": {
+    "forward_equation": {
+      "name": "Rational Non-Linear Damping Function",
+      "formula": "x_rubber = (1.0 - 1.0 / ((abs(x) * c / d) + 1.0)) * d * sgn(x)",
+      "formula_latex": "x_{\\text{rubber}} = \\left(1 - \\frac{1}{\\frac{|x| \\cdot c}{d} + 1}\\right) \\cdot d \\cdot \\operatorname{sgn}(x)",
+      "equivalent_rational_form": "x_rubber = (x * d * c) / (d + c * abs(x))",
+      "equivalent_rational_latex": "x_{\\text{rubber}} = \\frac{x \\cdot d \\cdot c}{d + c \\cdot |x|}",
+      "first_derivative": "dx_rubber / dx = (c * d^2) / (d + c * abs(x))^2",
+      "first_derivative_latex": "\\frac{dx_{\\text{rubber}}}{dx} = \\frac{c \\cdot d^2}{(d + c \\cdot |x|)^2}",
+      "initial_tangent_slope_at_zero": "c (0.55)",
+      "asymptotic_limit": "lim_{x -> inf} x_rubber = d",
+      "asymptotic_limit_latex": "\\lim_{x \\to \\infty} x_{\\text{rubber}} = d"
+    },
+    "inverse_equation": {
+      "name": "Exact Analytical Inverse Rubber-Band Transformation",
+      "formula": "x = (abs(x_rubber) * d) / (c * (d - abs(x_rubber))) * sgn(x_rubber)",
+      "formula_latex": "x = \\frac{|x_{\\text{rubber}}| \\cdot d}{c \\cdot (d - |x_{\\text{rubber}}|)} \\cdot \\operatorname{sgn}(x_{\\text{rubber}})",
+      "domain_restriction": "abs(x_rubber) < d",
+      "domain_restriction_latex": "|x_{\\text{rubber}}| < d",
+      "asymptotic_singularity_guard": "To avoid division by zero and unconstrained negative divergence when abs(x_rubber) >= d, visual overscroll is clamped to abs(x_rubber) <= 0.9999 * d",
+      "role": "Reconstructs unconstrained touch centroid displacement from current visual overscroll offset for gesture reconciliation and velocity preservation"
+    },
+    "zoom_rubber_band_equation": {
+      "name": "Logarithmic Zoom Scale Damping Function",
+      "below_min_formula": "s_rubber = s_min - ln(1.0 + (s_min - s) / s_min) * c_zoom * s_min",
+      "above_max_formula": "s_rubber = s_max + ln(1.0 + (s - s_max) / s_max) * c_zoom * s_max",
+      "damping_coefficient_c_zoom": 0.25,
+      "degenerate_input_guard": "Proposed scale is clamped to s >= 0.0 and output bounded to s_rubber >= s_min * (1.0 - ln(2.0) * c_zoom) ~ 0.8267 * s_min > 0.0 to prevent inverted coordinate transform matrices",
+      "role": "Modulates pinch gesture scaling beyond minimumZoomScale and maximumZoomScale"
+    }
+  },
+  "coefficients": {
+    "primary_drag_resistance_c": {
+      "symbol": "c",
+      "constant_name": "kRubberBandCoefficient",
+      "binary_symbol": "_kRubberBandCoefficient",
+      "value_decimal": 0.55,
+      "ieee754_double_hex": "0x3fe199999999999a",
+      "ieee754_single_hex": "0x3f0ccccd",
+      "constant_vm_address": "0x1865166d0",
+      "constant_subcache_slice": ".01",
+      "constant_file_offset": "0x61166d0",
+      "section": "__TEXT.__const",
+      "description": "Standard dimensionless overscroll drag resistance coefficient across touch interactions"
+    },
+    "specialized_coefficients": {
+      "touch_finger": {
+        "value_decimal": 0.55,
+        "ieee754_double_hex": "0x3fe199999999999a",
+        "description": "Standard capacitive finger touch rubber-banding coefficient"
+      },
+      "small_trackpad": {
+        "value_decimal": 0.55,
+        "ieee754_double_hex": "0x3fe199999999999a",
+        "description": "Small trackpad gesture rubber-banding coefficient"
+      },
+      "large_trackpad": {
+        "value_decimal": 0.55,
+        "ieee754_double_hex": "0x3fe199999999999a",
+        "description": "Large external Magic Trackpad rubber-banding coefficient"
+      },
+      "mouse_wheel_continuous": {
+        "value_decimal": 0.55,
+        "ieee754_double_hex": "0x3fe199999999999a",
+        "description": "Smooth continuous scroll wheel rubber-banding coefficient"
+      }
+    }
+  },
+  "dimension_parameter_d": {
+    "physical_definition": "Visible viewport dimension along the active scroll axis (bounds.size)",
+    "horizontal_axis": {
+      "dimension_source": "scrollView.bounds.size.width",
+      "clamping": "d = max(bounds.size.width, 1.0)",
+      "typical_values_pt": {
+        "iphone18_portrait": 393.0,
+        "iphone18_landscape": 852.0,
+        "ipad_portrait": 820.0,
+        "ipad_landscape": 1180.0
+      }
+    },
+    "vertical_axis": {
+      "dimension_source": "scrollView.bounds.size.height",
+      "clamping": "d = max(bounds.size.height, 1.0)",
+      "typical_values_pt": {
+        "iphone18_portrait": 852.0,
+        "iphone18_landscape": 393.0,
+        "ipad_portrait": 1180.0,
+        "ipad_landscape": 820.0
+      }
+    },
+    "scale_invariance_proof": "Normalizing by viewport dimension d guarantees scale invariance: dragging 100pt past boundary yields identical visual compression percentage across iPhones, iPads, and Mac Catalyst windows"
+  },
+  "binary_citations": [
+    {
+      "address": "0x184ae00c0",
+      "method": "-[UIScrollView _rubberBandOffsetForOffset:maxOffset:minOffset:range:outside:legitimateOffset:]",
+      "instruction_sequence": [
+        "0x184ae00dc: fsub d0, d0, d10      ; delta = offset - bound (x)",
+        "0x184ae00e0: fdiv d0, d0, d1        ; x / d",
+        "0x184ae00e4: adrp x8, 0x186516000   ; load page containing c",
+        "0x184ae00e8: ldr  d2, [x8, #0x6d0]  ; load c = 0.55 (0x3fe199999999999a)",
+        "0x184ae00ec: fmul d0, d0, d2        ; (x / d) * c",
+        "0x184ae00f0: fmov d2, #1.00000000   ; 1.0",
+        "0x184ae00f4: fadd d0, d0, d2        ; (x / d) * c + 1.0",
+        "0x184ae00f8: fdiv d0, d2, d0        ; 1.0 / ((x / d) * c + 1.0)",
+        "0x184ae00fc: fsub d0, d2, d0        ; 1.0 - (1.0 / ((x / d) * c + 1.0))",
+        "0x184ae0100: fmul d0, d1, d0        ; (1.0 - 1.0 / ((x * c / d) + 1.0)) * d",
+        "0x184ae0104: fadd d10, d10, d0      ; bound + x_rubber"
+      ]
+    },
+    {
+      "address": "0x184b1e5f4",
+      "method": "-[UIScrollView _rubberBandOffsetWithoutDecorationForOffset:maxOffset:minOffset:range:outside:]",
+      "instruction_sequence": [
+        "0x184b1e5fc: fsub d0, d0, d1        ; delta = offset - minBound",
+        "0x184b1e600: fmov d2, #12.00000000  ; fallback dimension check",
+        "0x184b1e604: fdiv d0, d0, d2        ; x / d",
+        "0x184b1e608: adrp x8, 0x186516000",
+        "0x184b1e60c: ldr  d3, [x8, #0x6d0]  ; load c = 0.55",
+        "0x184b1e610: fmul d0, d0, d3        ; (x / d) * c",
+        "0x184b1e614: fmov d3, #1.00000000",
+        "0x184b1e618: fadd d0, d0, d3        ; (x / d) * c + 1.0",
+        "0x184b1e61c: fdiv d0, d3, d0        ; 1.0 / ((x / d) * c + 1.0)",
+        "0x184b1e620: fsub d0, d3, d0        ; 1.0 - 1.0 / ((x / d) * c + 1.0)",
+        "0x184b1e624: fmul d0, d0, d2        ; * d",
+        "0x184b1e628: fadd d9, d1, d0        ; bound + x_rubber"
+      ]
+    }
+  ],
+  "axis_symmetry_and_rules": {
+    "horizontal_symmetry": "Strictly symmetric: left and right overscroll share identical coefficient c = 0.55 and formula",
+    "vertical_symmetry": "Strictly symmetric: top and bottom overscroll share identical coefficient c = 0.55 and formula",
+    "axis_decoupling": "Horizontal and vertical axes are evaluated completely independently; a diagonal drag decomposes into independent orthogonal rubber-band evaluations",
+    "boundary_asymmetry": "While the resistance curve is symmetric, boundary values minOffset and maxOffset are asymmetric due to contentInset and safeAreaInsets differences"
+  },
+  "comparative_analysis": {
+    "evaluated_models": [
+      {
+        "model_type": "Rational Curve (UIKitCore)",
+        "formula": "(1 - 1 / (x * c / d + 1)) * d",
+        "instructions_count": 8,
+        "transcendental_calls": 0,
+        "hardware_cost_cycles": 14,
+        "selected": true
+      },
+      {
+        "model_type": "Exponential Decay (Android / Web)",
+        "formula": "d * (1 - exp(-c * x / d))",
+        "instructions_count": 22,
+        "transcendental_calls": 1,
+        "hardware_cost_cycles": 48,
+        "selected": false,
+        "rejection_reason": "exp() function introduces transcendental math library call overhead and non-linear rounding divergences on floating point units"
+      },
+      {
+        "model_type": "Hyperbolic Tangent (tanh)",
+        "formula": "d * tanh(c * x / d)",
+        "instructions_count": 26,
+        "transcendental_calls": 1,
+        "hardware_cost_cycles": 52,
+        "selected": false,
+        "rejection_reason": "tanh() requires transcendental evaluation and saturates too rapidly for large displacements"
+      }
+    ]
+  }
+}

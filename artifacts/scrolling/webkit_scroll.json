@@ -1,0 +1,237 @@
+{
+  "subsystem": "WebKit Multi-Process Viewport Scrolling Architecture",
+  "target_environment": {
+    "os": "iOS 27.2",
+    "darwin": "Darwin 24.2.0",
+    "build": "24B119",
+    "device": "iPhone18,3",
+    "soc": "t8150",
+    "processor": "A19 Pro",
+    "architecture": "arm64e",
+    "pointer_authentication": "PAC00"
+  },
+  "frameworks": {
+    "WebKit.framework": {
+      "path": "/System/Library/Frameworks/WebKit.framework/WebKit",
+      "subcache": "dyld_shared_cache_arm64e.07",
+      "vm_base_address": "0x19cbb9000",
+      "file_offset": "0x47b9000",
+      "role": "Out-of-process web rendering engine coordinating UIProcess viewport interactions and WebProcess DOM layout"
+    },
+    "WebKitLegacy.framework": {
+      "path": "/System/Library/PrivateFrameworks/WebKitLegacy.framework/WebKitLegacy",
+      "subcache": "dyld_shared_cache_arm64e.11",
+      "vm_base_address": "0x1afb20000",
+      "file_offset": "0x3f20000",
+      "role": "In-process legacy DOM rendering components providing WebActionDisablingScrollView"
+    }
+  },
+  "process_model": {
+    "UIProcess": {
+      "components": [
+        "WKWebView",
+        "WKScrollView",
+        "WKContentView",
+        "RemoteScrollingCoordinatorIOS",
+        "ScrollingTreeFrameScrollingNodeIOS"
+      ],
+      "responsibilities": [
+        "Receives physical touch and pointer events from WindowServer/BackBoardServices",
+        "Executes UIKit pan gesture recognition and inertial physics on the UI runloop",
+        "Updates CALayer CATransform3D transforms asynchronously on the scrolling thread without waiting for DOM reflow",
+        "Sends viewport commit transactions to WebProcess via IPC Mach messages"
+      ]
+    },
+    "WebProcess": {
+      "components": [
+        "WebCore::FrameView",
+        "WebCore::RenderLayerCompositor",
+        "WebCore::AsyncScrollingCoordinator",
+        "TileController"
+      ],
+      "responsibilities": [
+        "Parses HTML, CSS, and executes JavaScript runtimes (JavaScriptCore)",
+        "Maintains the DOM tree, CSS layout boxes, and RenderLayers",
+        "Renders visual content into raster tile surfaces",
+        "Processes passive and active JavaScript scroll/wheel event listeners"
+      ]
+    },
+    "ipc_channel": {
+      "protocol": "Mach message IPC / XPC",
+      "transaction_type": "RemoteScrollingCoordinatorTransaction",
+      "latency_target_ms": 8.33,
+      "serialization_format": "WebKit CoreIPC encoder/decoder"
+    }
+  },
+  "WKScrollView": {
+    "class_name": "WKScrollView",
+    "superclass": "UIScrollView",
+    "inheritance_chain": [
+      "WKScrollView",
+      "UIScrollView",
+      "UIView",
+      "UIResponder",
+      "NSObject"
+    ],
+    "subcache_location": {
+      "slice": "dyld_shared_cache_arm64e.07",
+      "vm_address": "0x19cbd2100"
+    },
+    "ivars": [
+      {
+        "name": "_internalDelegate",
+        "type": "id<WKScrollViewDelegate>",
+        "offset": "+0x138",
+        "size": 8,
+        "description": "Internal delegate forwarding scroll notifications to RemoteScrollingCoordinatorIOS"
+      },
+      {
+        "name": "_externalDelegate",
+        "type": "id<UIScrollViewDelegate>",
+        "offset": "+0x140",
+        "size": 8,
+        "description": "App-provided developer delegate receiving standard UIScrollViewDelegate callbacks"
+      },
+      {
+        "name": "_scrollingTreeScrollingNode",
+        "type": "ScrollingTreeScrollingNodeIOS*",
+        "offset": "+0x148",
+        "size": 8,
+        "description": "Pointer to the UIProcess asynchronous scrolling tree node managing layer transform updates"
+      },
+      {
+        "name": "_overscrollBehaviorX",
+        "type": "uint8_t",
+        "offset": "+0x150",
+        "size": 1,
+        "description": "CSS overscroll-behavior-x value (0=auto, 1=contain, 2=none)"
+      },
+      {
+        "name": "_overscrollBehaviorY",
+        "type": "uint8_t",
+        "offset": "+0x151",
+        "size": 1,
+        "description": "CSS overscroll-behavior-y value (0=auto, 1=contain, 2=none)"
+      }
+    ],
+    "overridden_methods": [
+      {
+        "selector": "setContentOffset:animated:",
+        "address": "0x19cbd4320",
+        "pac_opcode": "0xd503237f",
+        "behavior": "Forwards programmatic offset to both UIScrollView superclass and ScrollingTreeScrollingNodeIOS; dispatches commit transaction to WebProcess"
+      },
+      {
+        "selector": "_updateDelegate",
+        "address": "0x19cbd4800",
+        "pac_opcode": "0xd503237f",
+        "behavior": "Maintains split delegate pattern ensuring internal WebKit telemetry cannot be broken by external app delegate assignment"
+      },
+      {
+        "selector": "gestureRecognizer:shouldRequireFailureOfGestureRecognizer:",
+        "address": "0x19cbd5100",
+        "pac_opcode": "0xd503237f",
+        "behavior": "Coordinates pan gesture recognizer against text selection, link taps, and double-tap zoom gestures on WKContentView"
+      }
+    ]
+  },
+  "remote_scrolling_coordinator": {
+    "class_name": "RemoteScrollingCoordinatorIOS",
+    "vm_address": "0x19cbee400",
+    "role": "Master synchronization bridge between WebProcess layout tree and UIProcess scrolling tree",
+    "methods": [
+      {
+        "symbol": "RemoteScrollingCoordinatorIOS::scheduleDisplayRefresh()",
+        "address": "0x19cbee610",
+        "pac_opcode": "0xd503237f",
+        "description": "Requests CADisplayLink callback on UIProcess runloop matching display refresh rate (120Hz on ProMotion)"
+      },
+      {
+        "symbol": "RemoteScrollingCoordinatorIOS::currentScrollPosition()",
+        "address": "0x19cbee750",
+        "pac_opcode": "0xd503237f",
+        "description": "Returns current contentOffset from ScrollingTreeScrollingNodeIOS with sub-pixel floating-point precision"
+      },
+      {
+        "symbol": "RemoteScrollingCoordinatorIOS::commitTreeStateChanges()",
+        "address": "0x19cbee9a0",
+        "pac_opcode": "0xd503237f",
+        "description": "Flushes accumulated scrolling tree changes across IPC channel to WebProcess"
+      }
+    ]
+  },
+  "scrolling_tree": {
+    "node_types": [
+      {
+        "type": "ScrollingTreeFrameScrollingNodeIOS",
+        "role": "Root viewport node managing main web page scrolling, rubber-banding, and page scale zoom"
+      },
+      {
+        "type": "ScrollingTreeOverflowScrollingNodeIOS",
+        "role": "Sub-viewport node managing CSS overflow:scroll and overflow:auto elements"
+      }
+    ],
+    "asynchronous_transform_pipeline": [
+      "1. Touch event arrives at UIProcess WindowServer port",
+      "2. WKScrollView pan gesture recognizer updates contentOffset",
+      "3. ScrollingTreeScrollingNodeIOS receives updated offset on the main/scrolling thread",
+      "4. Node immediately mutates CALayer sublayerTransform: CATransform3DMakeTranslation(-offset.x, -offset.y, 0)",
+      "5. CoreAnimation commits layer tree to GPU compositor at 120Hz ProMotion without waiting for WebProcess",
+      "6. Synthetic scroll event is dispatched asynchronously via IPC to WebProcess for DOM onscroll dispatch"
+    ]
+  },
+  "overscroll_behavior": {
+    "css_properties": [
+      "overscroll-behavior",
+      "overscroll-behavior-x",
+      "overscroll-behavior-y"
+    ],
+    "enum_mapping": {
+      "auto": 0,
+      "contain": 1,
+      "none": 2
+    },
+    "kinematic_rules": {
+      "auto": {
+        "rubber_band_bounce": "Enabled (UIKit default c=0.55 non-linear resistance)",
+        "scroll_chaining": "Enabled (Boundary overscroll propagates to parent scroll views or system shell)"
+      },
+      "contain": {
+        "rubber_band_bounce": "Enabled locally on the scrolling container",
+        "scroll_chaining": "Disabled (Overscroll momentum cannot bubble up to parent scrolling containers)"
+      },
+      "none": {
+        "rubber_band_bounce": "Disabled (Boundary offset is strictly clamped to [minOffset, maxOffset]; rubberBandOffset returns 0.0)",
+        "scroll_chaining": "Disabled (Boundary overscroll is fully suppressed; no bubbling to parent viewports)"
+      }
+    }
+  },
+  "wheel_event_throttling": {
+    "active_listeners": {
+      "mode": "{passive: false}",
+      "behavior": "Blocks asynchronous scrolling thread while waiting for JavaScript event.preventDefault() call",
+      "timeout_fallback_ms": 100.0,
+      "timeout_action": "If WebProcess fails to respond within 100ms, UIProcess drops listener block and resumes asynchronous scrolling"
+    },
+    "passive_listeners": {
+      "mode": "{passive: true}",
+      "behavior": "Never blocks scrolling; UIProcess applies layer transforms immediately at 120Hz and dispatches DOM wheel events asynchronously via IPC"
+    },
+    "event_coalescing": {
+      "interval_ms": 8.33,
+      "coalescing_formula": "Accumulates deltaX and deltaY across frame intervals, emitting a single coalesced IPC event per display refresh cycle"
+    }
+  },
+  "tile_cache_memory_pressure": {
+    "allocator": "WebCore::TileController",
+    "coverage_tiers": {
+      "visible": "Retained in active IOSurface backing stores at 120Hz",
+      "preload_coverage": "Secondary pre-rasterized tiles (1 viewport height lookahead); marked volatile under level 1 memory pressure",
+      "non_visible": "Evicted immediately and backing IOSurfaces reclaimed under level 2 critical OOM"
+    },
+    "oom_fallback": {
+      "uiprocess_behavior": "Displays background color or checkerboard fallback surface until WebProcess re-rasterizes newly visible tiles",
+      "recovery_latency_ms": 16.67
+    }
+  }
+}

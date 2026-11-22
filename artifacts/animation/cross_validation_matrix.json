@@ -1,0 +1,103 @@
+{
+  "target": "iOS 27.2 (24B119) Animation Physics Cross-Validation Matrix",
+  "status": "ALL_VALIDATED",
+  "total_validated": 12,
+  "results": {
+    "modal_sheet_present": {
+      "display_name": "Modal Sheet Presentation",
+      "model": "spring",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    },
+    "modal_sheet_dismiss": {
+      "display_name": "Modal Sheet Interactive Dismissal",
+      "model": "spring",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    },
+    "notification_banner_in": {
+      "display_name": "Notification Banner Presentation",
+      "model": "spring",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    },
+    "notification_banner_dismiss": {
+      "display_name": "Notification Banner Swipe Dismissal",
+      "model": "spring",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    },
+    "dynamic_island_expand": {
+      "display_name": "Dynamic Island Capsule Expansion",
+      "model": "spring",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    },
+    "dynamic_island_collapse": {
+      "display_name": "Dynamic Island Compact Collapse",
+      "model": "spring",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    },
+    "app_switcher_card_throw": {
+      "display_name": "App Switcher Card Throw-to-Kill",
+      "model": "spring",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    },
+    "homescreen_folder": {
+      "display_name": "Homescreen Folder Open/Close",
+      "model": "spring",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    },
+    "uiscrollview_bounce": {
+      "display_name": "UIScrollView Rubber-Band Boundary Recovery",
+      "model": "spring",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    },
+    "keyboard_appear": {
+      "display_name": "Software Keyboard Docking Entrance",
+      "model": "cubic_bezier",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    },
+    "keyboard_dismiss": {
+      "display_name": "Software Keyboard Downward Exit",
+      "model": "cubic_bezier",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    },
+    "context_menu_expand": {
+      "display_name": "Haptic Touch Context Menu Pop & Blur",
+      "model": "spring",
+      "validated": true,
+      "ode_consistent": true,
+      "perceptual_formula_matched": true,
+      "confidence": "EXTRACTED"
+    }
+  }
+}

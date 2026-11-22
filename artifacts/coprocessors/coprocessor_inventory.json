@@ -1,0 +1,498 @@
+[
+  {
+    "name": "Always-On Processor (AOP)",
+    "identifier": "aopf",
+    "firmware_file": "Firmware/AOP/aopfw-v57aop.RELEASE.im4p",
+    "container_format": "IM4P (Apple BUNDLE Container)",
+    "architecture": "ARM64e (ARMv8 with Pointer Authentication / PAC)",
+    "size_bytes": 5148697,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "ARM64 Reset Branch",
+      "opcode": "0x14000200",
+      "instruction": "b +0x800",
+      "bootstrap_offset": "0x00000800",
+      "bootstrap_routine": "msr daifset, #0xf; adrp x0, ...; msr vbar_el1, x0; isb"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_cl4_Oz_flto_pac-3514.40.18.release",
+    "sha256": "564c25205cd3839b19e906f93c75240351aec0efc961fed53bebee04749462f8",
+    "system_role": "Sensor hub and always-on background event monitor (IMU, ALS ambient light, audio tightbeam endpoint, SMC link, pedometer).",
+    "ipc_interfaces": [
+      "RTKit Mailbox",
+      "Tightbeam RPC",
+      "Shared Memory Rings"
+    ]
+  },
+  {
+    "name": "Always-On Processor 2 (AOP2)",
+    "identifier": "aop2",
+    "firmware_file": "Firmware/AOP2/aop2fw-v57aop2.RELEASE.im4p",
+    "container_format": "IM4P (Apple BUNDLE Container)",
+    "architecture": "ARM64e (ARMv8 with Pointer Authentication / PAC)",
+    "size_bytes": 5603353,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "ARM64 Reset Branch",
+      "opcode": "0x14000200",
+      "instruction": "b +0x800",
+      "bootstrap_offset": "0x00000800",
+      "bootstrap_routine": "msr daifset, #0xf; adrp x0, ...; msr vbar_el1, x0; isb"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_cl4_Oz_flto_pac-3514.40.18.release",
+    "sha256": "5970b3c2a5ac94fc8b13b337b687e32c0690b7f2ce458e777ae8b98f229e1e71",
+    "system_role": "Secondary sensor processing unit and context coprocessor (Neural PDR pedestrian dead reckoning, contextual motion awareness, power telemetry).",
+    "ipc_interfaces": [
+      "RTKit Mailbox",
+      "Tightbeam RPC",
+      "AFKEP Relay"
+    ]
+  },
+  {
+    "name": "Apple Neural Engine (ANE)",
+    "identifier": "anef",
+    "firmware_file": "Firmware/ane/h18_ane_fw_apollo_v5x.im4p",
+    "container_format": "IM4P (Mach-O 64-bit MH_PRELOAD)",
+    "architecture": "ARM64e (ARMv8 Chinook Core with PAC)",
+    "size_bytes": 1540121,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "Thread State PC",
+      "address": "0x00000000",
+      "instruction": "adrp x0, ...; msr vbar_el1, x0"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_chinook_Oz_flto_pac-3514.40.18.release",
+    "sha256": "af0dfb13de0214f4670ead381d5780a5d467ad194e90d485583b6c32e40caacb",
+    "system_role": "Hardware Neural Processing Unit (NPU) accelerator firmware for deep learning matrix/tensor execution, dynamic power gating, and request queuing.",
+    "ipc_interfaces": [
+      "RTKit Mailbox",
+      "ANE Queue Descriptors",
+      "Shared DRAM Command Buffers"
+    ]
+  },
+  {
+    "name": "Apple Graphics Coprocessor (AGX / GPU Microcode)",
+    "identifier": "gfxf",
+    "firmware_file": "Firmware/agx/armfw_g18p.im4p",
+    "container_format": "IM4P (RTKit FTAB Container - rkosftab)",
+    "architecture": "ARM64e (ARMv8 Lightning Core with PAC)",
+    "size_bytes": 3510409,
+    "entrypoint": "0xfffffc0000000000",
+    "reset_vector": {
+      "type": "Thread State PC",
+      "address": "0xfffffc0000000000",
+      "instruction": "msr daifset, #0xf; mov x0, ...; msr vbar_el1, x0"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_lightning_Oz_flto_pac-3514.40.18.release",
+    "sha256": "2c3d3d88483a05264f8163ea12d6139deea760d0ef4993f6c0207cf0f2eb1e6e",
+    "system_role": "Metal GPU runtime microcode managing shader execution scheduling, hardware context switching, power domains, and GPU thermal throttling.",
+    "ipc_interfaces": [
+      "RTKit Mailbox",
+      "Hardware Doorbell Registers",
+      "Metal Ring Buffers"
+    ]
+  },
+  {
+    "name": "Apple Graphics Coprocessor Secondary (AGX1)",
+    "identifier": "gf1f",
+    "firmware_file": "Firmware/agx/armfw1_g18p.im4p",
+    "container_format": "IM4P (RTKit FTAB Container - rkosftab)",
+    "architecture": "ARM64e (ARMv8 Lightning Core with PAC)",
+    "size_bytes": 3313873,
+    "entrypoint": "0xfffffc0000000000",
+    "reset_vector": {
+      "type": "Thread State PC",
+      "address": "0xfffffc0000000000",
+      "instruction": "msr daifset, #0xf; mov x0, ...; msr vbar_el1, x0"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_lightning_Oz_flto_pac-3514.40.18.release",
+    "sha256": "22b7c5dbfcfe818af2aa96ef6c58dd2ca3ea056835db80892bc0a7a61bd74645",
+    "system_role": "Secondary Metal GPU microcode slice for specialized execution units and low-power shader partitions.",
+    "ipc_interfaces": [
+      "RTKit Mailbox",
+      "Hardware Doorbell Registers",
+      "Metal Ring Buffers"
+    ]
+  },
+  {
+    "name": "Apple Video Encoder (AVE)",
+    "identifier": "avef",
+    "firmware_file": "Firmware/ave/AppleAVE2FW_H18.im4p",
+    "container_format": "IM4P (Mach-O 64-bit MH_PRELOAD)",
+    "architecture": "ARM64e (ARMv8 Chinook Core with PAC)",
+    "size_bytes": 2687585,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "Thread State PC",
+      "address": "0x00000000",
+      "instruction": "msr daifset, #0xf; adrp x0, ...; msr vbar_el1, x0"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_chinook_Oz_flto_pac-3514.40.18.release",
+    "sha256": "faf92ec00ef4a7d47f8d533594003bc4ef1af3f96d2432166b6643816e9379c2",
+    "system_role": "Multi-stream hardware video encoder and codec coprocessor (ProRes 422/4444, HEVC, H.264, AV1 hardware acceleration).",
+    "ipc_interfaces": [
+      "RTKit Mailbox",
+      "Hardware Video Command Ring",
+      "DMA Descriptors"
+    ]
+  },
+  {
+    "name": "Rose Ultra-Wideband (UWB)",
+    "identifier": "rose",
+    "firmware_file": "Firmware/Rose/r2p1/ftab.bin",
+    "container_format": "FTAB (Firmware Table Container - rkosftab)",
+    "architecture": "ARM Cortex-M4F (ARMv7E-M with Hardware FPU)",
+    "size_bytes": 1069300,
+    "entrypoint": "0x00400220",
+    "reset_vector": {
+      "type": "Cortex-M Vector Table",
+      "vector_index": 1,
+      "vector_address": "0x00400221",
+      "instruction_set": "Thumb-2",
+      "initial_sp": "0x00000000"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv7em_Oz_floatabihard-3514.40.18.release",
+    "sha256": "63c7fc4cf2438a32a0ef3f6dc39f6508280920b6fd0c15f9d8c9668b578cff3f",
+    "system_role": "Ultra-Wideband (UWB) spatial tracking and ranging coprocessor (Precision Finding, AirTag tracking, CarKey digital key ranging).",
+    "ipc_interfaces": [
+      "PCIe/UART Interface",
+      "RTKit Ring Buffers",
+      "Hardware Radio Mailbox"
+    ]
+  },
+  {
+    "name": "Secure Enclave Processor (SEP)",
+    "identifier": "sepi",
+    "firmware_file": "Firmware/all_flash/sep-firmware.v57.RELEASE.im4p",
+    "container_format": "IM4P (Encrypted Raw Binary Envelope)",
+    "architecture": "ARM64 / Apple Custom Secure Core",
+    "size_bytes": 7680809,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "Secure Core Reset Vector",
+      "address": "0x00000000",
+      "carveout_base": "0x800000000",
+      "tz_boundary": "TrustZone 0 (TZ0) / Secure DRAM Carveout"
+    },
+    "rtos_kernel": "SEPOS Microkernel",
+    "rtos_build": "SEPOS-v57.RELEASE",
+    "sha256": "7007d31e38e6b3dbb6cb8e92e97feb0b7ce5fba396aac0b0bb7a6f1e09f0f4f1",
+    "system_role": "Isolated cryptographic execution domain, biometric key storage (FaceID/TouchID), Apple Pay tokenization, UID/GID derivation, and hardware anti-rollback counters.",
+    "ipc_interfaces": [
+      "AppleSEP Mailbox",
+      "Hardware Shared Memory Queues",
+      "Tightbeam RPC Services"
+    ]
+  },
+  {
+    "name": "Cellular Baseband Modem (Mav25 / Snapdragon X75)",
+    "identifier": "bbfw",
+    "firmware_file": "Firmware/Mav25-2.20.04.Release.bbfw",
+    "container_format": "ZIP / BBFW Archive (Embedded MBN and ELF Partitions)",
+    "architecture": "Qualcomm Hexagon QDSP6 v73 (DSP) & AArch64 (SBL/TZ/Apps)",
+    "size_bytes": 137554153,
+    "entrypoint": "0x8d400000",
+    "reset_vector": {
+      "type": "Qualcomm Hexagon ELF Entrypoint",
+      "address": "0x8d400000",
+      "sbl_bootloader_entry": "0x14826fa8",
+      "trustzone_entry": "0x1468a000"
+    },
+    "rtos_kernel": "Qualcomm QuRT (QDSP6 Real-Time Operating System)",
+    "rtos_build": "Mav25-2.20.04.Release",
+    "sha256": "cfe350d03dc6a2c5d88b3e9408c77d2d91604066a6d85f7e77d880856d6679b8",
+    "system_role": "5G NR Sub-6/mmWave and LTE cellular modem subsystem, RF protocol stack, baseband signal processing, and carrier network authentication.",
+    "ipc_interfaces": [
+      "PCIe MHI (Modem Host Interface)",
+      "QMI / MBIM Control Channels",
+      "Shared DMA Rings"
+    ]
+  },
+  {
+    "name": "Vinyl Embedded UICC (eSIM / eSE)",
+    "identifier": "vnlfw",
+    "firmware_file": "Firmware/vinyl_20.vnlfw",
+    "container_format": "ZIP Archive (Embedded DER / Profile Packages)",
+    "architecture": "ARM SecurCore (SC000 / SC300) / JavaCard Virtual Machine",
+    "size_bytes": 19633897,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "SmartCard Bootloader Vector",
+      "address": "0x00000000",
+      "firmware_mac": "0x36ee1f67e7a2d4eb"
+    },
+    "rtos_kernel": "G&D SmartCard Operating System / JavaCard eUICC",
+    "rtos_build": "G&D_CI27AJEC_CSD_M001002_V1A02",
+    "sha256": "fae20e2c529f5bba0e651c75cb77eb6f75158b432f8261495771605a18e4748b",
+    "system_role": "Embedded SIM (eSIM) and Secure Element controller for remote carrier profile provisioning, GSMA RSP operations, and cellular credentials.",
+    "ipc_interfaces": [
+      "ISO 7816 APDU Channel",
+      "SPI / I2C Bus",
+      "Baseband SIM Interface"
+    ]
+  },
+  {
+    "name": "Stockholm Secure Element (eSE / NFC)",
+    "identifier": "sefw",
+    "firmware_file": "Firmware/SE/StockholmE.RELEASE.sefw",
+    "container_format": "ASN.1 DER Container",
+    "architecture": "ARM SecurCore / JCOP SmartCard Microcontroller",
+    "size_bytes": 13420343,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "NFC Controller Reset Handler",
+      "address": "0x00000000"
+    },
+    "rtos_kernel": "NXP JCOP OS (Java Card Open Platform)",
+    "rtos_build": "StockholmE.RELEASE",
+    "sha256": "8818446dca1c5aa5269f430f8532d162c40145cc8f0196abab3fc276fae47f60",
+    "system_role": "Near Field Communication (NFC) transceiver and embedded Secure Element (eSE) for Apple Pay, transit cards, and Express Mode transactions.",
+    "ipc_interfaces": [
+      "NFC HCI Interface",
+      "I2C / SPI Interconnect",
+      "Single Wire Protocol (SWP)"
+    ]
+  },
+  {
+    "name": "Multi-Touch Processor (MTP)",
+    "identifier": "mtpf",
+    "firmware_file": "Firmware/V57_MtpFirmware.im4p",
+    "container_format": "IM4P (RTKit FTAB Container - rkosftab)",
+    "architecture": "ARM64 (ARMv8 Chinook Core)",
+    "size_bytes": 9981367,
+    "entrypoint": "0x01000000",
+    "reset_vector": {
+      "type": "Thread State PC",
+      "address": "0x01000000",
+      "instruction": "msr daifset, #0xf; adrp x0, ...; msr vbar_el1, x0",
+      "text_base": "0x01000000"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_chinook_Oz_flto-3514.40.18.release",
+    "sha256": "ad667c6c4ae7b786ed335cfbf7aa93b5c163327f380a508be043c595ba49e1dd",
+    "system_role": "High-speed multi-touch digitizer processing, capacitive row/column scanning, palm rejection, and Apple Pencil active stylus tracking.",
+    "ipc_interfaces": [
+      "SPI Bus",
+      "RTKit Ring Buffers",
+      "Hardware Interrupt Lines"
+    ]
+  },
+  {
+    "name": "SmartIO Controller (ASCv7)",
+    "identifier": "siof",
+    "firmware_file": "Firmware/SmartIOFirmware_ASCv7.im4p",
+    "container_format": "IM4P (Mach-O 64-bit MH_PRELOAD)",
+    "architecture": "ARM64 (ARMv8 Chinook Core)",
+    "size_bytes": 1140621,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "Thread State PC",
+      "address": "0x00000000",
+      "instruction": "msr daifset, #0xf; adrp x0, ...; msr vbar_el1, x0"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_chinook_Oz_flto-3514.40.18.release",
+    "sha256": "cd5c727e1f70907c89f94e44f24a1e54e0c5b096a8be69e25a552da2f0640164",
+    "system_role": "Apple Storage Controller / PCIe & High-Speed IO Coprocessor (ASCv7) managing high-bandwidth peripheral interconnects, Thunderbolt/USB4 routing, and DMA transfers.",
+    "ipc_interfaces": [
+      "RTKit Mailbox",
+      "PCIe Express Gen4/Gen5",
+      "Shared Memory Queues"
+    ]
+  },
+  {
+    "name": "Apple Low Power Monitor (AppleLPM)",
+    "identifier": "alpm",
+    "firmware_file": "Firmware/AppleLPM/AppleLPM.v57.release.im4p",
+    "container_format": "IM4P (Raw Binary with ARM64 Reset Trampoline)",
+    "architecture": "ARM64e (ARMv8 Chinook Core with PAC)",
+    "size_bytes": 1269913,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "ARM64 Reset Branch",
+      "opcode": "0x140000a5",
+      "instruction": "b +0x294",
+      "bootstrap_offset": "0x00000294"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_chinook_Oz_flto_pac-3514.40.18.release",
+    "sha256": "f207330e8eddf369befc09284f07b96b559d3d798ed0b0fb71f1659623dbef76",
+    "system_role": "Ultra-low-power sleep state monitor, battery level telemetry, always-on clock maintenance, and deep-idle wake interrupt routing.",
+    "ipc_interfaces": [
+      "Hardware Mailbox",
+      "SPMI Serial Bus",
+      "Shared Memory Ring"
+    ]
+  },
+  {
+    "name": "Power Management Controller (PMC)",
+    "identifier": "pmcf",
+    "firmware_file": "Firmware/pmc/t8150pmcfw.im4p",
+    "container_format": "IM4P (Mach-O 32-bit MH_PRELOAD)",
+    "architecture": "ARM Cortex-M / ARMv7-M (32-bit)",
+    "size_bytes": 30235,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "Thread State PC / Vector Table",
+      "address": "0x00000000",
+      "text_base": "0x00100400",
+      "data_base": "0x10000000"
+    },
+    "rtos_kernel": "Embedded Power RTOS",
+    "rtos_build": "t8150pmcfw-release",
+    "sha256": "af1c0cea5be09eaff338c8ad85736aafb40e3b1d731389ac87b2362bf145747f",
+    "system_role": "SoC power sequencing, voltage regulator control (PMU / Buck converters), power rail transitions, and clock gating coordination.",
+    "ipc_interfaces": [
+      "SPMI Bus",
+      "Hardware Mailbox Registers",
+      "Interrupt Matrix"
+    ]
+  },
+  {
+    "name": "Power Management Processor (PMP)",
+    "identifier": "pmpf",
+    "firmware_file": "Firmware/pmp/t8150pmp.im4p",
+    "container_format": "IM4P (Mach-O 64-bit MH_PRELOAD)",
+    "architecture": "ARM64 (ARMv8 Chinook Core)",
+    "size_bytes": 643097,
+    "entrypoint": "0x01000000",
+    "reset_vector": {
+      "type": "Thread State PC",
+      "address": "0x01000000",
+      "text_base": "0x01000000",
+      "data_base": "0x01033000"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_chinook_Oz_flto-3514.40.18.release",
+    "sha256": "d6d14aa72564ebee3eaee23310ae8e6f6eb2cc25f8ba87e2d104d7757b87c64d",
+    "system_role": "Dynamic Voltage and Frequency Scaling (DVFS), SoC-level thermal budget allocation, performance state transitions (P-states/E-states), and energy throttling.",
+    "ipc_interfaces": [
+      "RTKit Mailbox",
+      "Hardware Shared Registers"
+    ]
+  },
+  {
+    "name": "Display Coprocessor (DCP / TCON)",
+    "identifier": "dcpf",
+    "firmware_file": "Firmware/dcp/t8150dcp.im4p",
+    "container_format": "IM4P (LZFSE Compressed Apple BUNDLE Container)",
+    "architecture": "ARM64e (ARMv8 with Pointer Authentication / PAC)",
+    "size_bytes": 2466452,
+    "decompressed_size": 16990208,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "ARM64 Reset Branch",
+      "opcode": "0x14000200",
+      "instruction": "b +0x800",
+      "bootstrap_offset": "0x00000800"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_cl4_Oz_flto_pac-3514.40.18.release",
+    "sha256": "50ab10e626188e615e9c3b42c6e6cc1b474e8fa18d4fc8130058f3c24cd49e34",
+    "system_role": "Display pipeline management, ProMotion 120Hz dynamic refresh rate scaling, panel pixel compensation, subpixel rendering, and display sleep/wake states.",
+    "ipc_interfaces": [
+      "RTKit Mailbox",
+      "Display Pipe DMA Queues",
+      "I2C/DP-Aux Channels"
+    ]
+  },
+  {
+    "name": "Apple NVMe Storage Coprocessor (ANS2)",
+    "identifier": "ansf",
+    "firmware_file": "Firmware/ansf.t8150.release.im4p",
+    "container_format": "IM4P (LZFSE Compressed Mach-O 64-bit)",
+    "architecture": "ARM64e (ARMv8 with Pointer Authentication / PAC)",
+    "size_bytes": 1329936,
+    "decompressed_size": 5634888,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "Thread State PC",
+      "address": "0x00000000",
+      "text_base": "0x00000000",
+      "data_base": "0x0023c000"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "RTKit_armv8_cl4_Oz_flto_pac-3514.40.18.release",
+    "sha256": "8eeb1f189cfe45bff4361720d9affe4fffde9d9a906c67d7c8ef621cf7a43408",
+    "system_role": "Solid-state flash storage controller (NVMe), managing NAND wear-leveling, garbage collection, hardware crypto acceleration, and host buffer memory (HMB).",
+    "ipc_interfaces": [
+      "PCIe NVMe Queues",
+      "RTKit Mailbox",
+      "Hardware Doorbell Registers"
+    ]
+  },
+  {
+    "name": "Secure M3 Coprocessor",
+    "identifier": "sm3f",
+    "firmware_file": "Firmware/M3/bin/securem3fw-v57.im4p",
+    "container_format": "IM4P (Mach-O 32-bit MH_PRELOAD)",
+    "architecture": "ARM Cortex-M / ARMv7-M (32-bit)",
+    "size_bytes": 93189,
+    "entrypoint": "0x00100000",
+    "reset_vector": {
+      "type": "Thread State PC",
+      "address": "0x00100000",
+      "text_base": "0x00100000",
+      "data_base": "0x10000000"
+    },
+    "rtos_kernel": "Secure Embedded Microkernel",
+    "rtos_build": "securem3fw-v57-release",
+    "sha256": "ec565fb5300348f623d19ec436c8c2098c0b96c1f15f61db88e93a9f8c5e67e7",
+    "system_role": "Cryptographic auxiliary controller for low-level device attestation, secure peripheral verification, and anti-tamper sensing.",
+    "ipc_interfaces": [
+      "Hardware Mailbox",
+      "Secure Shared Memory"
+    ]
+  },
+  {
+    "name": "Memory System Resource (MSR / Tiler)",
+    "identifier": "msrf",
+    "firmware_file": "Firmware/msr/t8150.msrf.im4p",
+    "container_format": "IM4P (Mach-O 32-bit MH_PRELOAD)",
+    "architecture": "ARM Cortex-M / ARMv7-M (32-bit)",
+    "size_bytes": 161917,
+    "entrypoint": "0x00100000",
+    "reset_vector": {
+      "type": "Thread State PC",
+      "address": "0x00100000",
+      "text_base": "0x00100000",
+      "data_base": "0x10000000"
+    },
+    "rtos_kernel": "Embedded Memory Controller RTOS",
+    "rtos_build": "t8150msr-release",
+    "sha256": "a975ff160716da4fd7e9fd7d209679814588a7e6e4a8bbbbe9f7c4494f2f2c84",
+    "system_role": "Memory controller resource manager, LPDDR5X tiling acceleration, memory bandwidth QoS arbitration, and cache coherency arbitration.",
+    "ipc_interfaces": [
+      "Memory Bus Registers",
+      "Hardware Mailbox"
+    ]
+  },
+  {
+    "name": "Apple Wireless Power Subsystem (WIPW)",
+    "identifier": "wipw",
+    "firmware_file": "Firmware/WirelessPower/WirelessPower.d23_v5z.im4p",
+    "container_format": "IM4P (RTKit FTAB Container - rkosftab)",
+    "architecture": "ARM Cortex-M / ARMv7E-M",
+    "size_bytes": 240015,
+    "entrypoint": "0x00000000",
+    "reset_vector": {
+      "type": "FTAB Partition Header Vector",
+      "address": "0x00000000"
+    },
+    "rtos_kernel": "Apple RTKitOS",
+    "rtos_build": "AppleWirelessPower-756.42.1.0.1",
+    "sha256": "d8da895111c244bbe84cc557c9020847c530ff3164bb0ea27a5f86950ce242a5",
+    "system_role": "Qi2 / MagSafe wireless power receiver and reverse charging management coprocessor, coil alignment calibration, and thermal safety throttling.",
+    "ipc_interfaces": [
+      "I2C Bus",
+      "Hardware PWM Registers",
+      "Power State Notifications"
+    ]
+  }
+]

@@ -1,0 +1,149 @@
+{
+  "schema_version": "1.0",
+  "phase": "ane_phase_4_driver_dispatch",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "ane_generation": "H18 (Apollo v5)",
+  "fifo": {
+    "node_id": 64,
+    "node_id_hex": "0x40",
+    "command_granularity_bytes": 16,
+    "command_granularity_hex": "0x10",
+    "header_format": {
+      "word0_bitmask": "hdr0 = (hdr0 & 0x0f00ffff) | ((0x40 & 0xff) << 16)",
+      "bits_16_23": "Node ID (0x40)",
+      "bits_0_15": "Command Length in 16-byte words",
+      "bits_24_31": "QoS Priority & Stream Flags"
+    },
+    "ring_buffer": {
+      "depth_slots": 32,
+      "slot_size_bytes": 64,
+      "total_ring_size_bytes": 2048,
+      "head_register_offset": "0x00004010",
+      "tail_register_offset": "0x00004018",
+      "status_register_offset": "0x00004020"
+    }
+  },
+  "channels": {
+    "max_channels": 32,
+    "channel_allocation": [
+      {
+        "channel_index": 0,
+        "name": "BOOTSTRAP_CHANNEL",
+        "role": "Program descriptor, task descriptor array (td), and microcode bootstrap image",
+        "dma_direction": "HOST_TO_DEVICE",
+        "buffer_type": "DART_MAPPED_PERSISTENT"
+      },
+      {
+        "channel_index": 1,
+        "name": "INPUT_TENSOR_CHANNEL_0",
+        "role": "Primary input tensor buffer (e.g. RGB image or token embedding)",
+        "dma_direction": "HOST_TO_DEVICE",
+        "buffer_type": "IOSURFACE_TILED"
+      },
+      {
+        "channel_index": 2,
+        "name": "INPUT_TENSOR_CHANNEL_1",
+        "role": "Secondary input tensor buffer (e.g. attention mask or position IDs)",
+        "dma_direction": "HOST_TO_DEVICE",
+        "buffer_type": "IOSURFACE_TILED"
+      },
+      {
+        "channel_index": 3,
+        "name": "KERNEL_WEIGHTS_CHANNEL",
+        "role": "Kernel weights and bias parameters (krn payload, 32-channel aligned)",
+        "dma_direction": "HOST_TO_DEVICE",
+        "buffer_type": "PERSISTENT_DMA_SRAM"
+      },
+      {
+        "channel_index": 4,
+        "name": "INTERMEDIATE_SCRATCHPAD_0",
+        "role": "On-chip intermediate activation tensor buffer",
+        "dma_direction": "DEVICE_INTERNAL",
+        "buffer_type": "L2_SRAM_SCRATCHPAD"
+      },
+      {
+        "channel_index": 5,
+        "name": "OUTPUT_TENSOR_CHANNEL_0",
+        "role": "Primary inference output tensor destination",
+        "dma_direction": "DEVICE_TO_HOST",
+        "buffer_type": "IOSURFACE_TILED"
+      },
+      {
+        "channel_index": 6,
+        "name": "PERFORMANCE_COUNTERS_CHANNEL",
+        "role": "Hardware performance counters, execution timestamps, and latency telemetry",
+        "dma_direction": "DEVICE_TO_HOST",
+        "buffer_type": "SHARED_MEMORY"
+      }
+    ]
+  },
+  "submission_struct": {
+    "name": "struct ane_submit_args",
+    "size_bytes": 160,
+    "fields": [
+      {
+        "offset": "0x00",
+        "name": "tsk_size",
+        "type": "uint32_t",
+        "size": 4,
+        "description": "Microcode task stream size in bytes"
+      },
+      {
+        "offset": "0x04",
+        "name": "td_count",
+        "type": "uint32_t",
+        "size": 4,
+        "description": "Number of task descriptors"
+      },
+      {
+        "offset": "0x08",
+        "name": "td_size",
+        "type": "uint32_t",
+        "size": 4,
+        "description": "Size of each task descriptor (128 bytes)"
+      },
+      {
+        "offset": "0x0c",
+        "name": "btsp_handle",
+        "type": "uint32_t",
+        "size": 4,
+        "description": "DART handle for bootstrap image"
+      },
+      {
+        "offset": "0x10",
+        "name": "handles",
+        "type": "uint32_t[32]",
+        "size": 128,
+        "description": "DART handles for up to 32 tensor memory channels"
+      },
+      {
+        "offset": "0x90",
+        "name": "num_handles",
+        "type": "uint32_t",
+        "size": 4,
+        "description": "Active channel handle count"
+      },
+      {
+        "offset": "0x94",
+        "name": "flags",
+        "type": "uint32_t",
+        "size": 4,
+        "description": "Submission flags (QoS, non-blocking, profiling)"
+      },
+      {
+        "offset": "0x98",
+        "name": "sync_handle",
+        "type": "uint64_t",
+        "size": 8,
+        "description": "IOSurfaceSharedEvent handle for hardware barrier sync"
+      }
+    ]
+  },
+  "iommu_dart_config": {
+    "iommu_type": "Apple DART (Device Address Resolution Table v3)",
+    "page_size_bytes": 16384,
+    "page_shift": 14,
+    "address_width_bits": 40,
+    "fencing_protocol": "Instruction memory barrier (ISB) + DART TLB flush via ANE_FlushInactiveDART"
+  }
+}

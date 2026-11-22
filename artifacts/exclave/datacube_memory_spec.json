@@ -1,0 +1,92 @@
+{
+  "datacube_abstraction": {
+    "name": "Apple Datacube Memory Container",
+    "type_identifier": "L4_Type_Plat_DataCube (0x18)",
+    "purpose": "Hardware-fenced physical page container donated from Darwin/XNU to ExclaveOS without compromise of spatial isolation.",
+    "retyping_protocol": {
+      "primitive": "Release Datacube",
+      "syscall_mechanism": "L4_Untyped_Create( untyped_memory.caps[memory_type][L4_Type_Arm64_FrameLevel0], L4_Type_Arm64_FrameLevel0, paddr - xnu_pbase, frame_cap(ret_frame) )",
+      "state_machine": [
+        {
+          "state": "HOST_ALLOCATED",
+          "owner": "Darwin / XNU Kernel",
+          "description": "Physical page allocated in host RAM pool (e.g. kalloc, IOGPU, or AppleJPEG driver)."
+        },
+        {
+          "state": "DONATION_IN_FLIGHT",
+          "owner": "Darwin / XNU Kernel",
+          "description": "XNU unmaps page from host Stage-1 translation table and invokes _exclaves_ctl_trap to donate physical range."
+        },
+        {
+          "state": "RELEASING_DATACUBE",
+          "owner": "SPTM / SPM Barrier",
+          "description": "Apple Silicon Secure Page Table Monitor locks Stage-2 physical page attributes; notifies PMM via IPC notification."
+        },
+        {
+          "state": "RETYPED_FRAME",
+          "owner": "ExclaveOS cL4 Microkernel",
+          "description": "PMM invokes L4_Untyped_Create, converting physical range into L4_Type_Arm64_FrameLevel0 (16 KB) capability."
+        },
+        {
+          "state": "CONCLAVE_MAPPED",
+          "owner": "Target Conclave (e.g. ANE, Backboardd SIL)",
+          "description": "VASCore maps frame capability into Conclave virtual address space via _map_this_frame."
+        },
+        {
+          "state": "RECLAIMED_ZEROED",
+          "owner": "ExclaveOS PMM Server",
+          "description": "Upon Conclave unmap or termination, frame is scrubbed with zero-fill and released back to XNU via xnu_frame_unreserve."
+        }
+      ],
+      "error_handling": {
+        "retype_failure_assertion": "[PMM] failed to retype xnu page via Release Datacube. paddr %#llx, error %s(%zu)",
+        "releasing_unavailable": "[PMM] Releasing Datacube not available",
+        "return_to_xnu_error": "error return pages to XNU, xnu_error 0x%x"
+      }
+    },
+    "spm_fencing": {
+      "mechanism": "Apple Silicon Secure Page Manager (SPTM / SPM)",
+      "page_size_bytes": 16384,
+      "granularity_bits": 14,
+      "guarantee": "Once a physical page transitions into RETYPED_FRAME, the host XNU kernel is physically blocked by hardware Stage-2 translation fault from reading or writing page bytes."
+    }
+  },
+  "pmm_server": {
+    "binary": "01_pmm_server.macho",
+    "role": "Physical Memory Manager & Datacube Retyping Server",
+    "allocation_models": {
+      "ipmm": {
+        "name": "Internal PMM (ipmm)",
+        "source_file": "pmm-server/src/pmm.c",
+        "bitmap_allocator": "pmm-server/src/bitmap.c",
+        "metadata_format": "ipmm_usage: {'allocs_size_bytes': %u, 'allocs_size_str': '%s'}",
+        "bitmap_error": "PMM out of bitmap memory"
+      },
+      "xnu_allocator": {
+        "name": "XNU Donated Memory Allocator",
+        "source_file": "pmm-server/src/xnu_allocator.c",
+        "early_allocation_function": "xrt__sync_pmm_early_alloc",
+        "early_alloc_assertion": "[PMM] xrt__sync_pmm_early_alloc error: %lx",
+        "metadata_keys": {
+          "extra_frames": "__PMM_EXTRA_FRAMES",
+          "extra_mte_frames": "__PMM_EXTRA_MTE_FRAMES",
+          "release_flag": "__RELEASE"
+        },
+        "description": "Receives external physical memory frames donated dynamically by Darwin host kernel."
+      }
+    },
+    "memory_tagging_extension": {
+      "supported": true,
+      "hardware_feature": "ARMv8.5-A / ARMv9 FEAT_MTE2 (Memory Tagging Extension)",
+      "granule_size_bytes": 16,
+      "tag_bits": 4,
+      "mte_frame_pool": "__PMM_EXTRA_MTE_FRAMES",
+      "description": "Hardened conclaves allocate MTE-tagged physical pages where upper 4 bits of physical address enforce hardware memory safety."
+    },
+    "untyped_memory_matrix": {
+      "structure": "untyped_memory.caps[memory_type][L4_Type_Arm64_FrameLevel0]",
+      "address_bounds_check": "[PMM] raw_frame_create paddr %#llx too small (< %llx), error paddr too big %#llx (> %llx)",
+      "page_offset_calculation": "offset = paddr - xnu_pbase"
+    }
+  }
+}

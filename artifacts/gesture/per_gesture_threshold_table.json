@@ -1,0 +1,281 @@
+{
+  "schema_version": "1.0",
+  "extraction_target": "iOS 27.2 build 24B119 (arm64e / PAC00)",
+  "source_binaries": {
+    "UIKitCore": {
+      "path": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore",
+      "subcache": ".01",
+      "vm_base": "0x184752000"
+    },
+    "Gestures": {
+      "path": "/System/Library/PrivateFrameworks/Gestures.framework/Gestures",
+      "subcache": ".03",
+      "vm_base": "0x18a169000"
+    }
+  },
+  "thresholds": {
+    "Tap": {
+      "recognizer_class": "UITapGestureRecognizer",
+      "move_slop_pt": {
+        "value": 10.0,
+        "address": "0x1864d3230",
+        "file_offset": "0x060d3230",
+        "raw_hex": "0x4024000000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "max_duration_ms": {
+        "value": 250.0,
+        "address": "0x1864d5638",
+        "file_offset": "0x060d5638",
+        "raw_hex": "0x3fd0000000000000",
+        "type": "NSTimeInterval (0.250s)",
+        "confidence": "[EXTRACTED]"
+      },
+      "required_tap_count": 1,
+      "required_touches": 1
+    },
+    "DoubleTap": {
+      "recognizer_class": "UITapGestureRecognizer (2 taps)",
+      "move_slop_pt": {
+        "value": 10.0,
+        "address": "0x1864d3230",
+        "file_offset": "0x060d3230",
+        "raw_hex": "0x4024000000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "max_inter_tap_ms": {
+        "value": 350.0,
+        "address": "0x1864d5910",
+        "file_offset": "0x060d5910",
+        "raw_hex": "0x3fd6666666666666",
+        "type": "NSTimeInterval (0.350s)",
+        "confidence": "[EXTRACTED]"
+      },
+      "inter_tap_separation_tolerance_pt": {
+        "value": 45.0,
+        "address": "0x18a614f18",
+        "file_offset": "0x02214f18",
+        "raw_hex": "0x4046800000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "required_tap_count": 2,
+      "required_touches": 1
+    },
+    "LongPress": {
+      "recognizer_class": "UILongPressGestureRecognizer",
+      "min_duration_ms": {
+        "value": 500.0,
+        "address": "0x1864d3558",
+        "file_offset": "0x060d3558",
+        "raw_hex": "0x3fe0000000000000",
+        "type": "NSTimeInterval (0.500s)",
+        "confidence": "[EXTRACTED]"
+      },
+      "move_slop_pt": {
+        "value": 10.0,
+        "address": "0x1864d3230",
+        "file_offset": "0x060d3230",
+        "raw_hex": "0x4024000000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "required_touches": 1,
+      "required_tap_count": 0
+    },
+    "Pan": {
+      "recognizer_class": "UIPanGestureRecognizer",
+      "slop_tiers_pt": [
+        10,
+        4,
+        2,
+        0
+      ],
+      "slop_tier_definitions": {
+        "tier_0_finger": {
+          "value": 10.0,
+          "address": "0x1864d3230",
+          "file_offset": "0x060d3230",
+          "raw_hex": "0x4024000000000000",
+          "confidence": "[EXTRACTED \u2014 verified in scrolling RE]"
+        },
+        "tier_1_pencil": {
+          "value": 4.0,
+          "address": "0x1864d3270",
+          "file_offset": "0x060d3270",
+          "raw_hex": "0x4010000000000000",
+          "confidence": "[EXTRACTED \u2014 verified in scrolling RE]"
+        },
+        "tier_2_trackpad": {
+          "value": 2.0,
+          "address": "0x1864d3488",
+          "file_offset": "0x060d3488",
+          "raw_hex": "0x4000000000000000",
+          "confidence": "[EXTRACTED \u2014 verified in scrolling RE]"
+        },
+        "tier_3_ballistic_interrupt": {
+          "value": 0.0,
+          "address": "0x000000000",
+          "file_offset": "0x00000000",
+          "raw_hex": "0x0000000000000000",
+          "confidence": "[EXTRACTED \u2014 verified in scrolling RE]"
+        }
+      },
+      "slop_tier_addresses": [
+        "0x1864d3230",
+        "0x1864d3270",
+        "0x1864d3488",
+        "0x000000000"
+      ],
+      "min_velocity_ptps": {
+        "value": 50.0,
+        "address": "0x1864d4e70",
+        "file_offset": "0x060d4e70",
+        "raw_hex": "0x4049000000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "lock_break_slop_pt": {
+        "value": 40.0,
+        "address": "0x1864d5658",
+        "file_offset": "0x060d5658",
+        "raw_hex": "0x4044000000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "velocity_decay_tau_ms": {
+        "value": 40.0,
+        "address": "0x1864d3280",
+        "file_offset": "0x060d3280",
+        "raw_hex": "0x3fa47ae147ae147b",
+        "type": "NSTimeInterval (0.040s)",
+        "confidence": "[EXTRACTED]"
+      }
+    },
+    "Swipe": {
+      "recognizer_class": "UISwipeGestureRecognizer",
+      "move_slop_pt": {
+        "value": 20.0,
+        "address": "0x1864d3238",
+        "file_offset": "0x060d3238",
+        "raw_hex": "0x4034000000000000",
+        "type": "CGFloat (double)",
+        "description": "Minimum primary axis displacement to qualify as directional swipe",
+        "confidence": "[EXTRACTED]"
+      },
+      "default_primary_movement_pt": {
+        "value": 30.0,
+        "address": "0x1864d3240",
+        "file_offset": "0x060d3240",
+        "raw_hex": "0x403e000000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "min_velocity_ptps": {
+        "value": 250.0,
+        "address": "0x186516910",
+        "file_offset": "0x06116910",
+        "raw_hex": "0x406f400000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "max_perpendicular_pt": {
+        "value": 15.0,
+        "address": "0x186517210",
+        "file_offset": "0x06117210",
+        "raw_hex": "0x402e000000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "max_duration_ms": {
+        "value": 250.0,
+        "address": "0x1864d5638",
+        "file_offset": "0x060d5638",
+        "raw_hex": "0x3fd0000000000000",
+        "type": "NSTimeInterval (0.250s)",
+        "confidence": "[EXTRACTED]"
+      }
+    },
+    "EdgeSwipe_generic": {
+      "recognizer_class": "UIScreenEdgePanGestureRecognizer",
+      "edge_inset_width_pt": {
+        "value": 15.0,
+        "address": "0x186517210",
+        "file_offset": "0x06117210",
+        "raw_hex": "0x402e000000000000",
+        "type": "CGFloat (double)",
+        "description": "Standard bezel edge touch capture boundary depth",
+        "confidence": "[EXTRACTED]"
+      },
+      "entry_zone_width_pt": {
+        "value": 20.0,
+        "address": "0x1864d5650",
+        "file_offset": "0x060d5650",
+        "raw_hex": "0x4034000000000000",
+        "type": "CGFloat (double)",
+        "description": "Outer perimeter exclusion region",
+        "confidence": "[EXTRACTED]"
+      },
+      "min_velocity_ptps": {
+        "value": 50.0,
+        "address": "0x1864d4e70",
+        "file_offset": "0x060d4e70",
+        "raw_hex": "0x4049000000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "max_perpendicular_pt": {
+        "value": 20.0,
+        "address": "0x1864d3238",
+        "file_offset": "0x060d3238",
+        "raw_hex": "0x4034000000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      }
+    },
+    "Pinch": {
+      "recognizer_class": "UIPinchGestureRecognizer",
+      "min_scale_delta": {
+        "value": 0.02,
+        "address": "0x1864d3200",
+        "file_offset": "0x060d3200",
+        "raw_hex": "0x3f947ae147ae147b",
+        "type": "CGFloat (double)",
+        "description": "Minimum proportional scale change (2%) before Began state fires",
+        "confidence": "[INFERRED]"
+      },
+      "min_touch_distance_pt": {
+        "value": 10.0,
+        "address": "0x1864d3230",
+        "file_offset": "0x060d3230",
+        "raw_hex": "0x4024000000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "required_touches": 2
+    },
+    "Rotation": {
+      "recognizer_class": "UIRotationGestureRecognizer",
+      "min_rotation_radians": {
+        "value": 0.0349066,
+        "address": "0x18a610e60",
+        "file_offset": "0x02210e60",
+        "raw_hex": "0x3f91df46a2529d39",
+        "type": "CGFloat (double, 2.0 degrees * pi / 180)",
+        "description": "Minimum angular displacement (2.0 degrees) before Began state fires",
+        "confidence": "[EXTRACTED]"
+      },
+      "min_touch_distance_pt": {
+        "value": 10.0,
+        "address": "0x1864d3230",
+        "file_offset": "0x060d3230",
+        "raw_hex": "0x4024000000000000",
+        "type": "CGFloat (double)",
+        "confidence": "[EXTRACTED]"
+      },
+      "required_touches": 2
+    }
+  }
+}

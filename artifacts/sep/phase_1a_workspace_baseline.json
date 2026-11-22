@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Secure Enclave Processor (SEP) Workspace Baseline & Asset Catalog",
+  "target_device": {
+    "model": "iPhone18,3",
+    "device_class": "v57ap",
+    "soc": "t8150",
+    "marketing_name": "Apple A19 Pro",
+    "os_version": "iOS 27.2",
+    "build": "24B119",
+    "build_train": "RaveB",
+    "kernel_version": "Darwin 24.2.0"
+  },
+  "firmware_assets": {
+    "sep_firmware": {
+      "path": "iPhone18,3_27.2_24B119_Restore/Firmware/all_flash/sep-firmware.v57.RELEASE.im4p",
+      "size_bytes": 7680809,
+      "tag": "sepi",
+      "wrapper": "Apple Image4 (IM4P)",
+      "sha256": "7007d31e38e6b3db5fc897a233b879a834246feea00ca7e366113b28b7fe17a3",
+      "sha384": "b1fc0726387c74a2ff430c528f8f2e24cf62ca05c6d328475225c94dc744f4347781b0177fc20c3866c1f1ec3c8f8b3c",
+      "description": "Production Secure Enclave Processor OS (sepOS) firmware envelope encrypted with GID keybag."
+    },
+    "sep_patches": {
+      "path": "iPhone18,3_27.2_24B119_Restore/Firmware/all_flash/sep-patches.v57.im4p",
+      "size_bytes": 21137,
+      "tag": "stg1",
+      "wrapper": "Apple Image4 (IM4P)",
+      "sha256": "d5ef5cb22a0cba5260193bbdbe1e13eb98634863f683aeb0f6e57973fb3984d4",
+      "description": "Stage-1 early boot microkernel patches for SEPOS exception handlers and errata workarounds."
+    },
+    "stockholm_esefw": {
+      "path": "iPhone18,3_27.2_24B119_Restore/Firmware/SE/StockholmE.RELEASE.sefw",
+      "size_bytes": 13420343,
+      "tag": "sefw",
+      "wrapper": "Raw SmartCard OS Payload",
+      "sha256": "8818446dca1c5aa5a487dd523b16ae63d1ebf41d9cbfab718388b0a944208a0d",
+      "description": "Stockholm embedded Secure Element (eSE) JCOP SmartCard OS firmware managed by SEPOS via APDU/SPI channels."
+    },
+    "restore_manifests": [
+      {
+        "path": "iPhone18,3_27.2_24B119_Restore/Firmware/all_flash/sep-firmware.v57.RELEASE.im4p.plist",
+        "size_bytes": 2890,
+        "description": "Restore identity verification manifest declaring production (sepi) and research (rsep) SHA-384 digests and base64 TBMDigests."
+      },
+      {
+        "path": "iPhone18,3_27.2_24B119_Restore/Firmware/all_flash/sep-patches.v57.im4p.plist",
+        "size_bytes": 1158,
+        "description": "Stage-1 boot patch signature manifest."
+      },
+      {
+        "path": "iPhone18,3_27.2_24B119_Restore/Firmware/SE/StockholmE.RELEASE.sefw.plist",
+        "size_bytes": 205,
+        "description": "Stockholm eSE firmware manifest."
+      }
+    ]
+  },
+  "hardware_context": {
+    "processor_core": {
+      "architecture": "ARM64e / Apple Custom Secure Core (AArch64 with PAC & Hardware Crypto Isolation)",
+      "pipeline": "In-order dual-issue secure microarchitecture with constant-time execution pipelines",
+      "features": ["PAC00", "BTI", "Hardware AES Accelerator", "PKA (Public Key Accelerator)", "TRNG", "Anti-Replay Monotonic OTP"]
+    },
+    "dart_iommu": {
+      "device_tree_node": "/device-tree/arm-io/dart-sep",
+      "compatible": "dart,t8110",
+      "mmio_base": "0x0000000070c80000",
+      "mmio_size": "0x00020000",
+      "mmio_size_bytes": 131072,
+      "page_size": 16384,
+      "stream_ids": [
+        {"id": 0, "name": "mapper-sep", "role": "Standard AP-to-SEP bulk DMA shared memory buffers"},
+        {"id": 1, "name": "mapper-sep-mpm", "role": "Multi-Power Management low-power context staging"},
+        {"id": 2, "name": "mapper-sep-exclave", "role": "ExclaveCore secure memory mapping channel"}
+      ]
+    },
+    "mailbox_interface": {
+      "device_tree_node": "/device-tree/arm-io/sep",
+      "reg_index": 0,
+      "name": "Apple ASCwrap-v6 Mailbox",
+      "mmio_base": "0x0000000072600000",
+      "mmio_size": "0x00088000",
+      "mmio_size_bytes": 557056,
+      "fifo_depth_words": 64,
+      "interrupt_controller": "aic",
+      "interrupt_lines": {
+        "OUTBOX_NOT_EMPTY": 304,
+        "INBOX_EMPTY": 305,
+        "DOORBELL_STATUS": 306,
+        "ERROR_FAULT": 307
+      }
+    },
+    "power_manager": {
+      "device_tree_node": "/device-tree/arm-io/sep",
+      "reg_index": 1,
+      "name": "Secure Enclave Power Manager (SEPM)",
+      "mmio_base": "0x0000000072050000",
+      "mmio_size": "0x00060000",
+      "mmio_size_bytes": 393216
+    },
+    "memory_carveouts": {
+      "base_physical_address": "0x800000000",
+      "tz0": {
+        "name": "TrustZone 0 (TZ0) Primary Secure DRAM",
+        "size_bytes": 102432768,
+        "size_hex": "0x061b0000",
+        "size_human": "97.6875 MB",
+        "filtering": "Apple Memory Controller (AMC) hardware filter. Inaccessible to AP kernel, hypervisor, or DMA."
+      },
+      "tz1": {
+        "name": "TrustZone 1 (TZ1) Protected Carveout Window",
+        "size_bytes": 84279296,
+        "size_hex": "0x05060000",
+        "size_human": "80.375 MB",
+        "filtering": "Filtered by DART-SEP and Exclave memory partitions."
+      },
+      "arms": {
+        "name": "Runtime DRAM Execution Base Window",
+        "size_bytes": 15728640,
+        "size_hex": "0x00f00000",
+        "size_human": "15 MB"
+      }
+    }
+  }
+}

@@ -1,0 +1,311 @@
+{
+  "schema_version": "1.0",
+  "component": "Trusted Execution Monitor (TXM) \u2014 Code Signing Monitor",
+  "module_version": "7.0.0 (AppleImage4_txm-374~8637 / libimage4_TXM / RELEASE_ARM64E)",
+  "bundle_identifier": "com.apple.security.libimage4.TXMonitor",
+  "entry_point": "0xfffffff017084000",
+  "virtual_load_base": "0xfffffff017004000",
+  "macho_uuid": "144e3d8d-697d-319f-8f76-bf36686297ac",
+  "memory_segments": [
+    {
+      "name": "__TEXT",
+      "vmaddr": "0xfffffff017004000",
+      "vmsize": "0x1c000",
+      "vmsize_bytes": 114688,
+      "fileoff": "0x0",
+      "filesize": "0x1c000",
+      "filesize_bytes": 114688,
+      "initprot": 1,
+      "maxprot": 1,
+      "sections": [
+        {
+          "name": "__cstring",
+          "segment": "__TEXT",
+          "addr": "0xfffffff017004820",
+          "size": "0x6516",
+          "size_bytes": 25878,
+          "offset": "0x820"
+        },
+        {
+          "name": "__const",
+          "segment": "__TEXT",
+          "addr": "0xfffffff01700ad40",
+          "size": "0x12338",
+          "size_bytes": 74552,
+          "offset": "0x6d40"
+        },
+        {
+          "name": "__binname",
+          "segment": "__TEXT",
+          "addr": "0xfffffff01701d078",
+          "size": "0x40",
+          "size_bytes": 64,
+          "offset": "0x19078"
+        },
+        {
+          "name": "__info_plist",
+          "segment": "__TEXT",
+          "addr": "0xfffffff01701d0b8",
+          "size": "0x4fa",
+          "size_bytes": 1274,
+          "offset": "0x190b8"
+        },
+        {
+          "name": "__chain_starts",
+          "segment": "__TEXT",
+          "addr": "0xfffffff01701d5b4",
+          "size": "0x14",
+          "size_bytes": 20,
+          "offset": "0x195b4"
+        }
+      ]
+    },
+    {
+      "name": "__DATA_CONST",
+      "vmaddr": "0xfffffff017020000",
+      "vmsize": "0x10000",
+      "vmsize_bytes": 65536,
+      "fileoff": "0x1c000",
+      "filesize": "0x10000",
+      "filesize_bytes": 65536,
+      "initprot": 3,
+      "maxprot": 3,
+      "sections": [
+        {
+          "name": "__const",
+          "segment": "__DATA_CONST",
+          "addr": "0xfffffff017020000",
+          "size": "0xd5c8",
+          "size_bytes": 54728,
+          "offset": "0x1c000"
+        },
+        {
+          "name": "__auth_ptr",
+          "segment": "__DATA_CONST",
+          "addr": "0xfffffff01702d5c8",
+          "size": "0x70",
+          "size_bytes": 112,
+          "offset": "0x295c8"
+        }
+      ]
+    },
+    {
+      "name": "__TEXT_EXEC",
+      "vmaddr": "0xfffffff017030000",
+      "vmsize": "0x50000",
+      "vmsize_bytes": 327680,
+      "fileoff": "0x2c000",
+      "filesize": "0x50000",
+      "filesize_bytes": 327680,
+      "initprot": 5,
+      "maxprot": 5,
+      "sections": [
+        {
+          "name": "__text",
+          "segment": "__TEXT_EXEC",
+          "addr": "0xfffffff017030000",
+          "size": "0x49c28",
+          "size_bytes": 302120,
+          "offset": "0x2c000"
+        },
+        {
+          "name": "__exc",
+          "segment": "__TEXT_EXEC",
+          "addr": "0xfffffff01707c000",
+          "size": "0x8a0",
+          "size_bytes": 2208,
+          "offset": "0x78000"
+        }
+      ]
+    },
+    {
+      "name": "__TEXT_BOOT_EXEC",
+      "vmaddr": "0xfffffff017080000",
+      "vmsize": "0x8000",
+      "vmsize_bytes": 32768,
+      "fileoff": "0x7c000",
+      "filesize": "0x8000",
+      "filesize_bytes": 32768,
+      "initprot": 5,
+      "maxprot": 5,
+      "sections": [
+        {
+          "name": "__text",
+          "segment": "__TEXT_BOOT_EXEC",
+          "addr": "0xfffffff017080000",
+          "size": "0x4060",
+          "size_bytes": 16480,
+          "offset": "0x7c000"
+        },
+        {
+          "name": "__bootcode",
+          "segment": "__TEXT_BOOT_EXEC",
+          "addr": "0xfffffff017084060",
+          "size": "0x278",
+          "size_bytes": 632,
+          "offset": "0x80060"
+        }
+      ]
+    },
+    {
+      "name": "__DATA",
+      "vmaddr": "0xfffffff017088000",
+      "vmsize": "0x4000",
+      "vmsize_bytes": 16384,
+      "fileoff": "0x84000",
+      "filesize": "0x4000",
+      "filesize_bytes": 16384,
+      "initprot": 3,
+      "maxprot": 3,
+      "sections": [
+        {
+          "name": "__data",
+          "segment": "__DATA",
+          "addr": "0xfffffff017088000",
+          "size": "0x2d0",
+          "size_bytes": 720,
+          "offset": "0x84000"
+        },
+        {
+          "name": "__common",
+          "segment": "__DATA",
+          "addr": "0xfffffff0170882d0",
+          "size": "0xf80",
+          "size_bytes": 3968,
+          "offset": "0x842d0"
+        },
+        {
+          "name": "__bss",
+          "segment": "__DATA",
+          "addr": "0xfffffff017089250",
+          "size": "0x598",
+          "size_bytes": 1432,
+          "offset": "0x85250"
+        }
+      ]
+    },
+    {
+      "name": "__LINKEDIT",
+      "vmaddr": "0xfffffff01708c000",
+      "vmsize": "0x4000",
+      "vmsize_bytes": 16384,
+      "fileoff": "0x88000",
+      "filesize": "0x20",
+      "filesize_bytes": 32,
+      "initprot": 1,
+      "maxprot": 1,
+      "sections": []
+    }
+  ],
+  "runtime_functions": [
+    {
+      "symbol": "_txm_runtime_log",
+      "purpose": "Logs security monitoring events and authorization audit messages within TXM's isolated log buffer.",
+      "visibility": "Preserved in Research Build"
+    },
+    {
+      "symbol": "_txm_runtime_alloc_type",
+      "purpose": "Dynamic memory allocation primitive for cryptographic context descriptors and Image4 manifest parsing trees.",
+      "visibility": "Preserved in Research Build"
+    },
+    {
+      "symbol": "_txm_runtime_dealloc_type",
+      "purpose": "Securely zeroes and deallocates cryptographic memory buffers.",
+      "visibility": "Preserved in Research Build"
+    },
+    {
+      "symbol": "_txm_runtime_set_nonce",
+      "purpose": "Initializes and seals an anti-replay nonce slot during early device boot from DeviceTree /chosen properties.",
+      "visibility": "Preserved in Research Build"
+    },
+    {
+      "symbol": "_txm_runtime_roll_nonce",
+      "purpose": "Regenerates cryptographic anti-replay nonce for an authenticated domain (mobile-asset or cryptex1).",
+      "visibility": "Preserved in Research Build"
+    },
+    {
+      "symbol": "_txm_runtime_copy_nonce",
+      "purpose": "Securely copies active nonce digest for an authorized caller into caller-provided buffer with bounds assertion.",
+      "visibility": "Preserved in Research Build"
+    },
+    {
+      "symbol": "_txm_runtime_get_identifier_digest",
+      "purpose": "Computes or extracts SHA-256 / SHA-384 digest for an authenticated Image4 certificate chain identifier.",
+      "visibility": "Preserved in Research Build"
+    },
+    {
+      "symbol": "_txm_runtime_get_identifier_cstr",
+      "purpose": "Resolves normalized C-string identifier for signing authority.",
+      "visibility": "Preserved in Research Build"
+    }
+  ],
+  "image4_dispatch_handlers": [
+    {
+      "handler_id": 0,
+      "name": "image4_verify_manifest_and_payload",
+      "description": "Validates Image4 manifest against signing authorities, checks anti-replay nonces, verifies payload hash, and enforces domain fuses."
+    },
+    {
+      "handler_id": 1,
+      "name": "image4_pin_root",
+      "description": "Hardened root CA pinning gate; rejects arbitrary root authority substitution on production SoC variants."
+    },
+    {
+      "handler_id": 2,
+      "name": "image4_evaluate_trust",
+      "description": "Evaluates candidate certificate chains against Apple Root CA and CoreTrust store."
+    },
+    {
+      "handler_id": 3,
+      "name": "image4_parse_manifest_properties",
+      "description": "Extracts normalized ASN.1 DER properties from Image4 manifest headers with strict 0x2c buffer bounds validation."
+    },
+    {
+      "handler_id": 4,
+      "name": "image4_query_status_properties",
+      "description": "Queries current Image4 module state, active boot nonce descriptor, and secure boot operational state."
+    },
+    {
+      "handler_id": 5,
+      "name": "image4_map_and_authorize_executable",
+      "description": "Authorizes code memory mapping into XNU/Exclave address spaces; enforces 16KB alignment before signaling SPTM to lock page as executable."
+    }
+  ],
+  "trustcache_pipeline": {
+    "operations": [
+      {
+        "name": "load_trust_cache",
+        "entitlement": "com.apple.private.pmap.load-trust-cache",
+        "description": "Loads external TrustCache module into TXM memory, verifies cryptographic signature against Apple Root authority, and registers CDHashes."
+      },
+      {
+        "name": "unload_trust_cache",
+        "entitlement": "com.apple.private.unload-trust-cache",
+        "description": "Revokes and unmaps dynamic TrustCache module, invalidating associated CDHash entries."
+      },
+      {
+        "name": "validate_cdhash",
+        "entitlement": "com.apple.private.amfi.can-execute-cdhash",
+        "description": "Hardware-accelerated lookup verifying whether a candidate Mach-O binary's CDHash is present in the active TrustCache."
+      }
+    ],
+    "hash_algorithms": [
+      "SHA-256 (20-byte truncated CDHash)",
+      "SHA-384 (32-byte CDHash)"
+    ]
+  },
+  "monitored_nodes": [
+    "/chosen/debug-enabled",
+    "/chosen/esdm-fuses",
+    "/chosen/chip-id",
+    "/chosen/darwinos-security-environment",
+    "/chosen/cs-system-policy",
+    "/chosen/security-mode-change-enable",
+    "/chosen/amfi-only-platform-code",
+    "/chosen/research-enabled",
+    "/chosen/memory-map/TrustCache",
+    "/chosen/iBoot/iboot-build-variant",
+    "/product/udid-version",
+    "/defaults/vmm-present"
+  ]
+}

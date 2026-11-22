@@ -1,0 +1,127 @@
+{
+  "framework_query": "IOHIDPointerScrollFilter.plugin",
+  "matched_image_path": "/System/Library/HIDPlugins/IOHIDPointerScrollFilter.plugin/IOHIDPointerScrollFilter",
+  "category": "Other",
+  "vm_base_address": "0x2529c4000",
+  "vm_base_address_int": 9975906304,
+  "subcache_index": 47,
+  "subcache_extension": ".48",
+  "subcache_filename": "dyld_shared_cache_arm64e.48",
+  "subcache_vm_base": "0x250400000",
+  "subcache_file_offset": "0x25c4000",
+  "subcache_file_offset_int": 39600128,
+  "subcache_uuid": "2b0abe0c-1c3c-398f-90ff-b0beed9be26a",
+  "segment_count": 7,
+  "segments": [
+    {
+      "segname": "__TEXT",
+      "vmaddr": "0x2529c4000",
+      "vmaddr_int": 9975906304,
+      "vmsize": "0xa9fc",
+      "vmsize_bytes": 43516,
+      "fileoff": "0x25c4000",
+      "fileoff_int": 39600128,
+      "filesize": "0xa9fc",
+      "protection": "r-x"
+    },
+    {
+      "segname": "__DATA_CONST",
+      "vmaddr": "0x2693b3830",
+      "vmaddr_int": 10355423280,
+      "vmsize": "0x88",
+      "vmsize_bytes": 136,
+      "fileoff": "0x1293830",
+      "fileoff_int": 19478576,
+      "filesize": "0x88",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__AUTH_CONST",
+      "vmaddr": "0x26dd6ac60",
+      "vmaddr_int": 10432719968,
+      "vmsize": "0xf88",
+      "vmsize_bytes": 3976,
+      "fileoff": "0x5c4ac60",
+      "fileoff_int": 96775264,
+      "filesize": "0xf88",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__AUTH",
+      "vmaddr": "0x27704b258",
+      "vmaddr_int": 10586731096,
+      "vmsize": "0x78",
+      "vmsize_bytes": 120,
+      "fileoff": "0xcf2b258",
+      "fileoff_int": 217231960,
+      "filesize": "0x78",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__DATA",
+      "vmaddr": "0x273a14c10",
+      "vmaddr_int": 10529885200,
+      "vmsize": "0xa8",
+      "vmsize_bytes": 168,
+      "fileoff": "0x98f4c10",
+      "fileoff_int": 160386064,
+      "filesize": "0xa8",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__LINKEDIT",
+      "vmaddr": "0x2e6940000",
+      "vmaddr_int": 12458393600,
+      "vmsize": "0x298ec000",
+      "vmsize_bytes": 697221120,
+      "fileoff": "0x4000",
+      "fileoff_int": 16384,
+      "filesize": "0x298ec000",
+      "protection": "r--"
+    }
+  ],
+  "sections": [
+    {
+      "sectname": "__text",
+      "addr": "0x2529c4a98",
+      "size": "0x8420",
+      "offset": "0x25c4a98"
+    },
+    {
+      "sectname": "__gcc_except_tab",
+      "addr": "0x2529cceb8",
+      "size": "0x7d4",
+      "offset": "0x25cceb8"
+    },
+    {
+      "sectname": "__const",
+      "addr": "0x2529cd690",
+      "size": "0x406",
+      "offset": "0x25cd690"
+    },
+    {
+      "sectname": "__cstring",
+      "addr": "0x2529cda96",
+      "size": "0x6de",
+      "offset": "0x25cda96"
+    },
+    {
+      "sectname": "__oslogstring",
+      "addr": "0x2529ce174",
+      "size": "0x41f",
+      "offset": "0x25ce174"
+    },
+    {
+      "sectname": "__unwind_info",
+      "addr": "0x2529ce594",
+      "size": "0x468",
+      "offset": "0x25ce594"
+    },
+    {
+      "sectname": "__auth_stubs",
+      "addr": "0x2529ce9fc",
+      "size": "0x0",
+      "offset": "0x0"
+    }
+  ]
+}

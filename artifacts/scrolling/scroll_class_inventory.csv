@@ -1,0 +1,87 @@
+Class,Framework,Subcache Slice,Method Count,Ivar Count,Superclass,Category
+UIScrollView,UIKitCore.framework,.01,129,15,UIView,Core Kinematics
+UIScrollViewPanGestureRecognizer,UIKitCore.framework,.01,9,4,UIPanGestureRecognizer,Gesture Infrastructure
+UIScrollViewPagingController,UIKitCore.framework,.01,3,4,NSObject,Positioning/Paging
+UIScrollViewScrollAnimation,UIKitCore.framework,.01,3,4,UIAnimation,Rendering/Display
+UIScrollViewKnobLongPressGestureRecognizer,UIKitCore.framework,.01,3,3,UILongPressGestureRecognizer,Gesture Infrastructure
+_UIScrollViewVFDTable,UIKitCore.framework,.01,2,4,NSObject,Rendering/Display
+_UIQueuingScrollView,UIKitCore.framework,.01,2,3,UIScrollView,Positioning/Paging
+_UIScrollViewDecelerationAnimation,UIKitCore.framework,.01,2,3,UIAnimation,Core Kinematics
+_UIScrollViewSpringAnimation,UIKitCore.framework,.01,2,4,UIAnimation,Core Kinematics
+_UIScrollViewScrollObserver,UIKitCore.framework,.01,1,2,NSObject,Positioning/Paging
+_UIScrollViewScrollIndicator,UIKitCore.framework,.01,2,3,UIView,Rendering/Display
+UIWebOverflowScrollView,UIKitCore.framework,.01,1,2,UIScrollView,Core Kinematics
+UIWebOverflowContentView,UIKitCore.framework,.01,2,1,UIView,Rendering/Display
+UIWebOverflowScrollViewInfo,UIKitCore.framework,.01,1,2,NSObject,Positioning/Paging
+UIScrollPocketCollectorModel,UIKitCore.framework,.01,1,2,NSObject,Rendering/Display
+UIScrollPocketContainerModel,UIKitCore.framework,.01,1,2,NSObject,Rendering/Display
+UIScrollToDismissSupport,UIKitCore.framework,.01,1,2,NSObject,Gesture Infrastructure
+UIPageController,UIKitCore.framework,.01,1,2,NSObject,Positioning/Paging
+UIPanGestureRecognizer,UIKitCore.framework,.01,3,2,UIGestureRecognizer,Gesture Infrastructure
+_UIFocusFastScrollingIndexBarEntry,UIKitCore.framework,.01,1,2,NSObject,Positioning/Paging
+_UIFocusFastScrollingController,UIKitCore.framework,.01,1,2,NSObject,Positioning/Paging
+_UIFocusFastScrollingRequest,UIKitCore.framework,.01,1,2,NSObject,Positioning/Paging
+_UIFocusFastScrollingTest,UIKitCore.framework,.01,1,2,NSObject,Positioning/Paging
+_UIFocusFastScrollingRecognizer,UIKitCore.framework,.01,1,2,NSObject,Gesture Infrastructure
+_UIFocusFastScrollingTouchSequence,UIKitCore.framework,.01,1,2,NSObject,Gesture Infrastructure
+_UIFocusFastScrollingData,UIKitCore.framework,.01,1,2,NSObject,Positioning/Paging
+_UIFocusFastScrollingIndexBarView,UIKitCore.framework,.01,1,2,UIView,Rendering/Display
+_UIStaticScrollbar,UIKitCore.framework,.01,1,2,UIView,Rendering/Display
+_UIStaticScrollbarButton,UIKitCore.framework,.01,1,2,UIButton,Rendering/Display
+UIScrollViewDelayedTouchesBeganGestureRecognizer,UIKitCore.framework,.01,1,1,UIGestureRecognizer,Gesture Infrastructure
+_UIScrollViewAsyncScrollDeceleration,UIKitCore.framework,.01,1,2,NSObject,Core Kinematics
+_UIScrollViewAsyncScrollEvent,UIKitCore.framework,.01,1,2,UIEvent,Gesture Infrastructure
+_UIScrollViewRefreshControl,UIKitCore.framework,.01,1,2,UIRefreshControl,Core Kinematics
+_UIScrollViewDimensions,UIKitCore.framework,.01,1,2,NSObject,Positioning/Paging
+_UIScrollViewLayoutGuide,UIKitCore.framework,.01,1,1,UILayoutGuide,Positioning/Paging
+_UIScrollViewContentMarginsGuide,UIKitCore.framework,.01,1,1,UILayoutGuide,Positioning/Paging
+_UIScrollViewIndexBarIndicator,UIKitCore.framework,.01,1,1,UIView,Rendering/Display
+_UIScrollViewKnob,UIKitCore.framework,.01,1,1,UIView,Rendering/Display
+_UIScrollViewPinchGestureRecognizer,UIKitCore.framework,.01,1,1,UIPinchGestureRecognizer,Gesture Infrastructure
+_UIScrollViewVelocity,UIKitCore.framework,.01,2,2,NSObject,Core Kinematics
+_UIScrollViewFrictionEstimator,UIKitCore.framework,.01,1,2,NSObject,Core Kinematics
+_UIScrollViewRubberBandPolicy,UIKitCore.framework,.01,1,2,NSObject,Core Kinematics
+_UIScrollViewSnappingBehavior,UIKitCore.framework,.01,1,2,NSObject,Positioning/Paging
+_UIScrollViewDirectionalLock,UIKitCore.framework,.01,1,2,NSObject,Gesture Infrastructure
+_UIScrollViewScrollingSpeedMonitor,UIKitCore.framework,.01,1,2,NSObject,Core Kinematics
+CADisplayLink,QuartzCore.framework,.01,11,3,NSObject,Rendering/Display
+CAFrameRateRange,QuartzCore.framework,.01,1,3,NSObject,Rendering/Display
+CASpringAnimation,QuartzCore.framework,.01,12,4,CABasicAnimation,Core Kinematics
+CAMediaTimingFunction,QuartzCore.framework,.01,2,2,NSObject,Rendering/Display
+CAKeyframeAnimation,QuartzCore.framework,.01,2,3,CAPropertyAnimation,Core Kinematics
+CALayer,QuartzCore.framework,.01,2,2,NSObject,Rendering/Display
+CATransaction,QuartzCore.framework,.01,2,1,NSObject,Rendering/Display
+CARenderer,QuartzCore.framework,.01,2,2,NSObject,Rendering/Display
+SwiftUI.ScrollView,SwiftUI.framework,.03,2,2,View,Positioning/Paging
+SwiftUI.List,SwiftUI.framework,.03,2,2,View,Positioning/Paging
+SwiftUI.ScrollPosition,SwiftUI.framework,.03,3,2,Equatable,Positioning/Paging
+SwiftUI.ScrollTargetBehavior,SwiftUI.framework,.03,1,1,Protocol,Positioning/Paging
+_UIHostingScrollView,SwiftUI.framework,.03,2,1,UIScrollView,Core Kinematics
+_SwiftUIScrollViewBridge,SwiftUI.framework,.03,1,1,NSObject,Positioning/Paging
+SwiftUICore.ScrollGeometry,SwiftUICore.framework,.03,5,4,Equatable,Positioning/Paging
+SwiftUICore.ScrollPhase,SwiftUICore.framework,.03,2,2,Equatable,Core Kinematics
+UIGestureEnvironment,Gestures.framework,.03,1,2,NSObject,Gesture Infrastructure
+_UIGestureRecognizerTransformAnalyzer,Gestures.framework,.03,2,2,NSObject,Gesture Infrastructure
+_UIPanOrFlingGestureRecognizer,Gestures.framework,.03,1,1,UIPanGestureRecognizer,Gesture Infrastructure
+_UIGestureDelaying,Gestures.framework,.03,2,2,NSObject,Gesture Infrastructure
+IOHIDPointerScrollFilter,IOHIDPointerScrollFilter.plugin,.48,3,2,NSObject,Core Kinematics
+IOHIDScrollAccelerationTable,IOHIDPointerScrollFilter.plugin,.48,2,2,CFType,Core Kinematics
+WKScrollView,WebKit.framework,.07,2,2,UIScrollView,Core Kinematics
+WKContentView,WebKit.framework,.07,1,1,UIView,Gesture Infrastructure
+RemoteScrollingCoordinatorIOS,WebKit.framework,.07,2,2,ScrollingCoordinator,Core Kinematics
+ScrollingTreeFrameScrollingNodeIOS,WebKit.framework,.07,2,2,ScrollingTreeNode,Rendering/Display
+WebActionDisablingScrollView,WebKitLegacy.framework,.11,4,1,UIScrollView,Core Kinematics
+AKSpring,AnimationKit.framework,.07,3,3,NSObject,Core Kinematics
+AKPhysicsController,AnimationKit.framework,.07,2,2,NSObject,Core Kinematics
+SUIASpringAnimation,SystemUIAnimationKit.framework,.69,1,1,CABasicAnimation,Core Kinematics
+SUIAFluidSwitcherSpringModel,SystemUIAnimationKit.framework,.69,2,2,NSObject,Core Kinematics
+CTFramesetter,CoreText.framework,.07,3,1,CFType,Rendering/Display
+CTFrame,CoreText.framework,.07,3,2,CFType,Rendering/Display
+CTLine,CoreText.framework,.07,2,2,CFType,Rendering/Display
+UISDisplayContext,UIKitServices.framework,.05,1,1,NSObject,Rendering/Display
+UISApplicationSupportDisplayEdgeInfo,UIKitServices.framework,.05,2,1,NSObject,Positioning/Paging
+UIKitFacade,UIKit.framework,.46,2,1,NSObject,Positioning/Paging
+SBIconScrollView,SpringBoard.framework,.36,2,2,BSUIScrollView,Positioning/Paging
+SBFloatingDockView,SpringBoard.framework,.36,2,1,UIView,Positioning/Paging
+SBHomeGesturePanGestureRecognizer,SpringBoard.framework,.36,2,1,UIPanGestureRecognizer,Gesture Infrastructure
+BSUIScrollView,SpringBoard.framework,.36,2,1,UIScrollView,Core Kinematics

@@ -1,0 +1,526 @@
+{
+  "schema_version": "1.0",
+  "phase": "exclave_phase_1b_cl4_microkernel",
+  "microkernel_identity": {
+    "name": "Apple cL4 Microkernel",
+    "family": "L4/seL4 Capability Derivative",
+    "target_architecture": "arm64e (Apple Silicon A19 Pro, t8150)",
+    "privilege_level": "Isolated Exclave Secure World (SPTM partitioned EL1/EL0)",
+    "concurrency_engine": "xrt"
+  },
+  "syscalls": {
+    "L4_Call": {
+      "vector": "svc #0",
+      "opcode": "0xd4000001",
+      "operation": "Synchronous IPC Call",
+      "registers": {
+        "x0": "Target Endpoint Capability (L4_Cap_Ep)",
+        "x1": "Message Tag (L4_MsgTag_t containing Mrs/Crs count)",
+        "x2": "Client Badge / Context Argument",
+        "tpidrro_el0": "Pointer to Thread IPC Buffer (Base of Mrs and Crs)"
+      },
+      "returns": {
+        "x0": "Error Code (L4_ErrorCodeSuccess = 0 or error enum)",
+        "x2": "Reply Message Tag / Badge",
+        "tpidrro_el0": "Output Message Registers populated with response payload"
+      },
+      "semantics": "Atomically transmits message registers and delegated capabilities to target endpoint, suspends calling thread, and waits for server response."
+    },
+    "L4_ReplyWait": {
+      "vector": "svc #0",
+      "opcode": "0xd4000001",
+      "operation": "Atomic Reply and Wait",
+      "registers": {
+        "x0": "Reply Endpoint Capability (or L4_Nil to discard reply)",
+        "x1": "Reply Message Tag",
+        "x2": "Wait Endpoint Capability to block upon",
+        "tpidrro_el0": "IPC buffer holding outgoing reply payload"
+      },
+      "returns": {
+        "x0": "Invocation status code",
+        "x2": "Caller badge injected by microkernel",
+        "tpidrro_el0": "Incoming request message registers"
+      },
+      "semantics": "Server loop primitive: delivers reply to preceding caller and immediately blocks on incoming request endpoint without thread reschedule overhead."
+    },
+    "L4_Send": {
+      "vector": "svc #0",
+      "opcode": "0xd4000001",
+      "operation": "Asynchronous / Non-Blocking Message Dispatch",
+      "registers": {
+        "x0": "Target Endpoint Capability",
+        "x1": "Message Tag with non-blocking flag set",
+        "x2": "Badge argument"
+      },
+      "returns": {
+        "x0": "Status code (L4_Success or L4_ErrorCodePreempted if receiver not ready)"
+      },
+      "semantics": "One-way signal or message transmission. Returns immediately if receiver queue is full."
+    },
+    "L4_Ep_Call": {
+      "vector": "svc #0",
+      "opcode": "0xd4000001",
+      "operation": "Endpoint Invocation Trap",
+      "registers": {
+        "x0": "Endpoint Capability Slot",
+        "x1": "Pointer to send_tag"
+      },
+      "returns": {
+        "x0": "Status code"
+      },
+      "semantics": "Direct endpoint RPC dispatch wrapper used across conclave launcher and client runtimes."
+    },
+    "L4_Yield": {
+      "vector": "svc #1",
+      "opcode": "0xd4000021",
+      "operation": "Cooperative Time-Slice Yield",
+      "registers": {
+        "x0": "Flags (0 for voluntary yield)",
+        "x1": "Target hint context (or L4_Nil)"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Surrenders remaining scheduling slice to microkernel scheduler hook (`_thread_enter_scheduler_hook`)."
+    },
+    "L4_ThreadSwitch": {
+      "vector": "svc #1",
+      "opcode": "0xd4000021",
+      "operation": "Directed Context Switch",
+      "registers": {
+        "x0": "Target Thread Execution Context (L4_Cap_Ec)",
+        "x1": "Switch flags"
+      },
+      "returns": {
+        "x0": "Status code"
+      },
+      "semantics": "Transfers current scheduling quantum directly to specified target execution context."
+    },
+    "L4_Sc_Dispatch": {
+      "vector": "svc #1",
+      "opcode": "0xd4000021",
+      "operation": "Scheduling Context Activation",
+      "registers": {
+        "x0": "Scheduling Context Capability (L4_Type_Sc)",
+        "x1": "Execution Context Capability (L4_Type_Ec)"
+      },
+      "returns": {
+        "x0": "Status code"
+      },
+      "semantics": "Binds execution context to scheduling context budget and replenishment parameters."
+    },
+    "L4_Cap_Delete": {
+      "vector": "svc #2",
+      "opcode": "0xd4000041",
+      "operation": "Local Capability Slot Invalidation",
+      "registers": {
+        "x0": "CNode capability slot address",
+        "x1": "Target slot offset"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Clears capability from specified CNode slot, decrementing kernel object reference count."
+    },
+    "L4_Cap_Revoke": {
+      "vector": "svc #2",
+      "opcode": "0xd4000041",
+      "operation": "Recursive Capability Tree Revocation",
+      "registers": {
+        "x0": "Parent Capability Slot",
+        "x1": "Revocation depth flags"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Traverses capability derivation tree rooted at target capability, invalidating all child, grandchild, and minted badges across all CSpaces."
+    },
+    "L4_Cap_Mint": {
+      "vector": "svc #3",
+      "opcode": "0xd4000061",
+      "operation": "Attenuated Capability Derivation & Badging",
+      "registers": {
+        "x0": "Source Parent Capability Slot",
+        "x1": "Destination CNode Slot",
+        "x2": "Rights Mask / Attenuation Bitfield",
+        "tpidrro_el0": "Badge value and auxiliary parameters"
+      },
+      "returns": {
+        "x0": "L4_Success or L4_ErrorCodePermissionInvalid"
+      },
+      "semantics": "Derives a new child capability into destination slot with strictly equal or reduced rights, attaching an unforgeable hardware badge."
+    },
+    "L4_Cap_Mint_Ep": {
+      "vector": "svc #3",
+      "opcode": "0xd4000061",
+      "operation": "Mint Endpoint Capability with Client Badge",
+      "registers": {
+        "x0": "Source Endpoint Capability (L4_Cap_Ep)",
+        "x1": "Destination CNode Slot",
+        "x2": "Rights Bitfield: L4_CanSend (bit 0 = 0x1) | L4_CanBadge (bit 4 = 0x10)",
+        "badge": "slot.client_id (16-bit Conclave client tag)",
+        "mask": "Badge guard bitmask"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Dissected in pmm-server/src/main.c and 01_pmm_server.macho: mints client-isolated communication endpoint where incoming messages carry verified client ID."
+    },
+    "L4_Cap_Mint_Ec": {
+      "vector": "svc #3",
+      "opcode": "0xd4000061",
+      "operation": "Mint Execution Context Control Capability",
+      "registers": {
+        "x0": "Source Thread Execution Context",
+        "x1": "Destination Slot",
+        "x2": "Rights: L4_CanControl (bit 5 = 0x20) or L4_CanSync (bit 9 = 0x200)"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Attenuates thread control permissions, allowing synchronization without full register state mutation authority."
+    },
+    "L4_Cap_Mint_Notify": {
+      "vector": "svc #3",
+      "opcode": "0xd4000061",
+      "operation": "Mint Notification Capability with Signal Mask",
+      "registers": {
+        "x0": "Source Notification Object",
+        "x1": "Destination Slot",
+        "x2": "Rights: L4_CanSend (bit 0 = 0x1) | L4_CanGrant (bit 2 = 0x4)",
+        "badge": "_signal_mask(signal) (64-bit event bitmask)"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Configures asynchronous event signaling capability bound to specific bitmask channels."
+    },
+    "L4_Cap_Mint_Untyped": {
+      "vector": "svc #3",
+      "opcode": "0xd4000061",
+      "operation": "Mint Subdivided Untyped Memory Region",
+      "registers": {
+        "x0": "Source Untyped Memory Capability",
+        "x1": "Destination Slot",
+        "x2": "Rights: Retype (bit 1 = 0x2) | Grant (bit 2 = 0x4)",
+        "base": "Physical base address (L4_BootInfo_Untyped_GetBase)",
+        "size": "Physical size in bytes (L4_BootInfo_Untyped_GetSize)",
+        "type_bitmap": "Allowed kernel object types (L4_TypeBitmap_t)",
+        "permissions": "Access permissions bitmask"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Subdivides system untyped physical memory pool for conclave launch and dynamic page allocation."
+    },
+    "L4_Cap_Mint_Arm64_Frame": {
+      "vector": "svc #3",
+      "opcode": "0xd4000061",
+      "operation": "Mint Physical Frame Capability",
+      "registers": {
+        "x0": "Source Frame Capability (Level 0, 1, or 2)",
+        "x1": "Destination Slot",
+        "x2": "Page access rights (Read = 0x1, Write = 0x2, Execute = 0x4)"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Derives page frame capability with reduced permissions (e.g. read-only mapping for shared libraries)."
+    },
+    "L4_Cap_Copy": {
+      "vector": "svc #4",
+      "opcode": "0xd4000081",
+      "operation": "Capability Duplication",
+      "registers": {
+        "x0": "Source CNode Slot",
+        "x1": "Destination CNode Slot"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Duplicates capability reference with identical rights into target slot. Both slots reference same underlying kernel object."
+    },
+    "L4_Cap_Move": {
+      "vector": "svc #4",
+      "opcode": "0xd4000081",
+      "operation": "Capability Relocation",
+      "registers": {
+        "x0": "Destination CNode Slot",
+        "x1": "Source CNode Slot"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Transfers capability from source to destination slot, clearing source slot atomically."
+    },
+    "L4_Untyped_Create": {
+      "vector": "svc #5",
+      "opcode": "0xd40000a1",
+      "operation": "Kernel Object Reification from Untyped",
+      "registers": {
+        "x0": "Untyped Memory Capability",
+        "x1": "Kernel Object Type (L4_Type_t enum)",
+        "x2": "Offset within Untyped Pool",
+        "x3": "Destination CNode Slot (outCap)"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Retypes raw physical memory into microkernel kernel object (CNode, TCB, Endpoint, Page Table, Frame)."
+    },
+    "L4_Arm64_PageFrame_Protect": {
+      "vector": "svc #5",
+      "opcode": "0xd40000a1",
+      "operation": "Frame Translation Table Permission Update",
+      "registers": {
+        "x0": "Frame Capability",
+        "x1": "New Protection Flags (AP/XN bits)"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Updates hardware Stage-1 / Stage-2 translation table entry permissions."
+    },
+    "L4_Arm64_PageFrame_Unmap": {
+      "vector": "svc #5",
+      "opcode": "0xd40000a1",
+      "operation": "Page Frame Table Unmapping",
+      "registers": {
+        "x0": "Frame Capability to unmap"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Clears hardware page table entry, issues TLB invalidate (`tlbi vale1`), and disassociates frame capability."
+    },
+    "xrt__plat_RingGate_Initialize": {
+      "vector": "svc #0 (Platform Extended)",
+      "opcode": "0xd4000001",
+      "operation": "Hardware RingGate Domain Boundary Init",
+      "registers": {
+        "x0": "RingGate Capability (L4_Type_Plat_RingGate)",
+        "x1": "XNU Physical Memory Base | BootInfo Flags"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Initializes Apple Silicon SPM (Secure Page Manager) hardware domain transition gates between Host XNU and ExclaveOS."
+    },
+    "xrt__plat_RingGate_Return": {
+      "vector": "svc #0 (Platform Extended)",
+      "opcode": "0xd4000001",
+      "operation": "RingGate Context Return to Host XNU",
+      "registers": {
+        "x0": "RingGate Capability Instance (cl4_get_ringgate(0))"
+      },
+      "returns": {
+        "x0": "Execution resumes in XNU kernel at exclave trap return address"
+      },
+      "semantics": "Relinquishes CPU core from ExclaveOS execution context back to host Darwin/XNU scheduler."
+    },
+    "xrt_plat_Sharing_DataCube_map": {
+      "vector": "svc #0 (Platform Extended)",
+      "opcode": "0xd4000001",
+      "operation": "Datacube Shared Memory Mapping",
+      "registers": {
+        "x0": "DataCube Capability (L4_Type_Plat_DataCube)",
+        "x1": "Host Frame Capability",
+        "x2": "Mapping Flags (Read = 0x1, Write = 0x2)"
+      },
+      "returns": {
+        "x0": "L4_Success"
+      },
+      "semantics": "Maps physical memory buffer shared with Host XNU into Exclave virtual address space."
+    }
+  },
+  "cspace": {
+    "architecture": "Two-Level Guarded CNode Radix Tree",
+    "slot_size_bytes": 8,
+    "cnode_table_size_bytes": 2048,
+    "cnode_table_size_hex": "0x800",
+    "slots_per_cnode": 256,
+    "radix_fanout_bits": 8,
+    "max_tree_depth": 2,
+    "max_cspace_capacity_slots": 65536,
+    "nil_capability_value": "0x0000000000000000",
+    "nil_identifier": "L4_Nil",
+    "root_cnode_resolution": {
+      "boot_cnode_symbol": "getBootCNode",
+      "static_table": "bootCNodes",
+      "root_cap_copy": "vas_root_cap_copy",
+      "initial_cnode_allocation": "InternalExclaveLauncher/CNodeAllocator.swift",
+      "description": "Each conclave process possesses a dedicated Root CNode. Address resolution performs 8-bit index shift per level across up to 2 radix levels."
+    },
+    "slot_states": {
+      "0x0": {
+        "name": "L4_Nil",
+        "description": "Empty slot. Attempts to invoke, copy, or move raise L4_ErrorCodeSlotInvalid."
+      },
+      "0x1": {
+        "name": "Allocated",
+        "description": "Active valid capability reference pointing to live microkernel object."
+      },
+      "0x2": {
+        "name": "L4_Type_Zombie",
+        "description": "Capability object undergoing recursive revocation or deferred reclamation."
+      }
+    },
+    "radix_resolution_algorithm": {
+      "level_0_index": "(cptr >> 8) & 0xff",
+      "level_1_index": "cptr & 0xff",
+      "guard_evaluation": "Prefix bits matched against CNode guard word; mismatch aborts with L4_ErrorCodeCapInvalid."
+    }
+  },
+  "ipc_buffer": {
+    "thread_pointer_register": "tpidrro_el0",
+    "ipc_buffer_size_bytes": 512,
+    "layout": {
+      "offset_0x00": {
+        "field": "tag",
+        "type": "L4_MsgTag_t (uint64_t)",
+        "description": "IPC message descriptor encoding word counts, capability transfers, and protocol tag."
+      },
+      "offset_0x08": {
+        "field": "mr[0]",
+        "type": "uint64_t",
+        "description": "First message data register (also used for function selector / return value)"
+      },
+      "offset_0x10": {
+        "field": "mr[1]",
+        "type": "uint64_t",
+        "description": "Second message data register"
+      },
+      "offset_0x18": {
+        "field": "mr[2]",
+        "type": "uint64_t",
+        "description": "Third message data register"
+      },
+      "offset_0x20": {
+        "field": "mr[3]",
+        "type": "uint64_t",
+        "description": "Fourth message data register"
+      },
+      "offset_0x28_to_0xff": {
+        "field": "mr[4..31]",
+        "type": "uint64_t[28]",
+        "description": "Extended message registers (up to L4_IpcBuffer_Mrs = 32 words)"
+      },
+      "offset_0x100_to_0x13f": {
+        "field": "cr[0..7]",
+        "type": "L4_Cap_t[8]",
+        "description": "Capability registers for IPC delegation (up to L4_IpcBuffer_Crs = 8 capability slots)"
+      }
+    },
+    "msgtag_bitfields": {
+      "mrs_count": {
+        "bits": "0..5",
+        "mask": "0x3f",
+        "description": "Number of 64-bit data words in message registers (0 to 32)"
+      },
+      "crs_count": {
+        "bits": "6..9",
+        "mask": "0x3c0",
+        "description": "Number of capabilities transferred in capability registers (0 to 8)"
+      },
+      "flags": {
+        "bits": "10..15",
+        "mask": "0xfc00",
+        "description": "Transfer options (non-blocking, grant rights, exception format)"
+      },
+      "protocol_label": {
+        "bits": "16..63",
+        "mask": "0xffffffffffff0000",
+        "description": "Tightbeam RPC protocol / interface descriptor ID"
+      }
+    }
+  },
+  "error_codes": [
+    {
+      "code": 0,
+      "symbol": "L4_ErrorCodeSuccess",
+      "hex": "0x0",
+      "description": "Operation completed successfully."
+    },
+    {
+      "code": 1,
+      "symbol": "L4_ErrorCodePreempted",
+      "hex": "0x1",
+      "description": "Operation preempted by higher priority scheduling context."
+    },
+    {
+      "code": 2,
+      "symbol": "L4_ErrorCodeCanceled",
+      "hex": "0x2",
+      "description": "IPC or thread operation canceled by target context."
+    },
+    {
+      "code": 3,
+      "symbol": "L4_ErrorCodeTruncated",
+      "hex": "0x3",
+      "description": "Message payload truncated; receiver buffer smaller than transmitted data."
+    },
+    {
+      "code": 4,
+      "symbol": "L4_ErrorCodeCapInvalid",
+      "hex": "0x4",
+      "description": "Target capability is L4_Nil, expired, or invalid type for operation."
+    },
+    {
+      "code": 5,
+      "symbol": "L4_ErrorCodeSlotInvalid",
+      "hex": "0x5",
+      "description": "CNode slot index out of bounds or unmapped in CSpace."
+    },
+    {
+      "code": 6,
+      "symbol": "L4_ErrorCodeMethodInvalid",
+      "hex": "0x6",
+      "description": "Operation selector not implemented for kernel object type."
+    },
+    {
+      "code": 7,
+      "symbol": "L4_ErrorCodeArgumentInvalid",
+      "hex": "0x7",
+      "description": "Syscall arguments out of valid range or misaligned."
+    },
+    {
+      "code": 8,
+      "symbol": "L4_ErrorCodeOperationInvalid",
+      "hex": "0x8",
+      "description": "Requested state transition illegal in object lifecycle."
+    },
+    {
+      "code": 9,
+      "symbol": "L4_ErrorCodePermissionInvalid",
+      "hex": "0x9",
+      "description": "Capability rights bitmask insufficient for requested operation."
+    }
+  ],
+  "virtual_address_space": {
+    "page_size_bytes": 16384,
+    "page_size_bits": 14,
+    "page_size_constant": "L4_FrameSize",
+    "page_size_bits_constant": "L4_FrameSizeBits",
+    "alignment_assertion": "vas_round_up((uintptr_t)ret, L4_FrameSizeBits) != (uintptr_t)ret",
+    "easm_subsystem": {
+      "name": "Exclave Address Space Manager (easm)",
+      "faulthandler_vtable": "vas_faulthandler_vtable",
+      "kernel_object_allocators": [
+        "easm_space_allocendpoint",
+        "easm_space_allocexecutioncontext",
+        "easm_space_allocamxcontext",
+        "easm_space_allocsmecontext"
+      ],
+      "dyld_bridge": [
+        "vas__easm_dyld_map_region",
+        "vas__easm_dyld_unmap_region",
+        "vas__easm_dyld_mprotect_region",
+        "vas__easm_dyld_register_dynamic_fixups"
+      ],
+      "xnu_memory_bridge": [
+        "vas__easm_map_xnu_content_region",
+        "vas__easm_unmap_xnu_content_region_with_flags"
+      ]
+    }
+  }
+}

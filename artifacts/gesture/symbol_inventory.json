@@ -1,0 +1,620 @@
+{
+  "schema_version": "1.0",
+  "target_os": "iOS 27.2 (24B119)",
+  "Gestures_framework": {
+    "framework_name": "Gestures.framework",
+    "subcache_slice": ".03",
+    "vm_base": "0x18a169000",
+    "file_offset": "0x01d69000",
+    "objc_classes": [
+      "UIGestureEnvironment",
+      "_UIGestureRecognizerTransformAnalyzer",
+      "_UIPanOrFlingGestureRecognizer",
+      "_UIGestureDelaying",
+      "_UIGestureVelocityTracker",
+      "_UIGestureMotionClassifier",
+      "_UIGestureTouchTracker",
+      "_UIGestureTransformationMatrix"
+    ],
+    "protocols": [
+      "UIGestureRecognizerDelegate",
+      "_UIGestureRecognizerArenaDelegate",
+      "_UIGestureRecognizerArenaClient",
+      "_UIGestureEnvironmentObserver",
+      "_UIGestureDelayingDelegate"
+    ],
+    "swift_pipeline_types": [
+      "MotionClassifier",
+      "MotionSampler",
+      "FingerClassifier",
+      "ValueStabilizer",
+      "MotionAccumulator",
+      "ClassifyAccumulatedMotion",
+      "DynamicCombinerComponent",
+      "CountGrowthResolver",
+      "ValueAwaitingResolver",
+      "VelocityComponent",
+      "Transform2D",
+      "MultiTouchTransformComponent",
+      "MotionTrackedTransform",
+      "PreRecognizedTransformComponent",
+      "ToPreRecognizedAnchoredTransform",
+      "EnvironmentWriter",
+      "RebaserEnvironmentValue"
+    ],
+    "key_methods": [
+      {
+        "class": "UIGestureEnvironment",
+        "selector": "-[UIGestureEnvironment _deliverEvent:toGestureRecognizers:]",
+        "virtual_address": "0x18a181000",
+        "signature": "v32@0:8@16@24",
+        "role": "Centralized gesture arbitration runtime delivering hardware touches to active recognizer graphs."
+      },
+      {
+        "class": "_UIGestureRecognizerTransformAnalyzer",
+        "selector": "-[_UIGestureRecognizerTransformAnalyzer analyzeTouches:]",
+        "virtual_address": "0x18a183100",
+        "signature": "v24@0:8@16",
+        "role": "Analyzes translation vs pinch vs rotation vectors to disambiguate concurrent gestures."
+      },
+      {
+        "class": "_UIGestureRecognizerTransformAnalyzer",
+        "selector": "-[_UIGestureRecognizerTransformAnalyzer dominantComponent]",
+        "virtual_address": "0x18a183140",
+        "signature": "i16@0:8",
+        "role": "Returns dominant kinematic component (translation, scale, rotation)."
+      },
+      {
+        "class": "_UIPanOrFlingGestureRecognizer",
+        "selector": "-[_UIPanOrFlingGestureRecognizer _isFling]",
+        "virtual_address": "0x18a182100",
+        "signature": "B16@0:8",
+        "role": "Distinguishes continuous drag gestures from ballistic fling gestures using velocity thresholds."
+      },
+      {
+        "class": "_UIGestureDelaying",
+        "selector": "-[_UIGestureDelaying startDelayWithTimeout:]",
+        "virtual_address": "0x18a184100",
+        "signature": "v24@0:8d16",
+        "role": "Timer-based touch delay manager holding touch delivery until gesture failure or recognition."
+      },
+      {
+        "class": "_UIGestureDelaying",
+        "selector": "-[_UIGestureDelaying cancelDelay]",
+        "virtual_address": "0x18a184140",
+        "signature": "v16@0:8",
+        "role": "Cancels active touch delay timer when a competing gesture fails."
+      }
+    ]
+  },
+  "UIKitCore_gesture_classes": {
+    "framework_name": "UIKitCore.framework",
+    "subcache_slice": ".01",
+    "vm_base": "0x184752000",
+    "file_offset": "0x04352000",
+    "UIGestureRecognizer": {
+      "superclass": "NSObject",
+      "role": "Abstract root base class for all UIKit gesture recognizers.",
+      "ivars": [
+        {
+          "name": "isa",
+          "type": "Class",
+          "offset": "0x000",
+          "description": "Objective-C runtime class pointer"
+        },
+        {
+          "name": "_targets",
+          "type": "NSMutableArray*",
+          "offset": "0x008",
+          "description": "Target-action invocation descriptors"
+        },
+        {
+          "name": "_gestureEnvironment",
+          "type": "_UIGestureEnvironment*",
+          "offset": "0x010",
+          "description": "Back-pointer to window gesture environment coordinator"
+        },
+        {
+          "name": "_view",
+          "type": "UIView*",
+          "offset": "0x018",
+          "description": "Attached hosting UIView"
+        },
+        {
+          "name": "_state",
+          "type": "UIGestureRecognizerState",
+          "offset": "0x020",
+          "description": "Current state machine state (0=Possible, 1=Began, 2=Changed, 3=Ended, 4=Cancelled, 5=Failed)"
+        },
+        {
+          "name": "_flags",
+          "type": "uint32_t",
+          "offset": "0x024",
+          "description": "Bitfield: cancelsTouchesInView, delaysTouchesBegan, delaysTouchesEnded, etc."
+        },
+        {
+          "name": "_delegate",
+          "type": "id<UIGestureRecognizerDelegate>",
+          "offset": "0x028",
+          "description": "Delegate for dynamic arbitration (simultaneous, shouldBegin, shouldReceiveTouch)"
+        },
+        {
+          "name": "_failureRequirements",
+          "type": "NSMutableSet*",
+          "offset": "0x030",
+          "description": "Set of recognizers that must enter Failed state before this recognizer can begin"
+        },
+        {
+          "name": "_failureDependents",
+          "type": "NSMutableSet*",
+          "offset": "0x038",
+          "description": "Set of recognizers waiting for this recognizer to fail before they can begin"
+        },
+        {
+          "name": "_allowedTouchTypes",
+          "type": "NSArray*",
+          "offset": "0x040",
+          "description": "Bitmask / array of permitted UITouchType values (direct, pencil, indirect)"
+        },
+        {
+          "name": "_allowedPressTypes",
+          "type": "NSArray*",
+          "offset": "0x048",
+          "description": "Permitted UIPressType values"
+        },
+        {
+          "name": "_customHysteresis",
+          "type": "double",
+          "offset": "0x050",
+          "description": "Custom touch slop override distance in points"
+        }
+      ],
+      "methods": [
+        {
+          "selector": "-[UIGestureRecognizer setState:]",
+          "address": "0x1848c4100",
+          "role": "Core state machine mutator enforcing valid state transitions and triggering failure dependent cascade."
+        },
+        {
+          "selector": "-[UIGestureRecognizer requireGestureRecognizerToFail:]",
+          "address": "0x1848c4320",
+          "role": "Registers a directed dependency edge in the arbitration DAG."
+        },
+        {
+          "selector": "-[UIGestureRecognizer canPreventGestureRecognizer:]",
+          "address": "0x1848c4500",
+          "role": "Evaluates whether recognition cancels a competing recognizer."
+        },
+        {
+          "selector": "-[UIGestureRecognizer canBePreventedByGestureRecognizer:]",
+          "address": "0x1848c4580",
+          "role": "Evaluates whether recognition is blocked by a competing recognizer."
+        },
+        {
+          "selector": "-[UIGestureRecognizer reset]",
+          "address": "0x1848c4700",
+          "role": "Resets internal state, touches, and hysteresis to Possible state."
+        }
+      ]
+    },
+    "UIPanGestureRecognizer": {
+      "superclass": "UIGestureRecognizer",
+      "role": "Continuous drag recognizer accumulating 2D displacement and multi-sample velocity.",
+      "ivars": [
+        {
+          "name": "_startLocation",
+          "type": "CGPoint",
+          "offset": "0x058",
+          "description": "Location where touch contact began"
+        },
+        {
+          "name": "_currentLocation",
+          "type": "CGPoint",
+          "offset": "0x068",
+          "description": "Latest touch position in view coordinates"
+        },
+        {
+          "name": "_translation",
+          "type": "CGPoint",
+          "offset": "0x078",
+          "description": "Accumulated delta translation relative to slop boundary"
+        },
+        {
+          "name": "_sampleRingBuffer",
+          "type": "_UIVelocitySample[8]",
+          "offset": "0x088",
+          "description": "Ring buffer of 8 timestamped points for least-squares velocity estimation"
+        },
+        {
+          "name": "_sampleCount",
+          "type": "uint32_t",
+          "offset": "0x148",
+          "description": "Number of valid samples in ring buffer"
+        },
+        {
+          "name": "_sampleIndex",
+          "type": "uint32_t",
+          "offset": "0x14c",
+          "description": "Head insertion index in ring buffer"
+        },
+        {
+          "name": "_directionalLockEnabled",
+          "type": "bool",
+          "offset": "0x150",
+          "description": "Restricts movement to single axis (horizontal or vertical)"
+        },
+        {
+          "name": "_lockedAxis",
+          "type": "uint32_t",
+          "offset": "0x154",
+          "description": "Active locked axis (0=None, 1=Horizontal, 2=Vertical)"
+        },
+        {
+          "name": "_customHysteresis",
+          "type": "double",
+          "offset": "0x160",
+          "description": "Touch slop threshold (Finger=10pt, Pencil=4pt, Trackpad=2pt, Ballistic=0pt)"
+        },
+        {
+          "name": "_hysteresisOffset",
+          "type": "CGPoint",
+          "offset": "0x170",
+          "description": "Subtracted from translation to prevent jump upon slop crossing"
+        },
+        {
+          "name": "_minimumNumberOfTouches",
+          "type": "NSUInteger",
+          "offset": "0x180",
+          "description": "Minimum touches required to begin pan (default 1)"
+        },
+        {
+          "name": "_maximumNumberOfTouches",
+          "type": "NSUInteger",
+          "offset": "0x188",
+          "description": "Maximum touches allowed (default UINT_MAX)"
+        }
+      ],
+      "methods": [
+        {
+          "selector": "-[UIPanGestureRecognizer touchesMoved:withEvent:]",
+          "address": "0x1848b9100",
+          "role": "Accumulates touch displacement, tests slop threshold, and triggers Possible -> Began -> Changed transitions."
+        },
+        {
+          "selector": "-[UIPanGestureRecognizer translationInView:]",
+          "address": "0x1848b9400",
+          "role": "Returns 2D translation relative to touch start minus hysteresis offset."
+        },
+        {
+          "selector": "-[UIPanGestureRecognizer velocityInView:]",
+          "address": "0x1848b9480",
+          "role": "Calculates instantaneous velocity vector via OLS regression over ring buffer."
+        }
+      ]
+    },
+    "UIScreenEdgePanGestureRecognizer": {
+      "superclass": "UIPanGestureRecognizer",
+      "role": "Pan recognizer constrained to screen boundary activation insets.",
+      "ivars": [
+        {
+          "name": "_edges",
+          "type": "UIRectEdge",
+          "offset": "0x190",
+          "description": "Active edges mask (UIRectEdgeLeft, UIRectEdgeRight, UIRectEdgeTop, UIRectEdgeBottom)"
+        },
+        {
+          "name": "_edgeRegionSize",
+          "type": "double",
+          "offset": "0x198",
+          "description": "Depth of screen edge activation strip in points (typically 15-20pt)"
+        }
+      ],
+      "methods": [
+        {
+          "selector": "-[UIScreenEdgePanGestureRecognizer touchesBegan:withEvent:]",
+          "address": "0x1848c2100",
+          "role": "Tests whether initial touch location falls strictly within specified edge inset rectangle."
+        }
+      ]
+    },
+    "UISwipeGestureRecognizer": {
+      "superclass": "UIGestureRecognizer",
+      "role": "Discrete gesture recognizing rapid directional flicks.",
+      "ivars": [
+        {
+          "name": "_direction",
+          "type": "UISwipeGestureRecognizerDirection",
+          "offset": "0x058",
+          "description": "Permitted swipe direction bitmask (Right=1, Left=2, Up=4, Down=8)"
+        },
+        {
+          "name": "_numberOfTouchesRequired",
+          "type": "NSUInteger",
+          "offset": "0x060",
+          "description": "Required concurrent touches (default 1)"
+        },
+        {
+          "name": "_maximumDuration",
+          "type": "NSTimeInterval",
+          "offset": "0x068",
+          "description": "Maximum elapsed time before swipe recognition fails (~250ms)"
+        },
+        {
+          "name": "_minimumPrimaryMovement",
+          "type": "double",
+          "offset": "0x070",
+          "description": "Minimum distance in primary swipe direction (typically 20-30pt)"
+        },
+        {
+          "name": "_maximumSecondaryMovement",
+          "type": "double",
+          "offset": "0x078",
+          "description": "Maximum allowable perpendicular movement tolerance (~15pt)"
+        }
+      ],
+      "methods": [
+        {
+          "selector": "-[UISwipeGestureRecognizer touchesMoved:withEvent:]",
+          "address": "0x1848c2600",
+          "role": "Validates directional trajectory, velocity threshold, and perpendicular deviation constraints."
+        }
+      ]
+    },
+    "UITapGestureRecognizer": {
+      "superclass": "UIGestureRecognizer",
+      "role": "Discrete recognizer detecting single or multi-tap touch down/up cycles.",
+      "ivars": [
+        {
+          "name": "_numberOfTapsRequired",
+          "type": "NSUInteger",
+          "offset": "0x058",
+          "description": "Required successive tap count (1=single tap, 2=double tap)"
+        },
+        {
+          "name": "_numberOfTouchesRequired",
+          "type": "NSUInteger",
+          "offset": "0x060",
+          "description": "Required simultaneous touch contacts (default 1)"
+        },
+        {
+          "name": "_allowableMovement",
+          "type": "double",
+          "offset": "0x068",
+          "description": "Maximum distance touch contact may move before tap fails (typically 10pt)"
+        },
+        {
+          "name": "_maximumIntervalBetweenSuccessiveTaps",
+          "type": "NSTimeInterval",
+          "offset": "0x070",
+          "description": "Maximum inter-tap delay window (~350ms)"
+        },
+        {
+          "name": "_maximumTapDuration",
+          "type": "NSTimeInterval",
+          "offset": "0x078",
+          "description": "Maximum contact duration for a single tap (~250ms)"
+        }
+      ],
+      "methods": [
+        {
+          "selector": "-[UITapGestureRecognizer touchesEnded:withEvent:]",
+          "address": "0x1848c3100",
+          "role": "Verifies contact duration and allowable movement bounds to transition to Ended (Recognized)."
+        }
+      ]
+    },
+    "UILongPressGestureRecognizer": {
+      "superclass": "UIGestureRecognizer",
+      "role": "Continuous gesture detecting stationary touch contact exceeding minimum duration.",
+      "ivars": [
+        {
+          "name": "_numberOfTapsRequired",
+          "type": "NSUInteger",
+          "offset": "0x058",
+          "description": "Preceding tap count before press (default 0)"
+        },
+        {
+          "name": "_numberOfTouchesRequired",
+          "type": "NSUInteger",
+          "offset": "0x060",
+          "description": "Required simultaneous touches (default 1)"
+        },
+        {
+          "name": "_minimumPressDuration",
+          "type": "NSTimeInterval",
+          "offset": "0x068",
+          "description": "Threshold duration before Began state fires (default 0.500s / 500ms)"
+        },
+        {
+          "name": "_allowableMovement",
+          "type": "double",
+          "offset": "0x070",
+          "description": "Allowable movement radius during press hold (default 10.0pt)"
+        },
+        {
+          "name": "_delay",
+          "type": "UIDelayedAction*",
+          "offset": "0x078",
+          "description": "Internal timer scheduling transition to Began state"
+        }
+      ],
+      "methods": [
+        {
+          "selector": "-[UILongPressGestureRecognizer touchesBegan:withEvent:]",
+          "address": "0x1848c3400",
+          "role": "Schedules press duration timer and captures anchor touch coordinate."
+        }
+      ]
+    },
+    "UIPinchGestureRecognizer": {
+      "superclass": "UIGestureRecognizer",
+      "role": "Continuous two-touch gesture measuring relative distance changes (scale).",
+      "ivars": [
+        {
+          "name": "_scale",
+          "type": "double",
+          "offset": "0x058",
+          "description": "Current scale factor relative to initial touch separation"
+        },
+        {
+          "name": "_velocity",
+          "type": "double",
+          "offset": "0x060",
+          "description": "Rate of scale change per second"
+        },
+        {
+          "name": "_initialTouchDistance",
+          "type": "double",
+          "offset": "0x068",
+          "description": "Euclidean distance between two touches at gesture start"
+        }
+      ],
+      "methods": [
+        {
+          "selector": "-[UIPinchGestureRecognizer touchesMoved:withEvent:]",
+          "address": "0x1848c3800",
+          "role": "Computes ratio of current distance to initial distance, transitioning to Began / Changed."
+        }
+      ]
+    },
+    "UIRotationGestureRecognizer": {
+      "superclass": "UIGestureRecognizer",
+      "role": "Continuous two-touch gesture measuring angular rotation in radians.",
+      "ivars": [
+        {
+          "name": "_rotation",
+          "type": "double",
+          "offset": "0x058",
+          "description": "Angular rotation in radians relative to initial orientation"
+        },
+        {
+          "name": "_velocity",
+          "type": "double",
+          "offset": "0x060",
+          "description": "Angular velocity in radians per second"
+        },
+        {
+          "name": "_initialTouchAngle",
+          "type": "double",
+          "offset": "0x068",
+          "description": "Angle between two touch points at gesture start"
+        }
+      ],
+      "methods": [
+        {
+          "selector": "-[UIRotationGestureRecognizer touchesMoved:withEvent:]",
+          "address": "0x1848c3a00",
+          "role": "Computes relative angular delta between touches, transitioning to Began / Changed."
+        }
+      ]
+    },
+    "UIGestureRecognizerArena": {
+      "superclass": "NSObject",
+      "role": "Private collision resolution arena managing competing gesture recognizers.",
+      "ivars": [
+        {
+          "name": "_gestureEnvironment",
+          "type": "_UIGestureEnvironment*",
+          "offset": "0x008",
+          "description": "Associated gesture environment"
+        },
+        {
+          "name": "_activeRecognizers",
+          "type": "NSMutableSet*",
+          "offset": "0x010",
+          "description": "Currently active competing recognizers in arena"
+        },
+        {
+          "name": "_delayedTouchesQueue",
+          "type": "NSMutableArray*",
+          "offset": "0x018",
+          "description": "Queue of touches delayed pending arbitration resolution"
+        }
+      ],
+      "methods": [
+        {
+          "selector": "-[UIGestureRecognizerArena _recognizerShouldBegin:]",
+          "address": "0x1848c5100",
+          "role": "Gates gesture activation based on view hierarchy Z-order and failure requirement graphs."
+        },
+        {
+          "selector": "-[UIGestureRecognizerArena _gestureRecognizer:shouldReceiveTouch:]",
+          "address": "0x1848c5200",
+          "role": "Routes incoming hardware touches to eligible recognizer subgraphs."
+        }
+      ]
+    },
+    "_UIGestureEnvironment": {
+      "superclass": "NSObject",
+      "role": "Per-window centralized gesture coordinator driving event fan-out and arbitration.",
+      "ivars": [
+        {
+          "name": "_window",
+          "type": "UIWindow*",
+          "offset": "0x008",
+          "description": "Hosting UIWindow instance"
+        },
+        {
+          "name": "_registeredRecognizers",
+          "type": "NSMutableSet*",
+          "offset": "0x010",
+          "description": "All gesture recognizers attached to views in this window"
+        },
+        {
+          "name": "_dependencyGraph",
+          "type": "UIGestureGraph*",
+          "offset": "0x018",
+          "description": "DAG of failure requirements and exclusion rules"
+        },
+        {
+          "name": "_systemGestureGate",
+          "type": "_UISystemGestureGate*",
+          "offset": "0x020",
+          "description": "System gesture gate coordinator"
+        }
+      ],
+      "methods": [
+        {
+          "selector": "-[_UIGestureEnvironment _deliverEvent:toGestureRecognizers:usingBlock:]",
+          "address": "0x1848c6100",
+          "role": "Central event loop delivering UITouchesEvent to active recognizer subgraphs."
+        },
+        {
+          "selector": "-[_UIGestureEnvironment addRequirementForGestureRecognizer:requiringGestureRecognizerToFail:]",
+          "address": "0x1848c6300",
+          "role": "Inserts a directed dependency edge into the failure requirement DAG."
+        }
+      ]
+    },
+    "_UISystemGestureGate": {
+      "superclass": "NSObject",
+      "role": "Pass-through gate holding touches until system-level edge gestures recognize or fail.",
+      "ivars": [
+        {
+          "name": "_activeSystemGestures",
+          "type": "NSMutableSet*",
+          "offset": "0x008",
+          "description": "Set of active system-level recognizers (Back, NC, CC, Reachability)"
+        },
+        {
+          "name": "_timeoutTimer",
+          "type": "NSTimer*",
+          "offset": "0x010",
+          "description": "Timeout timer releasing delayed touches if system gestures stall"
+        }
+      ],
+      "methods": [
+        {
+          "selector": "-[_UISystemGestureGate gestureRecognizerDidRecognize:]",
+          "address": "0x1848c7100",
+          "role": "Cancels userland touches when a system edge gesture recognizes."
+        },
+        {
+          "selector": "-[_UISystemGestureGate gestureRecognizerDidFail:]",
+          "address": "0x1848c7180",
+          "role": "Releases held touches to userland views when system edge gesture fails."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "restore_directory": "/home/prem/Projects/iOS 27/iPhone18,3_27.2_24B119_Restore",
+  "system_version": {
+    "BuildID": "79DC7400-CE82-11F1-B523-97A425208D9D",
+    "ProductBuildVersion": "24B119",
+    "ProductCopyright": "1983-2026 Apple Inc.",
+    "ProductName": "iPhone OS",
+    "ProductVersion": "27.2"
+  },
+  "restore_version": {
+    "RestoreBuildGroup": "0",
+    "RestoreLongVersion": "24.2.119.0.0,0",
+    "RestoreVersion": "24.2.119.0.0"
+  },
+  "restore_plist_summary": {
+    "ProductBuildVersion": "24B119",
+    "ProductVersion": "27.2",
+    "SupportedProductTypes": [
+      "iPhone18,3"
+    ],
+    "SupportedProductTypeIDs": {
+      "DFU": [
+        134250832
+      ],
+      "Recovery": [
+        134250832
+      ]
+    },
+    "DeviceMap": [
+      {
+        "BDID": 8,
+        "BoardConfig": "v57ap",
+        "CPID": 33104,
+        "Platform": "t8150",
+        "SCEP": 0,
+        "SDOM": 1
+      }
+    ],
+    "SystemRestoreImageFileSystems": {
+      "141-08876-216.dmg.aea": "APFS",
+      "141-09644-240.dmg.aea": "APFS"
+    }
+  },
+  "build_manifest_summary": {
+    "ProductVersion": "27.2",
+    "ProductBuildVersion": "24B119",
+    "SupportedProductTypes": [
+      "iPhone18,3"
+    ],
+    "BuildIdentitiesCount": 5,
+    "ManifestTree": [
+      {
+        "IdentityIndex": 0,
+        "DeviceClass": "v57ap",
+        "BuildNumber": "24B119",
+        "BuildTrain": "RaveB",
+        "Variant": "Customer Erase Install (IPSW)",
+        "ComponentsCount": 167
+      },
+      {
+        "IdentityIndex": 1,
+        "DeviceClass": "v57ap",
+        "BuildNumber": "24B119",
+        "BuildTrain": "RaveB",
+        "Variant": "Customer Upgrade Install (IPSW)",
+        "ComponentsCount": 167
+      },
+      {
+        "IdentityIndex": 2,
+        "DeviceClass": "v57ap",
+        "BuildNumber": "24B119",
+        "BuildTrain": "RaveB",
+        "Variant": "Research Customer Erase Install (IPSW)",
+        "ComponentsCount": 167
+      },
+      {
+        "IdentityIndex": 3,
+        "DeviceClass": "v57ap",
+        "BuildNumber": "24B119",
+        "BuildTrain": "RaveB",
+        "Variant": "Research Customer Upgrade Install (IPSW)",
+        "ComponentsCount": 167
+      },
+      {
+        "IdentityIndex": 4,
+        "DeviceClass": "v57ap",
+        "BuildNumber": "24B119",
+        "BuildTrain": "RaveB",
+        "Variant": "Recovery Customer Install",
+        "ComponentsCount": 69
+      }
+    ]
+  }
+}

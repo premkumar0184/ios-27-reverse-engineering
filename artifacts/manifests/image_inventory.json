@@ -1,0 +1,102 @@
+[
+  {
+    "filename": "141-08824-244.dmg",
+    "size_bytes": 16777216,
+    "size_mb": 16.0,
+    "sha256": "8a70ca8f34f8604f436dd3ec23d27aea21a9dc5b28f114acc7ada0ee76df010c",
+    "is_aea_encrypted": false,
+    "extension": ".dmg",
+    "roles": [
+      "Cryptex1,AppOS"
+    ]
+  },
+  {
+    "filename": "141-08876-216.dmg.aea",
+    "size_bytes": 9126805504,
+    "size_mb": 8704.0,
+    "sha256": "396263cdbd3aeab8164a1a12f45b9cfa83ae7d99c015435a1664453909d68212",
+    "is_aea_encrypted": true,
+    "extension": ".aea",
+    "roles": [
+      "OS"
+    ]
+  },
+  {
+    "filename": "141-08904-238.dmg.aea",
+    "size_bytes": 536870912,
+    "size_mb": 512.0,
+    "sha256": "0b67f6821d673c20234dd26fca65cbf8861b8ade155f11766712b29f273aef70",
+    "is_aea_encrypted": true,
+    "extension": ".aea",
+    "roles": [
+      "Ap,ExclaveOS"
+    ]
+  },
+  {
+    "filename": "141-09491-242.dmg",
+    "size_bytes": 247463963,
+    "size_mb": 236.0,
+    "sha256": "e26da3df75d2b3232d7eedc776222e327b0fe6e774466e66ce2aa52fd6336a63",
+    "is_aea_encrypted": false,
+    "extension": ".dmg",
+    "roles": [
+      "RestoreRamDisk"
+    ]
+  },
+  {
+    "filename": "141-09644-240.dmg.aea",
+    "size_bytes": 260046848,
+    "size_mb": 248.0,
+    "sha256": "7ba3784a075d756d4640695fe7df3e6cfe6407c4c708234481215ba97fda9105",
+    "is_aea_encrypted": true,
+    "extension": ".aea",
+    "roles": [
+      "OS"
+    ]
+  },
+  {
+    "filename": "141-09724-226.dmg.aea",
+    "size_bytes": 2415919104,
+    "size_mb": 2304.0,
+    "sha256": "8790eefa11031e50181b3eef19ad7b11b8baa18fa70f1785c2c65167bec4da36",
+    "is_aea_encrypted": true,
+    "extension": ".aea",
+    "roles": [
+      "Cryptex1,SystemOS"
+    ]
+  },
+  {
+    "filename": "141-10399-240.dmg",
+    "size_bytes": 245366811,
+    "size_mb": 234.0,
+    "sha256": "42f7e2fe5f3bf6add09156f569c750bccf06d458cbe0ec82559cbb64d4a46cca",
+    "is_aea_encrypted": false,
+    "extension": ".dmg",
+    "roles": [
+      "RestoreRamDisk"
+    ]
+  },
+  {
+    "filename": "kernelcache.release.v57",
+    "size_bytes": 23714695,
+    "size_mb": 22.62,
+    "sha256": "d0e3892b549c538227daae90c6b7e382a4025f36eb0eab47fb7d2c7731fafdc7",
+    "is_aea_encrypted": false,
+    "extension": ".v57",
+    "roles": [
+      "KernelCache",
+      "RestoreKernelCache"
+    ]
+  },
+  {
+    "filename": "kernelcache.research.v57",
+    "size_bytes": 23714658,
+    "size_mb": 22.62,
+    "sha256": "a8f1ea56b2b7e6ba57ec09ffef5dbf13ef41d4d7827e132023796049761fae21",
+    "is_aea_encrypted": false,
+    "extension": ".v57",
+    "roles": [
+      "KernelCache"
+    ]
+  }
+]

@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "sepOS Microkernel Architecture & Memory Specification",
+  "target_platform": "iOS 27.2 (24B119) / Apple A19 Pro (t8150)",
+  "microkernel_architecture": {
+    "kernel_name": "sepOS",
+    "architecture": "ARM64e (AArch64 with Pointer Authentication PAC00 & BTI)",
+    "execution_paradigm": "Zero-ambient-authority real-time capability microkernel",
+    "privilege_levels": {
+      "EL1": "sepOS microkernel executive (kernel core, scheduler, memory manager, trap handlers)",
+      "EL0": "sepOS isolated system services and cryptographic server conclaves"
+    },
+    "scheduler": {
+      "type": "Preemptive priority-driven real-time scheduler",
+      "priority_levels": 64,
+      "tick_granularity_micros": 100,
+      "hard_realtime_classes": [
+        "Biometric sensor frame capture (Pearl Face ID NIR strobe synchronization)",
+        "Hardware cryptographic engine interrupt dispatch",
+        "ASCwrap-v6 Mailbox outbox FIFO drain handlers"
+      ],
+      "soft_realtime_classes": [
+        "AppleKeyStore class key derivation and caching",
+        "Anti-Replay Token (ART/xART) persistence sync",
+        "Telemetry and crash-log encryption"
+      ]
+    },
+    "memory_protection": {
+      "mmu_granule": 16384,
+      "mmu_granule_hex": "0x4000",
+      "page_table_levels": 3,
+      "pointer_authentication": {
+        "enabled": true,
+        "algorithm": "QARMA5 / PAC00",
+        "keys": ["APIAKey", "APIBKey", "APDAKey", "APDBKey"]
+      },
+      "branch_target_identification": true,
+      "execute_never_data_pages": true,
+      "hardware_memory_encryption": "Inline AES-256-XTS Memory Encryption Engine (MEE)"
+    }
+  },
+  "memory_carveouts": {
+    "tz0": {
+      "name": "TrustZone 0 (TZ0) Primary Secure DRAM",
+      "base_physical_address": "0x800000000",
+      "size_bytes": 102432768,
+      "size_hex": "0x061b0000",
+      "size_human": "97.6875 MB",
+      "sub_partitions": [
+        {
+          "name": "sep_boot_window",
+          "offset_hex": "0x00000000",
+          "size_bytes": 15728640,
+          "size_hex": "0x00f00000",
+          "size_human": "15 MB",
+          "role": "Decrypted sepOS microkernel text, read-only data, exception vectors, and early translation tables."
+        },
+        {
+          "name": "sep_kernel_heap",
+          "offset_hex": "0x00f00000",
+          "size_bytes": 20971520,
+          "size_hex": "0x01400000",
+          "size_human": "20 MB",
+          "role": "Zone allocator for Thread Control Blocks (TCBs), task descriptors, port right hashes, and IPC queues."
+        },
+        {
+          "name": "sep_user_task_pools",
+          "offset_hex": "0x02300000",
+          "size_bytes": 41943040,
+          "size_hex": "0x02800000",
+          "size_human": "40 MB",
+          "role": "Isolated userland service memory spaces (KeyStoreServer, BiometricServer, ApplePayServer)."
+        },
+        {
+          "name": "sep_crypto_staging",
+          "offset_hex": "0x04b00000",
+          "size_bytes": 23789568,
+          "size_hex": "0x016b0000",
+          "size_human": "22.6875 MB",
+          "role": "AES-XTS encrypted buffers for key unwrapping, class key caching, and ephemeral key generation."
+        }
+      ]
+    },
+    "tz1": {
+      "name": "TrustZone 1 (TZ1) Protected Sensor & Inter-Enclave Window",
+      "base_physical_address": "0x8061b0000",
+      "size_bytes": 84279296,
+      "size_hex": "0x05060000",
+      "size_human": "80.375 MB",
+      "sub_partitions": [
+        {
+          "name": "pearl_sensor_frame_buffer",
+          "offset_hex": "0x00000000",
+          "size_bytes": 50331648,
+          "size_hex": "0x03000000",
+          "size_human": "48 MB",
+          "role": "Raw Near-Infrared (NIR) flood/dot sensor frames streamed directly from camera ISP via isp_map_iobmd."
+        },
+        {
+          "name": "ane_feature_staging_buffer",
+          "offset_hex": "0x03000000",
+          "size_bytes": 16777216,
+          "size_hex": "0x01000000",
+          "size_human": "16 MB",
+          "role": "Biometric neural embedding and feature tensor verification buffer shared with ANE via ane_map_iobmd."
+        },
+        {
+          "name": "exclave_secure_bridge_window",
+          "offset_hex": "0x04000000",
+          "size_bytes": 17170432,
+          "size_hex": "0x01060000",
+          "size_human": "16.375 MB",
+          "role": "Direct memory channel to ExclaveOS conclaves mediated by DART-SEP Stream ID 2 (mapper-sep-exclave)."
+        }
+      ]
+    },
+    "internal_sram": {
+      "base_address": "0x00000000",
+      "size_bytes": 524288,
+      "size_hex": "0x00080000",
+      "size_human": "512 KB",
+      "features": [
+        "Hardware parity and ECC protection",
+        "Zero-leakage physical registers for intermediate AES and PKA keys",
+        "Hardware-enforced instant zeroization upon core reset, sleep, or tamper detection"
+      ]
+    }
+  }
+}

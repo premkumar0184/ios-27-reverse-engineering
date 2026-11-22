@@ -1,0 +1,288 @@
+{
+  "framework_query": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore",
+  "matched_image_path": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore",
+  "category": "PrivateFramework",
+  "vm_base_address": "0x184752000",
+  "vm_base_address_int": 6517235712,
+  "subcache_index": 0,
+  "subcache_extension": ".01",
+  "subcache_filename": "dyld_shared_cache_arm64e.01",
+  "subcache_vm_base": "0x180400000",
+  "subcache_file_offset": "0x4352000",
+  "subcache_file_offset_int": 70590464,
+  "subcache_uuid": "a78f816e-fae5-3aaf-a753-766346190a44",
+  "segment_count": 7,
+  "segments": [
+    {
+      "segname": "__TEXT",
+      "vmaddr": "0x184752000",
+      "vmaddr_int": 6517235712,
+      "vmsize": "0x204eed4",
+      "vmsize_bytes": 33877716,
+      "fileoff": "0x4352000",
+      "fileoff_int": 70590464,
+      "filesize": "0x204eed4",
+      "protection": "r-x"
+    },
+    {
+      "segname": "__DATA_CONST",
+      "vmaddr": "0x1e05fafd0",
+      "vmaddr_int": 8059334608,
+      "vmsize": "0xf94d8",
+      "vmsize_bytes": 1021144,
+      "fileoff": "0x506fd0",
+      "fileoff_int": 5271504,
+      "filesize": "0xf94d8",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__AUTH_CONST",
+      "vmaddr": "0x1e229cef0",
+      "vmaddr_int": 8089358064,
+      "vmsize": "0x3a1c60",
+      "vmsize_bytes": 3808352,
+      "fileoff": "0x21a8ef0",
+      "fileoff_int": 35294960,
+      "filesize": "0x3a1c60",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__AUTH",
+      "vmaddr": "0x1ef161470",
+      "vmaddr_int": 8306168944,
+      "vmsize": "0x60008",
+      "vmsize_bytes": 393224,
+      "fileoff": "0xd06d470",
+      "fileoff_int": 218551408,
+      "filesize": "0x60008",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__DATA",
+      "vmaddr": "0x1eb064250",
+      "vmaddr_int": 8238023248,
+      "vmsize": "0x87d10",
+      "vmsize_bytes": 556304,
+      "fileoff": "0x8f70250",
+      "fileoff_int": 150405712,
+      "filesize": "0x87d10",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__DATA_DIRTY",
+      "vmaddr": "0x1ede371a0",
+      "vmaddr_int": 8286073248,
+      "vmsize": "0x5ba90",
+      "vmsize_bytes": 375440,
+      "fileoff": "0xbd431a0",
+      "fileoff_int": 198455712,
+      "filesize": "0x5ba90",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__LINKEDIT",
+      "vmaddr": "0x2e6940000",
+      "vmaddr_int": 12458393600,
+      "vmsize": "0x298ec000",
+      "vmsize_bytes": 697221120,
+      "fileoff": "0x4000",
+      "fileoff_int": 16384,
+      "filesize": "0x298ec000",
+      "protection": "r--"
+    }
+  ],
+  "sections": [
+    {
+      "sectname": "__text",
+      "addr": "0x184756280",
+      "size": "0x1bdbb64",
+      "offset": "0x4356280"
+    },
+    {
+      "sectname": "__delay_helper",
+      "addr": "0x186331de4",
+      "size": "0x1bc",
+      "offset": "0x5f31de4"
+    },
+    {
+      "sectname": "__init_offsets",
+      "addr": "0x186331fa0",
+      "size": "0x4",
+      "offset": "0x5f31fa0"
+    },
+    {
+      "sectname": "__objc_methlist",
+      "addr": "0x186331fa8",
+      "size": "0x1a0e68",
+      "offset": "0x5f31fa8"
+    },
+    {
+      "sectname": "__const",
+      "addr": "0x1864d2e10",
+      "size": "0x4d898",
+      "offset": "0x60d2e10"
+    },
+    {
+      "sectname": "__dlopen_cstrs",
+      "addr": "0x1865206a8",
+      "size": "0x5164",
+      "offset": "0x61206a8"
+    },
+    {
+      "sectname": "__swift5_typeref",
+      "addr": "0x186525810",
+      "size": "0x192fa",
+      "offset": "0x6125810"
+    },
+    {
+      "sectname": "__swift5_capture",
+      "addr": "0x18653eb0c",
+      "size": "0xa408",
+      "offset": "0x613eb0c"
+    },
+    {
+      "sectname": "__swift5_fieldmd",
+      "addr": "0x186548f14",
+      "size": "0x1729c",
+      "offset": "0x6148f14"
+    },
+    {
+      "sectname": "__constg_swiftt",
+      "addr": "0x1865601b0",
+      "size": "0x1d7c0",
+      "offset": "0x61601b0"
+    },
+    {
+      "sectname": "__swift5_reflstr",
+      "addr": "0x18657d970",
+      "size": "0x17a9f",
+      "offset": "0x617d970"
+    },
+    {
+      "sectname": "__swift5_builtin",
+      "addr": "0x186595410",
+      "size": "0x139c",
+      "offset": "0x6195410"
+    },
+    {
+      "sectname": "__swift5_assocty",
+      "addr": "0x1865967ac",
+      "size": "0x4f88",
+      "offset": "0x61967ac"
+    },
+    {
+      "sectname": "__swift5_protos",
+      "addr": "0x18659b734",
+      "size": "0x258",
+      "offset": "0x619b734"
+    },
+    {
+      "sectname": "__swift5_proto",
+      "addr": "0x18659b98c",
+      "size": "0x25bc",
+      "offset": "0x619b98c"
+    },
+    {
+      "sectname": "__swift5_types",
+      "addr": "0x18659df48",
+      "size": "0x1c10",
+      "offset": "0x619df48"
+    },
+    {
+      "sectname": "__cstring",
+      "addr": "0x18659fb60",
+      "size": "0x102637",
+      "offset": "0x619fb60"
+    },
+    {
+      "sectname": "__oslogstring",
+      "addr": "0x1866a21a0",
+      "size": "0x56735",
+      "offset": "0x62a21a0"
+    },
+    {
+      "sectname": "__swift_as_entry",
+      "addr": "0x1866f88d8",
+      "size": "0x2a4",
+      "offset": "0x62f88d8"
+    },
+    {
+      "sectname": "__swift_as_ret",
+      "addr": "0x1866f8b7c",
+      "size": "0x228",
+      "offset": "0x62f8b7c"
+    },
+    {
+      "sectname": "__swift_as_cont",
+      "addr": "0x1866f8da4",
+      "size": "0x4e4",
+      "offset": "0x62f8da4"
+    },
+    {
+      "sectname": "__swift5_mpenum",
+      "addr": "0x1866f9288",
+      "size": "0x248",
+      "offset": "0x62f9288"
+    },
+    {
+      "sectname": "__swift5_types2",
+      "addr": "0x1866f94d0",
+      "size": "0x8",
+      "offset": "0x62f94d0"
+    },
+    {
+      "sectname": "__gcc_except_tab",
+      "addr": "0x1866f94d8",
+      "size": "0x26f80",
+      "offset": "0x62f94d8"
+    },
+    {
+      "sectname": "__ustring",
+      "addr": "0x186720458",
+      "size": "0x2a88",
+      "offset": "0x6320458"
+    },
+    {
+      "sectname": "__unwind_info",
+      "addr": "0x186722ee0",
+      "size": "0x72680",
+      "offset": "0x6322ee0"
+    },
+    {
+      "sectname": "__eh_frame",
+      "addr": "0x186795560",
+      "size": "0xb974",
+      "offset": "0x6395560"
+    },
+    {
+      "sectname": "__objc_stubs",
+      "addr": "0x1867a0ed4",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__auth_stubs",
+      "addr": "0x1867a0ed4",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_classname",
+      "addr": "0x1867a0ed4",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_methname",
+      "addr": "0x1867a0ed4",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_methtype",
+      "addr": "0x1867a0ed4",
+      "size": "0x0",
+      "offset": "0x0"
+    }
+  ]
+}

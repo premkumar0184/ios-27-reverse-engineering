@@ -1,0 +1,1206 @@
+[
+  {
+    "relative_path": "141-08824-244.dmg.root_hash",
+    "size_bytes": 229,
+    "sha256": "0a61288816b52c9b3cad7f23bfce134bb4a08508946628c3960215800f578b82",
+    "extension": ".root_hash",
+    "roles": [
+      "Cryptex1,AppVolume"
+    ]
+  },
+  {
+    "relative_path": "141-08824-244.dmg.trustcache",
+    "size_bytes": 863,
+    "sha256": "618c041eca6b8b7c160864be1d64efa84f93912759a8e241c1d8a66dfde52fb0",
+    "extension": ".trustcache",
+    "roles": [
+      "Cryptex1,AppTrustCache"
+    ]
+  },
+  {
+    "relative_path": "141-08876-216.dmg.aea.mtree",
+    "size_bytes": 40681072,
+    "sha256": "1a6557565f516d4c6be69c34f4af9cddf339990b70819a527e042956df6e03cb",
+    "extension": ".mtree",
+    "roles": [
+      "Ap,SystemVolumeCanonicalMetadata"
+    ]
+  },
+  {
+    "relative_path": "141-08876-216.dmg.aea.root_hash",
+    "size_bytes": 229,
+    "sha256": "9288c8d2abd7758dda59aa099f28d68e89b4775ee7a84e08637734d81eef7ab2",
+    "extension": ".root_hash",
+    "roles": [
+      "SystemVolume"
+    ]
+  },
+  {
+    "relative_path": "141-08876-216.dmg.aea.trustcache",
+    "size_bytes": 93241,
+    "sha256": "8dca1a07557bb1f489197f58cb5d9177f419e3a90c50d209a26e394415a262ca",
+    "extension": ".trustcache",
+    "roles": [
+      "StaticTrustCache"
+    ]
+  },
+  {
+    "relative_path": "141-08904-238.dmg.aea.integrity_catalog",
+    "size_bytes": 1229553,
+    "sha256": "8c44d29fd8ddf55f69de77b5f3aefa268ea2eb5fc17d8af693c811546219b68f",
+    "extension": ".integrity_catalog",
+    "roles": [
+      "Ap,ExclaveOSIntegrityCatalog"
+    ]
+  },
+  {
+    "relative_path": "141-08904-238.dmg.aea.root_hash",
+    "size_bytes": 229,
+    "sha256": "ffb0d5ed62e10bd5dba10caa518d5a335a39ec4cb988fd9ae91ae1499b1239df",
+    "extension": ".root_hash",
+    "roles": [
+      "Ap,ExclaveOSVolume"
+    ]
+  },
+  {
+    "relative_path": "141-08904-238.dmg.aea.trustcache",
+    "size_bytes": 1631,
+    "sha256": "f9b1a4e7ee716abb8af631b3a30b7604a5f6634f4ca55facdc8ccdd705227c31",
+    "extension": ".trustcache",
+    "roles": [
+      "Ap,ExclaveOSTrustCache"
+    ]
+  },
+  {
+    "relative_path": "141-09491-242.dmg.trustcache",
+    "size_bytes": 8363,
+    "sha256": "bc23e1bab1a7f92f237f309a5fd699a6c7ff5e8b35e734881f9b651ddba7eed0",
+    "extension": ".trustcache",
+    "roles": [
+      "RestoreTrustCache"
+    ]
+  },
+  {
+    "relative_path": "141-09644-240.dmg.aea.mtree",
+    "size_bytes": 1753722,
+    "sha256": "88c1f06a111264c16d248d1f865c8c28c8054946a531cd407290f26bf0f600d1",
+    "extension": ".mtree",
+    "roles": [
+      "Ap,SystemVolumeCanonicalMetadata"
+    ]
+  },
+  {
+    "relative_path": "141-09644-240.dmg.aea.root_hash",
+    "size_bytes": 229,
+    "sha256": "1c026f00b76974ef9d387844bef70e8cc9609b21df0ee7634832a4db383cd22e",
+    "extension": ".root_hash",
+    "roles": [
+      "SystemVolume"
+    ]
+  },
+  {
+    "relative_path": "141-09644-240.dmg.aea.trustcache",
+    "size_bytes": 8063,
+    "sha256": "1b06b5355a74aeeda781bb965141ac6d42a7b2fec2ae0fcabe57bb97abbcd64f",
+    "extension": ".trustcache",
+    "roles": [
+      "StaticTrustCache"
+    ]
+  },
+  {
+    "relative_path": "141-09724-226.dmg.aea.root_hash",
+    "size_bytes": 229,
+    "sha256": "bd4144d4f98c64c0130415981db0486f0f9e8b46fc4c96bab5cf8f363112dc64",
+    "extension": ".root_hash",
+    "roles": [
+      "Cryptex1,SystemVolume"
+    ]
+  },
+  {
+    "relative_path": "141-09724-226.dmg.aea.trustcache",
+    "size_bytes": 3215,
+    "sha256": "3fed1593f7a9beb7e5aa369e099fc5b9bdc3e7b6907142c7025946ef01173f92",
+    "extension": ".trustcache",
+    "roles": [
+      "Cryptex1,SystemTrustCache"
+    ]
+  },
+  {
+    "relative_path": "141-10399-240.dmg.trustcache",
+    "size_bytes": 8209,
+    "sha256": "5c11629dab63720417db071d80c8405cc2c7cdfcab4cd68234fa911cbceca089",
+    "extension": ".trustcache",
+    "roles": [
+      "RestoreTrustCache"
+    ]
+  },
+  {
+    "relative_path": "Mav25-2.20.04.Release.bbfw",
+    "size_bytes": 137554153,
+    "sha256": "cfe350d03dc6a2c5d88b3e9408c77d2d91604066a6d85f7e77d880856d6679b8",
+    "extension": ".bbfw",
+    "roles": [
+      "BasebandFirmware"
+    ]
+  },
+  {
+    "relative_path": "Mav25-2.20.04.Release.plist",
+    "size_bytes": 4111,
+    "sha256": "e22bc4950b43b0b0c5dbaae5a6d63d1209ae711db346d27043a59cd774986eae",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "SmartIOFirmware_ASCv7.im4p",
+    "size_bytes": 1140621,
+    "sha256": "cd5c727e1f70907c89f94e44f24a1e54e0c5b096a8be69e25a552da2f0640164",
+    "extension": ".im4p",
+    "roles": [
+      "SIO"
+    ]
+  },
+  {
+    "relative_path": "V57_HapticAssets.im4p",
+    "size_bytes": 1182,
+    "sha256": "9226fb1bf3cc010305ef3fe8de5095684d4bf09b663f3c6ca1a64e0aa7ed1962",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,HapticAssets"
+    ]
+  },
+  {
+    "relative_path": "V57_LeapHapticsFirmware.im4p",
+    "size_bytes": 312552,
+    "sha256": "8ed9aad9cd08604cac6cc4c58964bf99525c8e3ea8f1425645f95a7bfedde783",
+    "extension": ".im4p",
+    "roles": [
+      "LeapHaptics"
+    ]
+  },
+  {
+    "relative_path": "V57_MtpFirmware.im4p",
+    "size_bytes": 9981367,
+    "sha256": "ad667c6c4ae7b786ed335cfbf7aa93b5c163327f380a508be043c595ba49e1dd",
+    "extension": ".im4p",
+    "roles": [
+      "MtpFirmware"
+    ]
+  },
+  {
+    "relative_path": "V57_Multitouch.im4p",
+    "size_bytes": 2514694,
+    "sha256": "5227982712c472d9b6d1a4840ff47270fc0a92e5d4f96035c67d1e79a2d1e38d",
+    "extension": ".im4p",
+    "roles": [
+      "Multitouch"
+    ]
+  },
+  {
+    "relative_path": "ansf.t8150.release.im4p",
+    "size_bytes": 1329936,
+    "sha256": "8eeb1f189cfe45bff4361720d9affe4fffde9d9a906c67d7c8ef621cf7a43408",
+    "extension": ".im4p",
+    "roles": [
+      "ANS"
+    ]
+  },
+  {
+    "relative_path": "rans.t8150.release.im4p",
+    "size_bytes": 1329951,
+    "sha256": "c1c6fed508875ce2406ff2a7b0968b74077f9dc8cb6b84ff7ae261b4452d10d8",
+    "extension": ".im4p",
+    "roles": [
+      "RestoreANS"
+    ]
+  },
+  {
+    "relative_path": "sptm.t8150.release.im4p",
+    "size_bytes": 216333,
+    "sha256": "4a21de2683b3944039ce1ca0977d69c2705585f45b5658fcc67b9d755c0ed9d6",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,RestoreSecurePageTableMonitor",
+      "Ap,SecurePageTableMonitor"
+    ]
+  },
+  {
+    "relative_path": "txm.iphoneos.release.im4p",
+    "size_bytes": 224174,
+    "sha256": "284e5413dfd447dc81c8840e92748dc8a390b474142f390c1fddee1ac1c716b6",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,RestoreTrustedExecutionMonitor",
+      "Ap,TrustedExecutionMonitor"
+    ]
+  },
+  {
+    "relative_path": "txm.iphoneos.research.im4p",
+    "size_bytes": 224183,
+    "sha256": "efb686b1b74d5e24945e89528158365a3f6f38f835805308687789eacdad1ad4",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,TrustedExecutionMonitor"
+    ]
+  },
+  {
+    "relative_path": "vinyl_20.plist",
+    "size_bytes": 2515,
+    "sha256": "658ea141e4427e0f1057dd5174bf9b481db920cfedbc421a9239ce8c14e74b8f",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "vinyl_20.vnlfw",
+    "size_bytes": 19633897,
+    "sha256": "fae20e2c529f5bba0e651c75cb77eb6f75158b432f8261495771605a18e4748b",
+    "extension": ".vnlfw",
+    "roles": [
+      "eUICC,Gold",
+      "eUICC,Main"
+    ]
+  },
+  {
+    "relative_path": "SE/StockholmE.RELEASE.sefw",
+    "size_bytes": 13420343,
+    "sha256": "8818446dca1c5aa5269f430f8532d162c40145cc8f0196abab3fc276fae47f60",
+    "extension": ".sefw",
+    "roles": [
+      "SE,UpdatePayload"
+    ]
+  },
+  {
+    "relative_path": "SE/StockholmE.RELEASE.sefw.plist",
+    "size_bytes": 205,
+    "sha256": "efcdd4bda0bee8968d3eb8988ba8d7c9a8fb2a34ec764393d646e5c7b26e158d",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "isp_bni/adc-silenus-v57.im4p",
+    "size_bytes": 29016091,
+    "sha256": "a8a783e909b17f88d1f4041b5c50b5902e1ea2acc5ffcbb02287dfd759ca8615",
+    "extension": ".im4p",
+    "roles": [
+      "ISP"
+    ]
+  },
+  {
+    "relative_path": "agx/armfw1_g18p.im4p",
+    "size_bytes": 3313873,
+    "sha256": "22b7c5dbfcfe818af2aa96ef6c58dd2ca3ea056835db80892bc0a7a61bd74645",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,GFX1Firmware"
+    ]
+  },
+  {
+    "relative_path": "agx/armfw_g18p.im4p",
+    "size_bytes": 3510409,
+    "sha256": "2c3d3d88483a05264f8163ea12d6139deea760d0ef4993f6c0207cf0f2eb1e6e",
+    "extension": ".im4p",
+    "roles": [
+      "GFX"
+    ]
+  },
+  {
+    "relative_path": "msr/t8150.msrf.im4p",
+    "size_bytes": 161917,
+    "sha256": "a975ff160716da4fd7e9fd7d209679814588a7e6e4a8bbbbe9f7c4494f2f2c84",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,MSRFirmware"
+    ]
+  },
+  {
+    "relative_path": "msr/t8150.rmsr.im4p",
+    "size_bytes": 161917,
+    "sha256": "f10c3730da096a0b8c3be1c775d4310450f407b72cc74c64ddf1d6b3733899e6",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,RestoreMSRFirmware"
+    ]
+  },
+  {
+    "relative_path": "embeddedaudioresources/image4/v57-boot-chime.im4p",
+    "size_bytes": 582555,
+    "sha256": "89adb62068f08a3a91a60a24be4cc1314e48306c1eae3cdbdac3b00430ad3cbe",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,AudioBootChime"
+    ]
+  },
+  {
+    "relative_path": "ane/h18_ane_fw_apollo_v5x.im4p",
+    "size_bytes": 1540121,
+    "sha256": "af0dfb13de0214f4670ead381d5780a5d467ad194e90d485583b6c32e40caacb",
+    "extension": ".im4p",
+    "roles": [
+      "ANE"
+    ]
+  },
+  {
+    "relative_path": "pmp/t8150pmp.im4p",
+    "size_bytes": 643097,
+    "sha256": "d6d14aa72564ebee3eaee23310ae8e6f6eb2cc25f8ba87e2d104d7757b87c64d",
+    "extension": ".im4p",
+    "roles": [
+      "PMP"
+    ]
+  },
+  {
+    "relative_path": "pmc/t8150pmcfw.im4p",
+    "size_bytes": 30235,
+    "sha256": "af1c0cea5be09eaff338c8ad85736aafb40e3b1d731389ac87b2362bf145747f",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,ApplePMCFirmware"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch0",
+    "size_bytes": 24436,
+    "sha256": "207a3368402779f3a9416996c16b508f49b5f734b72b3a7b33f6de75ef35e91c",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatch0"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch0.plist",
+    "size_bytes": 1052,
+    "sha256": "014130fca88a0b4a32b38a01b3e5028e50b77b04d91ed14181e753911d71e5ec",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch1",
+    "size_bytes": 24436,
+    "sha256": "48771aaf7d840a60160f0c8a72fe8dec3eb5d603f3e5014eca1d6cd833bc82fb",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatch1"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch1.plist",
+    "size_bytes": 1048,
+    "sha256": "d13f28f7334e78d9b194ebeaaddfce3f3eeb868051853b7cf2efb7b7b34367c7",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch2",
+    "size_bytes": 24436,
+    "sha256": "207a3368402779f3a9416996c16b508f49b5f734b72b3a7b33f6de75ef35e91c",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatch2"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch2.plist",
+    "size_bytes": 404,
+    "sha256": "594b5133eebbade0baba4018edabfa66977c21cb76d0f017df4683b6b0860e2e",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch3",
+    "size_bytes": 24436,
+    "sha256": "48771aaf7d840a60160f0c8a72fe8dec3eb5d603f3e5014eca1d6cd833bc82fb",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatch3"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch3.plist",
+    "size_bytes": 403,
+    "sha256": "c3682d37c595a4193d93dbd2a2d66af6218312d30a32e94be5c976d994c3ed64",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch4",
+    "size_bytes": 24436,
+    "sha256": "207a3368402779f3a9416996c16b508f49b5f734b72b3a7b33f6de75ef35e91c",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatch4"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch4.plist",
+    "size_bytes": 404,
+    "sha256": "c9851fd1b9459e3f928a092e098c86df396649611ac1d731a7ed717757863c7d",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch5",
+    "size_bytes": 24436,
+    "sha256": "48771aaf7d840a60160f0c8a72fe8dec3eb5d603f3e5014eca1d6cd833bc82fb",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatch5"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch5.plist",
+    "size_bytes": 403,
+    "sha256": "5f4b33aa7fb9b2152f35cdbb7eb1db82d92c757ace15e45158d0533497582f46",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch6",
+    "size_bytes": 24436,
+    "sha256": "207a3368402779f3a9416996c16b508f49b5f734b72b3a7b33f6de75ef35e91c",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatch6"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch6.plist",
+    "size_bytes": 404,
+    "sha256": "4699ed3ac5d6c9ebe9df8576fa56a248c3a16af4b526d4735880fffb1accd457",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch7",
+    "size_bytes": 24436,
+    "sha256": "48771aaf7d840a60160f0c8a72fe8dec3eb5d603f3e5014eca1d6cd833bc82fb",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatch7"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch7.plist",
+    "size_bytes": 403,
+    "sha256": "c43c4a12d3cffc772f1cde4a37c122e83cad7bf5400e6069a91e50acbc56f02c",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch8",
+    "size_bytes": 1348,
+    "sha256": "2fb0501810be04de0d4978650cd58f4303ae542a1422db17fc286e3e3c78f324",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatch8"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch8.plist",
+    "size_bytes": 1052,
+    "sha256": "8c7d74436f8f50ab3e914b15ec4c3c0315eaec80f24f5702938f77eb9d811f1c",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch9",
+    "size_bytes": 1348,
+    "sha256": "169e0451b8fe693914bed821d57df50eae886d061b0c28b425bb0662aac96ecb",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatch9"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatch9.plist",
+    "size_bytes": 1048,
+    "sha256": "8d54f2cd9bb2974fa023346930d9db487ba8c81e019e39353b2c2fe098b0e3fb",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchA",
+    "size_bytes": 1348,
+    "sha256": "2fb0501810be04de0d4978650cd58f4303ae542a1422db17fc286e3e3c78f324",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatchA"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchA.plist",
+    "size_bytes": 404,
+    "sha256": "9de23f7b747f15947dd5da088518561b093a61db55946d38d0f504114bdb2892",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchB",
+    "size_bytes": 1348,
+    "sha256": "169e0451b8fe693914bed821d57df50eae886d061b0c28b425bb0662aac96ecb",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatchB"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchB.plist",
+    "size_bytes": 403,
+    "sha256": "9526211043498ab9135b4caf41b014995e344edce2865646050e263f627cdfab",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchC",
+    "size_bytes": 1348,
+    "sha256": "2fb0501810be04de0d4978650cd58f4303ae542a1422db17fc286e3e3c78f324",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatchC"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchC.plist",
+    "size_bytes": 404,
+    "sha256": "dcb5f12e75bbcaf2e5afab1d5d0cb97c0b834319c09dd2075d9f8af036ccc82c",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchD",
+    "size_bytes": 1348,
+    "sha256": "169e0451b8fe693914bed821d57df50eae886d061b0c28b425bb0662aac96ecb",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatchD"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchD.plist",
+    "size_bytes": 403,
+    "sha256": "bf118f8df9615a0386d0d4dbc8ba47f64bdbc978adde950755d896f564df9a52",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchE",
+    "size_bytes": 1348,
+    "sha256": "2fb0501810be04de0d4978650cd58f4303ae542a1422db17fc286e3e3c78f324",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatchE"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchE.plist",
+    "size_bytes": 404,
+    "sha256": "52bc619ccdd71d43e0d10a7d6b7168a4aef4ec4ed17dcb7063fab61427410411",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchF",
+    "size_bytes": 1348,
+    "sha256": "169e0451b8fe693914bed821d57df50eae886d061b0c28b425bb0662aac96ecb",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,FwPatchF"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,FwPatchF.plist",
+    "size_bytes": 403,
+    "sha256": "cc71fbd940eadacc214807989aec15b6eeea59d8e09c3a53ea485fd636bdf5dc",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,VideoPatch0",
+    "size_bytes": 17664,
+    "sha256": "91d249aaaa6012add82ce1bf575ed9415f2240b20880a6160c7df6fb3572c39b",
+    "extension": "",
+    "roles": [
+      "JasmineIR1,VideoPatch0",
+      "JasmineIR1,VideoPatch1",
+      "JasmineIR1,VideoPatch2",
+      "JasmineIR1,VideoPatch3",
+      "JasmineIR1,VideoPatch4",
+      "JasmineIR1,VideoPatch5",
+      "JasmineIR1,VideoPatch6",
+      "JasmineIR1,VideoPatch7"
+    ]
+  },
+  {
+    "relative_path": "Aries/JasmineIR1,VideoPatch0.plist",
+    "size_bytes": 1936,
+    "sha256": "a7bc38e3bf83eebef86ff1f3bb43a25e31f5efacef0437a0e439910ead5536f1",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "dfu/iBEC.v57.RELEASE.im4p",
+    "size_bytes": 1857067,
+    "sha256": "02cd652bf8e5aed804961b36849926fb3359fa6a0f5fa1edbf49bb690018b7af",
+    "extension": ".im4p",
+    "roles": [
+      "iBEC"
+    ]
+  },
+  {
+    "relative_path": "dfu/iBEC.v57.RESEARCH_RELEASE.im4p",
+    "size_bytes": 1887637,
+    "sha256": "a71372ee62353c675984cb934e7cd2f30926c3314e7bb70ca62d80c02807a521",
+    "extension": ".im4p",
+    "roles": [
+      "iBEC"
+    ]
+  },
+  {
+    "relative_path": "dfu/iBSS.v57.RELEASE.im4p",
+    "size_bytes": 1857527,
+    "sha256": "74ac23c137002b90c6d5d8ef201cf86e4f5d4fa4f0bae7ba92b917969b8ff3f7",
+    "extension": ".im4p",
+    "roles": [
+      "iBSS"
+    ]
+  },
+  {
+    "relative_path": "dfu/iBSS.v57.RESEARCH_RELEASE.im4p",
+    "size_bytes": 1888097,
+    "sha256": "dc635fca3ce474f8d85f0602e24a22eaf7af957eef49c49f48741ab55f0fdeb8",
+    "extension": ".im4p",
+    "roles": [
+      "iBSS"
+    ]
+  },
+  {
+    "relative_path": "WirelessPower/WirelessPower.d23_v5z.im4p",
+    "size_bytes": 240015,
+    "sha256": "d8da895111c244bbe84cc557c9020847c530ff3164bb0ea27a5f86950ce242a5",
+    "extension": ".im4p",
+    "roles": [
+      "WCHFirmwareUpdater"
+    ]
+  },
+  {
+    "relative_path": "t2026phoneG1/Release/ftab.bin",
+    "size_bytes": 29600848,
+    "sha256": "a8c830170b90a5e14a791f9b6698338cd7e9027e0bceda260877b3f44f165dab",
+    "extension": ".bin",
+    "roles": [
+      "Wireless1,ACIBT",
+      "Wireless1,ACIBTLPEM",
+      "Wireless1,ACIBTManuf",
+      "Wireless1,ACIWIFI",
+      "Wireless1,ACIWiFiTxManuf",
+      "Wireless1,BTSecondary",
+      "Wireless1,BTSecondaryManuf",
+      "Wireless1,CCPUApplicationFirmware",
+      "Wireless1,CoexRealTimeArbiter",
+      "Wireless1,PhyBlueTooth",
+      "Wireless1,PhyBlueTooth5G",
+      "Wireless1,PhyBlueTooth5GManuf",
+      "Wireless1,PhyBlueToothLPM",
+      "Wireless1,PhyBlueToothManuf",
+      "Wireless1,PhyBluetooth5GTrim",
+      "Wireless1,PhyBluetoothTrim",
+      "Wireless1,RTKitOS",
+      "Wireless1,RTKitOSLPEM",
+      "Wireless1,ScanBTLPEM",
+      "Wireless1,ScanBTManuf",
+      "Wireless1,ScanBluetooth",
+      "Wireless1,ScanWifi",
+      "Wireless1,ScanWifiManuf",
+      "Wireless1,WiFiRx",
+      "Wireless1,WiFiRxManuf",
+      "Wireless1,WiFiTx",
+      "Wireless1,WiFiTxManuf",
+      "Wireless1,Wifi2GLMAC",
+      "Wireless1,Wifi2GLMACManuf",
+      "Wireless1,Wifi2GLPhy",
+      "Wireless1,Wifi2GLPhyManuf",
+      "Wireless1,Wifi2GLPhyTrim",
+      "Wireless1,Wifi5GLMAC",
+      "Wireless1,Wifi5GLMACManuf",
+      "Wireless1,Wifi5GLPhy",
+      "Wireless1,Wifi5GLPhyManuf",
+      "Wireless1,Wifi5GLPhyTrim",
+      "Wireless1,WifiRegData"
+    ]
+  },
+  {
+    "relative_path": "ave/AppleAVE2FW_H18.im4p",
+    "size_bytes": 2687585,
+    "sha256": "faf92ec00ef4a7d47f8d533594003bc4ef1af3f96d2432166b6643816e9379c2",
+    "extension": ".im4p",
+    "roles": [
+      "AVE"
+    ]
+  },
+  {
+    "relative_path": "ave/AppleAVE2FW_H18_AVE0.im4p",
+    "size_bytes": 9543,
+    "sha256": "6bcbba7146a30a9b131001319104e1d5cae9d70a44f300b85c1605f5de460c22",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,AppleVideoEncoder0"
+    ]
+  },
+  {
+    "relative_path": "ave/AppleAVE2FW_H18_AVE1.im4p",
+    "size_bytes": 16463,
+    "sha256": "bc734399d26e3f7387757cc0c56acfb791297d68933eb98d26b7eaf93401ca74",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,AppleVideoEncoder1"
+    ]
+  },
+  {
+    "relative_path": "ave/AppleAVE2FW_H18_AVE2.im4p",
+    "size_bytes": 10763,
+    "sha256": "1e15af0dd6a3d7459ec829610d11da8acc597f501114d1a6377214d139b4c7f2",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,AppleVideoEncoder2"
+    ]
+  },
+  {
+    "relative_path": "ave/AppleAVE2FW_H18_AVE3.im4p",
+    "size_bytes": 9067,
+    "sha256": "6d87cf8a3ded795f375eb969c9e9913f92654f5093b82d2e03bbfe2b9d3fe0cc",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,AppleVideoEncoder3"
+    ]
+  },
+  {
+    "relative_path": "ave/AppleAVE2FW_H18_AVE4.im4p",
+    "size_bytes": 11327,
+    "sha256": "83c47583305d5dea9bb2bd5aa5178d0da0cebe4f2d5153fc01af1f55316596f8",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,AppleVideoEncoder4"
+    ]
+  },
+  {
+    "relative_path": "ave/AppleAVE2FW_H18_AVE5.im4p",
+    "size_bytes": 11003,
+    "sha256": "b2db8f82c393be83142cd54b24b5ac376e54c61b2c0ddd3e8d948be6250ece38",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,AppleVideoEncoder5"
+    ]
+  },
+  {
+    "relative_path": "ave/AppleAVE2FW_H18_AVE6.im4p",
+    "size_bytes": 8783,
+    "sha256": "cabdfe08031d95e9097ddd58cc0f079601739bb8b172a4ec60d55ffcc106ace1",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,AppleVideoEncoder6"
+    ]
+  },
+  {
+    "relative_path": "ave/AppleAVE2FW_H18_AVE7.im4p",
+    "size_bytes": 11943,
+    "sha256": "9d5155e24adb746d3accf9af3119eca2c916237da0865298438f0d488b47868c",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,AppleVideoEncoder7"
+    ]
+  },
+  {
+    "relative_path": "ave/AppleAVE2FW_H18_AVE8.im4p",
+    "size_bytes": 26303,
+    "sha256": "431412d31b1cd1b350e5267a386a60ae6f015802d99e3e848a8afa20a6b80189",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,AppleVideoEncoder8"
+    ]
+  },
+  {
+    "relative_path": "M3/bin/securem3fw-v57.im4p",
+    "size_bytes": 93189,
+    "sha256": "ec565fb5300348f623d19ec436c8c2098c0b96c1f15f61db88e93a9f8c5e67e7",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,RestoreSecureM3Firmware",
+      "Ap,SecureM3Firmware"
+    ]
+  },
+  {
+    "relative_path": "Summerville/Yonkers,SysTopPatch0",
+    "size_bytes": 200,
+    "sha256": "789ca24bc6f92149665ba32d87b1b2a2fd7914882d091acdf74415dd8e80c401",
+    "extension": "",
+    "roles": [
+      "Yonkers,SysTopPatch0",
+      "Yonkers,SysTopPatch2",
+      "Yonkers,SysTopPatch4",
+      "Yonkers,SysTopPatch6"
+    ]
+  },
+  {
+    "relative_path": "Summerville/Yonkers,SysTopPatch0.plist",
+    "size_bytes": 1056,
+    "sha256": "b13b46c9390b079dd7d9368c47972474e89eb31ee88c84808f32f97200ad43b0",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Summerville/Yonkers,SysTopPatch1",
+    "size_bytes": 200,
+    "sha256": "2adff92a323744020100823bbfa94b1293f99911db2c5e2877607bc71cfb6b3f",
+    "extension": "",
+    "roles": [
+      "Yonkers,SysTopPatch1",
+      "Yonkers,SysTopPatch3",
+      "Yonkers,SysTopPatch5",
+      "Yonkers,SysTopPatch7"
+    ]
+  },
+  {
+    "relative_path": "Summerville/Yonkers,SysTopPatch1.plist",
+    "size_bytes": 1052,
+    "sha256": "4269ceaa3181076dd9739528660b5119141acaa6559ead4a3d94d202c499eee5",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Summerville/Yonkers,SysTopPatch8",
+    "size_bytes": 184,
+    "sha256": "fd43f89009b80ec74cd214291c68507eccedb411ec708156024b41752a6eda58",
+    "extension": "",
+    "roles": [
+      "Yonkers,SysTopPatch8",
+      "Yonkers,SysTopPatchA",
+      "Yonkers,SysTopPatchC",
+      "Yonkers,SysTopPatchE"
+    ]
+  },
+  {
+    "relative_path": "Summerville/Yonkers,SysTopPatch8.plist",
+    "size_bytes": 1056,
+    "sha256": "14c3577f72f5b0c3a338a797a1eb696a0357c5aeb4195e69dd317eed71b8a368",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Summerville/Yonkers,SysTopPatch9",
+    "size_bytes": 184,
+    "sha256": "d4b3224e396e34a13eb91895bfe8be788c5b3cfdec442a32a1b218cb4f7b9dfd",
+    "extension": "",
+    "roles": [
+      "Yonkers,SysTopPatch9",
+      "Yonkers,SysTopPatchB",
+      "Yonkers,SysTopPatchD",
+      "Yonkers,SysTopPatchF"
+    ]
+  },
+  {
+    "relative_path": "Summerville/Yonkers,SysTopPatch9.plist",
+    "size_bytes": 1052,
+    "sha256": "e7569ecaaca022272ee9bcb083263532a0401223491f9c52d64df6392f7a14b6",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "dcp/t8150dcp.im4p",
+    "size_bytes": 2466452,
+    "sha256": "50ab10e626188e615e9c3b42c6e6cc1b474e8fa18d4fc8130058f3c24cd49e34",
+    "extension": ".im4p",
+    "roles": [
+      "DCP"
+    ]
+  },
+  {
+    "relative_path": "dcp/t8150dcp_restore.im4p",
+    "size_bytes": 2459437,
+    "sha256": "614d0a38e8f980e5774934a6cbeaf0aef9ce549e9128b5d991d6305ff96044fa",
+    "extension": ".im4p",
+    "roles": [
+      "RestoreDCP"
+    ]
+  },
+  {
+    "relative_path": "all_flash/DeviceTree.v57ap.im4p",
+    "size_bytes": 68878,
+    "sha256": "e022314b6b7f3d06b8143ad7606bf8b587cc8d0fa9434caf8f6314183763e37d",
+    "extension": ".im4p",
+    "roles": [
+      "DeviceTree",
+      "RestoreDeviceTree"
+    ]
+  },
+  {
+    "relative_path": "all_flash/LLB.v57.RELEASE.im4p",
+    "size_bytes": 1857527,
+    "sha256": "1b6cdae8c8dd5f7151253d6ab65f1ce8fa8e66f104c254b40bf913a79eda68fe",
+    "extension": ".im4p",
+    "roles": [
+      "LLB"
+    ]
+  },
+  {
+    "relative_path": "all_flash/LLB.v57.RESEARCH_RELEASE.im4p",
+    "size_bytes": 1888097,
+    "sha256": "a78a535a2ff66c44b50876fdeeaec1481f18493aa2708e017d01ed932b4801e0",
+    "extension": ".im4p",
+    "roles": [
+      "LLB"
+    ]
+  },
+  {
+    "relative_path": "all_flash/applelogo@3x-style0~iphone.im4p",
+    "size_bytes": 19194,
+    "sha256": "5de7a7e0de55e383593b37bf0431a9ef7fdf2eadbaf5168aeccdd482b529bfc4",
+    "extension": ".im4p",
+    "roles": [
+      "AppleLogo",
+      "RestoreLogo"
+    ]
+  },
+  {
+    "relative_path": "all_flash/iBoot.v57.RELEASE.im4p",
+    "size_bytes": 1857037,
+    "sha256": "da5e108ffad717d0170251b492ec99b7f47d649634529871c6b7719f1e257a26",
+    "extension": ".im4p",
+    "roles": [
+      "iBoot"
+    ]
+  },
+  {
+    "relative_path": "all_flash/iBoot.v57.RESEARCH_RELEASE.im4p",
+    "size_bytes": 1887607,
+    "sha256": "e37b68ef196e2bfd8888c0a206ac5780d7066ed5807b18dee9da5fdbccf101b4",
+    "extension": ".im4p",
+    "roles": [
+      "iBoot"
+    ]
+  },
+  {
+    "relative_path": "all_flash/iBootData.v57.RELEASE.im4p",
+    "size_bytes": 33817,
+    "sha256": "96965af680922fe8e34445c2962afa08d1c9e0d63679b8cc67513583bfa2ab4d",
+    "extension": ".im4p",
+    "roles": [
+      "iBootData"
+    ]
+  },
+  {
+    "relative_path": "all_flash/iBootData.v57.RESEARCH_RELEASE.im4p",
+    "size_bytes": 33817,
+    "sha256": "96965af680922fe8e34445c2962afa08d1c9e0d63679b8cc67513583bfa2ab4d",
+    "extension": ".im4p",
+    "roles": [
+      "iBootData"
+    ]
+  },
+  {
+    "relative_path": "all_flash/liquiddetect@2622~iphone-USBc-woven.im4p",
+    "size_bytes": 1060455,
+    "sha256": "ec6d184b8015eb475365ff96bae31c540ecfe586de8d2a67110c719a88188709",
+    "extension": ".im4p",
+    "roles": [
+      "Liquid"
+    ]
+  },
+  {
+    "relative_path": "all_flash/recoverymode@2622~iphone-USBc-woven.im4p",
+    "size_bytes": 2648356,
+    "sha256": "f7751a936dad909fe1bc7032f067ac0dcb93b63f2aa17e6941a411bc947aa6b0",
+    "extension": ".im4p",
+    "roles": [
+      "RecoveryMode"
+    ]
+  },
+  {
+    "relative_path": "all_flash/researchlogo@3x-style0~iphone.im4p",
+    "size_bytes": 60808,
+    "sha256": "a094be4c8ed153bedfb11ef6b74d8e00d3dc3fae296ff8b9d6759dd3d64501af",
+    "extension": ".im4p",
+    "roles": [
+      "AppleLogo",
+      "RestoreLogo"
+    ]
+  },
+  {
+    "relative_path": "all_flash/sep-firmware.v57.RELEASE.im4p",
+    "size_bytes": 7680809,
+    "sha256": "7007d31e38e6b3dbb6cb8e92e97feb0b7ce5fba396aac0b0bb7a6f1e09f0f4f1",
+    "extension": ".im4p",
+    "roles": [
+      "JasmineIR1,SepObject",
+      "RestoreSEP",
+      "SEP",
+      "Yonkers,SepObject"
+    ]
+  },
+  {
+    "relative_path": "all_flash/sep-firmware.v57.RELEASE.im4p.plist",
+    "size_bytes": 2890,
+    "sha256": "f8fdc6af3cc6fc74f59c268c36d48a4b1449e802588df6538d97cf371611d984",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "all_flash/sep-patches.v57.im4p",
+    "size_bytes": 21137,
+    "sha256": "d5ef5cb22a0cba5293f0bacac6c19f85cb954a6f5c4a1626a57baa4596bfe319",
+    "extension": ".im4p",
+    "roles": [
+      "SepStage1"
+    ]
+  },
+  {
+    "relative_path": "all_flash/sep-patches.v57.im4p.plist",
+    "size_bytes": 1158,
+    "sha256": "e665610ed8b9bd592e07904220d1214532ec10b9754b9fa91cf5bbe36a6c91e5",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "AOP/aopfw-v57aop.RELEASE.im4p",
+    "size_bytes": 5148697,
+    "sha256": "564c25205cd3839b19e906f93c75240351aec0efc961fed53bebee04749462f8",
+    "extension": ".im4p",
+    "roles": [
+      "AOP"
+    ]
+  },
+  {
+    "relative_path": "Volchok/X3357/DigestMap.der",
+    "size_bytes": 1792,
+    "sha256": "78992ebbae630ba4c0c979f34b40143151e7851f33207a86d2d820096ef7e9bd",
+    "extension": ".der",
+    "roles": [
+      "BMU,DigestMap"
+    ]
+  },
+  {
+    "relative_path": "Volchok/X3357/DigestMap.der.plist",
+    "size_bytes": 107,
+    "sha256": "6f97612ccb59445400ddbe2939a2987dc0aaec2339e9a5f3e85525755a55eb89",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Volchok/X3357/FirmwareMap.plist",
+    "size_bytes": 399747,
+    "sha256": "44aa46afe5a10c4857e595340e892fda6244c62ec503a1d594916399d3127d8e",
+    "extension": ".plist",
+    "roles": [
+      "BMU,FirmwareMap"
+    ]
+  },
+  {
+    "relative_path": "Volchok/X3357/FirmwareMap.plist.plist",
+    "size_bytes": 111,
+    "sha256": "49f735d392595a4787e29353d81108e3018c7d2a9f963c0b69bd61d31f5fbed7",
+    "extension": ".plist",
+    "roles": [
+      "Auxiliary / Coprocessor"
+    ]
+  },
+  {
+    "relative_path": "Rose/r2p1/ftab.bin",
+    "size_bytes": 1069300,
+    "sha256": "63c7fc4cf2438a32a0ef3f6dc39f6508280920b6fd0c15f9d8c9668b578cff3f",
+    "extension": ".bin",
+    "roles": [
+      "Rap,RTKitIOConfig",
+      "Rap,RTKitOS",
+      "Rap,SoftwareBinaryDsp1",
+      "SE,RapRTKitOS",
+      "SE,RapSwBinDsp"
+    ]
+  },
+  {
+    "relative_path": "image4/exclavecore_bundle.t8150.RELEASE.im4p",
+    "size_bytes": 31719658,
+    "sha256": "943592b56455ab9947e0299e29a40fc9274a68dc0548d72711b40c31cf09d731",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,cL4"
+    ]
+  },
+  {
+    "relative_path": "image4/exclavecore_bundle.t8150.RELEASE.restore.im4p",
+    "size_bytes": 18006250,
+    "sha256": "4087b38f3079aa98851fca63a2af956b23b94b252cc428983f44b28a8ba8ecbb",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,RestorecL4"
+    ]
+  },
+  {
+    "relative_path": "AppleLPM/AppleLPM.v57.release.im4p",
+    "size_bytes": 1269913,
+    "sha256": "f207330e8eddf369befc09284f07b96b559d3d798ed0b0fb71f1659623dbef76",
+    "extension": ".im4p",
+    "roles": [
+      "Ap,LowPowerMode"
+    ]
+  },
+  {
+    "relative_path": "AOP2/aop2fw-v57aop2.RELEASE.im4p",
+    "size_bytes": 5603353,
+    "sha256": "5970b3c2a5ac94fc8b13b337b687e32c0690b7f2ce458e777ae8b98f229e1e71",
+    "extension": ".im4p",
+    "roles": [
+      "AOP2"
+    ]
+  }
+]

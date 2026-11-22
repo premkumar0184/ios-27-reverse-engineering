@@ -1,0 +1,983 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "summary": {
+    "component": "Secure Page Table Monitor (SPTM)",
+    "target_soc": "t8150",
+    "target_hardware": "iPhone18,3",
+    "version": "820.40.24 (Darwin 27.2 / build 24B119)",
+    "base_virtual_address": "0xfffffff027004000",
+    "entry_point": "0xfffffff0270bc388",
+    "execution_level": "Guarded EL2",
+    "total_function_ids": 42,
+    "total_dispatch_tables": 17,
+    "architectural_role": "Secure Page Table Monitor (SPTM) is Apple's hypervisor-level memory supervisor executing in Guarded EL2 (GL2) on SoC T8150 under ARMv8.6+ Guarded Execution Feature (GXF). SPTM completely deprecates legacy Page Table Protection Layer (PPL) and APRR by enforcing Stage-2 translation isolation over the XNU kernel (EL1), mediating all physical memory frame retyping via 42 discrete function IDs and 17 dispatch tables, and strictly arbitrating hardware CTRR, GAPF, DART, and SART protection registers."
+  },
+  "metadata": {
+    "source_im4p": "iPhone18,3_27.2_24B119_Restore/Firmware/sptm.t8150.release.im4p",
+    "im4p_tag": "sptm",
+    "im4p_file_size": 216333,
+    "raw_payload_size": 1327136,
+    "compression_type": "lzfse",
+    "uuid": "6fb95ed6-be8a-39cf-862b-250ba7efd5a5",
+    "build_timestamp": "2026-10-03:14:50:35.671934"
+  },
+  "macho_structure": {
+    "header": {
+      "magic": "0xfeedfacf (MH_MAGIC_64)",
+      "cputype": "0x0100000c (CPU_TYPE_ARM64)",
+      "cpusubtype": "0xc0000002 (CPU_SUBTYPE_ARM64E)",
+      "filetype": "0x00000002 (MH_EXECUTE)",
+      "ncmds": 13,
+      "sizeofcmds": 2128,
+      "flags": "0x00200001 (MH_NOUNDEFS | MH_PIE)"
+    },
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0xfffffff027004000",
+        "vmsize": "0x00018000",
+        "fileoff": "0x00000000",
+        "filesize": "0x00018000",
+        "sections": [
+          {
+            "name": "__cstring",
+            "addr": "0xfffffff0270048b0",
+            "size": "0x00016126",
+            "offset": "0x000008b0"
+          },
+          {
+            "name": "__const",
+            "addr": "0xfffffff02701a9e0",
+            "size": "0x00000a74",
+            "offset": "0x000169e0"
+          },
+          {
+            "name": "__binname",
+            "addr": "0xfffffff02701b454",
+            "size": "0x00000040",
+            "offset": "0x00017454"
+          },
+          {
+            "name": "__chain_starts",
+            "addr": "0xfffffff02701b494",
+            "size": "0x00000014",
+            "offset": "0x00017494"
+          }
+        ]
+      },
+      {
+        "name": "__DATA_CONST",
+        "vmaddr": "0xfffffff02701c000",
+        "vmsize": "0x00008000",
+        "fileoff": "0x00018000",
+        "filesize": "0x00008000",
+        "sections": [
+          {
+            "name": "__const",
+            "addr": "0xfffffff02701c000",
+            "size": "0x00007c00",
+            "offset": "0x00018000"
+          }
+        ]
+      },
+      {
+        "name": "__LATE_CONST",
+        "vmaddr": "0xfffffff027024000",
+        "vmsize": "0x00090000",
+        "fileoff": "0x00020000",
+        "filesize": "0x00090000",
+        "sections": [
+          {
+            "name": "__late_const",
+            "addr": "0xfffffff027024000",
+            "size": "0x0008c890",
+            "offset": "0x00020000"
+          }
+        ]
+      },
+      {
+        "name": "__TEXT_EXEC",
+        "vmaddr": "0xfffffff0270b4000",
+        "vmsize": "0x00068000",
+        "fileoff": "0x000b0000",
+        "filesize": "0x00068000",
+        "sections": [
+          {
+            "name": "__text",
+            "addr": "0xfffffff0270b4000",
+            "size": "0x000625f0",
+            "offset": "0x000b0000"
+          },
+          {
+            "name": "__exc",
+            "addr": "0xfffffff027118000",
+            "size": "0x00002000",
+            "offset": "0x00114000"
+          }
+        ]
+      },
+      {
+        "name": "__LAST",
+        "vmaddr": "0xfffffff02711c000",
+        "vmsize": "0x00004000",
+        "fileoff": "0x00118000",
+        "filesize": "0x00004000",
+        "sections": [
+          {
+            "name": "__pinst",
+            "addr": "0xfffffff02711c000",
+            "size": "0x0000000c",
+            "offset": "0x00118000"
+          }
+        ]
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0xfffffff027120000",
+        "vmsize": "0x00010000",
+        "fileoff": "0x0011c000",
+        "filesize": "0x00010000",
+        "sections": [
+          {
+            "name": "__data",
+            "addr": "0xfffffff027120000",
+            "size": "0x0000000f",
+            "offset": "0x0011c000"
+          },
+          {
+            "name": "__auth_ptr",
+            "addr": "0xfffffff027120010",
+            "size": "0x00000018",
+            "offset": "0x0011c010"
+          },
+          {
+            "name": "__bss",
+            "addr": "0xfffffff027120080",
+            "size": "0x000060a8",
+            "offset": "0x0011c080"
+          },
+          {
+            "name": "__common",
+            "addr": "0xfffffff027126140",
+            "size": "0x00009088",
+            "offset": "0x00122140"
+          }
+        ]
+      },
+      {
+        "name": "__BOOTDATA",
+        "vmaddr": "0xfffffff027130000",
+        "vmsize": "0x00018000",
+        "fileoff": "0x0012c000",
+        "filesize": "0x00018000",
+        "sections": [
+          {
+            "name": "__data",
+            "addr": "0xfffffff027130000",
+            "size": "0x00018000",
+            "offset": "0x0012c000"
+          }
+        ]
+      },
+      {
+        "name": "__LINKEDIT",
+        "vmaddr": "0xfffffff027148000",
+        "vmsize": "0x00004000",
+        "fileoff": "0x00144000",
+        "filesize": "0x00000020",
+        "sections": []
+      }
+    ]
+  },
+  "entrypoints": {
+    "primary_entrypoint": {
+      "virtual_address": "0xfffffff0270bc388",
+      "file_offset": "0x000b8388",
+      "source_load_command": "LC_UNIXTHREAD",
+      "flavor": "ARM_THREAD_STATE64 (flavor=6, count=68)"
+    },
+    "boot_sequence": [
+      {
+        "phase": "1. Early Reset & Register Unlocking",
+        "description": "Primary CPU enters at __start (0xfffffff0270bc388) and branches to 0xfffffff0270bf000; clears OSLAR_EL1, masks DAIF asynchronous interrupts, and verifies boot arguments pointer from iBoot.",
+        "subroutines": [
+          "0xfffffff0270bf000",
+          "0xfffffff0270bf040",
+          "0xfffffff0270bf058"
+        ]
+      },
+      {
+        "phase": "2. Execution Level Verification & VHE Activation",
+        "description": "Inspects CurrentEL (asserts CurrentEL == 8 for EL2) and configures HCR_EL2 with TGE (bit 27) and E2H (bit 34) to enable Virtualization Host Extensions (VHE), zeroes CNTVOFF_EL2, and initializes HCRX_EL2.",
+        "subroutines": [
+          "0xfffffff0270bf0a8",
+          "0xfffffff0270bf0b4",
+          "0xfffffff0270bf0d0"
+        ]
+      },
+      {
+        "phase": "3. MMU & Translation Table Configuration",
+        "description": "Builds 3-level translation tables with 16KB granules, configures TCR_EL1 to 0x310800336511a511, loads TTBR0_EL1 and TTBR1_EL1, derives stack canary via pacga on 'STACKGRD', and enables MMU via SCTLR_EL1 (0x12001010fc14793d).",
+        "subroutines": [
+          "0xfffffff0270bf100",
+          "0xfffffff0270bf280",
+          "0xfffffff0270bf420"
+        ]
+      },
+      {
+        "phase": "4. Hardware Vector & GXF Registration",
+        "description": "Registers __exc vector base (0xfffffff027118000) into GL2_VBAR (S3_6_C15_C10_2), programs GL2 Entry Vector (S3_6_C15_C8_1) and Exit Vector (S3_6_C15_C8_2), and activates GXF.",
+        "subroutines": [
+          "0xfffffff0270bf924",
+          "0xfffffff0270bf93c",
+          "0xfffffff0270bf944"
+        ]
+      }
+    ],
+    "exception_base_address": "0xfffffff027118000"
+  },
+  "exception_vectors": {
+    "vector_table_address": "0xfffffff027118000",
+    "vector_table_size": "0x00002000",
+    "slots": [
+      {
+        "slot_index": 0,
+        "offset": "0x000",
+        "virtual_address": "0xfffffff027118000",
+        "context": "Current EL with SP0",
+        "exception_type": "Synchronous Exception",
+        "handler_type": "BRANCH",
+        "target_address": "0xfffffff0270b8168",
+        "disassembly": "b 0xfffffff0270b8168"
+      },
+      {
+        "slot_index": 1,
+        "offset": "0x080",
+        "virtual_address": "0xfffffff027118080",
+        "context": "Current EL with SP0",
+        "exception_type": "IRQ / vIRQ",
+        "handler_type": "BRANCH",
+        "target_address": "0xfffffff0270b75fc",
+        "disassembly": "b 0xfffffff0270b75fc"
+      },
+      {
+        "slot_index": 2,
+        "offset": "0x100",
+        "virtual_address": "0xfffffff027118100",
+        "context": "Current EL with SP0",
+        "exception_type": "FIQ / vFIQ",
+        "handler_type": "BRANCH",
+        "target_address": "0xfffffff0270b7718",
+        "disassembly": "b 0xfffffff0270b7718"
+      },
+      {
+        "slot_index": 3,
+        "offset": "0x180",
+        "virtual_address": "0xfffffff027118180",
+        "context": "Current EL with SP0",
+        "exception_type": "SError / vSError",
+        "handler_type": "BRANCH",
+        "target_address": "0xfffffff0270b7834",
+        "disassembly": "b 0xfffffff0270b7834"
+      },
+      {
+        "slot_index": 4,
+        "offset": "0x200",
+        "virtual_address": "0xfffffff027118200",
+        "context": "Current EL with SPx",
+        "exception_type": "Synchronous Exception",
+        "handler_type": "BRANCH",
+        "target_address": "0xfffffff0270b83a4",
+        "disassembly": "b 0xfffffff0270b83a4"
+      },
+      {
+        "slot_index": 5,
+        "offset": "0x280",
+        "virtual_address": "0xfffffff027118280",
+        "context": "Current EL with SPx",
+        "exception_type": "IRQ / vIRQ",
+        "handler_type": "PANIC_LOOP",
+        "target_address": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 6,
+        "offset": "0x300",
+        "virtual_address": "0xfffffff027118300",
+        "context": "Current EL with SPx",
+        "exception_type": "FIQ / vFIQ",
+        "handler_type": "PANIC_LOOP",
+        "target_address": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 7,
+        "offset": "0x380",
+        "virtual_address": "0xfffffff027118380",
+        "context": "Current EL with SPx",
+        "exception_type": "SError / vSError",
+        "handler_type": "PANIC_LOOP",
+        "target_address": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 8,
+        "offset": "0x400",
+        "virtual_address": "0xfffffff027118400",
+        "context": "Lower EL using AArch64",
+        "exception_type": "Synchronous Exception (Guest Trap Handler)",
+        "handler_type": "BRANCH",
+        "target_address": "0xfffffff0270b7ca4",
+        "disassembly": "b 0xfffffff0270b7ca4"
+      },
+      {
+        "slot_index": 9,
+        "offset": "0x480",
+        "virtual_address": "0xfffffff027118480",
+        "context": "Lower EL using AArch64",
+        "exception_type": "IRQ / vIRQ (Guest Interrupt)",
+        "handler_type": "BRANCH",
+        "target_address": "0xfffffff0270b7950",
+        "disassembly": "b 0xfffffff0270b7950"
+      },
+      {
+        "slot_index": 10,
+        "offset": "0x500",
+        "virtual_address": "0xfffffff027118500",
+        "context": "Lower EL using AArch64",
+        "exception_type": "FIQ / vFIQ (Guest Fast Interrupt)",
+        "handler_type": "BRANCH",
+        "target_address": "0xfffffff0270b7a6c",
+        "disassembly": "b 0xfffffff0270b7a6c"
+      },
+      {
+        "slot_index": 11,
+        "offset": "0x580",
+        "virtual_address": "0xfffffff027118580",
+        "context": "Lower EL using AArch64",
+        "exception_type": "SError / vSError (Guest System Error)",
+        "handler_type": "BRANCH",
+        "target_address": "0xfffffff0270b7b88",
+        "disassembly": "b 0xfffffff0270b7b88"
+      },
+      {
+        "slot_index": 12,
+        "offset": "0x600",
+        "virtual_address": "0xfffffff027118600",
+        "context": "Lower EL using AArch32",
+        "exception_type": "Synchronous Exception (Unsupported)",
+        "handler_type": "PANIC_LOOP",
+        "target_address": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 13,
+        "offset": "0x680",
+        "virtual_address": "0xfffffff027118680",
+        "context": "Lower EL using AArch32",
+        "exception_type": "IRQ / vIRQ (Unsupported)",
+        "handler_type": "PANIC_LOOP",
+        "target_address": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 14,
+        "offset": "0x700",
+        "virtual_address": "0xfffffff027118700",
+        "context": "Lower EL using AArch32",
+        "exception_type": "FIQ / vFIQ (Unsupported)",
+        "handler_type": "PANIC_LOOP",
+        "target_address": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      },
+      {
+        "slot_index": 15,
+        "offset": "0x780",
+        "virtual_address": "0xfffffff027118780",
+        "context": "Lower EL using AArch32",
+        "exception_type": "SError / vSError (Unsupported)",
+        "handler_type": "PANIC_LOOP",
+        "target_address": null,
+        "disassembly": "mov x0, #0xdead; wfe; b ."
+      }
+    ]
+  },
+  "stage2_translation_controls": {
+    "page_table_hierarchies": {
+      "guest_stage2_root_table": "XNU_STAGE2_ROOT_TABLE (Type 24, physical base mapped in VTTBR_EL2)",
+      "guest_stage2_page_table": "XNU_STAGE2_PAGE_TABLE (Type 25, intermediate translation granules)",
+      "ttbr_controls": [
+        {
+          "symbol": "TTBR0_EL12",
+          "description": "Guest user space translation table base register shadow"
+        },
+        {
+          "symbol": "TTBR1_EL12",
+          "description": "Guest kernel space translation table base register shadow"
+        },
+        {
+          "symbol": "VTTBR_EL2",
+          "description": "Virtualization Translation Table Base Register (holds 48-bit PA and 16-bit VMID)"
+        },
+        {
+          "symbol": "VTCR_EL2",
+          "description": "Virtualization Translation Control Register (0x061f000061002000 for 16KB granule)"
+        }
+      ]
+    },
+    "physical_page_tracking": {
+      "papt_management": {
+        "description": "Physical Address Page Table (PAPT) tracking engine maintaining physical frame ownership and cryptographic tags across memory domains.",
+        "tag_endpoint": "SPTM_FUNCTIONID_SPTM_TAG_PAPT_MULTIPAGE",
+        "untag_endpoint": "SPTM_FUNCTIONID_SPTM_UNTAG_PAPT_MULTIPAGE",
+        "violation_markers": [
+          "VIOLATION_PAPT_UNMAPPED_FRAME",
+          "VIOLATION_PAPT_TAG_MISMATCH",
+          "VIOLATION_PAPT_DOUBLE_TAG"
+        ]
+      },
+      "sapt_management": {
+        "description": "Secure Apple Remap Table (SAPT) supervisor preventing unauthorized aperture mapping into peripheral DMA spaces.",
+        "revoke_endpoint": "SPTM_FUNCTIONID_UNMAP_REGION",
+        "violation_markers": [
+          "VIOLATION_SAPT_PERMISSION_DENIED",
+          "VIOLATION_SAPT_INVALID_APERTURE"
+        ]
+      },
+      "page_retyping": {
+        "description": "Dynamic memory retyping engine mediating transitions between 59 distinct physical frame types to ensure strict privilege boundaries.",
+        "retype_function_id": "SPTM_FUNCTIONID_RETYPE",
+        "pinned_frames_handling": "Pinned kernel frames (XNU_ROZONE, SPTM_PAGE_TABLE) cannot be retyped to generic XNU_DEFAULT without explicit unmap and cryptographic deauthorization.",
+        "violation_markers": [
+          "VIOLATION_RETYPE_PINNED_FRAME",
+          "VIOLATION_RETYPE_INVALID_TRANSITION",
+          "VIOLATION_RETYPE_UNAUTHORIZED_CALLER"
+        ]
+      }
+    },
+    "stage2_tlb_operations": {
+      "function_id": "SPTM_FUNCTIONID_GUEST_STAGE2_TLBOP",
+      "tlb_broadcast_routine": "TLBI IPAS2E1IS (Stage-2 Inner-Shareable Invalidation by Intermediate Physical Address)",
+      "bootstrap_tlbi_routine": "TLBI VMALLE1IS (Invalidate all Stage-1 and Stage-2 translations for current VMID)",
+      "gmmu_tlbi_handling": "Guarded MMU TLB invalidation enforced with 8-byte aligned verification registers."
+    },
+    "guest_virtualization": {
+      "va_to_ipa_function_id": "SPTM_FUNCTIONID_GUEST_VA_TO_IPA",
+      "dispatch_function_id": "SPTM_FUNCTIONID_GUEST_DISPATCH",
+      "exit_function_id": "SPTM_FUNCTIONID_GUEST_EXIT",
+      "guest_enter_routine": "SPR_GXF_ENTER (0xfffffff0270bf858)"
+    },
+    "subpage_protections": {
+      "surt_alloc_function_id": "SPTM_FUNCTIONID_SURT_ALLOC",
+      "surt_free_function_id": "SPTM_FUNCTIONID_SURT_FREE",
+      "condemn_leaf_table_id": "SPTM_FUNCTIONID_CONDEMN_LEAF_TABLE",
+      "uncondemn_leaf_table_id": "SPTM_FUNCTIONID_UNCONDEMN_LEAF_TABLE"
+    }
+  },
+  "hardware_protection_registers": {
+    "ctrr_protection": {
+      "device_tree_property": "key-sptm-ctrr",
+      "description": "Configurable Translation Read-Only Region (CTRR) locking firmware code and read-only structures in hardware registers, preventing write operations even from EL2 hypervisor context.",
+      "protected_frame_types": [
+        "SPTM_PAGE_TABLE",
+        "SPTM_CODE",
+        "XNU_ROZONE",
+        "TXM_SLAB_TRUST_CACHE"
+      ]
+    },
+    "gapf_protection": {
+      "enable_register_prop": "sptm-gapf-enable-reg",
+      "lock_register_prop": "sptm-gapf-lock-reg",
+      "aop_lock_register": "aop_gapf_lock_reg",
+      "description": "Guarded Address Protection Filter (GAPF) enforcing hardware aperture filtering across CPU and AOP/coprocessor memory buses."
+    },
+    "el2_tag_offset": {
+      "register_name": "TagOffset_EL2",
+      "lock_verification": "Evaluates MTE/PAC memory tag offsets at EL2 boot and commits lock bit before passing execution to XNU.",
+      "mismatch_handling": "Fatal monitor panic and hardware halt upon tag offset discrepancy."
+    },
+    "gmmu_tlbi_verification": {
+      "register_name": "GMMU_TLBI_STATUS",
+      "alignment_constraint": "8B-aligned",
+      "description": "Guarded Memory Management Unit TLBI operation verification requiring 8-byte alignment on all TLB shootdown descriptor blocks."
+    },
+    "dart_and_sart_registers": {
+      "t8110_dart_clock_protection": "Hardware clock gating and write-lockout registers for t8110dart DART Gen3 IOMMU units.",
+      "relaxed_rw_protections": "Restricted DMA read-write aperture boundaries preventing peripheral DMA controllers from addressing SPTM or TXM memory ranges.",
+      "sart_state_machine": "Secure Apple Remap Table state machine hardware controller for coprocessor aperture isolation.",
+      "shart_controller": "Shared Hardware Address Remap Table controller for inter-SoC memory mediation."
+    },
+    "io_filter_registers": {
+      "protected_write_function_id": "SPTM_FUNCTIONID_IOFILTER_PROTECTED_WRITE",
+      "alignment_checks": "Enforces 4-byte and 8-byte memory alignment on all MMIO writes directed to protected hardware registers.",
+      "bounds_checks": "Asserts destination physical address falls within certified SoC peripheral aperture ranges."
+    }
+  },
+  "dispatch_tables": [
+    {
+      "table_id": 0,
+      "name": "SPTM_DISPATCH_TABLE",
+      "target_domain": "MASTER",
+      "description": "Master domain dispatch lookup table"
+    },
+    {
+      "table_id": 1,
+      "name": "SPTM_DISPATCH_TABLE_XNU_BOOTSTRAP",
+      "target_domain": "XNU_BOOTSTRAP",
+      "description": "XNU kernel early initialization dispatch table"
+    },
+    {
+      "table_id": 2,
+      "name": "SPTM_DISPATCH_TABLE_TXM_BOOTSTRAP",
+      "target_domain": "TXM_BOOTSTRAP",
+      "description": "TXM code signing monitor bootstrap dispatch table"
+    },
+    {
+      "table_id": 3,
+      "name": "SPTM_DISPATCH_TABLE_SK_BOOTSTRAP",
+      "target_domain": "SK_BOOTSTRAP",
+      "description": "Secure Kernel / ExclaveCore bootstrap dispatch table"
+    },
+    {
+      "table_id": 4,
+      "name": "SPTM_DISPATCH_TABLE_T8110_DART_XNU",
+      "target_domain": "DART_XNU",
+      "description": "T8110 DART IOMMU controller dispatch table for XNU DMA"
+    },
+    {
+      "table_id": 5,
+      "name": "SPTM_DISPATCH_TABLE_T8110_DART_SK",
+      "target_domain": "DART_SK",
+      "description": "T8110 DART IOMMU controller dispatch table for Secure Kernel"
+    },
+    {
+      "table_id": 6,
+      "name": "SPTM_DISPATCH_TABLE_SART",
+      "target_domain": "SART",
+      "description": "Secure Apple Remap Table controller dispatch table"
+    },
+    {
+      "table_id": 7,
+      "name": "SPTM_DISPATCH_TABLE_NVME",
+      "target_domain": "NVME",
+      "description": "NVMe controller DMA queue validation dispatch table"
+    },
+    {
+      "table_id": 8,
+      "name": "SPTM_DISPATCH_TABLE_UAT",
+      "target_domain": "UAT",
+      "description": "Unified Address Translation memory management dispatch table"
+    },
+    {
+      "table_id": 9,
+      "name": "SPTM_DISPATCH_TABLE_SHART",
+      "target_domain": "SHART",
+      "description": "Shared Hardware Address Remap Table controller dispatch table"
+    },
+    {
+      "table_id": 10,
+      "name": "SPTM_DISPATCH_TABLE_CPUTRACE",
+      "target_domain": "CPUTRACE",
+      "description": "Hardware CPU trace and CoreSight diagnostic dispatch table"
+    },
+    {
+      "table_id": 11,
+      "name": "SPTM_DISPATCH_TABLE_HIB",
+      "target_domain": "HIBERNATION",
+      "description": "System sleep and hibernation coordination dispatch table"
+    },
+    {
+      "table_id": 12,
+      "name": "SPTM_DISPATCH_TABLE_GEN3_DART_XNU",
+      "target_domain": "DART_XNU",
+      "description": "Gen3 DART peripheral controller dispatch table for XNU"
+    },
+    {
+      "table_id": 13,
+      "name": "SPTM_DISPATCH_TABLE_GEN3_DART_SK",
+      "target_domain": "DART_SK",
+      "description": "Gen3 DART peripheral controller dispatch table for Secure Kernel"
+    },
+    {
+      "table_id": 14,
+      "name": "SPTM_DISPATCH_TABLE_T6000_DART_XNU",
+      "target_domain": "DART_XNU",
+      "description": "Legacy T6000 DART compatibility dispatch table"
+    },
+    {
+      "table_id": 15,
+      "name": "SPTM_DISPATCH_TABLE_T8020_DART_XNU",
+      "target_domain": "DART_XNU",
+      "description": "Legacy T8020 DART compatibility dispatch table"
+    },
+    {
+      "table_id": 16,
+      "name": "SPTM_DISPATCH_TABLE_RESERVED2",
+      "target_domain": "RESERVED",
+      "description": "Reserved internal hardware dispatch table"
+    }
+  ],
+  "function_ids": [
+    {
+      "index": 0,
+      "name": "SPTM_FUNCTIONID_LOCKDOWN",
+      "category": "SYSTEM_LOCKDOWN",
+      "description": "Initiates monitor hardware lockdown, transitions CTRR/GAPF to read-only, and seals early boot structures."
+    },
+    {
+      "index": 1,
+      "name": "SPTM_FUNCTIONID_RETYPE",
+      "category": "MEMORY_RETYPING",
+      "description": "Validates and executes dynamic physical frame retyping between authenticated domain types (e.g. XNU_DEFAULT to XNU_PAGE_TABLE)."
+    },
+    {
+      "index": 2,
+      "name": "SPTM_FUNCTIONID_MAP_PAGE",
+      "category": "PAGE_TABLE_MAPPING",
+      "description": "Installs a validated Stage-1 page table entry for guest virtual addresses, preventing executable mapping without TXM authorization."
+    },
+    {
+      "index": 3,
+      "name": "SPTM_FUNCTIONID_MAP_TABLE",
+      "category": "PAGE_TABLE_MAPPING",
+      "description": "Allocates and links an intermediate translation table level into the active guest hierarchy."
+    },
+    {
+      "index": 4,
+      "name": "SPTM_FUNCTIONID_UNMAP_TABLE",
+      "category": "PAGE_TABLE_MAPPING",
+      "description": "Unlinks and deallocates an intermediate page table level after flushing associated TLB cache lines."
+    },
+    {
+      "index": 5,
+      "name": "SPTM_FUNCTIONID_UPDATE_REGION",
+      "category": "REGION_MANAGEMENT",
+      "description": "Modifies access permissions (Read/Write/Execute) across a contiguous virtual memory range."
+    },
+    {
+      "index": 6,
+      "name": "SPTM_FUNCTIONID_UPDATE_DISJOINT",
+      "category": "REGION_MANAGEMENT",
+      "description": "Applies permission updates across non-contiguous physical memory frames in a single atomic transaction."
+    },
+    {
+      "index": 7,
+      "name": "SPTM_FUNCTIONID_UNMAP_REGION",
+      "category": "REGION_MANAGEMENT",
+      "description": "Revokes mappings and restores physical frames across a designated guest virtual range."
+    },
+    {
+      "index": 8,
+      "name": "SPTM_FUNCTIONID_UNMAP_DISJOINT",
+      "category": "REGION_MANAGEMENT",
+      "description": "Revokes discontinuous page mappings across disjoint address ranges."
+    },
+    {
+      "index": 9,
+      "name": "SPTM_FUNCTIONID_CONFIGURE_SHAREDREGION",
+      "category": "SHARED_REGION",
+      "description": "Configures system shared region root tables (dyld shared cache apertures) with enforced read-only boundaries."
+    },
+    {
+      "index": 10,
+      "name": "SPTM_FUNCTIONID_NEST_REGION",
+      "category": "SHARED_REGION",
+      "description": "Nests a shared sub-hierarchy into a guest process address space with shared translation caching."
+    },
+    {
+      "index": 11,
+      "name": "SPTM_FUNCTIONID_UNNEST_REGION",
+      "category": "SHARED_REGION",
+      "description": "Detaches a nested translation sub-hierarchy and purges associated guest TLB entries."
+    },
+    {
+      "index": 12,
+      "name": "SPTM_FUNCTIONID_CONFIGURE_ROOT",
+      "category": "PAGE_TABLE_ROOT",
+      "description": "Initializes and authenticates a guest user-space or kernel root translation table (TTBR0/TTBR1)."
+    },
+    {
+      "index": 13,
+      "name": "SPTM_FUNCTIONID_SWITCH_ROOT",
+      "category": "PAGE_TABLE_ROOT",
+      "description": "Executes context switch by updating guest TTBR0_EL12 and validating ASID generation counters."
+    },
+    {
+      "index": 14,
+      "name": "SPTM_FUNCTIONID_REGISTER_CPU",
+      "category": "CPU_TOPOLOGY",
+      "description": "Registers a secondary CPU core during SMP warm boot and configures per-CPU SPTM context data structures."
+    },
+    {
+      "index": 15,
+      "name": "SPTM_FUNCTIONID_FIXUPS_COMPLETE",
+      "category": "DYNAMIC_LINKING",
+      "description": "Signals completion of chained pointer rebasing and locks down authenticated pointer data segments."
+    },
+    {
+      "index": 16,
+      "name": "SPTM_FUNCTIONID_SIGN_USER_POINTER",
+      "category": "PAC_MANAGEMENT",
+      "description": "Signs a user-space return pointer or function pointer using hardware PAC with domain-specific modifiers."
+    },
+    {
+      "index": 17,
+      "name": "SPTM_FUNCTIONID_AUTH_USER_POINTER",
+      "category": "PAC_MANAGEMENT",
+      "description": "Authenticates a user-space PAC-signed pointer, trapping on signature failure."
+    },
+    {
+      "index": 18,
+      "name": "SPTM_FUNCTIONID_REGISTER_EXC_RETURN",
+      "category": "EXCEPTION_HANDLING",
+      "description": "Registers an authenticated exception return context (SPSR, ELR) for safe return to Lower EL."
+    },
+    {
+      "index": 19,
+      "name": "SPTM_FUNCTIONID_CPU_ID",
+      "category": "CPU_TOPOLOGY",
+      "description": "Returns physical hardware CPU identification and core affinity masks."
+    },
+    {
+      "index": 20,
+      "name": "SPTM_FUNCTIONID_SLIDE_REGION",
+      "category": "REGION_MANAGEMENT",
+      "description": "Adjusts address space layout randomization (ASLR) slides for mapped firmware modules."
+    },
+    {
+      "index": 21,
+      "name": "SPTM_FUNCTIONID_UPDATE_DISJOINT_MULTIPAGE",
+      "category": "REGION_MANAGEMENT",
+      "description": "Optimized bulk permission update for discontinuous multi-page memory spans."
+    },
+    {
+      "index": 22,
+      "name": "SPTM_FUNCTIONID_GUEST_VA_TO_IPA",
+      "category": "STAGE2_TRANSLATION",
+      "description": "Translates a guest virtual address to Intermediate Physical Address (IPA) via Stage-1 address walk."
+    },
+    {
+      "index": 23,
+      "name": "SPTM_FUNCTIONID_GUEST_STAGE1_TLBOP",
+      "category": "STAGE1_TLB",
+      "description": "Executes Stage-1 TLB invalidation operations across inner-shareable core domains."
+    },
+    {
+      "index": 24,
+      "name": "SPTM_FUNCTIONID_GUEST_STAGE2_TLBOP",
+      "category": "STAGE2_TLB",
+      "description": "Executes Stage-2 TLB invalidation operations (TLBI IPAS2E1IS) ensuring hypervisor-level cache coherency."
+    },
+    {
+      "index": 25,
+      "name": "SPTM_FUNCTIONID_GUEST_DISPATCH",
+      "category": "GUEST_EXECUTION",
+      "description": "Dispatches an authorized hypercall invocation from guest EL1 to monitor subsystem."
+    },
+    {
+      "index": 26,
+      "name": "SPTM_FUNCTIONID_GUEST_EXIT",
+      "category": "GUEST_EXECUTION",
+      "description": "Returns execution from Guarded EL2 monitor context back to calling guest domain."
+    },
+    {
+      "index": 27,
+      "name": "SPTM_FUNCTIONID_HIB_BEGIN",
+      "category": "HIBERNATION",
+      "description": "Prepares system memory for hibernation by freezing dynamic page retyping and capturing wired state."
+    },
+    {
+      "index": 28,
+      "name": "SPTM_FUNCTIONID_HIB_VERIFY_HASH_NON_WIRED",
+      "category": "HIBERNATION",
+      "description": "Validates cryptographic SHA-256 hash tree over non-wired hibernation memory pages."
+    },
+    {
+      "index": 29,
+      "name": "SPTM_FUNCTIONID_HIB_FINALIZE_NON_WIRED",
+      "category": "HIBERNATION",
+      "description": "Finalizes hibernation restore sequence, verifying NVMe image HMAC before unfreezing execution."
+    },
+    {
+      "index": 30,
+      "name": "SPTM_FUNCTIONID_IOFILTER_PROTECTED_WRITE",
+      "category": "IO_FILTERING",
+      "description": "Performs bounds-checked, aligned MMIO writes to protected hardware peripheral registers."
+    },
+    {
+      "index": 31,
+      "name": "SPTM_FUNCTIONID_SPTM_TAG_PAPT_MULTIPAGE",
+      "category": "PAPT_MANAGEMENT",
+      "description": "Applies cryptographic PAPT tags across multiple physical memory frames to assert monitor ownership."
+    },
+    {
+      "index": 32,
+      "name": "SPTM_FUNCTIONID_SPTM_UNTAG_PAPT_MULTIPAGE",
+      "category": "PAPT_MANAGEMENT",
+      "description": "Removes PAPT tags from physical frames upon deallocation or transition to external coprocessor domain."
+    },
+    {
+      "index": 33,
+      "name": "SPTM_FUNCTIONID_SET_SHARED_REGION",
+      "category": "SHARED_REGION",
+      "description": "Registers the global system shared cache physical memory aperture with Stage-2 read-only attributes."
+    },
+    {
+      "index": 34,
+      "name": "SPTM_FUNCTIONID_BATCH_SIGN_USER_POINTER",
+      "category": "PAC_MANAGEMENT",
+      "description": "High-throughput batch PAC signing service for userland execution runtimes."
+    },
+    {
+      "index": 35,
+      "name": "SPTM_FUNCTIONID_SURT_ALLOC",
+      "category": "SURT_SUBPAGE",
+      "description": "Allocates a Subpage User Root Table (SURT) structure for fine-grained page protection."
+    },
+    {
+      "index": 36,
+      "name": "SPTM_FUNCTIONID_SURT_FREE",
+      "category": "SURT_SUBPAGE",
+      "description": "Deallocates a Subpage User Root Table structure and returns physical pages to pool."
+    },
+    {
+      "index": 37,
+      "name": "SPTM_FUNCTIONID_CONDEMN_LEAF_TABLE",
+      "category": "PAGE_TABLE_LEAF",
+      "description": "Marks a leaf translation table as condemned, prohibiting further PTE installations prior to teardown."
+    },
+    {
+      "index": 38,
+      "name": "SPTM_FUNCTIONID_UNCONDEMN_LEAF_TABLE",
+      "category": "PAGE_TABLE_LEAF",
+      "description": "Restores a previously condemned leaf translation table if teardown was aborted."
+    },
+    {
+      "index": 39,
+      "name": "SPTM_FUNCTIONID_SPTM_SERIAL_PUTC",
+      "category": "SERIAL_DEBUG",
+      "description": "Outputs a single character to hardware UART serial console for low-level monitor debugging."
+    },
+    {
+      "index": 40,
+      "name": "SPTM_FUNCTIONID_SPTM_SERIAL_DISABLE",
+      "category": "SERIAL_DEBUG",
+      "description": "Disables hardware UART serial output upon completion of system bootstrap."
+    },
+    {
+      "index": 41,
+      "name": "SPTM_FUNCTIONID_OUTPUT_AREA",
+      "category": "TELEMETRY_LOGGING",
+      "description": "Manages dedicated circular telemetry and error logging buffer in secure memory."
+    }
+  ],
+  "trust_domain_boundaries": {
+    "domains": [
+      {
+        "domain": "EXEC_MODE_SPTM_DEFAULT",
+        "privilege_level": "Guarded EL2",
+        "role": "SPTM Monitor execution, stage-2 MMU supervisor"
+      },
+      {
+        "domain": "EXEC_MODE_SK_DEFAULT",
+        "privilege_level": "Guarded EL1",
+        "role": "Secure Kernel / ExclaveCore execution domain"
+      },
+      {
+        "domain": "EXEC_MODE_TXM_DEFAULT",
+        "privilege_level": "Guarded EL1",
+        "role": "Trusted Execution Monitor execution domain"
+      },
+      {
+        "domain": "EXEC_MODE_XNU_DEFAULT",
+        "privilege_level": "EL1",
+        "role": "XNU Kernel execution domain"
+      },
+      {
+        "domain": "EXEC_MODE_XNU_ROZONE_RW",
+        "privilege_level": "EL1 (Ephemeral)",
+        "role": "Temporary XNU Read-Only Zone write window"
+      },
+      {
+        "domain": "EXEC_MODE_XNU_USER_DEFAULT",
+        "privilege_level": "EL0",
+        "role": "Standard user space applications and daemons"
+      },
+      {
+        "domain": "EXEC_MODE_XNU_USER_JIT_RW",
+        "privilege_level": "EL0 (Ephemeral)",
+        "role": "JIT compiler write window for WebKit"
+      },
+      {
+        "domain": "EXEC_MODE_XNU_USER_TPRO_RW",
+        "privilege_level": "EL0 (Ephemeral)",
+        "role": "Thread-Protection register configuration window"
+      }
+    ],
+    "cross_domain_state_machine": [
+      {
+        "state": "STATE_CORE_RESET",
+        "description": "Initial CPU reset state before MMU or VHE configuration"
+      },
+      {
+        "state": "STATE_MONITOR_INIT",
+        "description": "Early monitor bootstrapping and translation table setup"
+      },
+      {
+        "state": "STATE_VHE_ACTIVE",
+        "description": "Virtualization Host Extensions enabled with EL2 host mode"
+      },
+      {
+        "state": "STATE_GUEST_XNU_ACTIVE",
+        "description": "XNU kernel executing in EL1 context under Stage-2 supervision"
+      },
+      {
+        "state": "STATE_GUEST_TXM_ACTIVE",
+        "description": "TXM executing in Guarded EL1 context for Image4 authentication"
+      },
+      {
+        "state": "STATE_GUEST_SK_ACTIVE",
+        "description": "ExclaveCore / Secure Kernel active in isolated domain"
+      },
+      {
+        "state": "STATE_PANIC_LOCKED",
+        "description": "Terminal panic state with halted execution and preserved crash registers"
+      }
+    ],
+    "inter_domain_endpoints": [
+      {
+        "endpoint": "XNU_TO_SPTM_TRAP",
+        "caller_domain": "EXEC_MODE_XNU_DEFAULT",
+        "callee_domain": "EXEC_MODE_SPTM_DEFAULT",
+        "purpose": "Supervisor call (svc #0) requesting page table mapping or retyping"
+      },
+      {
+        "endpoint": "TXM_TO_SPTM_GL2",
+        "caller_domain": "EXEC_MODE_TXM_DEFAULT",
+        "callee_domain": "EXEC_MODE_SPTM_DEFAULT",
+        "purpose": "Guarded hypercall (0xd4e00000) requesting Stage-2 executable permission locks"
+      },
+      {
+        "endpoint": "SK_TO_SPTM_HVC",
+        "caller_domain": "EXEC_MODE_SK_DEFAULT",
+        "callee_domain": "EXEC_MODE_SPTM_DEFAULT",
+        "purpose": "Hypervisor call (hvc) for ExclaveCore memory and IPC domain configuration"
+      },
+      {
+        "endpoint": "XNU_TO_TXM_GENTER",
+        "caller_domain": "EXEC_MODE_XNU_DEFAULT",
+        "callee_domain": "EXEC_MODE_TXM_DEFAULT",
+        "purpose": "GXF GENTER_EL1 invocation for code signing evaluation and TrustCache lookup"
+      }
+    ]
+  },
+  "hibernation_architecture": {
+    "hmac_validation": "SPTM verifies HMAC-SHA256 signature across hibernation header structures before restoring physical page states from NVMe swap image.",
+    "header_verification": "Validates image size, memory range bounds, wired page count, and CPU context restore frames.",
+    "hibernate_endpoints": [
+      "SPTM_FUNCTIONID_HIB_BEGIN",
+      "SPTM_FUNCTIONID_HIB_VERIFY_HASH_NON_WIRED",
+      "SPTM_FUNCTIONID_HIB_FINALIZE_NON_WIRED"
+    ]
+  }
+}

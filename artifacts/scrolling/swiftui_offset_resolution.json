@@ -1,0 +1,276 @@
+{
+  "framework_query": "SwiftUI",
+  "matched_image_path": "/System/Library/Frameworks/SwiftUI.framework/SwiftUI",
+  "category": "PublicFramework",
+  "vm_base_address": "0x18a8a7000",
+  "vm_base_address_int": 6619295744,
+  "subcache_index": 2,
+  "subcache_extension": ".03",
+  "subcache_filename": "dyld_shared_cache_arm64e.03",
+  "subcache_vm_base": "0x188400000",
+  "subcache_file_offset": "0x24a7000",
+  "subcache_file_offset_int": 38432768,
+  "subcache_uuid": "1a1939c0-a2ab-3d82-a43c-9e61ad237972",
+  "segment_count": 7,
+  "segments": [
+    {
+      "segname": "__TEXT",
+      "vmaddr": "0x18a8a7000",
+      "vmaddr_int": 6619295744,
+      "vmsize": "0x13037b4",
+      "vmsize_bytes": 19937204,
+      "fileoff": "0x24a7000",
+      "fileoff_int": 38432768,
+      "filesize": "0x13037b4",
+      "protection": "r-x"
+    },
+    {
+      "segname": "__DATA_CONST",
+      "vmaddr": "0x1e092aed8",
+      "vmaddr_int": 8062676696,
+      "vmsize": "0xfc30",
+      "vmsize_bytes": 64560,
+      "fileoff": "0x836ed8",
+      "fileoff_int": 8613592,
+      "filesize": "0xfc30",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__AUTH_CONST",
+      "vmaddr": "0x1e2cfddb8",
+      "vmaddr_int": 8100240824,
+      "vmsize": "0xdb4a0",
+      "vmsize_bytes": 898208,
+      "fileoff": "0x2c09db8",
+      "fileoff_int": 46177720,
+      "filesize": "0xdb4a0",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__AUTH",
+      "vmaddr": "0x1ef234dc0",
+      "vmaddr_int": 8307035584,
+      "vmsize": "0x35a40",
+      "vmsize_bytes": 219712,
+      "fileoff": "0xd140dc0",
+      "fileoff_int": 219418048,
+      "filesize": "0x35a40",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__DATA",
+      "vmaddr": "0x1eb32e780",
+      "vmaddr_int": 8240949120,
+      "vmsize": "0x139d68",
+      "vmsize_bytes": 1285480,
+      "fileoff": "0x923a780",
+      "fileoff_int": 153331584,
+      "filesize": "0x139d68",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__DATA_DIRTY",
+      "vmaddr": "0x1ee0144d0",
+      "vmaddr_int": 8288027856,
+      "vmsize": "0x4cb50",
+      "vmsize_bytes": 314192,
+      "fileoff": "0xbf204d0",
+      "fileoff_int": 200410320,
+      "filesize": "0x4cb50",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__LINKEDIT",
+      "vmaddr": "0x2e6940000",
+      "vmaddr_int": 12458393600,
+      "vmsize": "0x298ec000",
+      "vmsize_bytes": 697221120,
+      "fileoff": "0x4000",
+      "fileoff_int": 16384,
+      "filesize": "0x298ec000",
+      "protection": "r--"
+    }
+  ],
+  "sections": [
+    {
+      "sectname": "__text",
+      "addr": "0x18a8a9b10",
+      "size": "0x105521c",
+      "offset": "0x24a9b10"
+    },
+    {
+      "sectname": "__lazy_helpers",
+      "addr": "0x18b8fed2c",
+      "size": "0x54",
+      "offset": "0x34fed2c"
+    },
+    {
+      "sectname": "__objc_methlist",
+      "addr": "0x18b8fed80",
+      "size": "0x9c6c",
+      "offset": "0x34fed80"
+    },
+    {
+      "sectname": "__cstring",
+      "addr": "0x18b9089f0",
+      "size": "0x1740b",
+      "offset": "0x35089f0"
+    },
+    {
+      "sectname": "__const",
+      "addr": "0x18b91fe00",
+      "size": "0xc61e8",
+      "offset": "0x351fe00"
+    },
+    {
+      "sectname": "__constg_swiftt",
+      "addr": "0x18b9e5fe8",
+      "size": "0x7f4f0",
+      "offset": "0x35e5fe8"
+    },
+    {
+      "sectname": "__gcc_except_tab",
+      "addr": "0x18ba654d8",
+      "size": "0x9c",
+      "offset": "0x36654d8"
+    },
+    {
+      "sectname": "__dlopen_cstrs",
+      "addr": "0x18ba65574",
+      "size": "0x1bc",
+      "offset": "0x3665574"
+    },
+    {
+      "sectname": "__swift5_typeref",
+      "addr": "0x18ba65730",
+      "size": "0x4529a",
+      "offset": "0x3665730"
+    },
+    {
+      "sectname": "__swift5_reflstr",
+      "addr": "0x18baaa9d0",
+      "size": "0x2ab65",
+      "offset": "0x36aa9d0"
+    },
+    {
+      "sectname": "__swift5_fieldmd",
+      "addr": "0x18bad5538",
+      "size": "0x40008",
+      "offset": "0x36d5538"
+    },
+    {
+      "sectname": "__swift5_builtin",
+      "addr": "0x18bb15540",
+      "size": "0xe88",
+      "offset": "0x3715540"
+    },
+    {
+      "sectname": "__swift5_assocty",
+      "addr": "0x18bb163c8",
+      "size": "0x1a6a8",
+      "offset": "0x37163c8"
+    },
+    {
+      "sectname": "__swift5_proto",
+      "addr": "0x18bb30a70",
+      "size": "0xa578",
+      "offset": "0x3730a70"
+    },
+    {
+      "sectname": "__swift5_types",
+      "addr": "0x18bb3afe8",
+      "size": "0x5f40",
+      "offset": "0x373afe8"
+    },
+    {
+      "sectname": "__swift5_capture",
+      "addr": "0x18bb40f28",
+      "size": "0x10cb8",
+      "offset": "0x3740f28"
+    },
+    {
+      "sectname": "__swift5_protos",
+      "addr": "0x18bb51be0",
+      "size": "0x680",
+      "offset": "0x3751be0"
+    },
+    {
+      "sectname": "__swift5_mpenum",
+      "addr": "0x18bb52260",
+      "size": "0x810",
+      "offset": "0x3752260"
+    },
+    {
+      "sectname": "__oslogstring",
+      "addr": "0x18bb52a70",
+      "size": "0x3c2f",
+      "offset": "0x3752a70"
+    },
+    {
+      "sectname": "__swift_as_entry",
+      "addr": "0x18bb566a0",
+      "size": "0x334",
+      "offset": "0x37566a0"
+    },
+    {
+      "sectname": "__swift_as_ret",
+      "addr": "0x18bb569d4",
+      "size": "0x2f8",
+      "offset": "0x37569d4"
+    },
+    {
+      "sectname": "__swift_as_cont",
+      "addr": "0x18bb56ccc",
+      "size": "0x584",
+      "offset": "0x3756ccc"
+    },
+    {
+      "sectname": "__swift5_types2",
+      "addr": "0x18bb57250",
+      "size": "0xbc",
+      "offset": "0x3757250"
+    },
+    {
+      "sectname": "__unwind_info",
+      "addr": "0x18bb5730c",
+      "size": "0x3c320",
+      "offset": "0x375730c"
+    },
+    {
+      "sectname": "__eh_frame",
+      "addr": "0x18bb93630",
+      "size": "0x17184",
+      "offset": "0x3793630"
+    },
+    {
+      "sectname": "__objc_stubs",
+      "addr": "0x18bbaa7b4",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__auth_stubs",
+      "addr": "0x18bbaa7b4",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_classname",
+      "addr": "0x18bbaa7b4",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_methname",
+      "addr": "0x18bbaa7b4",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_methtype",
+      "addr": "0x18bbaa7b4",
+      "size": "0x0",
+      "offset": "0x0"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AOP2 & SPU XNU Kernel Boundary & Driver Specification",
+  "kernel_drivers": {
+    "com.apple.driver.AppleAOP2": {
+      "classes": [
+        {
+          "name": "AppleAOP2SystemDriver",
+          "super_class": "IOService",
+          "role": "Master host driver attaching to /device-tree/arm-io/aop2; initializes ASCwrap mailbox, establishes RTKit handshake, and spawns endpoint provider nub objects."
+        },
+        {
+          "name": "AppleAOP2KextTightbeamEndpoint",
+          "super_class": "IOService",
+          "role": "Host-side Tightbeam RPC endpoint handler; serializes and dispatches strongly-typed IOPM power assertion requests to AOP2."
+        },
+        {
+          "name": "AppleAOP2IOPMService",
+          "super_class": "IOService",
+          "role": "Interfaces with XNU IOPowerManagement; translates system sleep/wake requests into AOP2 retention assertions."
+        }
+      ],
+      "source_path": "Sources/AppleAOP2/AppleAOP2Kext/src/Services/IOPMService/AppleAOP2IOPMService.cpp"
+    },
+    "com.apple.driver.AppleSPU": {
+      "classes": [
+        {
+          "name": "AppleSPUFastpathDriver",
+          "super_class": "IOService",
+          "role": "Manages DMA fast-path ring buffers for 100Hz–800Hz continuous 6-axis IMU streaming without waking AP power domains."
+        },
+        {
+          "name": "AppleSPUALSColorDriver",
+          "super_class": "IOService",
+          "role": "Consumes fixed-point milli-lux telemetry (lux = raw/1000) from AOP2 EP 0x11 and generates TrueTone chromaticity events."
+        },
+        {
+          "name": "AppleSPUDCPDriver",
+          "super_class": "IOService",
+          "role": "Coordinates 1Hz Always-On Display frame buffer updating with AOP2 direct streamer via dcp-control node."
+        },
+        {
+          "name": "AppleSPUHIDDriver",
+          "super_class": "IOHIDEventService",
+          "role": "Publishes always-on touch, button, and wrist-raise gesture events into the Darwin IOHIDEventSystem framework."
+        }
+      ]
+    },
+    "com.apple.driver.AppleAOPAudio": {
+      "classes": [
+        {
+          "name": "AppleAOPAudioLPMicInDevice",
+          "super_class": "IOService",
+          "role": "Directs low-power microphone PDM streams into AOP2 retention SRAM circular buffer for continuous acoustic keyword scoring."
+        },
+        {
+          "name": "AppleAOPAudioRingBuffer",
+          "super_class": "OSObject",
+          "role": "Allocates and manages the 3.0-second circular audio history buffer in shared memory."
+        },
+        {
+          "name": "AppleAOPVoiceTriggerUserClient",
+          "super_class": "IOUserClient",
+          "role": "Provides interface for CoreSpeech and assistantd to extract pre-trigger acoustic context upon voice trigger detection."
+        }
+      ]
+    }
+  },
+  "user_clients": [
+    {
+      "name": "AppleSPUFastpathDriverUserClient",
+      "driver": "AppleSPUFastpathDriver",
+      "required_entitlement": "com.apple.aop.fastpath.user-client.full-access",
+      "methods": [
+        {"selector": 0, "name": "openStream", "description": "Attaches client to IMU fastpath queue and maps ring buffer to user space"},
+        {"selector": 1, "name": "closeStream", "description": "Detaches client and unmaps DMA buffers"},
+        {"selector": 2, "name": "setSampleRate", "description": "Requests target sampling frequency (100, 200, 400, 800 Hz)"}
+      ]
+    },
+    {
+      "name": "AppleSPUDispADCUserClient",
+      "driver": "AppleSPUDispADCDriver",
+      "required_entitlement": "com.apple.aop.adc.user-client.full-access",
+      "methods": [
+        {"selector": 0, "name": "configureAODBuffer", "description": "Sets up 1Hz AOD shared frame buffer address and dimensions"}
+      ]
+    },
+    {
+      "name": "AppleAOPVoiceTriggerUserClient",
+      "driver": "AppleAOPAudio",
+      "required_entitlement": "com.apple.driver.AppleAOPAudioUserClientEntitlement",
+      "methods": [
+        {"selector": 0, "name": "getHistoryBuffer", "description": "Transfers 3.0-second pre-trigger acoustic buffer to userland assistantd"},
+        {"selector": 1, "name": "setSensitivity", "description": "Updates on-chip acoustic model threshold parameters"}
+      ]
+    }
+  ],
+  "entitlements": [
+    "com.apple.aop.fastpath.user-client.full-access",
+    "com.apple.aop.fastpath.user-client",
+    "com.apple.aop.adc.user-client.full-access",
+    "com.apple.driver.AppleAOPAudioUserClientEntitlement",
+    "FastPathMotionEventEntitlement",
+    "FastPathHasEntitlement"
+  ],
+  "synchronization_and_concurrency": {
+    "workloop": "IOWorkLoop allocated per driver instance",
+    "command_gate": "IOCommandGate serializing endpoint register operations",
+    "memory_descriptor": "IOMemoryDescriptor wrapping _aop2_shm_reg with kIOMapAnywhere | kIOMapInhibitCache"
+  }
+}

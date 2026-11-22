@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AOP2 Subsystem Service Hierarchy & Task Topology",
+  "running_tasks": [
+    {
+      "task_id": 0,
+      "name": "roottask.IOP_ASC7.RELEASE",
+      "binary": "00_roottask_iop_asc7.macho",
+      "address_space": {"base": "0x8000000", "size": "0x26000"},
+      "role": "Master system supervisor; initializes coprocessor hardware, verifies sub-binary signatures, and establishes root IPC channels."
+    },
+    {
+      "task_id": 1,
+      "name": "AppleFirmwareKit Motion App",
+      "binary": "01_motion_expert_app.macho",
+      "address_space": {"base": "0x10f3000", "size": "0x13a000"},
+      "role": "Manages 6-axis IMU fast-path streaming, TrueTone ambient lux telemetry, and Always-On Display timing."
+    },
+    {
+      "task_id": 2,
+      "name": "AONLocationApp",
+      "binary": "02_aon_location_app.macho",
+      "address_space": {"base": "0x10f3000", "size": "0x16e000"},
+      "role": "Pedestrian Dead Reckoning (PDR), step cadence counting, and low-power geofencing."
+    },
+    {
+      "task_id": 3,
+      "name": "Audio Hotword App",
+      "binary": "03_audio_hotword_app.macho",
+      "address_space": {"base": "0x10f3000", "size": "0xd0000"},
+      "role": "Low-power microphone capture, 3.0-second circular SRAM acoustic FIFO, and local Siri keyword detection."
+    },
+    {
+      "task_id": 4,
+      "name": "RTKit-Exclave Bridge",
+      "binary": "04_rtkit_exclave_bridge.macho",
+      "address_space": {"base": "0x10f3000", "size": "0xb6000"},
+      "role": "Cross-enclave bridge forwarding sensor privacy status to ExclaveOS via DART SID 0x11 (EP 0x53)."
+    },
+    {
+      "task_id": 5,
+      "name": "AppleSPUFirmwareBuilder Runtime",
+      "binary": "05_applespu_v57aop2_dylib.macho",
+      "address_space": {"base": "0x1000000", "size": "0x84000"},
+      "role": "Shared C++ runtime library hosting AppleFirmwareKit base classes, method tables, and memory allocators."
+    },
+    {
+      "task_id": 6,
+      "name": "RTKit Microkernel Preload",
+      "binary": "06_rtkit_microkernel_preload.macho",
+      "address_space": {"base": "0xffffffff00000000", "size": "0x19000"},
+      "role": "EL1 bare-metal microkernel preboot, ARM64 vector tables, and priority-driven preemptive scheduler."
+    }
+  ],
+  "services": {
+    "AFKRootService": {
+      "parent_class": "AFKService",
+      "description": "Root service anchoring all AppleFirmwareKit sub-services; manages global lifecycle and power assertion state."
+    },
+    "AFKSystemService": {
+      "parent_class": "AFKService",
+      "description": "Handles system-level control commands from host Darwin kernel, including firmware version negotiation and reset."
+    },
+    "AFKPowerAssertService": {
+      "parent_class": "AFKService",
+      "description": "Arbitrates low-power retention states and host AP wake assertions."
+    },
+    "AFKDTService": {
+      "parent_class": "AFKService",
+      "description": "Parses embedded DeviceTree properties and binds hardware registers to driver objects."
+    },
+    "AFKTBDTService": {
+      "parent_class": "AFKDTService",
+      "description": "Tightbeam RPC DeviceTree Service providing strongly-typed configuration queries."
+    },
+    "AFKEPInterfaceServiceV2": {
+      "parent_class": "AFKService",
+      "description": "Manages endpoint interface descriptor tables and asynchronous event queues."
+    }
+  },
+  "dispatch_queues": [
+    {"name": "GlobalQueue", "getter": "getGlobalQueue()", "concurrency": "Serial", "role": "Primary driver dispatch queue"},
+    {"name": "BackgroundQueue", "getter": "getBackgroundQueue()", "concurrency": "Concurrent", "role": "Deferred background calculations (step filtering, lux smoothing)"},
+    {"name": "ConfigQueue", "getter": "getConfigQueue()", "concurrency": "Serial", "role": "Hardware reconfiguration and power-state transitions"},
+    {"name": "TerminationQueue", "getter": "getTerminationQueue()", "concurrency": "Serial", "role": "Task teardown and resource reclamation"}
+  ],
+  "ipc_endpoints": {
+    "system": {"endpoint_id": "0x00", "class": "AFKBuiltinAPMailboxEndpoint", "channel": "MBI"},
+    "oslog": {"endpoint_id": "0x01", "class": "AFKEndpoint", "channel": "Circular String Buffer"},
+    "ioreporting": {"endpoint_id": "0x02", "class": "AFKEndpoint", "channel": "Telemetry Group"},
+    "entropy": {"endpoint_id": "0x03", "class": "AFKEndpoint", "channel": "TRNG FIFO"},
+    "iopm": {"endpoint_id": "0x04", "class": "AFKTightbeamEndpoint", "channel": "IOPMAssertion Tightbeam RPC"},
+    "motion": {"endpoint_id": "0x10", "class": "AFKEndpoint", "channel": "FastPath Lock-Free Ring Buffer (16 KB)"},
+    "ambient_light": {"endpoint_id": "0x11", "class": "AFKEndpoint", "channel": "ALS Lux Telemetry Queue"},
+    "location": {"endpoint_id": "0x12", "class": "AFKEndpoint", "channel": "AONLocation Message Queue"},
+    "audio": {"endpoint_id": "0x18", "class": "AFKEndpoint", "channel": "Audio Ring Buffer (3.0s SRAM FIFO)"},
+    "display_adc": {"endpoint_id": "0x20", "class": "AFKEndpoint", "channel": "1Hz AOD Frame Sync Channel"},
+    "exclave_tightbeam": {"endpoint_id": "0x53", "class": "RTKExclaveTBEndpoint", "channel": "DART SID 0x11 Secure Exclave Channel"}
+  },
+  "shared_memory_regions": {
+    "_aop2_shm_reg": {
+      "size_bytes": 1048576,
+      "page_size": 16384,
+      "dart_stream": "mapper-aop2 (SID 0x10)",
+      "purpose": "Host-to-coprocessor fast-path circular telemetry ring buffers."
+    },
+    "_RTK_EXT_SHD_DTA": {
+      "size_bytes": 98304,
+      "page_size": 16384,
+      "dart_stream": "mapper-aop2 (SID 0x10)",
+      "purpose": "External shared status structures and mailbox descriptor rings."
+    },
+    "__CMA": {
+      "size_bytes": 4096,
+      "page_size": 4096,
+      "dart_stream": "Internal SRAM",
+      "purpose": "Contiguous Memory Allocator dedicated logging buffers for location dead reckoning."
+    },
+    "sharedmem_xcoproc_AOP2_EP53_in": {
+      "size_bytes": 65536,
+      "page_size": 16384,
+      "dart_stream": "mapper-exclave-aop2 (SID 0x11)",
+      "purpose": "Cross-enclave shared memory window directly mapped into ExclaveOS for sensor privacy state."
+    }
+  }
+}

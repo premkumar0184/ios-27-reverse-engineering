@@ -1,0 +1,320 @@
+{
+  "AppleNeuralEngine": {
+    "framework_path": "/System/Library/PrivateFrameworks/AppleNeuralEngine.framework/AppleNeuralEngine",
+    "subcache_slice": ".15",
+    "vm_base": "0x1bda6d000",
+    "subcache_vm_base": "0x1b8400000",
+    "file_offset_in_slice": "0x566d000",
+    "mach_header_magic": "0xFEEDFACF",
+    "cpu_type": "ARM64E (0x100000C, subtype 0x80000002)",
+    "uuid": "be3ebf1d-80f3-36e3-acbe-ccf2bf4d4a38",
+    "load_commands_count": 33,
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vm_address": "0x1bda6d000",
+        "vm_size": 485172,
+        "file_offset": "0x566d000",
+        "file_size": 485172,
+        "num_sections": 13
+      },
+      {
+        "name": "__DATA_CONST",
+        "vm_address": "0x1e15f8670",
+        "vm_size": 11280,
+        "file_offset": "0x1504670",
+        "file_size": 11280,
+        "num_sections": 11
+      },
+      {
+        "name": "__AUTH_CONST",
+        "vm_address": "0x1e66b8308",
+        "vm_size": 39672,
+        "file_offset": "0x65c4308",
+        "file_size": 39672,
+        "num_sections": 9
+      },
+      {
+        "name": "__AUTH",
+        "vm_address": "0x1ef6eac98",
+        "vm_size": 400,
+        "file_offset": "0xd5f6c98",
+        "file_size": 400,
+        "num_sections": 1
+      },
+      {
+        "name": "__DATA",
+        "vm_address": "0x1ec93dc68",
+        "vm_size": 2840,
+        "file_offset": "0xa849c68",
+        "file_size": 2840,
+        "num_sections": 3
+      },
+      {
+        "name": "__DATA_DIRTY",
+        "vm_address": "0x1ee154880",
+        "vm_size": 2984,
+        "file_offset": "0xc060880",
+        "file_size": 2984,
+        "num_sections": 3
+      },
+      {
+        "name": "__LINKEDIT",
+        "vm_address": "0x2e6940000",
+        "vm_size": 697221120,
+        "file_offset": "0x4000",
+        "file_size": 697221120,
+        "num_sections": 0
+      }
+    ],
+    "header_verified": true
+  },
+  "ANECompiler": {
+    "framework_path": "/System/Library/PrivateFrameworks/ANECompiler.framework/ANECompiler",
+    "subcache_slice": ".11",
+    "vm_base": "0x1ab96c000",
+    "subcache_vm_base": "0x1a8400000",
+    "file_offset_in_slice": "0x356c000",
+    "mach_header_magic": "0xFEEDFACF",
+    "cpu_type": "ARM64E (0x100000C, subtype 0x80000002)",
+    "uuid": "c3380fb8-d314-3272-aaa9-7eead54669fd",
+    "load_commands_count": 23,
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vm_address": "0x1ab96c000",
+        "vm_size": 33530684,
+        "file_offset": "0x356c000",
+        "file_size": 33530684,
+        "num_sections": 9
+      },
+      {
+        "name": "__DATA_CONST",
+        "vm_address": "0x1e11215c0",
+        "vm_size": 22592,
+        "file_offset": "0x102d5c0",
+        "file_size": 22592,
+        "num_sections": 3
+      },
+      {
+        "name": "__AUTH_CONST",
+        "vm_address": "0x1e5154ea0",
+        "vm_size": 779096,
+        "file_offset": "0x5060ea0",
+        "file_size": 779096,
+        "num_sections": 5
+      },
+      {
+        "name": "__AUTH",
+        "vm_address": "0x1ef55ee40",
+        "vm_size": 26600,
+        "file_offset": "0xd46ae40",
+        "file_size": 26600,
+        "num_sections": 3
+      },
+      {
+        "name": "__DATA",
+        "vm_address": "0x1ebf470d0",
+        "vm_size": 2244200,
+        "file_offset": "0x9e530d0",
+        "file_size": 2244200,
+        "num_sections": 4
+      },
+      {
+        "name": "__DATA_DIRTY",
+        "vm_address": "0x1ede22960",
+        "vm_size": 8672,
+        "file_offset": "0xbd2e960",
+        "file_size": 8672,
+        "num_sections": 3
+      },
+      {
+        "name": "__LINKEDIT",
+        "vm_address": "0x2e6940000",
+        "vm_size": 697221120,
+        "file_offset": "0x4000",
+        "file_size": 697221120,
+        "num_sections": 0
+      }
+    ],
+    "header_verified": true
+  },
+  "ANEServices": {
+    "framework_path": "/System/Library/PrivateFrameworks/ANEServices.framework/ANEServices",
+    "subcache_slice": ".48",
+    "vm_base": "0x253d18000",
+    "subcache_vm_base": "0x250400000",
+    "file_offset_in_slice": "0x3918000",
+    "mach_header_magic": "0xFEEDFACF",
+    "cpu_type": "ARM64E (0x100000C, subtype 0x80000002)",
+    "uuid": "ab1ce2fc-6481-3e23-97d3-2dcba420a3ab",
+    "load_commands_count": 25,
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vm_address": "0x253d18000",
+        "vm_size": 368376,
+        "file_offset": "0x3918000",
+        "file_size": 368376,
+        "num_sections": 12
+      },
+      {
+        "name": "__DATA_CONST",
+        "vm_address": "0x2693f09f0",
+        "vm_size": 1912,
+        "file_offset": "0x12d09f0",
+        "file_size": 1912,
+        "num_sections": 6
+      },
+      {
+        "name": "__AUTH_CONST",
+        "vm_address": "0x26de84e30",
+        "vm_size": 10240,
+        "file_offset": "0x5d64e30",
+        "file_size": 10240,
+        "num_sections": 6
+      },
+      {
+        "name": "__DATA",
+        "vm_address": "0x273da6b38",
+        "vm_size": 104,
+        "file_offset": "0x9c86b38",
+        "file_size": 104,
+        "num_sections": 3
+      },
+      {
+        "name": "__DATA_DIRTY",
+        "vm_address": "0x2757026f0",
+        "vm_size": 160,
+        "file_offset": "0xb5e26f0",
+        "file_size": 160,
+        "num_sections": 3
+      },
+      {
+        "name": "__LINKEDIT",
+        "vm_address": "0x2e6940000",
+        "vm_size": 697221120,
+        "file_offset": "0x4000",
+        "file_size": 697221120,
+        "num_sections": 0
+      }
+    ],
+    "header_verified": true
+  },
+  "MilAneflow": {
+    "framework_path": "/System/Library/PrivateFrameworks/MilAneflow.framework/MilAneflow",
+    "subcache_slice": ".61",
+    "vm_base": "0x297d81000",
+    "subcache_vm_base": "0x290400000",
+    "file_offset_in_slice": "0x7981000",
+    "mach_header_magic": "0xFEEDFACF",
+    "cpu_type": "ARM64E (0x100000C, subtype 0x80000002)",
+    "uuid": "da7db43e-6643-31bc-82bc-92d47d4ccdd6",
+    "load_commands_count": 17,
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vm_address": "0x297d81000",
+        "vm_size": 1406352,
+        "file_offset": "0x7981000",
+        "file_size": 1406352,
+        "num_sections": 7
+      },
+      {
+        "name": "__DATA_CONST",
+        "vm_address": "0x2d8af5848",
+        "vm_size": 48,
+        "file_offset": "0xad5848",
+        "file_size": 48,
+        "num_sections": 3
+      },
+      {
+        "name": "__AUTH_CONST",
+        "vm_address": "0x2db6fa6a0",
+        "vm_size": 20640,
+        "file_offset": "0x36da6a0",
+        "file_size": 20640,
+        "num_sections": 3
+      },
+      {
+        "name": "__DATA_DIRTY",
+        "vm_address": "0x2e3cc2710",
+        "vm_size": 368,
+        "file_offset": "0x9ca2710",
+        "file_size": 368,
+        "num_sections": 1
+      },
+      {
+        "name": "__LINKEDIT",
+        "vm_address": "0x2e6940000",
+        "vm_size": 697221120,
+        "file_offset": "0x4000",
+        "file_size": 697221120,
+        "num_sections": 0
+      }
+    ],
+    "header_verified": true
+  },
+  "DANECPWrapper": {
+    "framework_path": "/System/Library/PrivateFrameworks/DANECPWrapper.framework/DANECPWrapper",
+    "subcache_slice": ".52",
+    "vm_base": "0x263003000",
+    "subcache_vm_base": "0x260400000",
+    "file_offset_in_slice": "0x2c03000",
+    "mach_header_magic": "0xFEEDFACF",
+    "cpu_type": "ARM64E (0x100000C, subtype 0x80000002)",
+    "uuid": "22ebf215-6efe-3b8b-becd-06e17b46639e",
+    "load_commands_count": 21,
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vm_address": "0x263003000",
+        "vm_size": 6220,
+        "file_offset": "0x2c03000",
+        "file_size": 6220,
+        "num_sections": 11
+      },
+      {
+        "name": "__DATA_CONST",
+        "vm_address": "0x26976a6c8",
+        "vm_size": 120,
+        "file_offset": "0x164a6c8",
+        "file_size": 120,
+        "num_sections": 6
+      },
+      {
+        "name": "__AUTH_CONST",
+        "vm_address": "0x26ec8a328",
+        "vm_size": 208,
+        "file_offset": "0x6b6a328",
+        "file_size": 208,
+        "num_sections": 2
+      },
+      {
+        "name": "__DATA",
+        "vm_address": "0x275381b38",
+        "vm_size": 120,
+        "file_offset": "0xb261b38",
+        "file_size": 120,
+        "num_sections": 2
+      },
+      {
+        "name": "__DATA_DIRTY",
+        "vm_address": "0x276567b50",
+        "vm_size": 80,
+        "file_offset": "0xc447b50",
+        "file_size": 80,
+        "num_sections": 1
+      },
+      {
+        "name": "__LINKEDIT",
+        "vm_address": "0x2e6940000",
+        "vm_size": 697221120,
+        "file_offset": "0x4000",
+        "file_size": 697221120,
+        "num_sections": 0
+      }
+    ],
+    "header_verified": true
+  }
+}

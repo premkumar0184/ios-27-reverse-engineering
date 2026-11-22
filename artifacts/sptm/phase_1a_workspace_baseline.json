@@ -1,0 +1,584 @@
+{
+  "schema_version": "1.0",
+  "phase": "sptm_phase_1a_workspace_baseline",
+  "target_device": {
+    "hardware_platform": "Apple Silicon A19 Pro",
+    "soc": "t8150",
+    "device_class": "v57ap",
+    "model": "iPhone18,3",
+    "os_build": "iOS 27.2 (24B119)",
+    "darwin_version": "Darwin Kernel Version 24.2.0: Fri Oct 11 20:30:00 PDT 2026",
+    "architecture": "arm64e (ARMv8.6+ Guarded Execution Feature, PAC00)"
+  },
+  "hardware_context": {
+    "execution_privilege_tiers": [
+      {
+        "tier": "Guarded EL2 (GL2)",
+        "component": "Secure Page Table Monitor (SPTM)"
+      },
+      {
+        "tier": "Guarded EL1 (GL1)",
+        "component": "Trusted Execution Monitor (TXM)"
+      },
+      {
+        "tier": "Standard EL1",
+        "component": "Darwin / XNU Monolithic Kernel"
+      },
+      {
+        "tier": "Standard EL0",
+        "component": "Userland Applications & Exclave Conclaves"
+      }
+    ],
+    "hardware_security_primitives": [
+      "Guarded Execution Facility (GXF)",
+      "Stage-2 Translation Table Virtualization (VTTBR_EL2)",
+      "Configurable Text Region Register (CTRR)",
+      "Guarded Address Protection Filter (GAPF)",
+      "Device Address Resolution Table (DART) Stream Isolation",
+      "Pointer Authentication Code (PAC00)"
+    ]
+  },
+  "firmware_assets": {
+    "sptm": {
+      "id": "sptm",
+      "name": "Secure Page Table Monitor",
+      "role": "Guarded EL2 (GL2) Hypervisor Memory Isolation Monitor",
+      "fourcc_tag": "sptm",
+      "format": "Mach-O 64-bit arm64e",
+      "source_im4p": "iPhone18,3_27.2_24B119_Restore/Firmware/sptm.t8150.release.im4p",
+      "im4p_size_bytes": 216333,
+      "im4p_sha256": "4a21de2683b3944039ce1ca0977d69c2705585f45b5658fcc67b9d755c0ed9d6",
+      "raw_payload_path": "artifacts/sptm/extracted/sptm.t8150.release.raw",
+      "raw_size_bytes": 1327136,
+      "raw_sha256": "995affca44c65058814bf6b5ba1e93cd66198ce94f8bbfd7ff061951bc318c4f",
+      "asn1_metadata": {
+        "magic": "IM4P",
+        "type": "sptm",
+        "description": "1",
+        "asn1_sequence_len": 216328,
+        "payload_offset": 25,
+        "payload_length_bytes": 215991,
+        "compression": "lzfse",
+        "payload_header_hex": "62767832eeb200000018b01d019e0e10"
+      },
+      "macho_metadata": {
+        "magic": "0xfeedfacf",
+        "cputype": "0x100000c",
+        "cpusubtype": "0xc0000002",
+        "filetype": "0x2",
+        "ncmds": 13,
+        "uuid": "6fb95ed6-be8a-39cf-862b-250ba7efd5a5",
+        "entrypoint": "0xfffffff0270bc388",
+        "segments": [
+          {
+            "name": "__TEXT",
+            "vmaddr": "0xfffffff027004000",
+            "vmsize": "0x18000",
+            "vmsize_bytes": 98304,
+            "fileoff": "0x0",
+            "filesize": "0x18000",
+            "filesize_bytes": 98304,
+            "initprot": 5,
+            "maxprot": 5,
+            "sections": [
+              {
+                "name": "__cstring",
+                "segment": "__TEXT",
+                "addr": "0xfffffff0270048b0",
+                "size": "0x16126",
+                "size_bytes": 90406,
+                "offset": "0x8b0"
+              },
+              {
+                "name": "__const",
+                "segment": "__TEXT",
+                "addr": "0xfffffff02701a9e0",
+                "size": "0xa74",
+                "size_bytes": 2676,
+                "offset": "0x169e0"
+              },
+              {
+                "name": "__binname",
+                "segment": "__TEXT",
+                "addr": "0xfffffff02701b454",
+                "size": "0x40",
+                "size_bytes": 64,
+                "offset": "0x17454"
+              },
+              {
+                "name": "__chain_starts",
+                "segment": "__TEXT",
+                "addr": "0xfffffff02701b494",
+                "size": "0x14",
+                "size_bytes": 20,
+                "offset": "0x17494"
+              }
+            ]
+          },
+          {
+            "name": "__DATA_CONST",
+            "vmaddr": "0xfffffff02701c000",
+            "vmsize": "0x8000",
+            "vmsize_bytes": 32768,
+            "fileoff": "0x18000",
+            "filesize": "0x8000",
+            "filesize_bytes": 32768,
+            "initprot": 3,
+            "maxprot": 3,
+            "sections": [
+              {
+                "name": "__const",
+                "segment": "__DATA_CONST",
+                "addr": "0xfffffff02701c000",
+                "size": "0x7c00",
+                "size_bytes": 31744,
+                "offset": "0x18000"
+              }
+            ]
+          },
+          {
+            "name": "__LATE_CONST",
+            "vmaddr": "0xfffffff027024000",
+            "vmsize": "0x90000",
+            "vmsize_bytes": 589824,
+            "fileoff": "0x20000",
+            "filesize": "0x90000",
+            "filesize_bytes": 589824,
+            "initprot": 3,
+            "maxprot": 3,
+            "sections": [
+              {
+                "name": "__late_const",
+                "segment": "__LATE_CONST",
+                "addr": "0xfffffff027024000",
+                "size": "0x8c890",
+                "size_bytes": 575632,
+                "offset": "0x20000"
+              }
+            ]
+          },
+          {
+            "name": "__TEXT_EXEC",
+            "vmaddr": "0xfffffff0270b4000",
+            "vmsize": "0x68000",
+            "vmsize_bytes": 425984,
+            "fileoff": "0xb0000",
+            "filesize": "0x68000",
+            "filesize_bytes": 425984,
+            "initprot": 5,
+            "maxprot": 5,
+            "sections": [
+              {
+                "name": "__text",
+                "segment": "__TEXT_EXEC",
+                "addr": "0xfffffff0270b4000",
+                "size": "0x625f0",
+                "size_bytes": 402928,
+                "offset": "0xb0000"
+              },
+              {
+                "name": "__exc",
+                "segment": "__TEXT_EXEC",
+                "addr": "0xfffffff027118000",
+                "size": "0x2000",
+                "size_bytes": 8192,
+                "offset": "0x114000"
+              }
+            ]
+          },
+          {
+            "name": "__LAST",
+            "vmaddr": "0xfffffff02711c000",
+            "vmsize": "0x4000",
+            "vmsize_bytes": 16384,
+            "fileoff": "0x118000",
+            "filesize": "0x4000",
+            "filesize_bytes": 16384,
+            "initprot": 3,
+            "maxprot": 3,
+            "sections": [
+              {
+                "name": "__pinst",
+                "segment": "__LAST",
+                "addr": "0xfffffff02711c000",
+                "size": "0xc",
+                "size_bytes": 12,
+                "offset": "0x118000"
+              }
+            ]
+          },
+          {
+            "name": "__DATA",
+            "vmaddr": "0xfffffff027120000",
+            "vmsize": "0x10000",
+            "vmsize_bytes": 65536,
+            "fileoff": "0x11c000",
+            "filesize": "0x10000",
+            "filesize_bytes": 65536,
+            "initprot": 3,
+            "maxprot": 3,
+            "sections": [
+              {
+                "name": "__data",
+                "segment": "__DATA",
+                "addr": "0xfffffff027120000",
+                "size": "0xf",
+                "size_bytes": 15,
+                "offset": "0x11c000"
+              },
+              {
+                "name": "__auth_ptr",
+                "segment": "__DATA",
+                "addr": "0xfffffff027120010",
+                "size": "0x18",
+                "size_bytes": 24,
+                "offset": "0x11c010"
+              },
+              {
+                "name": "__bss",
+                "segment": "__DATA",
+                "addr": "0xfffffff027120080",
+                "size": "0x60a8",
+                "size_bytes": 24744,
+                "offset": "0x11c080"
+              },
+              {
+                "name": "__common",
+                "segment": "__DATA",
+                "addr": "0xfffffff027126140",
+                "size": "0x9088",
+                "size_bytes": 37000,
+                "offset": "0x122140"
+              }
+            ]
+          },
+          {
+            "name": "__BOOTDATA",
+            "vmaddr": "0xfffffff027130000",
+            "vmsize": "0x18000",
+            "vmsize_bytes": 98304,
+            "fileoff": "0x12c000",
+            "filesize": "0x18000",
+            "filesize_bytes": 98304,
+            "initprot": 3,
+            "maxprot": 3,
+            "sections": [
+              {
+                "name": "__data",
+                "segment": "__BOOTDATA",
+                "addr": "0xfffffff027130000",
+                "size": "0x18000",
+                "size_bytes": 98304,
+                "offset": "0x12c000"
+              }
+            ]
+          },
+          {
+            "name": "__LINKEDIT",
+            "vmaddr": "0xfffffff027148000",
+            "vmsize": "0x4000",
+            "vmsize_bytes": 16384,
+            "fileoff": "0x144000",
+            "filesize": "0x20",
+            "filesize_bytes": 32,
+            "initprot": 1,
+            "maxprot": 1,
+            "sections": []
+          }
+        ]
+      }
+    },
+    "txm": {
+      "id": "txm",
+      "name": "Trusted Execution Monitor (Research)",
+      "role": "Guarded EL1 (GL1) Code Signing Monitor & Trust Evaluation Engine",
+      "fourcc_tag": "trxm",
+      "format": "Mach-O 64-bit arm64e",
+      "source_im4p": "iPhone18,3_27.2_24B119_Restore/Firmware/txm.iphoneos.research.im4p",
+      "im4p_size_bytes": 224183,
+      "im4p_sha256": "efb686b1b74d5e24945e89528158365a3f6f38f835805308687789eacdad1ad4",
+      "raw_payload_path": "artifacts/sptm/extracted/txm.iphoneos.research.raw",
+      "raw_size_bytes": 557088,
+      "raw_sha256": "3a4c60e4ac1e6fde5b7564ae6d786c7c818fa75b2c44066fae57a26973895fd7",
+      "asn1_metadata": {
+        "magic": "IM4P",
+        "type": "trxm",
+        "description": "1",
+        "asn1_sequence_len": 224178,
+        "payload_offset": 25,
+        "payload_length_bytes": 223863,
+        "compression": "lzfse",
+        "payload_header_hex": "627678329fa60000743ac08803340920"
+      },
+      "macho_metadata": {
+        "magic": "0xfeedfacf",
+        "cputype": "0x100000c",
+        "cpusubtype": "0xc0000002",
+        "filetype": "0x2",
+        "ncmds": 11,
+        "uuid": "144e3d8d-697d-319f-8f76-bf36686297ac",
+        "entrypoint": "0xfffffff017084000",
+        "segments": [
+          {
+            "name": "__TEXT",
+            "vmaddr": "0xfffffff017004000",
+            "vmsize": "0x1c000",
+            "vmsize_bytes": 114688,
+            "fileoff": "0x0",
+            "filesize": "0x1c000",
+            "filesize_bytes": 114688,
+            "initprot": 1,
+            "maxprot": 1,
+            "sections": [
+              {
+                "name": "__cstring",
+                "segment": "__TEXT",
+                "addr": "0xfffffff017004820",
+                "size": "0x6516",
+                "size_bytes": 25878,
+                "offset": "0x820"
+              },
+              {
+                "name": "__const",
+                "segment": "__TEXT",
+                "addr": "0xfffffff01700ad40",
+                "size": "0x12338",
+                "size_bytes": 74552,
+                "offset": "0x6d40"
+              },
+              {
+                "name": "__binname",
+                "segment": "__TEXT",
+                "addr": "0xfffffff01701d078",
+                "size": "0x40",
+                "size_bytes": 64,
+                "offset": "0x19078"
+              },
+              {
+                "name": "__info_plist",
+                "segment": "__TEXT",
+                "addr": "0xfffffff01701d0b8",
+                "size": "0x4fa",
+                "size_bytes": 1274,
+                "offset": "0x190b8"
+              },
+              {
+                "name": "__chain_starts",
+                "segment": "__TEXT",
+                "addr": "0xfffffff01701d5b4",
+                "size": "0x14",
+                "size_bytes": 20,
+                "offset": "0x195b4"
+              }
+            ]
+          },
+          {
+            "name": "__DATA_CONST",
+            "vmaddr": "0xfffffff017020000",
+            "vmsize": "0x10000",
+            "vmsize_bytes": 65536,
+            "fileoff": "0x1c000",
+            "filesize": "0x10000",
+            "filesize_bytes": 65536,
+            "initprot": 3,
+            "maxprot": 3,
+            "sections": [
+              {
+                "name": "__const",
+                "segment": "__DATA_CONST",
+                "addr": "0xfffffff017020000",
+                "size": "0xd5c8",
+                "size_bytes": 54728,
+                "offset": "0x1c000"
+              },
+              {
+                "name": "__auth_ptr",
+                "segment": "__DATA_CONST",
+                "addr": "0xfffffff01702d5c8",
+                "size": "0x70",
+                "size_bytes": 112,
+                "offset": "0x295c8"
+              }
+            ]
+          },
+          {
+            "name": "__TEXT_EXEC",
+            "vmaddr": "0xfffffff017030000",
+            "vmsize": "0x50000",
+            "vmsize_bytes": 327680,
+            "fileoff": "0x2c000",
+            "filesize": "0x50000",
+            "filesize_bytes": 327680,
+            "initprot": 5,
+            "maxprot": 5,
+            "sections": [
+              {
+                "name": "__text",
+                "segment": "__TEXT_EXEC",
+                "addr": "0xfffffff017030000",
+                "size": "0x49c28",
+                "size_bytes": 302120,
+                "offset": "0x2c000"
+              },
+              {
+                "name": "__exc",
+                "segment": "__TEXT_EXEC",
+                "addr": "0xfffffff01707c000",
+                "size": "0x8a0",
+                "size_bytes": 2208,
+                "offset": "0x78000"
+              }
+            ]
+          },
+          {
+            "name": "__TEXT_BOOT_EXEC",
+            "vmaddr": "0xfffffff017080000",
+            "vmsize": "0x8000",
+            "vmsize_bytes": 32768,
+            "fileoff": "0x7c000",
+            "filesize": "0x8000",
+            "filesize_bytes": 32768,
+            "initprot": 5,
+            "maxprot": 5,
+            "sections": [
+              {
+                "name": "__text",
+                "segment": "__TEXT_BOOT_EXEC",
+                "addr": "0xfffffff017080000",
+                "size": "0x4060",
+                "size_bytes": 16480,
+                "offset": "0x7c000"
+              },
+              {
+                "name": "__bootcode",
+                "segment": "__TEXT_BOOT_EXEC",
+                "addr": "0xfffffff017084060",
+                "size": "0x278",
+                "size_bytes": 632,
+                "offset": "0x80060"
+              }
+            ]
+          },
+          {
+            "name": "__DATA",
+            "vmaddr": "0xfffffff017088000",
+            "vmsize": "0x4000",
+            "vmsize_bytes": 16384,
+            "fileoff": "0x84000",
+            "filesize": "0x4000",
+            "filesize_bytes": 16384,
+            "initprot": 3,
+            "maxprot": 3,
+            "sections": [
+              {
+                "name": "__data",
+                "segment": "__DATA",
+                "addr": "0xfffffff017088000",
+                "size": "0x2d0",
+                "size_bytes": 720,
+                "offset": "0x84000"
+              },
+              {
+                "name": "__common",
+                "segment": "__DATA",
+                "addr": "0xfffffff0170882d0",
+                "size": "0xf80",
+                "size_bytes": 3968,
+                "offset": "0x842d0"
+              },
+              {
+                "name": "__bss",
+                "segment": "__DATA",
+                "addr": "0xfffffff017089250",
+                "size": "0x598",
+                "size_bytes": 1432,
+                "offset": "0x85250"
+              }
+            ]
+          },
+          {
+            "name": "__LINKEDIT",
+            "vmaddr": "0xfffffff01708c000",
+            "vmsize": "0x4000",
+            "vmsize_bytes": 16384,
+            "fileoff": "0x88000",
+            "filesize": "0x20",
+            "filesize_bytes": 32,
+            "initprot": 1,
+            "maxprot": 1,
+            "sections": []
+          }
+        ]
+      }
+    },
+    "iboot": {
+      "id": "iboot",
+      "name": "Stage-2 Research Bootloader (iBoot)",
+      "role": "Stage-2 Diagnostic Bootloader with Research Diagnostic Shell",
+      "fourcc_tag": "ibot",
+      "format": "Bare-Metal ARM64 Executable (mBoot-20457.42.5)",
+      "source_im4p": "iPhone18,3_27.2_24B119_Restore/Firmware/all_flash/iBoot.v57.RESEARCH_RELEASE.im4p",
+      "im4p_size_bytes": 1887607,
+      "im4p_sha256": "e37b68ef196e2bfd8888c0a206ac5780d7066ed5807b18dee9da5fdbccf101b4",
+      "raw_payload_path": "artifacts/sptm/extracted/iBoot.v57.RESEARCH_RELEASE.raw",
+      "raw_size_bytes": 4284024,
+      "raw_sha256": "c64d44257b9d474c123579453815ee7ce29a5967e86f7678ae1543a83d8a8b95",
+      "asn1_metadata": {
+        "magic": "IM4P",
+        "type": "ibot",
+        "description": "mBoot-20457.42.5",
+        "asn1_sequence_len": 1887602,
+        "payload_offset": 40,
+        "payload_length_bytes": 1887557,
+        "compression": "lzfse",
+        "payload_header_hex": "627678327c770000843ac03003180960"
+      }
+    },
+    "llb": {
+      "id": "llb",
+      "name": "Low Level Bootloader (LLB)",
+      "role": "Stage-1 Bootloader with Diagnostic Initialization",
+      "fourcc_tag": "illb",
+      "format": "Bare-Metal ARM64 Executable (mBoot-20457.42.5)",
+      "source_im4p": "iPhone18,3_27.2_24B119_Restore/Firmware/all_flash/LLB.v57.RESEARCH_RELEASE.im4p",
+      "im4p_size_bytes": 1888097,
+      "im4p_sha256": "a78a535a2ff66c44b50876fdeeaec1481f18493aa2708e017d01ed932b4801e0",
+      "raw_payload_path": "artifacts/sptm/extracted/LLB.v57.RESEARCH_RELEASE.raw",
+      "raw_size_bytes": 4284024,
+      "raw_sha256": "c64d44257b9d474c123579453815ee7ce29a5967e86f7678ae1543a83d8a8b95",
+      "asn1_metadata": {
+        "magic": "IM4P",
+        "type": "illb",
+        "description": "mBoot-20457.42.5",
+        "asn1_sequence_len": 1888092,
+        "payload_offset": 40,
+        "payload_length_bytes": 1887557,
+        "compression": "lzfse",
+        "payload_header_hex": "627678327c770000843ac03003180960"
+      }
+    },
+    "devicetree": {
+      "id": "devicetree",
+      "name": "Hardware DeviceTree",
+      "role": "SoC T8150 Hardware Node & Physical Memory Carveout Descriptor",
+      "fourcc_tag": "dtre",
+      "format": "Embedded DeviceTree (EmbeddedDeviceTrees-12661.42.3)",
+      "source_im4p": "iPhone18,3_27.2_24B119_Restore/Firmware/all_flash/DeviceTree.v57ap.im4p",
+      "im4p_size_bytes": 68878,
+      "im4p_sha256": "e022314b6b7f3d06b8143ad7606bf8b587cc8d0fa9434caf8f6314183763e37d",
+      "raw_payload_path": "artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "raw_size_bytes": 365632,
+      "raw_sha256": "ffd8ef07a4a8d5f90865077005a8f78cfdc1d142f8e897acd4b040232fd971f9",
+      "asn1_metadata": {
+        "magic": "IM4P",
+        "type": "dtre",
+        "description": "EmbeddedDeviceTrees-12661.42.3",
+        "asn1_sequence_len": 68873,
+        "payload_offset": 54,
+        "payload_length_bytes": 68814,
+        "compression": "lzfse",
+        "payload_header_hex": "62767832f61c01005c13b0fc009e0e20"
+      }
+    }
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "hardware_platform": {
+    "soc": "t8150",
+    "device": "iPhone18,3 (v57ap)",
+    "gpu_generation": "G18",
+    "gpu_architecture": "PI_300",
+    "fender_architecture": "AGXArmFenderChinook"
+  },
+  "mmio_registers": {
+    "device_tree_ranges": [
+      {
+        "name": "RGX Regs",
+        "description": "GPU Core MMIO control registers, shader clocks, and USC pipe resets",
+        "aperture_type": "Primary GPU Core"
+      },
+      {
+        "name": "GFenderCfg Regs",
+        "description": "Fender memory controller configuration, memory fabric routing, and bandwidth throttling",
+        "aperture_type": "Memory Controller & Fabric"
+      },
+      {
+        "name": "GM GIFAF Regs",
+        "description": "GPU Memory Fabric Interface (GIFAF) interconnect registers",
+        "aperture_type": "Interconnect Interface"
+      },
+      {
+        "name": "CRE Regs",
+        "description": "Coherency & Cache Reduction Engine control registers",
+        "aperture_type": "Coherency Unit"
+      },
+      {
+        "name": "GCPMS Regs",
+        "description": "GPU Core Power Management Subsystem registers",
+        "aperture_type": "Power Subsystem"
+      },
+      {
+        "name": "KSM FE Regs",
+        "description": "Kernel Submission Model Front-End hardware command queue registers",
+        "aperture_type": "Command Processor"
+      },
+      {
+        "name": "MCW Regs",
+        "description": "Memory Controller Wrapper configuration registers",
+        "aperture_type": "Memory Controller"
+      },
+      {
+        "name": "FenderScratchRam",
+        "description": "On-chip high-speed scratchpad SRAM buffer within Fender controller",
+        "aperture_type": "On-chip SRAM"
+      },
+      {
+        "name": "Bumper Regs",
+        "description": "Interconnect FIFO buffer and memory request bumper registers",
+        "aperture_type": "Interconnect FIFO"
+      },
+      {
+        "name": "PRC Regs",
+        "description": "Power & Reset Controller hardware registers",
+        "aperture_type": "Reset Unit"
+      },
+      {
+        "name": "DFender CS Regs",
+        "description": "Dual-Fender Command Stream serialization and dispatch registers",
+        "aperture_type": "Command Serialization"
+      },
+      {
+        "name": "DFender IVDM Regs",
+        "description": "Dual-Fender Internal Vertex Data Master pipeline registers",
+        "aperture_type": "Geometry Pipeline"
+      },
+      {
+        "name": "AICSWIntRegs",
+        "description": "Apple Interrupt Controller Software Interrupt registers",
+        "aperture_type": "Interrupt Controller"
+      },
+      {
+        "name": "Dynamic Power Control Regs",
+        "description": "Hardware dynamic power gating and clock modulation registers (APS_USC)",
+        "aperture_type": "Power Gating"
+      }
+    ],
+    "usc_service_registers": {
+      "AGX_CR_USC_VDM_SERV": {
+        "description": "Vertex Data Master Service register \u2014 controls vertex fetch & meshlet submission",
+        "width_bits": 64
+      },
+      "AGX_CR_USC_PDM_SERV": {
+        "description": "Pixel / Primitive Data Master Service register \u2014 controls rasterization & fragment scheduling",
+        "width_bits": 64
+      },
+      "AGX_CR_USC_CDM_SERV": {
+        "description": "Compute Data Master Service register \u2014 controls GPGPU threadgroup dispatch",
+        "width_bits": 64
+      },
+      "AGX_CR_USC_VDM_DEBUG_STATUS": {
+        "description": "VDM pipeline execution status, stall telemetry, and FIFO depth",
+        "width_bits": 64
+      },
+      "AGX_CR_USC_PDM_DEBUG_STATUS": {
+        "description": "PDM pipeline execution status, rasterizer bottlenecks, and early-Z pass counters",
+        "width_bits": 64
+      },
+      "AGX_CR_USC_CDM_DEBUG_STATUS": {
+        "description": "CDM pipeline execution status, threadgroup barrier state, and compute occupancy",
+        "width_bits": 64
+      }
+    }
+  },
+  "doorbells": {
+    "PMPDoorbell": {
+      "region_name": "kAGFIPIORegionTypePMPDoorbell",
+      "description": "Power Management & Processor Doorbell MMIO region for low-latency command submission",
+      "page_size_bytes": 16384,
+      "access_model": "Memory-mapped directly to userland processes (AppleMetalDirect / AGXMetalG18P)",
+      "doorbell_protocol": {
+        "write_size_bytes": 8,
+        "fields": {
+          "queue_id": {
+            "bits": "0..15",
+            "desc": "Hardware Command Queue identifier"
+          },
+          "tail_offset": {
+            "bits": "16..47",
+            "desc": "64-byte aligned ring buffer write index"
+          },
+          "flags": {
+            "bits": "48..63",
+            "desc": "Kick priority, low-power wake flag, timestamp request"
+          }
+        },
+        "target_coprocessor": "RTBuddy Core 1 (armfw1_g18p)",
+        "latency_cycles": 12
+      }
+    }
+  },
+  "page_tables": {
+    "native_page_size_bytes": 16384,
+    "page_size_kb": 16,
+    "kernel_assertion": "GPU uses 16K page size but CPU does not",
+    "translation_model": {
+      "architecture": "AGXGart / AGXSecureGart (Graphics Address Remapping Table)",
+      "virtual_address_bits": 48,
+      "table_levels": 4,
+      "level_names": [
+        "L0",
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "l3_page_entry_size_bytes": 8,
+      "entries_per_16k_page": 2048,
+      "page_entry_flags": {
+        "valid": {
+          "bit": 0,
+          "desc": "Page table entry valid bit"
+        },
+        "read_allow": {
+          "bit": 1,
+          "desc": "Read permission for GPU execution units"
+        },
+        "write_allow": {
+          "bit": 2,
+          "desc": "Write permission for GPU execution units"
+        },
+        "coherent": {
+          "bit": 3,
+          "desc": "Hardware cache coherency snooping flag"
+        },
+        "compression_enabled": {
+          "bit": 4,
+          "desc": "Lossless MSR/AFBC tile compression metadata present"
+        },
+        "secure": {
+          "bit": 5,
+          "desc": "SPTM / Exclave secure memory enclave page"
+        }
+      }
+    },
+    "invalidation_protocol": {
+      "method": "AGXFirmware::requestGartInval",
+      "invalidation_scope": [
+        "Entire GART",
+        "Single ASID/DSID",
+        "Virtual Address Range"
+      ],
+      "timeout_ns": 5000000000
+    },
+    "stream_identification": {
+      "manager": "DSIDManager (Data Stream Identifier Manager)",
+      "iommu_channels": [
+        "Vertex/Texture Fetch Stream",
+        "Compute Buffer Stream",
+        "Parameter Buffer / Tile Memory Stream",
+        "RTBuddy Firmware Private Stream"
+      ],
+      "aperture_setup": "mcacheApertureBufferSetup"
+    }
+  }
+}

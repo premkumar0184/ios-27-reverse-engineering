@@ -1,0 +1,248 @@
+{
+  "schema_version": "1.0",
+  "phase": "exclave_phase_2_tightbeam_wire_format",
+  "framework": "Tightbeam.framework (Project: Tightbeam-631.40.4)",
+  "message_header": {
+    "c_type": "struct tb_message_s",
+    "objective_c_type_encoding": "^{tb_message_s=ICQQQQ[4Q]Q^{tb_transport_message_buffer_s}}",
+    "header_size_bytes": 88,
+    "fields": [
+      {
+        "offset_bytes": 0,
+        "name": "state_and_flags",
+        "type": "uint32_t (I)",
+        "size_bytes": 4,
+        "description": "Lifecycle state and protocol flags. Encodes TB_MESSAGE_STATE_* and transport flags."
+      },
+      {
+        "offset_bytes": 4,
+        "name": "disposition",
+        "type": "uint8_t (C)",
+        "size_bytes": 1,
+        "description": "Message category: Query (1), Reply (2), Error (3), InitArgs (4)."
+      },
+      {
+        "offset_bytes": 5,
+        "name": "reserved_padding",
+        "type": "uint8_t[3]",
+        "size_bytes": 3,
+        "description": "Alignment padding to 8-byte boundary."
+      },
+      {
+        "offset_bytes": 8,
+        "name": "invocation_id",
+        "type": "uint64_t (Q)",
+        "size_bytes": 8,
+        "description": "Monotonically increasing 64-bit transaction nonce used to correlate replies to queries."
+      },
+      {
+        "offset_bytes": 16,
+        "name": "endpoint_token",
+        "type": "uint64_t (Q)",
+        "size_bytes": 8,
+        "description": "Component / interface selector token targeting specific service method."
+      },
+      {
+        "offset_bytes": 24,
+        "name": "payload_length",
+        "type": "uint64_t (Q)",
+        "size_bytes": 8,
+        "description": "Total length of serialized argument payload in bytes."
+      },
+      {
+        "offset_bytes": 32,
+        "name": "capabilities_count",
+        "type": "uint64_t (Q)",
+        "size_bytes": 8,
+        "description": "Number of capabilities delegated in message (0 <= count <= TB_MAX_CAPS = 8)."
+      },
+      {
+        "offset_bytes": 40,
+        "name": "inline_payload",
+        "type": "uint64_t[4] ([4Q])",
+        "size_bytes": 32,
+        "description": "Inline fast-path payload words transferred directly without buffer indirection."
+      },
+      {
+        "offset_bytes": 72,
+        "name": "cursor_position",
+        "type": "uint64_t (Q)",
+        "size_bytes": 8,
+        "description": "Current read/write position of serialization cursor within buffer."
+      },
+      {
+        "offset_bytes": 80,
+        "name": "transport_buffer",
+        "type": "struct tb_transport_message_buffer_s* (^)",
+        "size_bytes": 8,
+        "description": "Pointer to underlying transport buffer holding extended payload."
+      }
+    ],
+    "message_states": {
+      "0": {
+        "symbol": "TB_MESSAGE_STATE_UNINITIALIZED",
+        "description": "Raw unallocated buffer"
+      },
+      "1": {
+        "symbol": "TB_MESSAGE_STATE_PREPARING",
+        "description": "Active serialization by encoder"
+      },
+      "2": {
+        "symbol": "TB_MESSAGE_STATE_READY",
+        "description": "Payload sealed, ready for transport dispatch"
+      },
+      "3": {
+        "symbol": "TB_MESSAGE_STATE_SENT",
+        "description": "Dispatched to cL4 microkernel endpoint"
+      },
+      "4": {
+        "symbol": "TB_MESSAGE_STATE_RECEIVED",
+        "description": "Delivered to receiver, ready for decoder"
+      }
+    },
+    "message_dispositions": {
+      "1": {
+        "symbol": "TB_MESSAGE_DISPOSITION_QUERY",
+        "description": "RPC client request invoking remote method"
+      },
+      "2": {
+        "symbol": "TB_MESSAGE_DISPOSITION_REPLY",
+        "description": "RPC server response delivering return value"
+      },
+      "3": {
+        "symbol": "TB_MESSAGE_DISPOSITION_ERROR",
+        "description": "RPC failure notification with error code"
+      },
+      "4": {
+        "symbol": "TB_MESSAGE_DISPOSITION_INIT_ARGS",
+        "description": "Conclave bootstrap capability distribution"
+      }
+    }
+  },
+  "positional_serialization": {
+    "alignment_rules": {
+      "uint64_t / int64_t": 8,
+      "uint32_t / int32_t": 4,
+      "uint16_t / int16_t": 2,
+      "uint8_t / bool": 1,
+      "float (f32)": 4,
+      "double (f64)": 8,
+      "capability_slot": 8
+    },
+    "floating_point_encoding": {
+      "f32": "IEEE 754 Single Precision (32 bits, Little Endian, encoded via tb_message_encode_f32_v2)",
+      "f64": "IEEE 754 Double Precision (64 bits, Little Endian, encoded via tb_message_encode_f64_v2)"
+    },
+    "dynamic_collection_framing": {
+      "length_prefix": "uint32_t or uint64_t count preceding packed elements",
+      "maximum_manifest_count": 1024,
+      "maximum_entry_count": 2048,
+      "assertion_evidence": "TB_ASSERT: manifests.count <= 1024, TB_ASSERT: manifest->entry_count <= 2048"
+    },
+    "capability_delegation": {
+      "maximum_caps_per_message": 8,
+      "constant": "TB_MAX_CAPS",
+      "encoding": "Stored as 8-byte CNode slot indices in capability registers CR0..CR7",
+      "decoding_primitive": "tb_message_decode_capability(msg, (uint64_t *) &frame)"
+    }
+  },
+  "accumulator": {
+    "c_type": "struct tb_message_accumulator_s",
+    "objective_c_type_encoding": "^{tb_message_accumulator_s=QQQ*}",
+    "size_bytes": 32,
+    "fields": [
+      {
+        "offset_bytes": 0,
+        "name": "total_size",
+        "type": "uint64_t (Q)",
+        "description": "Total accumulated message payload size"
+      },
+      {
+        "offset_bytes": 8,
+        "name": "current_offset",
+        "type": "uint64_t (Q)",
+        "description": "Current chunk insertion offset"
+      },
+      {
+        "offset_bytes": 16,
+        "name": "frame_count",
+        "type": "uint64_t (Q)",
+        "description": "Number of mapped memory frames"
+      },
+      {
+        "offset_bytes": 24,
+        "name": "buffer_base",
+        "type": "char* (*)",
+        "description": "Virtual memory pointer to mapped accumulation buffer"
+      }
+    ],
+    "metadata_header": {
+      "c_type": "struct large_message_part_metadata_s",
+      "size_bytes": 40,
+      "fields": [
+        {
+          "offset_bytes": 0,
+          "name": "part_index",
+          "type": "uint32_t",
+          "description": "Sequential chunk index (0-based)"
+        },
+        {
+          "offset_bytes": 4,
+          "name": "part_count",
+          "type": "uint32_t",
+          "description": "Total chunks comprising complete message"
+        },
+        {
+          "offset_bytes": 8,
+          "name": "part_offset",
+          "type": "uint64_t",
+          "description": "Byte offset of current chunk in message"
+        },
+        {
+          "offset_bytes": 16,
+          "name": "part_size",
+          "type": "uint64_t",
+          "description": "Byte count of current chunk"
+        },
+        {
+          "offset_bytes": 24,
+          "name": "total_message_size",
+          "type": "uint64_t",
+          "description": "Total size across all chunks"
+        },
+        {
+          "offset_bytes": 32,
+          "name": "frame_cap",
+          "type": "uint64_t",
+          "description": "L4 capability of memory frame backing this chunk"
+        }
+      ]
+    }
+  },
+  "transports": {
+    "cL4": {
+      "name": "cL4 Inline Register IPC Transport",
+      "source_file": "Tightbeam_exclavecore/Runtime/Tightbeam/Transports/cL4/cL4_transport.c",
+      "transfer_mechanism": "Inline ARM64 registers (x0-x7) and Thread IPC Buffer (tpidrro_el0)",
+      "trap_vector": "svc #0 (L4_Call / L4_ReplyWait)",
+      "max_inline_words": 32,
+      "max_inline_bytes": 256,
+      "max_delegated_capabilities": 8,
+      "latency_class": "Sub-microsecond fast path",
+      "memory_allocation": "Zero-allocation; operates strictly within static IPC buffer",
+      "target_traffic": "RPC method queries, acknowledgments, token arbitration, short telemetry"
+    },
+    "cL4_large": {
+      "name": "cL4 Large Shared-Memory Transport",
+      "source_file": "Tightbeam_exclavecore/Runtime/Tightbeam/Transports/cL4_large/cL4_large_transport.c",
+      "transfer_mechanism": "Shared memory frame capability delegation with tb_message_accumulator_s",
+      "trap_vector": "svc #0 signaling with L4_Cap_Mint_Arm64_Frame delegated in CR0",
+      "max_inline_words": "Unlimited (backed by mapped physical Datacubes/frames)",
+      "max_inline_bytes": "Multi-megabyte payloads (up to maximum Conclave address space quota)",
+      "max_delegated_capabilities": "8 frame capabilities per IPC chunk",
+      "latency_class": "Page-mapping amortized bulk throughput",
+      "memory_allocation": "Dynamic frame mapping via _map_this_frame in vascore",
+      "target_traffic": "Sensor video frames, biometric facial vectors, crash stackshots, neural tensors"
+    }
+  }
+}

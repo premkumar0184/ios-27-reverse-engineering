@@ -1,0 +1,2058 @@
+{
+  "component_to_file": {
+    "ANE": {
+      "Component": "ANE",
+      "Path": "Firmware/ane/h18_ane_fw_apollo_v5x.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "1157c6ebd7dd8978b3f3a857b425343bc227ff200073b7f256c064287ee6e72ee0b194a1ef393e0a7415829044eb1121"
+    },
+    "ANS": {
+      "Component": "ANS",
+      "Path": "Firmware/ansf.t8150.release.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "a47b85dd6e8c16f6c5787415901500135e7caece46c784d54e5af8ed09b2be6e8c4d1f5f735201fff0ed4cec59cd23cb"
+    },
+    "AOP": {
+      "Component": "AOP",
+      "Path": "Firmware/AOP/aopfw-v57aop.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "ada7f27148f28dc8a97aec0b7cd1a90bb6f64b1e77d79d0ae586e840973152b3213d4b65bbadf2597e9179661dab48dc"
+    },
+    "AOP2": {
+      "Component": "AOP2",
+      "Path": "Firmware/AOP2/aop2fw-v57aop2.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bca3c3a065e68759d2ced1bd73d1ba9d395753467f14d5fc0accfde94be5ade7a843bbd02af7a68ae3d02a6578705cb8"
+    },
+    "AVE": {
+      "Component": "AVE",
+      "Path": "Firmware/ave/AppleAVE2FW_H18.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "cb9f22ad254ac856c5a6525a967356846f0a191d7ebc3abf83345fa59ec70280b3bfeccdca1d7ac9aaff73ddd1e54a26"
+    },
+    "Ap,ApplePMCFirmware": {
+      "Component": "Ap,ApplePMCFirmware",
+      "Path": "Firmware/pmc/t8150pmcfw.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "a15a52b2db3e93c7694f8cc1676c34fb57a45a3a35c320b537e7581358d67cdbafe87e117e314ab338ec82b44521d74b"
+    },
+    "Ap,AppleVideoEncoder0": {
+      "Component": "Ap,AppleVideoEncoder0",
+      "Path": "Firmware/ave/AppleAVE2FW_H18_AVE0.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "4228f34c7ede2b989c66b7b3738342c537f99d25c2ca32aff0500fce8747ed7ffa4fb6a1c6bdd97a9adf1271495a60d4"
+    },
+    "Ap,AppleVideoEncoder1": {
+      "Component": "Ap,AppleVideoEncoder1",
+      "Path": "Firmware/ave/AppleAVE2FW_H18_AVE1.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "b59d2aecf532b1a213dca30490e2349beb05e322671dcc36653adde20ceef4351cd806809a837bbfd7f04501afc80b54"
+    },
+    "Ap,AppleVideoEncoder2": {
+      "Component": "Ap,AppleVideoEncoder2",
+      "Path": "Firmware/ave/AppleAVE2FW_H18_AVE2.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "e3e78e3c41c66178ae346fba6b015c74630a04627ce40e2f06ec54f4eb02a5ca44cb654dbf19fb4c03f5eb65e842baaf"
+    },
+    "Ap,AppleVideoEncoder3": {
+      "Component": "Ap,AppleVideoEncoder3",
+      "Path": "Firmware/ave/AppleAVE2FW_H18_AVE3.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "6a7e80ffc4e9dd4b7e56a8e4cb26e67bcf2cc62b0986596639f826803f2265255b1f176de33f9e100f068b9692d7525a"
+    },
+    "Ap,AppleVideoEncoder4": {
+      "Component": "Ap,AppleVideoEncoder4",
+      "Path": "Firmware/ave/AppleAVE2FW_H18_AVE4.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "950a399a995bb84f0a0559853f02e22f5cd3e6cfdd952168467d38cdd4621e348b362fd1a24357421596ab016d4daad9"
+    },
+    "Ap,AppleVideoEncoder5": {
+      "Component": "Ap,AppleVideoEncoder5",
+      "Path": "Firmware/ave/AppleAVE2FW_H18_AVE5.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "e8463f2dfeeb9bcb66a23d4b6e84cfa5bce0a50bd68cc4bfe40f712ec1b2cf82258d2bc47d38396d4040f30ecf43cd05"
+    },
+    "Ap,AppleVideoEncoder6": {
+      "Component": "Ap,AppleVideoEncoder6",
+      "Path": "Firmware/ave/AppleAVE2FW_H18_AVE6.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "30237df0635198c99b8e27d9fadc6b40c52c1a6506f3235afbef01440d98d58d969d40e321c849686465ffce8ffd5921"
+    },
+    "Ap,AppleVideoEncoder7": {
+      "Component": "Ap,AppleVideoEncoder7",
+      "Path": "Firmware/ave/AppleAVE2FW_H18_AVE7.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "7f566b7704d9328ae5c877b07b1f553d2d0fe7fa3284f7764f3f5de49f5f97cc50a4ba8eef94ccd011011f80d999a4f6"
+    },
+    "Ap,AppleVideoEncoder8": {
+      "Component": "Ap,AppleVideoEncoder8",
+      "Path": "Firmware/ave/AppleAVE2FW_H18_AVE8.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bc0fef470331cdd03d1fb7dc88883d98c2ceb24b80675fb469f470d0074e2082b528588168ebde0335de24ac35de94ff"
+    },
+    "Ap,AudioBootChime": {
+      "Component": "Ap,AudioBootChime",
+      "Path": "Firmware/embeddedaudioresources/image4/v57-boot-chime.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "338a663f4081b8e8e02903a6a2c7c63001c51c1648dbbc8bd75d2e3b1bca4512f6f21191b7c0f95998cd19e7ed57b488"
+    },
+    "Ap,ExclaveOS": {
+      "Component": "Ap,ExclaveOS",
+      "Path": "141-08904-238.dmg.aea",
+      "IsEncryptedAEA": true,
+      "Trusted": true,
+      "Personalize": false,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "766db72ba14af14a46d35acdda1e6c698dd1e4490b8a9e305eadeee54c264b21876f30d6d13987ce6d816ef343e1ae6e"
+    },
+    "Ap,ExclaveOSIntegrityCatalog": {
+      "Component": "Ap,ExclaveOSIntegrityCatalog",
+      "Path": "Firmware/141-08904-238.dmg.aea.integrity_catalog",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "a2bba2ff288e55f6e0ca3016eb0d868dce6120bab99f4329f013ede85b0cc883e75944f99d77332507053c9781d1fc25"
+    },
+    "Ap,ExclaveOSTrustCache": {
+      "Component": "Ap,ExclaveOSTrustCache",
+      "Path": "Firmware/141-08904-238.dmg.aea.trustcache",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "6722b8fe1b5e988788abbece68f24361b2603342356ffae403c2842a39a9386ca9889690a216d767cd14dd9620c70ac7"
+    },
+    "Ap,ExclaveOSVolume": {
+      "Component": "Ap,ExclaveOSVolume",
+      "Path": "Firmware/141-08904-238.dmg.aea.root_hash",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "50c05caf373e5aed910b5ebaea0b750900cc7c648664217928cd162cdfc5e25c87ba21e46c30b3aad3a75f6a37b0e07a"
+    },
+    "Ap,GFX1Firmware": {
+      "Component": "Ap,GFX1Firmware",
+      "Path": "Firmware/agx/armfw1_g18p.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "8491e200570f184df75d4e656a355b98172cb4b004e60444176a28d72b4990b8030a5a3a6c3d660ab1ef53a6ba4d48f4"
+    },
+    "Ap,HapticAssets": {
+      "Component": "Ap,HapticAssets",
+      "Path": "Firmware/V57_HapticAssets.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "ac2331eabb76862058f7b51b5a2d84dbb27372cfe4909ad007a7cd8effad01a42c87ae5b074976787f91d8aac9197c7b"
+    },
+    "Ap,LowPowerMode": {
+      "Component": "Ap,LowPowerMode",
+      "Path": "Firmware/AppleLPM/AppleLPM.v57.release.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "f288abb488373eedba707ee5f0d07ff51d12c50c6c4a28bd8bed1fcafa2d25bb25dd09ce8980ab5b813725aebebdd4a1"
+    },
+    "Ap,MSRFirmware": {
+      "Component": "Ap,MSRFirmware",
+      "Path": "Firmware/msr/t8150.msrf.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "8380d2cff6268f694c929588adebc5b177900f6029ad39adc6a1dbb19691bb10bcab0f505960df9faa0808df2e7735db"
+    },
+    "Ap,RestoreMSRFirmware": {
+      "Component": "Ap,RestoreMSRFirmware",
+      "Path": "Firmware/msr/t8150.rmsr.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "0b01aeb7ccc1e8f200c858ff095b39f2528a90e911be869dcadcd889ee07985434be23ad6eba1e3a56b7291745493b00"
+    },
+    "Ap,RestoreSecureM3Firmware": {
+      "Component": "Ap,RestoreSecureM3Firmware",
+      "Path": "Firmware/M3/bin/securem3fw-v57.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "69603109a713f5b82d62ac2d7a030084d7361a982b19771089a3ef239339e9d93f2a159767f8811e12d3cbffe4a32f3b"
+    },
+    "Ap,RestoreSecurePageTableMonitor": {
+      "Component": "Ap,RestoreSecurePageTableMonitor",
+      "Path": "Firmware/sptm.t8150.release.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "ac834ea9af46b4fdabe380f642e4c835cfd6d822cb51d79ef786e2f6476433b054d4ef8d446d12ef45016d11afaff844"
+    },
+    "Ap,RestoreTrustedExecutionMonitor": {
+      "Component": "Ap,RestoreTrustedExecutionMonitor",
+      "Path": "Firmware/txm.iphoneos.release.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "67646890f1d2f372250d43cfd5b0508e063056b6edf13e8b1ebf5b47aa2ff3cc8ae570520798141750f77c22a853bf52"
+    },
+    "Ap,RestorecL4": {
+      "Component": "Ap,RestorecL4",
+      "Path": "Firmware/image4/exclavecore_bundle.t8150.RELEASE.restore.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "4edec549d1b1a95f6f2269cb9af306b6963102f2c1511c7dd08c64b1024b03725b60efa9caa4c0f55369aceddce41ac9"
+    },
+    "Ap,SecureM3Firmware": {
+      "Component": "Ap,SecureM3Firmware",
+      "Path": "Firmware/M3/bin/securem3fw-v57.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "1316dca1ac48e31aa706b19aa40ebdda58ed254cb8135fde0121e2e6fa2c10966b172b1805e75b874bb17b498390be5e"
+    },
+    "Ap,SecurePageTableMonitor": {
+      "Component": "Ap,SecurePageTableMonitor",
+      "Path": "Firmware/sptm.t8150.release.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "0cba53eb1b11c5e6e8ef35d12f84016ac32ac9b5ed242a53e710f717cca9244b09132ed289a2775799611c2b76c11db7"
+    },
+    "Ap,SystemVolumeCanonicalMetadata": {
+      "Component": "Ap,SystemVolumeCanonicalMetadata",
+      "Path": "Firmware/141-08876-216.dmg.aea.mtree",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "0b31dd7209ccd0b12ad2ee7377bc17e36d9ef4456a8118dd62723f2c4c3e8d8400d76a9268b3c9d51d210968b0f5a8fb"
+    },
+    "Ap,TrustedExecutionMonitor": {
+      "Component": "Ap,TrustedExecutionMonitor",
+      "Path": "Firmware/txm.iphoneos.release.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "d1f47d55fd17c64cc83b06458acc1d06b1a1897174332c61e63b92fee0083a119b59d366676ab973a73b610168360f3b"
+    },
+    "Ap,cL4": {
+      "Component": "Ap,cL4",
+      "Path": "Firmware/image4/exclavecore_bundle.t8150.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "a7ec5f05809b910c1a39c2b142a21d17158b47fbf7fac14d4f72c1034417dcff4c14c8e1d9f6a6e4ee0716b967a29c9a"
+    },
+    "AppleLogo": {
+      "Component": "AppleLogo",
+      "Path": "Firmware/all_flash/applelogo@3x-style0~iphone.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "f83bd6dfb3e5f54377fdc8a117e583cbc566cbb7e5d35331f854c50146cf6333ad14f9a8ad48a82c714d6db55d78d550"
+    },
+    "BMU,DigestMap": {
+      "Component": "BMU,DigestMap",
+      "Path": "Firmware/Volchok/X3357/DigestMap.der",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "78992ebbae630ba4c0c979f34b40143151e7851f33207a86d2d820096ef7e9bd"
+    },
+    "BMU,FirmwareMap": {
+      "Component": "BMU,FirmwareMap",
+      "Path": "Firmware/Volchok/X3357/FirmwareMap.plist",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "44aa46afe5a10c4857e595340e892fda6244c62ec503a1d594916399d3127d8e"
+    },
+    "BasebandFirmware": {
+      "Component": "BasebandFirmware",
+      "Path": "Firmware/Mav25-2.20.04.Release.bbfw",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": false,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": null
+    },
+    "Cryptex1,AppOS": {
+      "Component": "Cryptex1,AppOS",
+      "Path": "141-08824-244.dmg",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": false,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2ba33eb6964dba7ac3a139ba8946e1ead45e1e4ae373bfcc2f27c72b3dc29bfe5a1ad5898cb2dc1ba90be40e063dc5e7"
+    },
+    "Cryptex1,AppTrustCache": {
+      "Component": "Cryptex1,AppTrustCache",
+      "Path": "Firmware/141-08824-244.dmg.trustcache",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "6f30833f63f7605de95117045702dfe1695f0e14960a04f7ef69dd1170764d1b4ce626fcef782301ed029b01ca3cd31e"
+    },
+    "Cryptex1,AppVolume": {
+      "Component": "Cryptex1,AppVolume",
+      "Path": "Firmware/141-08824-244.dmg.root_hash",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "f4569b60c98bbf344847d81aa7f2d38a7e46e09196889f18d0abaa1e4b3d2bb9a9a6d0229e1341a27d528e37029272a4"
+    },
+    "Cryptex1,SystemOS": {
+      "Component": "Cryptex1,SystemOS",
+      "Path": "141-09724-226.dmg.aea",
+      "IsEncryptedAEA": true,
+      "Trusted": false,
+      "Personalize": false,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "a6fb38edf72b40527996071e3b55896e7e7f004514827243b39bd60c57ebc214fffa165ffddeb9b989eb43afc6f7d9bc"
+    },
+    "Cryptex1,SystemTrustCache": {
+      "Component": "Cryptex1,SystemTrustCache",
+      "Path": "Firmware/141-09724-226.dmg.aea.trustcache",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "a33aa923fef29878b6c29fd724f61e2554cd8b0575ff40d6a08434c12424ebccf41669fe38423120c5b06e51d04b213d"
+    },
+    "Cryptex1,SystemVolume": {
+      "Component": "Cryptex1,SystemVolume",
+      "Path": "Firmware/141-09724-226.dmg.aea.root_hash",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "194db0885bcda4da784f9cd39f76419c381a74125ccaedfdbab46a5db097468b46444664f83374b24e66502e6bd4f767"
+    },
+    "DCP": {
+      "Component": "DCP",
+      "Path": "Firmware/dcp/t8150dcp.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "57df5fa4a830a3d9685b9a2f287cccee98a801f79a3a23a67254b67120866ac4f60458dec4ca4257ba7404c7fefd81eb"
+    },
+    "DeviceTree": {
+      "Component": "DeviceTree",
+      "Path": "Firmware/all_flash/DeviceTree.v57ap.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "1047cacddbb557e562dcb8e5d22cb897108778d84478fadc119216fddc6ef2188955f0468996302375775120c5fc87db"
+    },
+    "GFX": {
+      "Component": "GFX",
+      "Path": "Firmware/agx/armfw_g18p.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "9c1f7e914f7a8ed9fc60bc3ea5cbac843fbcaf5a7640b2c1b51c12e2cc9b563387dab325f7728156c5e64b35ab5624de"
+    },
+    "ISP": {
+      "Component": "ISP",
+      "Path": "Firmware/isp_bni/adc-silenus-v57.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "febfec8c115eb76e242ad1e4f3dae3eee5c9455951d87473cacd64b0b13ed2bc2aa124d0f06e9909b4278b831c866efe"
+    },
+    "JasmineIR1,FwPatch0": {
+      "Component": "JasmineIR1,FwPatch0",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "207a3368402779f3a9416996c16b508f49b5f734b72b3a7b33f6de75ef35e91c"
+    },
+    "JasmineIR1,FwPatch1": {
+      "Component": "JasmineIR1,FwPatch1",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatch1",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "48771aaf7d840a60160f0c8a72fe8dec3eb5d603f3e5014eca1d6cd833bc82fb"
+    },
+    "JasmineIR1,FwPatch2": {
+      "Component": "JasmineIR1,FwPatch2",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatch2",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "207a3368402779f3a9416996c16b508f49b5f734b72b3a7b33f6de75ef35e91c"
+    },
+    "JasmineIR1,FwPatch3": {
+      "Component": "JasmineIR1,FwPatch3",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatch3",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "48771aaf7d840a60160f0c8a72fe8dec3eb5d603f3e5014eca1d6cd833bc82fb"
+    },
+    "JasmineIR1,FwPatch4": {
+      "Component": "JasmineIR1,FwPatch4",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatch4",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "207a3368402779f3a9416996c16b508f49b5f734b72b3a7b33f6de75ef35e91c"
+    },
+    "JasmineIR1,FwPatch5": {
+      "Component": "JasmineIR1,FwPatch5",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatch5",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "48771aaf7d840a60160f0c8a72fe8dec3eb5d603f3e5014eca1d6cd833bc82fb"
+    },
+    "JasmineIR1,FwPatch6": {
+      "Component": "JasmineIR1,FwPatch6",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatch6",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "207a3368402779f3a9416996c16b508f49b5f734b72b3a7b33f6de75ef35e91c"
+    },
+    "JasmineIR1,FwPatch7": {
+      "Component": "JasmineIR1,FwPatch7",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatch7",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "48771aaf7d840a60160f0c8a72fe8dec3eb5d603f3e5014eca1d6cd833bc82fb"
+    },
+    "JasmineIR1,FwPatch8": {
+      "Component": "JasmineIR1,FwPatch8",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatch8",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2fb0501810be04de0d4978650cd58f4303ae542a1422db17fc286e3e3c78f324"
+    },
+    "JasmineIR1,FwPatch9": {
+      "Component": "JasmineIR1,FwPatch9",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatch9",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "169e0451b8fe693914bed821d57df50eae886d061b0c28b425bb0662aac96ecb"
+    },
+    "JasmineIR1,FwPatchA": {
+      "Component": "JasmineIR1,FwPatchA",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatchA",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2fb0501810be04de0d4978650cd58f4303ae542a1422db17fc286e3e3c78f324"
+    },
+    "JasmineIR1,FwPatchB": {
+      "Component": "JasmineIR1,FwPatchB",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatchB",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "169e0451b8fe693914bed821d57df50eae886d061b0c28b425bb0662aac96ecb"
+    },
+    "JasmineIR1,FwPatchC": {
+      "Component": "JasmineIR1,FwPatchC",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatchC",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2fb0501810be04de0d4978650cd58f4303ae542a1422db17fc286e3e3c78f324"
+    },
+    "JasmineIR1,FwPatchD": {
+      "Component": "JasmineIR1,FwPatchD",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatchD",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "169e0451b8fe693914bed821d57df50eae886d061b0c28b425bb0662aac96ecb"
+    },
+    "JasmineIR1,FwPatchE": {
+      "Component": "JasmineIR1,FwPatchE",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatchE",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2fb0501810be04de0d4978650cd58f4303ae542a1422db17fc286e3e3c78f324"
+    },
+    "JasmineIR1,FwPatchF": {
+      "Component": "JasmineIR1,FwPatchF",
+      "Path": "Firmware/Aries/JasmineIR1,FwPatchF",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "169e0451b8fe693914bed821d57df50eae886d061b0c28b425bb0662aac96ecb"
+    },
+    "JasmineIR1,SepObject": {
+      "Component": "JasmineIR1,SepObject",
+      "Path": "Firmware/all_flash/sep-firmware.v57.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "b1fc0726387c74a2dc15db54677b671a4728488846f7dd8506b83b706cd67b90e8b1f6a867847efa38cf990190bf85a3"
+    },
+    "JasmineIR1,VideoPatch0": {
+      "Component": "JasmineIR1,VideoPatch0",
+      "Path": "Firmware/Aries/JasmineIR1,VideoPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bb275d2694ae812d956290a97a80cad6408c5b49e7412edc6b6e3aa0cc15b188"
+    },
+    "JasmineIR1,VideoPatch1": {
+      "Component": "JasmineIR1,VideoPatch1",
+      "Path": "Firmware/Aries/JasmineIR1,VideoPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bb275d2694ae812d956290a97a80cad6408c5b49e7412edc6b6e3aa0cc15b188"
+    },
+    "JasmineIR1,VideoPatch2": {
+      "Component": "JasmineIR1,VideoPatch2",
+      "Path": "Firmware/Aries/JasmineIR1,VideoPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bb275d2694ae812d956290a97a80cad6408c5b49e7412edc6b6e3aa0cc15b188"
+    },
+    "JasmineIR1,VideoPatch3": {
+      "Component": "JasmineIR1,VideoPatch3",
+      "Path": "Firmware/Aries/JasmineIR1,VideoPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bb275d2694ae812d956290a97a80cad6408c5b49e7412edc6b6e3aa0cc15b188"
+    },
+    "JasmineIR1,VideoPatch4": {
+      "Component": "JasmineIR1,VideoPatch4",
+      "Path": "Firmware/Aries/JasmineIR1,VideoPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bb275d2694ae812d956290a97a80cad6408c5b49e7412edc6b6e3aa0cc15b188"
+    },
+    "JasmineIR1,VideoPatch5": {
+      "Component": "JasmineIR1,VideoPatch5",
+      "Path": "Firmware/Aries/JasmineIR1,VideoPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bb275d2694ae812d956290a97a80cad6408c5b49e7412edc6b6e3aa0cc15b188"
+    },
+    "JasmineIR1,VideoPatch6": {
+      "Component": "JasmineIR1,VideoPatch6",
+      "Path": "Firmware/Aries/JasmineIR1,VideoPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bb275d2694ae812d956290a97a80cad6408c5b49e7412edc6b6e3aa0cc15b188"
+    },
+    "JasmineIR1,VideoPatch7": {
+      "Component": "JasmineIR1,VideoPatch7",
+      "Path": "Firmware/Aries/JasmineIR1,VideoPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bb275d2694ae812d956290a97a80cad6408c5b49e7412edc6b6e3aa0cc15b188"
+    },
+    "KernelCache": {
+      "Component": "KernelCache",
+      "Path": "kernelcache.release.v57",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "de5971c81111377ebdcc659e1122858f2ba2e278b0de3838d89d5f3fb2e607bbb39ae4bd3f1ca26d99d30849898b0642"
+    },
+    "LLB": {
+      "Component": "LLB",
+      "Path": "Firmware/all_flash/LLB.v57.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2cb414fc4f15624d481c2a9d87b608d7963c119deea47c6834326a0f51663c73d4927b28d15f343fa7fda1952754ece9"
+    },
+    "LeapHaptics": {
+      "Component": "LeapHaptics",
+      "Path": "Firmware/V57_LeapHapticsFirmware.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "36e4bdae380d92561c0c3e0c1dcf6870d491d570b0d44e136ec0c3fc4aae9880b514cb1026f6497c23bcc6996e9780aa"
+    },
+    "Liquid": {
+      "Component": "Liquid",
+      "Path": "Firmware/all_flash/liquiddetect@2622~iphone-USBc-woven.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "e6d5fb38d42cd41328e0782f359da6f5d28ba3b4f934f4134dec6cdcf585f0a621748e97cbd41949928f3d226539555d"
+    },
+    "MtpFirmware": {
+      "Component": "MtpFirmware",
+      "Path": "Firmware/V57_MtpFirmware.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "d8953d2c357e0cbe3a4f324e53715a14caf0a946fbe7d33a9fc99b969236e4945468ae4fe265141ca0838cf4c62158b0"
+    },
+    "Multitouch": {
+      "Component": "Multitouch",
+      "Path": "Firmware/V57_Multitouch.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "599f9cb3f603d0038e566011b1d7b16119a96ca56ae802703d4c437e2e0d44547df7c83abc7b27ede09ed32cde9693f2"
+    },
+    "OS": {
+      "Component": "OS",
+      "Path": "141-08876-216.dmg.aea",
+      "IsEncryptedAEA": true,
+      "Trusted": true,
+      "Personalize": false,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "963f5b8ea2ce1da1f7ee719527d3b87cbe9f19a6901db9ed78c4ac8366ee1cddfe1cd0a51f27f1ab8614bf9a2fe6f363"
+    },
+    "PMP": {
+      "Component": "PMP",
+      "Path": "Firmware/pmp/t8150pmp.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "7f20280adff4205c34f9f4ff9f554ea21205b66d1cacc7310feb2b33c0054f0b2ebe094c21916d135e6aae4bf73e76ef"
+    },
+    "Rap,RTKitIOConfig": {
+      "Component": "Rap,RTKitIOConfig",
+      "Path": "Firmware/Rose/r2p1/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "6b1013023f1c7479108eef02f6d78f03113b687efbcff90b17d9beca0445f96b0ebac5630f6599b54d3d8e63d164f364"
+    },
+    "Rap,RTKitOS": {
+      "Component": "Rap,RTKitOS",
+      "Path": "Firmware/Rose/r2p1/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "916925c3084de9b97bd7bda2242f07be10754e7a9186b476dcba657f11a9cc8bd14427070b4c00f4669041490ee7e766"
+    },
+    "Rap,SoftwareBinaryDsp1": {
+      "Component": "Rap,SoftwareBinaryDsp1",
+      "Path": "Firmware/Rose/r2p1/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2634331839df447e674826d3137bc2a72e22dd6464a5b485ca3bc93c5b744ba132b72bbc1e9934960e5680877f51908e"
+    },
+    "RecoveryMode": {
+      "Component": "RecoveryMode",
+      "Path": "Firmware/all_flash/recoverymode@2622~iphone-USBc-woven.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "6392ed9f4f9fd31ca8077283cb1d60d0bb859979913fabbe8a144016b778901b2c00f94f60a458ec295a0cbafede30fe"
+    },
+    "RestoreANS": {
+      "Component": "RestoreANS",
+      "Path": "Firmware/rans.t8150.release.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "8313772851419489ad54726cd6946fd1604da5afd9fc55b3a862d0db91c0b8af71f4a4535f6028b7a3dfe7e00f05d573"
+    },
+    "RestoreDCP": {
+      "Component": "RestoreDCP",
+      "Path": "Firmware/dcp/t8150dcp_restore.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "df91414f2e2aec05ee62b78b274c553a904113f31e3a5fe1ccff6409ec954f21cde0ce8fb70bfd8d6c5692d2d6ee87fd"
+    },
+    "RestoreDeviceTree": {
+      "Component": "RestoreDeviceTree",
+      "Path": "Firmware/all_flash/DeviceTree.v57ap.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2cfcf15719ec4efb9d73fb6980233ddc975598064a2eb77c8dbaa56515bf5d80f9db38a59530df8160a77ba98000ba6d"
+    },
+    "RestoreKernelCache": {
+      "Component": "RestoreKernelCache",
+      "Path": "kernelcache.release.v57",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "c6fed44ec317e5f2483a14789d4febce88151f14f72108a4c6cfbdf2539bd50f5cf8d6a3ed8cf9ef8db85034e6e727e1"
+    },
+    "RestoreLogo": {
+      "Component": "RestoreLogo",
+      "Path": "Firmware/all_flash/applelogo@3x-style0~iphone.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "3679a078c7ada3a6f4d65b54425776de3320964084b891cfbcddc9c2a7364f84518d496e667a81e0b02f133c08b40c7d"
+    },
+    "RestoreRamDisk": {
+      "Component": "RestoreRamDisk",
+      "Path": "141-10399-240.dmg",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "079ad61471ccd121bf367b2c825520d1d55005f0281f292f958bab188c843090f26dd4b3bff81de8556b1250d7506453"
+    },
+    "RestoreSEP": {
+      "Component": "RestoreSEP",
+      "Path": "Firmware/all_flash/sep-firmware.v57.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "176c55c821af63cb4fc92a072dd9fe2c45a43d2c38a5ac218e60a590a3e985aaf2feff953d9cd5bf1bd6be31f813088d"
+    },
+    "RestoreTrustCache": {
+      "Component": "RestoreTrustCache",
+      "Path": "Firmware/141-10399-240.dmg.trustcache",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "d7466faa10ca62e0076a7e1f6b55c0fe78ca3ab7ea025ecb1fe2974a880918d7f1692d1a5e094a6846298a5492e7b9d5"
+    },
+    "SE,RapRTKitOS": {
+      "Component": "SE,RapRTKitOS",
+      "Path": "Firmware/Rose/r2p1/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": false,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "916925c3084de9b97bd7bda2242f07be10754e7a9186b476dcba657f11a9cc8bd14427070b4c00f4669041490ee7e766"
+    },
+    "SE,RapSwBinDsp": {
+      "Component": "SE,RapSwBinDsp",
+      "Path": "Firmware/Rose/r2p1/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": false,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2634331839df447e674826d3137bc2a72e22dd6464a5b485ca3bc93c5b744ba132b72bbc1e9934960e5680877f51908e"
+    },
+    "SE,UpdatePayload": {
+      "Component": "SE,UpdatePayload",
+      "Path": "Firmware/SE/StockholmE.RELEASE.sefw",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": null
+    },
+    "SEP": {
+      "Component": "SEP",
+      "Path": "Firmware/all_flash/sep-firmware.v57.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "b1fc0726387c74a2dc15db54677b671a4728488846f7dd8506b83b706cd67b90e8b1f6a867847efa38cf990190bf85a3"
+    },
+    "SIO": {
+      "Component": "SIO",
+      "Path": "Firmware/SmartIOFirmware_ASCv7.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "a548077b98234f1a87c6227abbcea7b7c3bf218febc9fb79332d6b488e3ac34893147c3399127971d43672f96af71d06"
+    },
+    "SepStage1": {
+      "Component": "SepStage1",
+      "Path": "Firmware/all_flash/sep-patches.v57.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2c2be224edebbd629c845e00a1cdb9ce710921de78c649165054ee785e43e1653b29177a504b6bbf4c90b813c1d20f28"
+    },
+    "StaticTrustCache": {
+      "Component": "StaticTrustCache",
+      "Path": "Firmware/141-08876-216.dmg.aea.trustcache",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "cb9ad0e256b359b3a16520b1e99a309485e5e1ceefca5df5e562bbb75064fa4a7013017a2fdaef95e039ea17d8ffb99b"
+    },
+    "SystemVolume": {
+      "Component": "SystemVolume",
+      "Path": "Firmware/141-08876-216.dmg.aea.root_hash",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "e400a64f0cc3644f77a53f7c4ddf3a356e586432c14e5da7a7eb015d9a9dfbf1b62fbc93720778783ce711ff39bd0de0"
+    },
+    "WCHFirmwareUpdater": {
+      "Component": "WCHFirmwareUpdater",
+      "Path": "Firmware/WirelessPower/WirelessPower.d23_v5z.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "8f64462dc50c44ea138e00765941bbc3b9c5bb8e52c5684e0a0d85125fe83eb08432b05d688d254992ec2c5605414428"
+    },
+    "Wireless1,ACIBT": {
+      "Component": "Wireless1,ACIBT",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "378d69ef6e7572707a438f7b64cf03754967a626121f3ebbbb302c17453f84c1230cdb7543b6b1e56980c6b7871f7814"
+    },
+    "Wireless1,ACIBTLPEM": {
+      "Component": "Wireless1,ACIBTLPEM",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "b17f2cb768da779145946d0cc1ce3b2b4c1f482c5c5c58969843e96041108b7d1360efc54a3f86244c714f0f8bfc28c9"
+    },
+    "Wireless1,ACIBTManuf": {
+      "Component": "Wireless1,ACIBTManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "378d69ef6e7572707a438f7b64cf03754967a626121f3ebbbb302c17453f84c1230cdb7543b6b1e56980c6b7871f7814"
+    },
+    "Wireless1,ACIWIFI": {
+      "Component": "Wireless1,ACIWIFI",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "27e9f5dd1cb910532d699e2c62ad3aef972d63da163892be3f4a0700601d21608544cce8f0e5eb371c8747d0f2c79a24"
+    },
+    "Wireless1,ACIWiFiTxManuf": {
+      "Component": "Wireless1,ACIWiFiTxManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "22809071ad519e7b27a3f87af5b1377a6bb023df88e8c958edb7a7cbd211bb8f6e293e59094077d2c64c41cb8638265a"
+    },
+    "Wireless1,BTSecondary": {
+      "Component": "Wireless1,BTSecondary",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "ebd59be4d27b01a4e1a696feb77a6aa10a75087f609efaff2e0f0ce3215113e74b0de656ee29eb9835d6a751b11ae931"
+    },
+    "Wireless1,BTSecondaryManuf": {
+      "Component": "Wireless1,BTSecondaryManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "ebd59be4d27b01a4e1a696feb77a6aa10a75087f609efaff2e0f0ce3215113e74b0de656ee29eb9835d6a751b11ae931"
+    },
+    "Wireless1,CCPUApplicationFirmware": {
+      "Component": "Wireless1,CCPUApplicationFirmware",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "45f576ce687be46effa69e4d48584543abe24bb1684e137fe2ac3a307828c0e9024302bf437530d5f1c3c4dc99ab2eea"
+    },
+    "Wireless1,CoexRealTimeArbiter": {
+      "Component": "Wireless1,CoexRealTimeArbiter",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "44749c87da9b89c1e09056d09de81bf1bcc7125480a78db8424e9583d5be8df4f861c9d31813a8c1806398d0c18941ec"
+    },
+    "Wireless1,PhyBlueTooth": {
+      "Component": "Wireless1,PhyBlueTooth",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "865dc9e0196daa41981184f1a7d63d68af2ec71c67efc85df4f158ca3711c7f0ce36cc5ad2f1aac1e2fcce5a29322807"
+    },
+    "Wireless1,PhyBlueTooth5G": {
+      "Component": "Wireless1,PhyBlueTooth5G",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bc5d2df61b835e8d045ab72d794866b302814578aef6e9aabb27473752e9611d2928373524b443b9a1a0c8d32b7d72ac"
+    },
+    "Wireless1,PhyBlueTooth5GManuf": {
+      "Component": "Wireless1,PhyBlueTooth5GManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "bc5d2df61b835e8d045ab72d794866b302814578aef6e9aabb27473752e9611d2928373524b443b9a1a0c8d32b7d72ac"
+    },
+    "Wireless1,PhyBlueToothLPM": {
+      "Component": "Wireless1,PhyBlueToothLPM",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "3dacddeb78e30b79ad22438a6a3295f874b14366788a010858e192f30ea33a6bf0e966cc8788d5ed70f27cb98279b78e"
+    },
+    "Wireless1,PhyBlueToothManuf": {
+      "Component": "Wireless1,PhyBlueToothManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "865dc9e0196daa41981184f1a7d63d68af2ec71c67efc85df4f158ca3711c7f0ce36cc5ad2f1aac1e2fcce5a29322807"
+    },
+    "Wireless1,PhyBluetooth5GTrim": {
+      "Component": "Wireless1,PhyBluetooth5GTrim",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "878fe8575b225927bc2109315abe42e901a4726713339e121c91fa2eb49ce38a7cf133ab5112ce818911cc847571bee3"
+    },
+    "Wireless1,PhyBluetoothTrim": {
+      "Component": "Wireless1,PhyBluetoothTrim",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "d7951c60ca986547978a6a424b2be14bd44bf4c51b35bf127e5ab4e3496e0830809325bbba14fd6199cd31811d79ed47"
+    },
+    "Wireless1,RTKitOS": {
+      "Component": "Wireless1,RTKitOS",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "eaff9523632ce9dadbd1c6f0fa8cc4324b658531f9f591d4860876eae44111854a159d7111557a5ddbe446adaaf42eb7"
+    },
+    "Wireless1,RTKitOSLPEM": {
+      "Component": "Wireless1,RTKitOSLPEM",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "aa63b29a29c2edc84374ac99b56cd5b05cf2dc1fd9e3b668cae59d8ca65118203c32bbc66daec400cce4a4a87387b3d3"
+    },
+    "Wireless1,ScanBTLPEM": {
+      "Component": "Wireless1,ScanBTLPEM",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "d14877e58c5af5b67c62bc3a1adae8b1f7f94caad10825074462f4675a5b8e8bc6be39f84fb396b5cf6b98a1d66683f7"
+    },
+    "Wireless1,ScanBTManuf": {
+      "Component": "Wireless1,ScanBTManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "8f74cf35b1b696a15c1bcf6106fca95f5c289151d413014e6d4e6904023ada7b5aebf645f1c98842f71f8c9ec98727a2"
+    },
+    "Wireless1,ScanBluetooth": {
+      "Component": "Wireless1,ScanBluetooth",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "8f74cf35b1b696a15c1bcf6106fca95f5c289151d413014e6d4e6904023ada7b5aebf645f1c98842f71f8c9ec98727a2"
+    },
+    "Wireless1,ScanWifi": {
+      "Component": "Wireless1,ScanWifi",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "24917c2fd6be3a308301fdeb234486fa86db614178a8344437ccd6874b474ca1b92779d7a1e2bacb2d3bc027e066ccda"
+    },
+    "Wireless1,ScanWifiManuf": {
+      "Component": "Wireless1,ScanWifiManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "50372a40b383e0cfa791b0556256ad88ecd16f7f7a063847d086446e7cdccc9622d1b41a061569e5af6e09a30b92c6eb"
+    },
+    "Wireless1,WiFiRx": {
+      "Component": "Wireless1,WiFiRx",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "f2709be7ef8432f9a1bb8544cf83b60959324fa80384e87afbce4740f612e047f8b813444f9547bb595683e33c8da11f"
+    },
+    "Wireless1,WiFiRxManuf": {
+      "Component": "Wireless1,WiFiRxManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "7b6296c2d0a4163e8718a2426cfbfc13edc48a3765e2d78806dab0de05eec2d1a198a85ab777d621793ce54e9ea1f11a"
+    },
+    "Wireless1,WiFiTx": {
+      "Component": "Wireless1,WiFiTx",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "1be8eb099b41ec08108671e5ce07afa5cb032d5129fb8b4eb88157e46abf2f152c63cc558b1357f57f0d9364e0e20254"
+    },
+    "Wireless1,WiFiTxManuf": {
+      "Component": "Wireless1,WiFiTxManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "ebc7c858e09c09c8c5f419467b7ff5fcfe53e18106347cbe3f2695aa5521ae2befe95444ebe810c329b6cfd05aad2306"
+    },
+    "Wireless1,Wifi2GLMAC": {
+      "Component": "Wireless1,Wifi2GLMAC",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "db754737b82cdfc6de061b47cd6cebd58163accf053b0ec9c67fd2f1758e9d1979c68e1e7a2e6a7e5eac049980eb8af3"
+    },
+    "Wireless1,Wifi2GLMACManuf": {
+      "Component": "Wireless1,Wifi2GLMACManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "72ace4d1c5c66403d22673ffbf9ee1e089248fb0ecf0938f5ea6b9a71eef6406d85a7e3e9fd7dd3a918f8e4570668449"
+    },
+    "Wireless1,Wifi2GLPhy": {
+      "Component": "Wireless1,Wifi2GLPhy",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "fbd7530b4ea88571c50930b781a64c2655fe5cfa4c7e2a1ad64ae3c85c51d4b581b940d3abfa4a18b1440597fbc5b5ca"
+    },
+    "Wireless1,Wifi2GLPhyManuf": {
+      "Component": "Wireless1,Wifi2GLPhyManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "fbd7530b4ea88571c50930b781a64c2655fe5cfa4c7e2a1ad64ae3c85c51d4b581b940d3abfa4a18b1440597fbc5b5ca"
+    },
+    "Wireless1,Wifi2GLPhyTrim": {
+      "Component": "Wireless1,Wifi2GLPhyTrim",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2af086ac1fa4b11e76a56f6ae8d491a7b515076c028df9a7132984daf0dff4ccb4a78fc680da63029d03553fc1df1c8c"
+    },
+    "Wireless1,Wifi5GLMAC": {
+      "Component": "Wireless1,Wifi5GLMAC",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "d8c1129844856392fe979a8ff07c5691536f7c7822a8906797c9eab93fc1137bd7ba134043dd09b672df7c189f8a0865"
+    },
+    "Wireless1,Wifi5GLMACManuf": {
+      "Component": "Wireless1,Wifi5GLMACManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "ce8dd41142d93d4458c868d183b3552b10b0b2c37b67e5f13b53b49e131af38a576000c9c6c8d9b1b2c425ec62d7084f"
+    },
+    "Wireless1,Wifi5GLPhy": {
+      "Component": "Wireless1,Wifi5GLPhy",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "3d10bc4b49bfee9647956bad2c0ff467d379542c9dcedb2c350716457c2e06ca4ca1434d8f49cad1fee1119650bc3980"
+    },
+    "Wireless1,Wifi5GLPhyManuf": {
+      "Component": "Wireless1,Wifi5GLPhyManuf",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "3d10bc4b49bfee9647956bad2c0ff467d379542c9dcedb2c350716457c2e06ca4ca1434d8f49cad1fee1119650bc3980"
+    },
+    "Wireless1,Wifi5GLPhyTrim": {
+      "Component": "Wireless1,Wifi5GLPhyTrim",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "b7ec1756d47aefd9a859959c8c8e72f5f83b57f7952ab5167562fabed27fa29d782e567d81cea1f43d90002b81c0c645"
+    },
+    "Wireless1,WifiRegData": {
+      "Component": "Wireless1,WifiRegData",
+      "Path": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": true,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "e8972185d8898ae94fa27f1b36b0093a623714357f09fbf9863476de4e4ebf02576eb86e012ddc8459a3f1563b99c8eb"
+    },
+    "Yonkers,SepObject": {
+      "Component": "Yonkers,SepObject",
+      "Path": "Firmware/all_flash/sep-firmware.v57.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "b1fc0726387c74a2dc15db54677b671a4728488846f7dd8506b83b706cd67b90e8b1f6a867847efa38cf990190bf85a3"
+    },
+    "Yonkers,SysTopPatch0": {
+      "Component": "Yonkers,SysTopPatch0",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "789ca24bc6f92149665ba32d87b1b2a2fd7914882d091acdf74415dd8e80c401"
+    },
+    "Yonkers,SysTopPatch1": {
+      "Component": "Yonkers,SysTopPatch1",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch1",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2adff92a323744020100823bbfa94b1293f99911db2c5e2877607bc71cfb6b3f"
+    },
+    "Yonkers,SysTopPatch2": {
+      "Component": "Yonkers,SysTopPatch2",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "789ca24bc6f92149665ba32d87b1b2a2fd7914882d091acdf74415dd8e80c401"
+    },
+    "Yonkers,SysTopPatch3": {
+      "Component": "Yonkers,SysTopPatch3",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch1",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2adff92a323744020100823bbfa94b1293f99911db2c5e2877607bc71cfb6b3f"
+    },
+    "Yonkers,SysTopPatch4": {
+      "Component": "Yonkers,SysTopPatch4",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "789ca24bc6f92149665ba32d87b1b2a2fd7914882d091acdf74415dd8e80c401"
+    },
+    "Yonkers,SysTopPatch5": {
+      "Component": "Yonkers,SysTopPatch5",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch1",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2adff92a323744020100823bbfa94b1293f99911db2c5e2877607bc71cfb6b3f"
+    },
+    "Yonkers,SysTopPatch6": {
+      "Component": "Yonkers,SysTopPatch6",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch0",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "789ca24bc6f92149665ba32d87b1b2a2fd7914882d091acdf74415dd8e80c401"
+    },
+    "Yonkers,SysTopPatch7": {
+      "Component": "Yonkers,SysTopPatch7",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch1",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "2adff92a323744020100823bbfa94b1293f99911db2c5e2877607bc71cfb6b3f"
+    },
+    "Yonkers,SysTopPatch8": {
+      "Component": "Yonkers,SysTopPatch8",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch8",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "fd43f89009b80ec74cd214291c68507eccedb411ec708156024b41752a6eda58"
+    },
+    "Yonkers,SysTopPatch9": {
+      "Component": "Yonkers,SysTopPatch9",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch9",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "d4b3224e396e34a13eb91895bfe8be788c5b3cfdec442a32a1b218cb4f7b9dfd"
+    },
+    "Yonkers,SysTopPatchA": {
+      "Component": "Yonkers,SysTopPatchA",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch8",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "fd43f89009b80ec74cd214291c68507eccedb411ec708156024b41752a6eda58"
+    },
+    "Yonkers,SysTopPatchB": {
+      "Component": "Yonkers,SysTopPatchB",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch9",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "d4b3224e396e34a13eb91895bfe8be788c5b3cfdec442a32a1b218cb4f7b9dfd"
+    },
+    "Yonkers,SysTopPatchC": {
+      "Component": "Yonkers,SysTopPatchC",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch8",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "fd43f89009b80ec74cd214291c68507eccedb411ec708156024b41752a6eda58"
+    },
+    "Yonkers,SysTopPatchD": {
+      "Component": "Yonkers,SysTopPatchD",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch9",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "d4b3224e396e34a13eb91895bfe8be788c5b3cfdec442a32a1b218cb4f7b9dfd"
+    },
+    "Yonkers,SysTopPatchE": {
+      "Component": "Yonkers,SysTopPatchE",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch8",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "fd43f89009b80ec74cd214291c68507eccedb411ec708156024b41752a6eda58"
+    },
+    "Yonkers,SysTopPatchF": {
+      "Component": "Yonkers,SysTopPatchF",
+      "Path": "Firmware/Summerville/Yonkers,SysTopPatch9",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "d4b3224e396e34a13eb91895bfe8be788c5b3cfdec442a32a1b218cb4f7b9dfd"
+    },
+    "eUICC,Gold": {
+      "Component": "eUICC,Gold",
+      "Path": "Firmware/vinyl_20.vnlfw",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": false,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "a9632326a052c090677482c51c4d07259478c6d941ee1d2ee46ccf0f6f9249aa"
+    },
+    "eUICC,Main": {
+      "Component": "eUICC,Main",
+      "Path": "Firmware/vinyl_20.vnlfw",
+      "IsEncryptedAEA": false,
+      "Trusted": false,
+      "Personalize": false,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "ac690767d53680418ce22855a94fd9f1be619995fc03d66d06fae31b263ae296"
+    },
+    "iBEC": {
+      "Component": "iBEC",
+      "Path": "Firmware/dfu/iBEC.v57.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "e37fdb9bf8810bf2ca3443f2544425218bf77afceb27963b2f12b2f3b544ac74f6b522db3c620acd343b50f87544ad0c"
+    },
+    "iBSS": {
+      "Component": "iBSS",
+      "Path": "Firmware/dfu/iBSS.v57.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "0bab4c89cded3d01a24f0c01a65441f1d56b72c002bbf406aad2207f82de33abb373af9df495ea7000f6d2129ab35817"
+    },
+    "iBoot": {
+      "Component": "iBoot",
+      "Path": "Firmware/all_flash/iBoot.v57.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "48774df8fa66df2e17a9003b44adc0e420777eb65c1088079e72e22cd6d00a940d3dc17cb06b2ae17ff980901e3f3d30"
+    },
+    "iBootData": {
+      "Component": "iBootData",
+      "Path": "Firmware/all_flash/iBootData.v57.RELEASE.im4p",
+      "IsEncryptedAEA": false,
+      "Trusted": true,
+      "Personalize": true,
+      "IsFTAB": false,
+      "HashMethod": "sha2-384",
+      "ManifestDigest": "ae5ed5b5119de9ae25255858b6a0f0dc4f976e8990976f3bc8bd690a642c1db221530847df138f77510ef295fe9ad7d7"
+    }
+  },
+  "file_to_components": {
+    "Firmware/ane/h18_ane_fw_apollo_v5x.im4p": [
+      "ANE"
+    ],
+    "Firmware/ansf.t8150.release.im4p": [
+      "ANS"
+    ],
+    "Firmware/AOP/aopfw-v57aop.RELEASE.im4p": [
+      "AOP"
+    ],
+    "Firmware/AOP2/aop2fw-v57aop2.RELEASE.im4p": [
+      "AOP2"
+    ],
+    "Firmware/ave/AppleAVE2FW_H18.im4p": [
+      "AVE"
+    ],
+    "Firmware/pmc/t8150pmcfw.im4p": [
+      "Ap,ApplePMCFirmware"
+    ],
+    "Firmware/ave/AppleAVE2FW_H18_AVE0.im4p": [
+      "Ap,AppleVideoEncoder0"
+    ],
+    "Firmware/ave/AppleAVE2FW_H18_AVE1.im4p": [
+      "Ap,AppleVideoEncoder1"
+    ],
+    "Firmware/ave/AppleAVE2FW_H18_AVE2.im4p": [
+      "Ap,AppleVideoEncoder2"
+    ],
+    "Firmware/ave/AppleAVE2FW_H18_AVE3.im4p": [
+      "Ap,AppleVideoEncoder3"
+    ],
+    "Firmware/ave/AppleAVE2FW_H18_AVE4.im4p": [
+      "Ap,AppleVideoEncoder4"
+    ],
+    "Firmware/ave/AppleAVE2FW_H18_AVE5.im4p": [
+      "Ap,AppleVideoEncoder5"
+    ],
+    "Firmware/ave/AppleAVE2FW_H18_AVE6.im4p": [
+      "Ap,AppleVideoEncoder6"
+    ],
+    "Firmware/ave/AppleAVE2FW_H18_AVE7.im4p": [
+      "Ap,AppleVideoEncoder7"
+    ],
+    "Firmware/ave/AppleAVE2FW_H18_AVE8.im4p": [
+      "Ap,AppleVideoEncoder8"
+    ],
+    "Firmware/embeddedaudioresources/image4/v57-boot-chime.im4p": [
+      "Ap,AudioBootChime"
+    ],
+    "141-08904-238.dmg.aea": [
+      "Ap,ExclaveOS"
+    ],
+    "Firmware/141-08904-238.dmg.aea.integrity_catalog": [
+      "Ap,ExclaveOSIntegrityCatalog"
+    ],
+    "Firmware/141-08904-238.dmg.aea.trustcache": [
+      "Ap,ExclaveOSTrustCache"
+    ],
+    "Firmware/141-08904-238.dmg.aea.root_hash": [
+      "Ap,ExclaveOSVolume"
+    ],
+    "Firmware/agx/armfw1_g18p.im4p": [
+      "Ap,GFX1Firmware"
+    ],
+    "Firmware/V57_HapticAssets.im4p": [
+      "Ap,HapticAssets"
+    ],
+    "Firmware/AppleLPM/AppleLPM.v57.release.im4p": [
+      "Ap,LowPowerMode"
+    ],
+    "Firmware/msr/t8150.msrf.im4p": [
+      "Ap,MSRFirmware"
+    ],
+    "Firmware/msr/t8150.rmsr.im4p": [
+      "Ap,RestoreMSRFirmware"
+    ],
+    "Firmware/M3/bin/securem3fw-v57.im4p": [
+      "Ap,RestoreSecureM3Firmware",
+      "Ap,SecureM3Firmware"
+    ],
+    "Firmware/sptm.t8150.release.im4p": [
+      "Ap,RestoreSecurePageTableMonitor",
+      "Ap,SecurePageTableMonitor"
+    ],
+    "Firmware/txm.iphoneos.release.im4p": [
+      "Ap,RestoreTrustedExecutionMonitor",
+      "Ap,TrustedExecutionMonitor"
+    ],
+    "Firmware/image4/exclavecore_bundle.t8150.RELEASE.restore.im4p": [
+      "Ap,RestorecL4"
+    ],
+    "Firmware/141-08876-216.dmg.aea.mtree": [
+      "Ap,SystemVolumeCanonicalMetadata"
+    ],
+    "Firmware/image4/exclavecore_bundle.t8150.RELEASE.im4p": [
+      "Ap,cL4"
+    ],
+    "Firmware/all_flash/applelogo@3x-style0~iphone.im4p": [
+      "AppleLogo",
+      "RestoreLogo"
+    ],
+    "Firmware/Volchok/X3357/DigestMap.der": [
+      "BMU,DigestMap"
+    ],
+    "Firmware/Volchok/X3357/FirmwareMap.plist": [
+      "BMU,FirmwareMap"
+    ],
+    "Firmware/Mav25-2.20.04.Release.bbfw": [
+      "BasebandFirmware"
+    ],
+    "141-08824-244.dmg": [
+      "Cryptex1,AppOS"
+    ],
+    "Firmware/141-08824-244.dmg.trustcache": [
+      "Cryptex1,AppTrustCache"
+    ],
+    "Firmware/141-08824-244.dmg.root_hash": [
+      "Cryptex1,AppVolume"
+    ],
+    "141-09724-226.dmg.aea": [
+      "Cryptex1,SystemOS"
+    ],
+    "Firmware/141-09724-226.dmg.aea.trustcache": [
+      "Cryptex1,SystemTrustCache"
+    ],
+    "Firmware/141-09724-226.dmg.aea.root_hash": [
+      "Cryptex1,SystemVolume"
+    ],
+    "Firmware/dcp/t8150dcp.im4p": [
+      "DCP"
+    ],
+    "Firmware/all_flash/DeviceTree.v57ap.im4p": [
+      "DeviceTree",
+      "RestoreDeviceTree"
+    ],
+    "Firmware/agx/armfw_g18p.im4p": [
+      "GFX"
+    ],
+    "Firmware/isp_bni/adc-silenus-v57.im4p": [
+      "ISP"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatch0": [
+      "JasmineIR1,FwPatch0"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatch1": [
+      "JasmineIR1,FwPatch1"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatch2": [
+      "JasmineIR1,FwPatch2"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatch3": [
+      "JasmineIR1,FwPatch3"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatch4": [
+      "JasmineIR1,FwPatch4"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatch5": [
+      "JasmineIR1,FwPatch5"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatch6": [
+      "JasmineIR1,FwPatch6"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatch7": [
+      "JasmineIR1,FwPatch7"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatch8": [
+      "JasmineIR1,FwPatch8"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatch9": [
+      "JasmineIR1,FwPatch9"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatchA": [
+      "JasmineIR1,FwPatchA"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatchB": [
+      "JasmineIR1,FwPatchB"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatchC": [
+      "JasmineIR1,FwPatchC"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatchD": [
+      "JasmineIR1,FwPatchD"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatchE": [
+      "JasmineIR1,FwPatchE"
+    ],
+    "Firmware/Aries/JasmineIR1,FwPatchF": [
+      "JasmineIR1,FwPatchF"
+    ],
+    "Firmware/all_flash/sep-firmware.v57.RELEASE.im4p": [
+      "JasmineIR1,SepObject",
+      "RestoreSEP",
+      "SEP",
+      "Yonkers,SepObject"
+    ],
+    "Firmware/Aries/JasmineIR1,VideoPatch0": [
+      "JasmineIR1,VideoPatch0",
+      "JasmineIR1,VideoPatch1",
+      "JasmineIR1,VideoPatch2",
+      "JasmineIR1,VideoPatch3",
+      "JasmineIR1,VideoPatch4",
+      "JasmineIR1,VideoPatch5",
+      "JasmineIR1,VideoPatch6",
+      "JasmineIR1,VideoPatch7"
+    ],
+    "kernelcache.release.v57": [
+      "KernelCache",
+      "RestoreKernelCache"
+    ],
+    "Firmware/all_flash/LLB.v57.RELEASE.im4p": [
+      "LLB"
+    ],
+    "Firmware/V57_LeapHapticsFirmware.im4p": [
+      "LeapHaptics"
+    ],
+    "Firmware/all_flash/liquiddetect@2622~iphone-USBc-woven.im4p": [
+      "Liquid"
+    ],
+    "Firmware/V57_MtpFirmware.im4p": [
+      "MtpFirmware"
+    ],
+    "Firmware/V57_Multitouch.im4p": [
+      "Multitouch"
+    ],
+    "141-08876-216.dmg.aea": [
+      "OS"
+    ],
+    "Firmware/pmp/t8150pmp.im4p": [
+      "PMP"
+    ],
+    "Firmware/Rose/r2p1/ftab.bin": [
+      "Rap,RTKitIOConfig",
+      "Rap,RTKitOS",
+      "Rap,SoftwareBinaryDsp1",
+      "SE,RapRTKitOS",
+      "SE,RapSwBinDsp"
+    ],
+    "Firmware/all_flash/recoverymode@2622~iphone-USBc-woven.im4p": [
+      "RecoveryMode"
+    ],
+    "Firmware/rans.t8150.release.im4p": [
+      "RestoreANS"
+    ],
+    "Firmware/dcp/t8150dcp_restore.im4p": [
+      "RestoreDCP"
+    ],
+    "141-10399-240.dmg": [
+      "RestoreRamDisk"
+    ],
+    "Firmware/141-10399-240.dmg.trustcache": [
+      "RestoreTrustCache"
+    ],
+    "Firmware/SE/StockholmE.RELEASE.sefw": [
+      "SE,UpdatePayload"
+    ],
+    "Firmware/SmartIOFirmware_ASCv7.im4p": [
+      "SIO"
+    ],
+    "Firmware/all_flash/sep-patches.v57.im4p": [
+      "SepStage1"
+    ],
+    "Firmware/141-08876-216.dmg.aea.trustcache": [
+      "StaticTrustCache"
+    ],
+    "Firmware/141-08876-216.dmg.aea.root_hash": [
+      "SystemVolume"
+    ],
+    "Firmware/WirelessPower/WirelessPower.d23_v5z.im4p": [
+      "WCHFirmwareUpdater"
+    ],
+    "Firmware/t2026phoneG1/Release/ftab.bin": [
+      "Wireless1,ACIBT",
+      "Wireless1,ACIBTLPEM",
+      "Wireless1,ACIBTManuf",
+      "Wireless1,ACIWIFI",
+      "Wireless1,ACIWiFiTxManuf",
+      "Wireless1,BTSecondary",
+      "Wireless1,BTSecondaryManuf",
+      "Wireless1,CCPUApplicationFirmware",
+      "Wireless1,CoexRealTimeArbiter",
+      "Wireless1,PhyBlueTooth",
+      "Wireless1,PhyBlueTooth5G",
+      "Wireless1,PhyBlueTooth5GManuf",
+      "Wireless1,PhyBlueToothLPM",
+      "Wireless1,PhyBlueToothManuf",
+      "Wireless1,PhyBluetooth5GTrim",
+      "Wireless1,PhyBluetoothTrim",
+      "Wireless1,RTKitOS",
+      "Wireless1,RTKitOSLPEM",
+      "Wireless1,ScanBTLPEM",
+      "Wireless1,ScanBTManuf",
+      "Wireless1,ScanBluetooth",
+      "Wireless1,ScanWifi",
+      "Wireless1,ScanWifiManuf",
+      "Wireless1,WiFiRx",
+      "Wireless1,WiFiRxManuf",
+      "Wireless1,WiFiTx",
+      "Wireless1,WiFiTxManuf",
+      "Wireless1,Wifi2GLMAC",
+      "Wireless1,Wifi2GLMACManuf",
+      "Wireless1,Wifi2GLPhy",
+      "Wireless1,Wifi2GLPhyManuf",
+      "Wireless1,Wifi2GLPhyTrim",
+      "Wireless1,Wifi5GLMAC",
+      "Wireless1,Wifi5GLMACManuf",
+      "Wireless1,Wifi5GLPhy",
+      "Wireless1,Wifi5GLPhyManuf",
+      "Wireless1,Wifi5GLPhyTrim",
+      "Wireless1,WifiRegData"
+    ],
+    "Firmware/Summerville/Yonkers,SysTopPatch0": [
+      "Yonkers,SysTopPatch0",
+      "Yonkers,SysTopPatch2",
+      "Yonkers,SysTopPatch4",
+      "Yonkers,SysTopPatch6"
+    ],
+    "Firmware/Summerville/Yonkers,SysTopPatch1": [
+      "Yonkers,SysTopPatch1",
+      "Yonkers,SysTopPatch3",
+      "Yonkers,SysTopPatch5",
+      "Yonkers,SysTopPatch7"
+    ],
+    "Firmware/Summerville/Yonkers,SysTopPatch8": [
+      "Yonkers,SysTopPatch8",
+      "Yonkers,SysTopPatchA",
+      "Yonkers,SysTopPatchC",
+      "Yonkers,SysTopPatchE"
+    ],
+    "Firmware/Summerville/Yonkers,SysTopPatch9": [
+      "Yonkers,SysTopPatch9",
+      "Yonkers,SysTopPatchB",
+      "Yonkers,SysTopPatchD",
+      "Yonkers,SysTopPatchF"
+    ],
+    "Firmware/vinyl_20.vnlfw": [
+      "eUICC,Gold",
+      "eUICC,Main"
+    ],
+    "Firmware/dfu/iBEC.v57.RELEASE.im4p": [
+      "iBEC"
+    ],
+    "Firmware/dfu/iBSS.v57.RELEASE.im4p": [
+      "iBSS"
+    ],
+    "Firmware/all_flash/iBoot.v57.RELEASE.im4p": [
+      "iBoot"
+    ],
+    "Firmware/all_flash/iBootData.v57.RELEASE.im4p": [
+      "iBootData"
+    ],
+    "141-09491-242.dmg": [
+      "RestoreRamDisk"
+    ],
+    "Firmware/141-09491-242.dmg.trustcache": [
+      "RestoreTrustCache"
+    ],
+    "Firmware/txm.iphoneos.research.im4p": [
+      "Ap,TrustedExecutionMonitor"
+    ],
+    "Firmware/all_flash/researchlogo@3x-style0~iphone.im4p": [
+      "AppleLogo",
+      "RestoreLogo"
+    ],
+    "kernelcache.research.v57": [
+      "KernelCache"
+    ],
+    "Firmware/all_flash/LLB.v57.RESEARCH_RELEASE.im4p": [
+      "LLB"
+    ],
+    "Firmware/dfu/iBEC.v57.RESEARCH_RELEASE.im4p": [
+      "iBEC"
+    ],
+    "Firmware/dfu/iBSS.v57.RESEARCH_RELEASE.im4p": [
+      "iBSS"
+    ],
+    "Firmware/all_flash/iBoot.v57.RESEARCH_RELEASE.im4p": [
+      "iBoot"
+    ],
+    "Firmware/all_flash/iBootData.v57.RESEARCH_RELEASE.im4p": [
+      "iBootData"
+    ],
+    "Firmware/141-09644-240.dmg.aea.mtree": [
+      "Ap,SystemVolumeCanonicalMetadata"
+    ],
+    "141-09644-240.dmg.aea": [
+      "OS"
+    ],
+    "Firmware/141-09644-240.dmg.aea.trustcache": [
+      "StaticTrustCache"
+    ],
+    "Firmware/141-09644-240.dmg.aea.root_hash": [
+      "SystemVolume"
+    ]
+  },
+  "unreferenced_firmware_files": [
+    "Firmware/Aries/JasmineIR1,FwPatch0.plist",
+    "Firmware/Aries/JasmineIR1,FwPatch1.plist",
+    "Firmware/Aries/JasmineIR1,FwPatch2.plist",
+    "Firmware/Aries/JasmineIR1,FwPatch3.plist",
+    "Firmware/Aries/JasmineIR1,FwPatch4.plist",
+    "Firmware/Aries/JasmineIR1,FwPatch5.plist",
+    "Firmware/Aries/JasmineIR1,FwPatch6.plist",
+    "Firmware/Aries/JasmineIR1,FwPatch7.plist",
+    "Firmware/Aries/JasmineIR1,FwPatch8.plist",
+    "Firmware/Aries/JasmineIR1,FwPatch9.plist",
+    "Firmware/Aries/JasmineIR1,FwPatchA.plist",
+    "Firmware/Aries/JasmineIR1,FwPatchB.plist",
+    "Firmware/Aries/JasmineIR1,FwPatchC.plist",
+    "Firmware/Aries/JasmineIR1,FwPatchD.plist",
+    "Firmware/Aries/JasmineIR1,FwPatchE.plist",
+    "Firmware/Aries/JasmineIR1,FwPatchF.plist",
+    "Firmware/Aries/JasmineIR1,VideoPatch0.plist",
+    "Firmware/Mav25-2.20.04.Release.plist",
+    "Firmware/SE/StockholmE.RELEASE.sefw.plist",
+    "Firmware/Summerville/Yonkers,SysTopPatch0.plist",
+    "Firmware/Summerville/Yonkers,SysTopPatch1.plist",
+    "Firmware/Summerville/Yonkers,SysTopPatch8.plist",
+    "Firmware/Summerville/Yonkers,SysTopPatch9.plist",
+    "Firmware/Volchok/X3357/DigestMap.der.plist",
+    "Firmware/Volchok/X3357/FirmwareMap.plist.plist",
+    "Firmware/all_flash/sep-firmware.v57.RELEASE.im4p.plist",
+    "Firmware/all_flash/sep-patches.v57.im4p.plist",
+    "Firmware/vinyl_20.plist"
+  ]
+}

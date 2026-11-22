@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Secure Enclave Anti-Replay Tokens (ART/xART) & Monotonic Storage Specification",
+  "anti_replay_tokens": {
+    "art": {
+      "name": "Internal Anti-Replay Token (ART)",
+      "storage_medium": "Dedicated high-endurance NOR flash within the SEP power island (Effaceable Storage).",
+      "structure": {
+        "epoch_id": "Monotonically increasing 64-bit counter tracking storage generations.",
+        "payload_hash": "SHA-384 digest of the active keybag and credential state table.",
+        "hmac_signature": "HMAC-SHA256 signature calculated using internal hardware UID key."
+      },
+      "validation_protocol": "During boot (AppleSEPARTStorage::start), sepOS loads ART tokens, recalculates the HMAC using silicon UID, and aborts boot if state mismatch is detected."
+    },
+    "xart": {
+      "name": "External Anti-Replay Token (xART / Gigalocker)",
+      "storage_medium": "Encrypted persistent partition in primary NAND flash managed by AppleSEPXART driver.",
+      "capacity_bytes": 16777216,
+      "capacity_human": "16 MB",
+      "encryption": "AES-256-XTS with ephemeral session keys negotiated via ASCwrap mailbox.",
+      "synchronization": "Batched journal commits. When a credential or keybag updates, sepOS issues cmsgXART_SYNC_GIGALOCKER."
+    }
+  },
+  "monitors": {
+    "monotonic_otp_counters": {
+      "type": "Silicon eFuse One-Time Programmable arrays",
+      "count": 32,
+      "bit_capacity_each": 64,
+      "role": "Prevents OS/firmware downgrade attacks (anti-rollback). Each major sepOS release permanently burns next bit."
+    },
+    "nonce_generators": [
+      {
+        "source": "AppleSEPBooter::generateROMNonce",
+        "length_bytes": 32,
+        "role": "Boot challenge nonce preventing replay of restore Image4 firmware manifests."
+      },
+      {
+        "source": "AppleSEPARTStorage::getNewNonce",
+        "length_bytes": 16,
+        "role": "Session transaction nonce invalidating replayed mailbox packets."
+      }
+    ]
+  }
+}

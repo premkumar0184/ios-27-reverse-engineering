@@ -1,0 +1,174 @@
+{
+  "framework_query": "QuartzCore",
+  "matched_image_path": "/System/Library/Frameworks/QuartzCore.framework/QuartzCore",
+  "category": "PublicFramework",
+  "vm_base_address": "0x1842d4000",
+  "vm_base_address_int": 6512525312,
+  "subcache_index": 0,
+  "subcache_extension": ".01",
+  "subcache_filename": "dyld_shared_cache_arm64e.01",
+  "subcache_vm_base": "0x180400000",
+  "subcache_file_offset": "0x3ed4000",
+  "subcache_file_offset_int": 65880064,
+  "subcache_uuid": "a78f816e-fae5-3aaf-a753-766346190a44",
+  "segment_count": 7,
+  "segments": [
+    {
+      "segname": "__TEXT",
+      "vmaddr": "0x1842d4000",
+      "vmaddr_int": 6512525312,
+      "vmsize": "0x47da68",
+      "vmsize_bytes": 4708968,
+      "fileoff": "0x3ed4000",
+      "fileoff_int": 65880064,
+      "filesize": "0x47da68",
+      "protection": "r-x"
+    },
+    {
+      "segname": "__DATA_CONST",
+      "vmaddr": "0x1e05de710",
+      "vmaddr_int": 8059217680,
+      "vmsize": "0x1c8c0",
+      "vmsize_bytes": 116928,
+      "fileoff": "0x4ea710",
+      "fileoff_int": 5154576,
+      "filesize": "0x1c8c0",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__AUTH_CONST",
+      "vmaddr": "0x1e2254c90",
+      "vmaddr_int": 8089062544,
+      "vmsize": "0x48260",
+      "vmsize_bytes": 295520,
+      "fileoff": "0x2160c90",
+      "fileoff_int": 34999440,
+      "filesize": "0x48260",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__AUTH",
+      "vmaddr": "0x1ef160080",
+      "vmaddr_int": 8306163840,
+      "vmsize": "0x13e8",
+      "vmsize_bytes": 5096,
+      "fileoff": "0xd06c080",
+      "fileoff_int": 218546304,
+      "filesize": "0x13e8",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__DATA",
+      "vmaddr": "0x1eb05dda0",
+      "vmaddr_int": 8237997472,
+      "vmsize": "0x64b0",
+      "vmsize_bytes": 25776,
+      "fileoff": "0x8f69da0",
+      "fileoff_int": 150379936,
+      "filesize": "0x64b0",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__DATA_DIRTY",
+      "vmaddr": "0x1edf37100",
+      "vmaddr_int": 8287121664,
+      "vmsize": "0x8a30",
+      "vmsize_bytes": 35376,
+      "fileoff": "0xbe43100",
+      "fileoff_int": 199504128,
+      "filesize": "0x8a30",
+      "protection": "rw-"
+    },
+    {
+      "segname": "__LINKEDIT",
+      "vmaddr": "0x2e6940000",
+      "vmaddr_int": 12458393600,
+      "vmsize": "0x298ec000",
+      "vmsize_bytes": 697221120,
+      "fileoff": "0x4000",
+      "fileoff_int": 16384,
+      "filesize": "0x298ec000",
+      "protection": "r--"
+    }
+  ],
+  "sections": [
+    {
+      "sectname": "__text",
+      "addr": "0x1842d5e48",
+      "size": "0x405468",
+      "offset": "0x3ed5e48"
+    },
+    {
+      "sectname": "__objc_methlist",
+      "addr": "0x1846db2b0",
+      "size": "0xbc94",
+      "offset": "0x42db2b0"
+    },
+    {
+      "sectname": "__const",
+      "addr": "0x1846e6f80",
+      "size": "0x19c00",
+      "offset": "0x42e6f80"
+    },
+    {
+      "sectname": "__dlopen_cstrs",
+      "addr": "0x184700b80",
+      "size": "0xe0",
+      "offset": "0x4300b80"
+    },
+    {
+      "sectname": "__cstring",
+      "addr": "0x184700c60",
+      "size": "0x29d4a",
+      "offset": "0x4300c60"
+    },
+    {
+      "sectname": "__gcc_except_tab",
+      "addr": "0x18472a9ac",
+      "size": "0xa09c",
+      "offset": "0x432a9ac"
+    },
+    {
+      "sectname": "__oslogstring",
+      "addr": "0x184734a48",
+      "size": "0x13a5f",
+      "offset": "0x4334a48"
+    },
+    {
+      "sectname": "__unwind_info",
+      "addr": "0x1847484a8",
+      "size": "0x95c0",
+      "offset": "0x43484a8"
+    },
+    {
+      "sectname": "__objc_stubs",
+      "addr": "0x184751a68",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__auth_stubs",
+      "addr": "0x184751a68",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_classname",
+      "addr": "0x184751a68",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_methname",
+      "addr": "0x184751a68",
+      "size": "0x0",
+      "offset": "0x0"
+    },
+    {
+      "sectname": "__objc_methtype",
+      "addr": "0x184751a68",
+      "size": "0x0",
+      "offset": "0x0"
+    }
+  ]
+}

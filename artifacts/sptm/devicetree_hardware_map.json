@@ -1,0 +1,298 @@
+{
+  "schema_version": "1.0",
+  "platform": "Apple Silicon A19 Pro (t8150 / v57ap)",
+  "device_nodes": {
+    "total_nodes_enumerated": 447,
+    "root_properties": [
+      "regulatory-model-number",
+      "#address-cells",
+      "AAPL,phandle",
+      "country-of-origin",
+      "config-number",
+      "serial-number",
+      "target-type",
+      "platform-name",
+      "name",
+      "mlb-serial-number",
+      "secure-root-prefix",
+      "manufacturer",
+      "region-info",
+      "target-sub-type",
+      "compatible",
+      "model-number",
+      "time-stamp",
+      "clock-frequency",
+      "model",
+      "model-config",
+      "device-tree-tag",
+      "device_type",
+      "#size-cells"
+    ],
+    "dart_iommu_controllers": [
+      {
+        "node_name": "dart-aop",
+        "base_address": "0x100fc0000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-pmp",
+        "base_address": "0xf0300000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-sep",
+        "base_address": "0x70c80000",
+        "size_bytes": 131072,
+        "size_hex": "0x20000"
+      },
+      {
+        "node_name": "dart-sio",
+        "base_address": "0x175060000",
+        "size_bytes": 131072,
+        "size_hex": "0x20000"
+      },
+      {
+        "node_name": "sart-ans",
+        "base_address": "0x17dc50000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-rsm",
+        "base_address": "0xf99a0000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-mtp",
+        "base_address": "0x104800000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-usb0",
+        "base_address": "0x402f00000",
+        "size_bytes": 131072,
+        "size_hex": "0x20000"
+      },
+      {
+        "node_name": "dart-dcp",
+        "base_address": "0x1fa340000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-disp0",
+        "base_address": "0x1fa300000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-dispgrt",
+        "base_address": "0x1fa320000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-disp0-isoc",
+        "base_address": "0x1fa1c0000",
+        "size_bytes": 131072,
+        "size_hex": "0x20000"
+      },
+      {
+        "node_name": "dart-dcpext0",
+        "base_address": "0x1fe340000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-dispext0",
+        "base_address": "0x1fe300000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-dispext0-isoc",
+        "base_address": "0x1fe1c0000",
+        "size_bytes": 131072,
+        "size_hex": "0x20000"
+      },
+      {
+        "node_name": "dart-scaler",
+        "base_address": "0x81260000",
+        "size_bytes": 131072,
+        "size_hex": "0x20000"
+      },
+      {
+        "node_name": "dart-jpeg",
+        "base_address": "0x7d020000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-isp",
+        "base_address": "0x1128c0000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "dart-ave",
+        "base_address": "0x77020000",
+        "size_bytes": 131072,
+        "size_hex": "0x20000"
+      },
+      {
+        "node_name": "dart-avd",
+        "base_address": "0x85020000",
+        "size_bytes": 131072,
+        "size_hex": "0x20000"
+      },
+      {
+        "node_name": "dart-apr",
+        "base_address": "0x171020000",
+        "size_bytes": 131072,
+        "size_hex": "0x20000"
+      },
+      {
+        "node_name": "dart-ane",
+        "base_address": "0x271800000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000"
+      },
+      {
+        "node_name": "audio-shared-dart-proxy",
+        "base_address": "0x0",
+        "size_bytes": 0,
+        "size_hex": "0x0"
+      },
+      {
+        "node_name": "dart-apcie0",
+        "base_address": "0x180000000",
+        "size_bytes": 131072,
+        "size_hex": "0x20000"
+      },
+      {
+        "node_name": "dart-apcie1",
+        "base_address": "0x181000000",
+        "size_bytes": 131072,
+        "size_hex": "0x20000"
+      }
+    ],
+    "chosen_properties_summary": {
+      "mix-n-match-prevention-status": 0,
+      "effective-security-mode-ap": 0,
+      "crypto-hash-method": "sha2-384",
+      "secure-boot": 0,
+      "gid-aes-key": 0,
+      "max-env-var-data-size": 0,
+      "die-id": 0,
+      "software-bundle-version": "syscfg/SBVr/0x10,zeroes/0x10",
+      "repair-environment": 0,
+      "image4-supported": "",
+      "repair-status": "syscfg/rpcp",
+      "software-behavior": "syscfg/SwBh/0x10,zeroes/0x10",
+      "effective-production-status-sep": 0,
+      "disable-transport-rm": 0,
+      "development-cert": 0,
+      "mac-address-wifi0": "macaddr/wifiaddr,syscfg/WMac/6",
+      "marketing-hardware-behavior": "syscfg/MkBH",
+      "isp-horizon": 0,
+      "max-env-partition": 0,
+      "mac-address-ethernet1": "macaddr/ethaddr1,syscfg/EMc2/6",
+      "cs-system-policy": 32770348699510116,
+      "system-trusted": 0,
+      "display-rotation": 0,
+      "amfi-allows-trust-cache-load": 0,
+      "coverglass-color": "syscfg/CLCG",
+      "name": "chosen",
+      "sidp-rom-manifest-hash": "",
+      "sepfw-load-at-boot": 1,
+      "AAPL,phandle": 3,
+      "cryptex1-certificate-format": "x509",
+      "dram-vendor-id": 0,
+      "display-boot-rotation": 0,
+      "protected-data-access": 1,
+      "secureboot-key-scheme": 15262527942390642,
+      "certificate-security-mode": 0,
+      "disable-av-content-protection": 0,
+      "dram-vendor": "",
+      "mac-address-bluetooth0": "macaddr/btaddr,syscfg/BMac/6",
+      "uid-aes-key": 0,
+      "cryptex1-key-scheme": 15262527942390642,
+      "production-cert": 0,
+      "ephemeral-storage": 0,
+      "mac-address-ethernet0": "macaddr/ethaddr,syscfg/EMac/6",
+      "debug-enabled": 0,
+      "consistent-debug-root": 0,
+      "enclosure-material": "syscfg/EnMt",
+      "effective-production-status-ap": 0,
+      "marketing-software-behavior": "syscfg/MkBS",
+      "nvram-current-bank": 0,
+      "image4-cert-type": 0,
+      "backing-glass-material": "syscfg/BGMt",
+      "chip-id": 0,
+      "darwinos-security-environment": 0,
+      "unique-device-id": "",
+      "effective-security-mode-sep": 0,
+      "display-scale": 0,
+      "certificate-production-status": 0,
+      "txm-secure-channel": 1,
+      "darwinos-userspace-reboot": 0,
+      "amfi-only-platform-code": 0,
+      "secureboot-certificate-format": "x509",
+      "use-recovery-securityd": 0,
+      "allow-ap-nonce-retrieval": "",
+      "nvram-bank-size": 0,
+      "repair-history": "syscfg/RCHL",
+      "boot-nonce": 0,
+      "nvram-bank-count": 0,
+      "cover-glass-material": "syscfg/CGMt",
+      "osenvironment": "",
+      "max-env-var-name-size": 0,
+      "unrestricted-subsystem-root": 0,
+      "#address-cells": 2,
+      "disable-accessory-firmware": 0,
+      "boot-manifest-hash": "",
+      "display-corner-radius": 0,
+      "boot-type": "local",
+      "board-id": 0,
+      "unique-chip-id": 0,
+      "backing-color": "syscfg/CLBG",
+      "housing-color": "syscfg/CLHS"
+    }
+  },
+  "memory_carveouts": [
+    {
+      "name": "SPTM_RESERVED_CARVEOUT",
+      "base": "0x800000000",
+      "size": "0x20000000",
+      "description": "512MB initial DRAM partition for hypervisor Stage-2 tables and monitor runtime."
+    },
+    {
+      "name": "TXM_RESERVED_CARVEOUT",
+      "base": "0x820000000",
+      "size": "0x04000000",
+      "description": "64MB guarded memory carveout for TrustCache and Code Signing Monitor."
+    },
+    {
+      "name": "EXCLAVECORE_CARVEOUT",
+      "base": "0x824000000",
+      "size": "0x40000000",
+      "description": "1GB dynamically retypable partition for ExclaveOS cL4 microkernel conclaves."
+    },
+    {
+      "name": "SEP_FW_TZ0S_CARVEOUT",
+      "base": "0x864000000",
+      "size": "0x061b0000",
+      "description": "97.6875MB TZ0S Secure Enclave processor hardware DRAM partition."
+    },
+    {
+      "name": "SEP_FW_TZ1S_CARVEOUT",
+      "base": "0x86a1b0000",
+      "size": "0x05060000",
+      "description": "80.375MB TZ1S Secure Enclave processor hardware DRAM partition."
+    }
+  ]
+}

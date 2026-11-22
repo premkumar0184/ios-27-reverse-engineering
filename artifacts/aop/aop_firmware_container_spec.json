@@ -1,0 +1,183 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Always-On Processor 2 (AOP2) Firmware Container & Multi-Binary Specification",
+  "fourcc_tag": "aop2",
+  "wrapper": "Apple Image4 (IM4P)",
+  "container_magic": "0x30835580",
+  "total_container_size_bytes": 5603353,
+  "payload_length_encoded": 5603328,
+  "encryption_mode": "Unencrypted / BUND Multi-Binary Container Envelope",
+  "bund_header": {
+    "magic_fourcc": "DNUB",
+    "magic_hex": "0x444e5542",
+    "file_offset": 33,
+    "version": "0x00040000",
+    "num_top_level_entries": 1,
+    "descriptor_offset": 11,
+    "total_unpacked_size_bytes": 5603328,
+    "segment_map": [
+      {"tag": "txtk", "name": "Kernel Text", "size_bytes": 69632, "size_hex": "0x11000", "image_offset": "0x11000", "flags": "0x0a"},
+      {"tag": "txtr", "name": "RootTask Text", "size_bytes": 139264, "size_hex": "0x22000", "image_offset": "0x33000", "flags": "0x0a"},
+      {"tag": "txtu", "name": "User Applications Text", "size_bytes": 1183744, "size_hex": "0x121000", "image_offset": "0x154000", "flags": "0x0e"},
+      {"tag": "tadk", "name": "Kernel Data", "size_bytes": 32768, "size_hex": "0x8000", "image_offset": "0x15c000", "flags": "0x11"},
+      {"tag": "tadr", "name": "RootTask Data", "size_bytes": 16384, "size_hex": "0x4000", "image_offset": "0x160000", "flags": "0x11"},
+      {"tag": "tadu", "name": "User Applications Data", "size_bytes": 3883008, "size_hex": "0x3b4000", "image_offset": "0x514000", "flags": "0x15"},
+      {"tag": "orsd", "name": "Shared Read-Only Data", "size_bytes": 0, "size_hex": "0x0", "image_offset": "0x514000", "flags": "0x15"},
+      {"tag": "wrsd", "name": "Shared Read-Write Data", "size_bytes": 98304, "size_hex": "0x18000", "image_offset": "0x52c000", "flags": "0x15"},
+      {"tag": "dlon", "name": "Non-Loadable Metadata", "size_bytes": 16384, "size_hex": "0x4000", "image_offset": "0x530000", "flags": "0x114"},
+      {"tag": "ldbu", "name": "User Build Data", "size_bytes": 131072, "size_hex": "0x20000", "image_offset": "0x550000", "flags": "0x15"},
+      {"tag": "glso", "name": "OS Log String Table", "size_bytes": 24576, "size_hex": "0x6000", "image_offset": "0x556000", "flags": "0x104"}
+    ]
+  },
+  "sub_binaries": [
+    {
+      "index": 0,
+      "filename": "00_roottask_iop_asc7.macho",
+      "file_offset": 69657,
+      "size_bytes": 147456,
+      "sha256": "c06fdd3dbdae81881648a049d554a9fc553ef5f2f53489e223b24fdb07a6858e",
+      "uuid": "2e915a01a6613afbb04aa81aae792a70",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 2,
+      "filetype_desc": "MH_EXECUTE",
+      "flags": "0x200001 (NOUNDEFS | PIE)",
+      "segments": [
+        {"name": "__TEXT", "vmaddr": "0x8000000", "vmsize": "0x22000", "sections": ["__text", "__chain_starts", "__constructor", "__init_offsets", "__const", "__cstring", "__thread_starts"]},
+        {"name": "__DATA", "vmaddr": "0x8022000", "vmsize": "0x4000", "sections": ["__const", "__data", "__mod_init_func", "__mod_term_func", "__common", "__bss", "__stack_area"]},
+        {"name": "__DATA_CONST", "vmaddr": "0x8026000", "vmsize": "0x0", "sections": ["__mod_init_func"]},
+        {"name": "__LINKEDIT", "vmaddr": "0x8026000", "vmsize": "0x0", "sections": []}
+      ]
+    },
+    {
+      "index": 1,
+      "filename": "01_motion_expert_app.macho",
+      "file_offset": 208921,
+      "size_bytes": 536288,
+      "sha256": "fde6c4dd268998622c8152cb5b16b412b1897d8c5f0f35e0c660f993708a0d42",
+      "uuid": "b035344a292d3a16bcf80ffcab64a775",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 2,
+      "filetype_desc": "MH_EXECUTE",
+      "flags": "0x218095 (NOUNDEFS | DYLDLINK | PREBOUND | TWOLEVEL | WEAK_DEFINES | BINDS_TO_WEAK | PIE)",
+      "segments": [
+        {"name": "__TEXT", "vmaddr": "0x10f3000", "vmsize": "0x19000", "sections": ["__text", "__auth_stubs", "__init_offsets", "__const", "_rtk_patchbay", "__cstring", "_rtk_pb_finder"]},
+        {"name": "__DATA_CONST", "vmaddr": "0x110c000", "vmsize": "0x3000", "sections": ["__const", "_rtk_mtab", "__auth_got", "__got"]},
+        {"name": "__DATA", "vmaddr": "0x110f000", "vmsize": "0x11a000", "sections": ["_rtk_init_stack", "_rtk_irq_stack", "_rtk_exc_stack", "_rtk_heap", "__data", "__sidecar", "_afk_sys_objt", "_aop2_shm_reg", "__afk_obj_num", "_afk_sys_drv", "__bss", "__common"]},
+        {"name": "APPCONFIG", "vmaddr": "0x1229000", "vmsize": "0x3000", "sections": ["__appconfig", "__extra", "_irq_sidecar"]},
+        {"name": "METADATA", "vmaddr": "0x122c000", "vmsize": "0x1000", "sections": ["__metadata"]},
+        {"name": "__DATA_SHARED_RW", "vmaddr": "0x0", "vmsize": "0x0", "sections": ["_RTK_EXT_SHD_DTA"]},
+        {"name": "__OS_LOG", "vmaddr": "0x0", "vmsize": "0x0", "sections": ["__string"]}
+      ]
+    },
+    {
+      "index": 2,
+      "filename": "02_aon_location_app.macho",
+      "file_offset": 311321,
+      "size_bytes": 477184,
+      "sha256": "f0815cc22b1998c3ee09b68a514d7a4628f8fca754bf94fb77d337f74b4ea910",
+      "uuid": "c52a816d0e0733cb87db9ab57586ac39",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 2,
+      "filetype_desc": "MH_EXECUTE",
+      "flags": "0x218095 (NOUNDEFS | DYLDLINK | PREBOUND | TWOLEVEL | WEAK_DEFINES | BINDS_TO_WEAK | PIE)",
+      "segments": [
+        {"name": "__TEXT", "vmaddr": "0x10f3000", "vmsize": "0x1e000", "sections": ["__text", "__auth_stubs", "__init_offsets", "__const", "_rtk_patchbay", "_rtk_pb_finder", "__cstring"]},
+        {"name": "__DATA_CONST", "vmaddr": "0x1111000", "vmsize": "0x3000", "sections": ["__const", "_rtk_mtab", "__auth_got", "__got"]},
+        {"name": "__DATA", "vmaddr": "0x1114000", "vmsize": "0x14a000", "sections": ["_rtk_init_stack", "_rtk_irq_stack", "_rtk_exc_stack", "_rtk_heap", "__data", "__sidecar", "_afk_sys_objt", "_aop2_app_stack", "__afk_obj_num", "_afk_sys_drv", "__bss", "__common"]},
+        {"name": "__CMA", "vmaddr": "0x1000f3000", "vmsize": "0x1000", "sections": ["__loc_log_str"]},
+        {"name": "APPCONFIG", "vmaddr": "0x125e000", "vmsize": "0x3000", "sections": ["__appconfig", "__extra", "_irq_sidecar"]},
+        {"name": "METADATA", "vmaddr": "0x0", "vmsize": "0x1000", "sections": ["__metadata"]}
+      ]
+    },
+    {
+      "index": 3,
+      "filename": "03_audio_hotword_app.macho",
+      "file_offset": 434201,
+      "size_bytes": 753976,
+      "sha256": "374437d522a0b9c7ae46e913a48e788bcadfc0db34098925565342a35368a2bf",
+      "uuid": "46699d8af0e633b595d262b5cce92e9c",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 2,
+      "filetype_desc": "MH_EXECUTE",
+      "flags": "0x218095 (NOUNDEFS | DYLDLINK | PREBOUND | TWOLEVEL | WEAK_DEFINES | BINDS_TO_WEAK | PIE)",
+      "segments": [
+        {"name": "__TEXT", "vmaddr": "0x10f3000", "vmsize": "0x5f000", "sections": ["__text", "__auth_stubs", "__init_offsets", "__const", "_rtk_patchbay", "_rtk_pb_finder", "__cstring"]},
+        {"name": "__DATA_CONST", "vmaddr": "0x1152000", "vmsize": "0x2000", "sections": ["__const", "__objc_imageinfo", "_rtk_mtab", "__auth_got", "__got"]},
+        {"name": "__DATA", "vmaddr": "0x1154000", "vmsize": "0x6b000", "sections": ["_rtk_init_stack", "_rtk_irq_stack", "_rtk_exc_stack", "_rtk_heap", "__data", "__sidecar", "_afk_sys_objt", "__afk_obj_num", "_afk_sys_drv", "__bss", "__common"]},
+        {"name": "APPCONFIG", "vmaddr": "0x11bf000", "vmsize": "0x3000", "sections": ["__appconfig", "__extra", "_irq_sidecar"]},
+        {"name": "METADATA", "vmaddr": "0x11c2000", "vmsize": "0x1000", "sections": ["__metadata"]}
+      ]
+    },
+    {
+      "index": 4,
+      "filename": "04_rtkit_exclave_bridge.macho",
+      "file_offset": 823321,
+      "size_bytes": 326560,
+      "sha256": "e4ddd6789b393b7d5196f7e8a93bebf2d5ce1101ce6b4859ba6d434947ce73fa",
+      "uuid": "3fbec0c7266a3f2db4b55319055c9d5f",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 2,
+      "filetype_desc": "MH_EXECUTE",
+      "flags": "0x218095 (NOUNDEFS | DYLDLINK | PREBOUND | TWOLEVEL | WEAK_DEFINES | BINDS_TO_WEAK | PIE)",
+      "segments": [
+        {"name": "__TEXT", "vmaddr": "0x10f3000", "vmsize": "0x10000", "sections": ["__text", "__auth_stubs", "__init_offsets", "__const", "_rtk_patchbay", "_rtk_pb_finder", "__cstring"]},
+        {"name": "__DATA_CONST", "vmaddr": "0x1103000", "vmsize": "0x2000", "sections": ["__const", "_rtk_mtab", "__auth_got", "__got"]},
+        {"name": "__DATA", "vmaddr": "0x1105000", "vmsize": "0xa0000", "sections": ["_rtk_init_stack", "_rtk_irq_stack", "_rtk_exc_stack", "_rtk_heap", "__data", "__sidecar", "_afk_sys_objt", "__afk_obj_num", "_aop2_shm_reg", "_afk_sys_drv", "__bss", "__common"]},
+        {"name": "APPCONFIG", "vmaddr": "0x11a5000", "vmsize": "0x3000", "sections": ["__appconfig", "__extra", "_irq_sidecar"]},
+        {"name": "METADATA", "vmaddr": "0x11a8000", "vmsize": "0x1000", "sections": ["__metadata"]},
+        {"name": "__DATA_SHARED_RW", "vmaddr": "0x0", "vmsize": "0x0", "sections": ["_RTK_EXT_SHD_DTA"]}
+      ]
+    },
+    {
+      "index": 5,
+      "filename": "05_applespu_v57aop2_dylib.macho",
+      "file_offset": 888857,
+      "size_bytes": 532480,
+      "sha256": "7e870e7a78b3c3809ea64aa7e58dfb6cf1be513a9d90ecbe6143c4a242f36f66",
+      "uuid": "f9f5696af4df397e928d32e29f0f263e",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 6,
+      "filetype_desc": "MH_DYLIB",
+      "flags": "0x82118095 (NOUNDEFS | DYLDLINK | TWOLEVEL | WEAK_DEFINES | BINDS_TO_WEAK | NO_REEXPORTED_DYLIBS)",
+      "id_dylib": "/Library/Caches/com.apple.xbs/3BE9CCA0-6F5F-443C-8CAE-1B8AFA48EEDF/TemporaryDirectory.rkJaJS/Binaries/AppleSPUFirmwareBuilder/install/Symbols/RELEASE/v57aop2/DYLIB/v57aop2.dylib",
+      "segments": [
+        {"name": "__TEXT", "vmaddr": "0x1000000", "vmsize": "0x7a000", "sections": ["__text", "__lcxx_override", "__auth_stubs", "__init_offsets", "__const", "__cstring", "__chain_starts"]},
+        {"name": "__DATA_CONST", "vmaddr": "0x107a000", "vmsize": "0x0", "sections": ["__const", "_rtk_patchbay_1", "_rtk_mtab", "__mod_init_func", "__constructor", "__auth_got", "__got"]},
+        {"name": "__DATA", "vmaddr": "0x107f000", "vmsize": "0x0", "sections": ["__data", "_afk_sys_objt", "__afk_obj_num", "__sidecar", "__osc_ctor_mask1", "__osc_ctor_mask2", "_afk_sys_drv", "_rtk_threads", "_rtk_irq_stack", "__bss", "__common"]},
+        {"name": "__OS_LOG", "vmaddr": "0x1082000", "vmsize": "0x0", "sections": ["__string"]},
+        {"name": "APPCONFIG", "vmaddr": "0x1084000", "vmsize": "0x0", "sections": ["_irq_sidecar"]}
+      ]
+    },
+    {
+      "index": 6,
+      "filename": "06_rtkit_microkernel_preload.macho",
+      "file_offset": 5439513,
+      "size_bytes": 81920,
+      "sha256": "0249b48c368cc83325c3fe80a65bb7b9875bb5649938b8be881b2da96b341bb2",
+      "uuid": "05c35c6100d33aaebc5d4c4c29405445",
+      "cputype": "0x100000c",
+      "cpusubtype": "0x80000002",
+      "filetype": 5,
+      "filetype_desc": "MH_PRELOAD",
+      "flags": "0x1 (NOUNDEFS)",
+      "segments": [
+        {"name": "__TEXT", "vmaddr": "0xffffffff00000000", "vmsize": "0x11000", "sections": ["__head", "__text", "__const", "__cstring", "__eh_frame"]},
+        {"name": "__DATA", "vmaddr": "0xffffffff00011000", "vmsize": "0x8000", "sections": ["__tunables", "__data", "__const", "__bss", "__kernel_stack", "__common"]},
+        {"name": "__IMAGE_END", "vmaddr": "0xffffffff00019000", "vmsize": "0x0", "sections": ["__image_end"]}
+      ]
+    }
+  ],
+  "legacy_aopf": {
+    "fourcc_tag": "aopf",
+    "path": "iPhone18,3_27.2_24B119_Restore/Firmware/AOP/aopfw-v57aop.RELEASE.im4p",
+    "size_bytes": 5148697,
+    "sha256": "564c25205cd3839b19e906f93c75240351aec0efc961fed53bebee04749462f8",
+    "macho_offsets": [69657, 127001, 851993, 1339417, 4702233]
+  }
+}

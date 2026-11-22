@@ -1,0 +1,473 @@
+{
+  "phase": "gest_phase_1a_workspace_baseline",
+  "status": "completed",
+  "target": {
+    "os": "iOS 27.2",
+    "build": "24B119",
+    "train": "RaveB",
+    "device": "iPhone18,3 (v57ap)",
+    "soc": "Apple A19 Pro (t8150)",
+    "architecture": "arm64e",
+    "pointer_authentication": "PAC00"
+  },
+  "frameworks": {
+    "Gestures": {
+      "dsc_image_path": "/System/Library/PrivateFrameworks/Gestures.framework/Gestures",
+      "subcache_slice": ".03",
+      "subcache_filename": "dyld_shared_cache_arm64e.03",
+      "subcache_uuid": "1a1939c0-a2ab-3d82-a43c-9e61ad237972",
+      "vm_base": "0x18a169000",
+      "file_offset_in_subcache": "0x01d69000",
+      "file_offset_int": 30838784,
+      "mach_header_magic": "0xFEEDFACF",
+      "cpu_type": "ARM64E (0x0100000c, subtype 0x80000002)",
+      "dylib_id": "/System/Library/PrivateFrameworks/Gestures.framework/Gestures",
+      "uuid": "f170ee1a-1862-32bc-a9da-299a021375e4",
+      "segment_count": 7,
+      "segments": [
+        {
+          "segname": "__TEXT",
+          "vmaddr": "0x18a169000",
+          "vmsize": "0x5538b0",
+          "fileoff": "0x1d69000",
+          "filesize": "0x5538b0",
+          "protection": "r-x",
+          "section_count": 29,
+          "sections": [
+            {
+              "sectname": "__text",
+              "addr": "0x18a16ab00",
+              "size": "0x49860c",
+              "offset": "0x1d6ab00"
+            },
+            {
+              "sectname": "__objc_methlist",
+              "addr": "0x18a603110",
+              "size": "0x614",
+              "offset": "0x2203110"
+            },
+            {
+              "sectname": "__const",
+              "addr": "0x18a603730",
+              "size": "0x22da8",
+              "offset": "0x2203730"
+            },
+            {
+              "sectname": "__gcc_except_tab",
+              "addr": "0x18a6264d8",
+              "size": "0x10",
+              "offset": "0x22264d8"
+            },
+            {
+              "sectname": "__cstring",
+              "addr": "0x18a6264f0",
+              "size": "0x10484",
+              "offset": "0x22264f0"
+            },
+            {
+              "sectname": "__dlopen_cstrs",
+              "addr": "0x18a636974",
+              "size": "0x6d",
+              "offset": "0x2236974"
+            },
+            {
+              "sectname": "__constg_swiftt",
+              "addr": "0x18a6369e4",
+              "size": "0x9f06",
+              "offset": "0x22369e4"
+            },
+            {
+              "sectname": "__swift5_typeref",
+              "addr": "0x18a6408ea",
+              "size": "0x20414",
+              "offset": "0x22408ea"
+            },
+            {
+              "sectname": "__swift5_builtin",
+              "addr": "0x18a660d00",
+              "size": "0x26c",
+              "offset": "0x2260d00"
+            },
+            {
+              "sectname": "__swift5_reflstr",
+              "addr": "0x18a660f70",
+              "size": "0x530e",
+              "offset": "0x2260f70"
+            },
+            {
+              "sectname": "__swift5_fieldmd",
+              "addr": "0x18a666280",
+              "size": "0x7814",
+              "offset": "0x2266280"
+            },
+            {
+              "sectname": "__swift5_types",
+              "addr": "0x18a66da94",
+              "size": "0xa50",
+              "offset": "0x226da94"
+            },
+            {
+              "sectname": "__swift5_assocty",
+              "addr": "0x18a66e4e4",
+              "size": "0x2978",
+              "offset": "0x226e4e4"
+            },
+            {
+              "sectname": "__swift5_proto",
+              "addr": "0x18a670e5c",
+              "size": "0x2e24",
+              "offset": "0x2270e5c"
+            },
+            {
+              "sectname": "__swift5_capture",
+              "addr": "0x18a673c80",
+              "size": "0x1674",
+              "offset": "0x2273c80"
+            },
+            {
+              "sectname": "__swift5_protos",
+              "addr": "0x18a6752f4",
+              "size": "0x150",
+              "offset": "0x22752f4"
+            },
+            {
+              "sectname": "__swift5_mpenum",
+              "addr": "0x18a675444",
+              "size": "0xec",
+              "offset": "0x2275444"
+            },
+            {
+              "sectname": "__oslogstring",
+              "addr": "0x18a675530",
+              "size": "0x15a0",
+              "offset": "0x2275530"
+            },
+            {
+              "sectname": "__swift_as_entry",
+              "addr": "0x18a676ad0",
+              "size": "0x20",
+              "offset": "0x2276ad0"
+            },
+            {
+              "sectname": "__swift_as_ret",
+              "addr": "0x18a676af0",
+              "size": "0x20",
+              "offset": "0x2276af0"
+            },
+            {
+              "sectname": "__swift_as_cont",
+              "addr": "0x18a676b10",
+              "size": "0x34",
+              "offset": "0x2276b10"
+            },
+            {
+              "sectname": "__swift5_types2",
+              "addr": "0x18a676b44",
+              "size": "0xc",
+              "offset": "0x2276b44"
+            },
+            {
+              "sectname": "__unwind_info",
+              "addr": "0x18a676b50",
+              "size": "0x10e88",
+              "offset": "0x2276b50"
+            },
+            {
+              "sectname": "__eh_frame",
+              "addr": "0x18a6879d8",
+              "size": "0x34ed8",
+              "offset": "0x22879d8"
+            },
+            {
+              "sectname": "__objc_stubs",
+              "addr": "0x18a6bc8b0",
+              "size": "0x0",
+              "offset": "0x0"
+            },
+            {
+              "sectname": "__auth_stubs",
+              "addr": "0x18a6bc8b0",
+              "size": "0x0",
+              "offset": "0x0"
+            },
+            {
+              "sectname": "__objc_classname",
+              "addr": "0x18a6bc8b0",
+              "size": "0x0",
+              "offset": "0x0"
+            },
+            {
+              "sectname": "__objc_methname",
+              "addr": "0x18a6bc8b0",
+              "size": "0x0",
+              "offset": "0x0"
+            },
+            {
+              "sectname": "__objc_methtype",
+              "addr": "0x18a6bc8b0",
+              "size": "0x0",
+              "offset": "0x0"
+            }
+          ]
+        },
+        {
+          "segname": "__DATA_CONST",
+          "vmaddr": "0x1e081f4d0",
+          "vmsize": "0xce8",
+          "fileoff": "0x72b4d0",
+          "filesize": "0xce8",
+          "protection": "rw-",
+          "section_count": 7,
+          "sections": [
+            {
+              "sectname": "__const",
+              "addr": "0x1e081f4d0",
+              "size": "0x290",
+              "offset": "0x72b4d0"
+            },
+            {
+              "sectname": "__objc_classlist",
+              "addr": "0x1e081f760",
+              "size": "0x180",
+              "offset": "0x72b760"
+            },
+            {
+              "sectname": "__objc_protolist",
+              "addr": "0x1e081f8e0",
+              "size": "0x60",
+              "offset": "0x72b8e0"
+            },
+            {
+              "sectname": "__objc_imageinfo",
+              "addr": "0x1e081f940",
+              "size": "0x8",
+              "offset": "0x72b940"
+            },
+            {
+              "sectname": "__objc_selrefs",
+              "addr": "0x1e081f948",
+              "size": "0x2b8",
+              "offset": "0x72b948"
+            },
+            {
+              "sectname": "__objc_protorefs",
+              "addr": "0x1e081fc00",
+              "size": "0x38",
+              "offset": "0x72bc00"
+            },
+            {
+              "sectname": "__got",
+              "addr": "0x1e081fc38",
+              "size": "0x580",
+              "offset": "0x72bc38"
+            }
+          ]
+        },
+        {
+          "segname": "__AUTH_CONST",
+          "vmaddr": "0x1e2a59390",
+          "vmsize": "0x239e0",
+          "fileoff": "0x2965390",
+          "filesize": "0x239e0",
+          "protection": "rw-",
+          "section_count": 4,
+          "sections": [
+            {
+              "sectname": "__const",
+              "addr": "0x1e2a59390",
+              "size": "0x1d200",
+              "offset": "0x2965390"
+            },
+            {
+              "sectname": "__objc_const",
+              "addr": "0x1e2a76590",
+              "size": "0x3c00",
+              "offset": "0x2982590"
+            },
+            {
+              "sectname": "__auth_got",
+              "addr": "0x1e2a7a190",
+              "size": "0x12a0",
+              "offset": "0x2986190"
+            },
+            {
+              "sectname": "__auth_ptr",
+              "addr": "0x1e2a7b430",
+              "size": "0x1940",
+              "offset": "0x2987430"
+            }
+          ]
+        },
+        {
+          "segname": "__AUTH",
+          "vmaddr": "0x1ef22d2a0",
+          "vmsize": "0x53b8",
+          "fileoff": "0xd1392a0",
+          "filesize": "0x53b8",
+          "protection": "rw-",
+          "section_count": 2,
+          "sections": [
+            {
+              "sectname": "__objc_data",
+              "addr": "0x1ef22d2a0",
+              "size": "0x90",
+              "offset": "0xd1392a0"
+            },
+            {
+              "sectname": "__data",
+              "addr": "0x1ef22d330",
+              "size": "0x5328",
+              "offset": "0xd139330"
+            }
+          ]
+        },
+        {
+          "segname": "__DATA",
+          "vmaddr": "0x1eb2ea200",
+          "vmsize": "0x40af8",
+          "fileoff": "0x91f6200",
+          "filesize": "0x40af8",
+          "protection": "rw-",
+          "section_count": 3,
+          "sections": [
+            {
+              "sectname": "__data",
+              "addr": "0x1eb2ea200",
+              "size": "0xa658",
+              "offset": "0x91f6200"
+            },
+            {
+              "sectname": "__bss",
+              "addr": "0x1eb2f4860",
+              "size": "0x36450",
+              "offset": "0x0"
+            },
+            {
+              "sectname": "__common",
+              "addr": "0x1eb32acb0",
+              "size": "0x48",
+              "offset": "0x0"
+            }
+          ]
+        },
+        {
+          "segname": "__DATA_DIRTY",
+          "vmaddr": "0x1ee165bd0",
+          "vmsize": "0x2af4",
+          "fileoff": "0xc071bd0",
+          "filesize": "0x2af4",
+          "protection": "rw-",
+          "section_count": 4,
+          "sections": [
+            {
+              "sectname": "__objc_data",
+              "addr": "0x1ee165bd0",
+              "size": "0x228",
+              "offset": "0xc071bd0"
+            },
+            {
+              "sectname": "__data",
+              "addr": "0x1ee165e00",
+              "size": "0x1678",
+              "offset": "0xc071e00"
+            },
+            {
+              "sectname": "__bss",
+              "addr": "0x1ee167480",
+              "size": "0x1200",
+              "offset": "0x0"
+            },
+            {
+              "sectname": "__common",
+              "addr": "0x1ee168680",
+              "size": "0x44",
+              "offset": "0x0"
+            }
+          ]
+        },
+        {
+          "segname": "__LINKEDIT",
+          "vmaddr": "0x2e6940000",
+          "vmsize": "0x298ec000",
+          "fileoff": "0x4000",
+          "filesize": "0x298ec000",
+          "protection": "r--",
+          "section_count": 0,
+          "sections": []
+        }
+      ],
+      "load_verified": true
+    },
+    "UIKitCore": {
+      "dsc_image_path": "/System/Library/PrivateFrameworks/UIKitCore.framework/UIKitCore",
+      "subcache_slice": ".01",
+      "subcache_filename": "dyld_shared_cache_arm64e.01",
+      "vm_base": "0x184752000",
+      "file_offset_in_subcache": "0x04352000",
+      "mach_header_magic": "0xFEEDFACF",
+      "cpu_type": "ARM64E",
+      "load_verified": true,
+      "gesture_roles": [
+        "UIGestureRecognizer",
+        "UIPanGestureRecognizer",
+        "UISwipeGestureRecognizer",
+        "UITapGestureRecognizer",
+        "UILongPressGestureRecognizer",
+        "UIPinchGestureRecognizer",
+        "UIRotationGestureRecognizer",
+        "UIScreenEdgePanGestureRecognizer",
+        "UIGestureRecognizerArena",
+        "_UIGestureEnvironment"
+      ]
+    },
+    "SpringBoard": {
+      "dsc_image_path": "/System/Library/PrivateFrameworks/SpringBoard.framework/SpringBoard",
+      "subcache_slice": ".36",
+      "subcache_filename": "dyld_shared_cache_arm64e.36",
+      "vm_base": "0x226a11000",
+      "file_offset_in_subcache": "0x06611000",
+      "mach_header_magic": "0xFEEDFACF",
+      "cpu_type": "ARM64E",
+      "load_verified": true,
+      "gesture_roles": [
+        "System gesture gatekeepers",
+        "_UIBackGestureRecognizer integration",
+        "_UINotificationCenterGestureRecognizer integration",
+        "_UIControlCenterGestureRecognizer integration",
+        "_UIReachabilityGestureRecognizer integration"
+      ]
+    }
+  },
+  "anchor_verification": {
+    "toolchain_trusted": true,
+    "source_binary": "dyld_shared_cache_arm64e.01",
+    "scrolling_anchors": {
+      "spring_mass_at_0x1864d56e8": 1.0,
+      "spring_stiffness_at_0x1864d5510": 100.0,
+      "spring_damping_at_0x1864d5628": 18.0,
+      "deceleration_normal_at_0x1864d59c8": 0.998,
+      "deceleration_fast_at_0x1864d59d0": 0.99
+    },
+    "pan_slop_anchors": {
+      "finger_touch_slop_points": 10.0,
+      "pencil_touch_slop_points": 4.0,
+      "trackpad_touch_slop_points": 2.0,
+      "ballistic_interruption_slop_points": 0.0,
+      "slop_tiers_pt": [
+        10,
+        4,
+        2,
+        0
+      ],
+      "ieee754_hex": {
+        "tier_0_finger": "0x4024000000000000",
+        "tier_1_pencil": "0x4010000000000000",
+        "tier_2_trackpad": "0x4000000000000000",
+        "tier_3_ballistic": "0x0000000000000000"
+      },
+      "verified": true
+    }
+  },
+  "toolchain_trusted": true,
+  "confidence_level": "EXTRACTED"
+}

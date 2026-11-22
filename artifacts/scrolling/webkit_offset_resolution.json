@@ -1,0 +1,17 @@
+{
+  "framework_query": "WebKit",
+  "matched_image_path": "/System/Library/Frameworks/WebKit.framework/WebKit",
+  "category": "PublicFramework",
+  "vm_base_address": "0x19cbb9000",
+  "vm_base_address_int": 6924505088,
+  "subcache_index": 6,
+  "subcache_extension": ".07",
+  "subcache_filename": "dyld_shared_cache_arm64e.07",
+  "subcache_vm_base": "0x198400000",
+  "subcache_file_offset": "0x47b9000",
+  "subcache_file_offset_int": 75206656,
+  "subcache_uuid": "d073c60c-471a-3a5a-aba0-429451768c5b",
+  "segment_count": 7,
+  "segments": [],
+  "sections": []
+}

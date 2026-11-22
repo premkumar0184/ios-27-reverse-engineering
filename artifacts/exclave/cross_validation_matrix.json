@@ -1,0 +1,334 @@
+{
+  "schema_version": "1.0",
+  "validation_date": "2026-11-22",
+  "ios_version": "27.2 (24B119)",
+  "hardware_target": "iPhone18,3 (Apple A19 Pro / t8150)",
+  "total_constants_extracted": 32,
+  "extraction_confidence": {
+    "EXTRACTED": 28,
+    "INFERRED": 4,
+    "TENTATIVE": 0,
+    "UNKNOWN": 0
+  },
+  "microkernel_architecture_comparison": {
+    "reference_standard": "seL4 Microkernel / L4e Microkernel",
+    "target_platform": "Apple cL4 (ExclaveOS / ExclaveCore)",
+    "key_architectural_differences": [
+      {
+        "subsystem": "System Call Dispatch",
+        "classic_l4_sel4": "Single sys_call / sys_reply_recv vector multiplexed via register values",
+        "apple_cl4": "Six dedicated ARM64 immediate traps (svc #0 through svc #5) categorizing IPC, Threading, Revocation, Minting, Copying, and Memory Retyping",
+        "impact": "Decreases register shuffling in microkernel fast path; hardware decoding of immediate vector"
+      },
+      {
+        "subsystem": "Capability Space Layout",
+        "classic_l4_sel4": "Variable-size radix tree (often 12-bit or dynamic bit-guard levels)",
+        "apple_cl4": "Strict 2-level guarded radix tree with 8-bit fanout per level (256 slots/CNode, 2048 bytes/table, max 65,536 slots)",
+        "impact": "Predictable O(1) two-step pointer dereference for capability lookup with 2 KB page allocation alignment"
+      },
+      {
+        "subsystem": "Host OS Coexistence",
+        "classic_l4_sel4": "Standalone root operating system possessing physical DRAM",
+        "apple_cl4": "Runs alongside Darwin/XNU; physical DRAM dynamically donated from XNU via Datacubes (Release Datacube) under SPTM hardware fencing",
+        "impact": "ExclaveOS requires zero static multi-gigabyte DRAM carveouts; scales dynamically with Conclave workload"
+      },
+      {
+        "subsystem": "Hardware Hardware Accelerators",
+        "classic_l4_sel4": "Standard CPU registers and basic FPU state",
+        "apple_cl4": "Dedicated capability types for Apple Matrix Coprocessor (L4_Type_Arm64_Apple_Amx = 0x16) and Scalable Matrix Extension (L4_Type_Arm64_Sme = 0x15)",
+        "impact": "Enables hardware-accelerated ML tensor operations directly inside isolated Conclaves"
+      }
+    ]
+  },
+  "cross_validations": [
+    {
+      "constant": "BUND_MAGIC",
+      "value": "0x444e5542",
+      "ascii": "DNUB",
+      "fourcc": "BUND",
+      "confidence": "EXTRACTED",
+      "binary_source": "iPhone18,3_27.2_24B119_Restore/Firmware/image4/exclavecore_bundle.t8150.RELEASE.im4p",
+      "offset": "0x23",
+      "verification_method": "Magic header unpack <I in generate_exclave_phase1a.py"
+    },
+    {
+      "constant": "BUND_VERSION",
+      "value": "0x00040000",
+      "decimal_value": 262144,
+      "confidence": "EXTRACTED",
+      "binary_source": "exclavecore_bundle.t8150.RELEASE.im4p",
+      "offset": "0x27",
+      "verification_method": "Struct header unpack <III"
+    },
+    {
+      "constant": "BUND_ENTRY_COUNT",
+      "value": "10",
+      "decimal_value": 10,
+      "confidence": "EXTRACTED",
+      "binary_source": "exclavecore_bundle.t8150.RELEASE.im4p",
+      "offset": "0x2f",
+      "verification_method": "TOC entry counter in BUND header"
+    },
+    {
+      "constant": "BUND_ENTRY_SIZE_BYTES",
+      "value": "24",
+      "decimal_value": 24,
+      "confidence": "EXTRACTED",
+      "binary_source": "exclavecore_bundle.t8150.RELEASE.im4p",
+      "offset": "0x29f",
+      "verification_method": "TOC entry size: 4s tag + 8B offset + 8B size + 4B flags"
+    },
+    {
+      "constant": "L4_SYSCALL_IPC_OPCODE",
+      "value": "0xd4000001",
+      "disassembly": "svc #0",
+      "confidence": "EXTRACTED",
+      "binary_source": "00_tightbeam_runtime.macho",
+      "offset": "0x153c",
+      "verification_method": "ARM64 opcode disassembly in rizin / llvm-objdump"
+    },
+    {
+      "constant": "L4_SYSCALL_THREAD_OPCODE",
+      "value": "0xd4000021",
+      "disassembly": "svc #1",
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0xe30",
+      "verification_method": "ARM64 opcode scan <I matching (insn & 0xffe0001f) == 0xd4000001"
+    },
+    {
+      "constant": "L4_SYSCALL_CAP_REVOKE_OPCODE",
+      "value": "0xd4000041",
+      "disassembly": "svc #2",
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x1e6f0",
+      "verification_method": "ARM64 opcode scan for immediate #2"
+    },
+    {
+      "constant": "L4_SYSCALL_CAP_MINT_OPCODE",
+      "value": "0xd4000061",
+      "disassembly": "svc #3",
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x22fc",
+      "verification_method": "Disassembly of L4_Cap_Mint_Ep call site at VM 0x7ffe2fc"
+    },
+    {
+      "constant": "L4_SYSCALL_CAP_COPY_OPCODE",
+      "value": "0xd4000081",
+      "disassembly": "svc #4",
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x6020",
+      "verification_method": "Disassembly of L4_Cap_Copy / Move at VM 0x8002020"
+    },
+    {
+      "constant": "L4_SYSCALL_MEMORY_OPCODE",
+      "value": "0xd40000a1",
+      "disassembly": "svc #5",
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x6000",
+      "verification_method": "Disassembly of L4_Untyped_Create at VM 0x8002000"
+    },
+    {
+      "constant": "CNODE_TABLE_SIZE_BYTES",
+      "value": "0x800",
+      "decimal_value": 2048,
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x7ffe078",
+      "verification_method": "Disassembly of add x9, x0, 0x800 CNode table boundary check"
+    },
+    {
+      "constant": "CNODE_SLOT_SIZE_BYTES",
+      "value": "8",
+      "decimal_value": 8,
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x7ffe06c",
+      "verification_method": "Disassembly of add x8, x0, w24, uxtb 3 (index << 3)"
+    },
+    {
+      "constant": "CNODE_SLOTS_PER_LEVEL",
+      "value": "256",
+      "decimal_value": 256,
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x7ffe06c",
+      "verification_method": "Radix step: 2048 / 8 = 256 slots (8 bits per level)"
+    },
+    {
+      "constant": "MAX_CSPACE_CAPACITY_SLOTS",
+      "value": "65536",
+      "decimal_value": 65536,
+      "confidence": "INFERRED",
+      "binary_source": "01_pmm_server.macho / 02_vascore_platform.macho",
+      "offset": "N/A",
+      "verification_method": "Two-level radix tree capacity: 256 * 256 = 65,536 slots"
+    },
+    {
+      "constant": "L4_ERROR_CODE_COUNT",
+      "value": "10",
+      "decimal_value": 10,
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x4e2dc",
+      "verification_method": "32-byte padded string buffer table containing L4_ErrorCodeSuccess..PermissionInvalid"
+    },
+    {
+      "constant": "CAPABILITY_TYPE_COUNT",
+      "value": "28",
+      "decimal_value": 28,
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x6efce",
+      "verification_method": "Sequential string table starting at L4_Type_Null through L4_Type_Plat_Dart_PageTable"
+    },
+    {
+      "constant": "L4_TYPE_PLAT_RINGGATE_ID",
+      "value": "0x17",
+      "decimal_value": 23,
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x6f116",
+      "verification_method": "23rd index in capability type enum table"
+    },
+    {
+      "constant": "L4_TYPE_PLAT_DATACUBE_ID",
+      "value": "0x18",
+      "decimal_value": 24,
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x6f12c",
+      "verification_method": "24th index in capability type enum table"
+    },
+    {
+      "constant": "L4_CAN_READ_MASK",
+      "value": "0x0001",
+      "decimal_value": 1,
+      "confidence": "EXTRACTED",
+      "binary_source": "02_vascore_platform.macho",
+      "offset": "0xec6b62",
+      "verification_method": "Bit shift (((L4_Word_t) 1) << (0)) in L4_Cap_Mint_Ep"
+    },
+    {
+      "constant": "L4_CAN_WRITE_MASK",
+      "value": "0x0002",
+      "decimal_value": 2,
+      "confidence": "EXTRACTED",
+      "binary_source": "02_vascore_platform.macho",
+      "offset": "0xec6b62",
+      "verification_method": "Bit shift (((L4_Word_t) 1) << (1)) in L4_Cap_Mint_Untyped"
+    },
+    {
+      "constant": "L4_CAN_GRANT_MASK",
+      "value": "0x0004",
+      "decimal_value": 4,
+      "confidence": "EXTRACTED",
+      "binary_source": "02_vascore_platform.macho",
+      "offset": "0xec6b62",
+      "verification_method": "Bit shift (((L4_Word_t) 1) << (2)) in L4_Cap_Mint_Untyped"
+    },
+    {
+      "constant": "L4_CAN_BADGE_MASK",
+      "value": "0x0010",
+      "decimal_value": 16,
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x6b819",
+      "verification_method": "Bit shift (((L4_Word_t) 1) << (4)) in L4_Cap_Mint_Ep"
+    },
+    {
+      "constant": "TB_MESSAGE_HEADER_SIZE_BYTES",
+      "value": "88",
+      "decimal_value": 88,
+      "confidence": "EXTRACTED",
+      "binary_source": "00_tightbeam_runtime.macho",
+      "offset": "0x5e3faa",
+      "verification_method": "Objective-C type encoding ^{tb_message_s=ICQQQQ[4Q]Q^{tb_transport_message_buffer_s}}"
+    },
+    {
+      "constant": "TB_MESSAGE_ACCUMULATOR_SIZE_BYTES",
+      "value": "32",
+      "decimal_value": 32,
+      "confidence": "EXTRACTED",
+      "binary_source": "00_tightbeam_runtime.macho",
+      "offset": "0x5e55f1",
+      "verification_method": "Objective-C type encoding ^{tb_message_accumulator_s=QQQ*}"
+    },
+    {
+      "constant": "TB_MAX_CAPS",
+      "value": "8",
+      "decimal_value": 8,
+      "confidence": "EXTRACTED",
+      "binary_source": "00_tightbeam_runtime.macho",
+      "offset": "0x5e40d2",
+      "verification_method": "TB_ASSERT: received_caps_count <= TB_MAX_CAPS at line 654"
+    },
+    {
+      "constant": "CL4_INLINE_MAX_BYTES",
+      "value": "256",
+      "decimal_value": 256,
+      "confidence": "INFERRED",
+      "binary_source": "00_tightbeam_runtime.macho",
+      "offset": "0x5e3f50",
+      "verification_method": "32 message registers * 8 bytes/word = 256 bytes max inline"
+    },
+    {
+      "constant": "L4_FRAME_SIZE_BYTES",
+      "value": "16384",
+      "decimal_value": 16384,
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho / 02_vascore_platform.macho",
+      "offset": "0x6d147",
+      "verification_method": "L4_FrameSizeBits == 14 (1 << 14 = 16384 bytes)"
+    },
+    {
+      "constant": "PMM_MTE_FRAME_KEY",
+      "value": "__PMM_EXTRA_MTE_FRAMES",
+      "type": "string",
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x6c250",
+      "verification_method": "Bundle metadata string scan in pmm-server/src/xnu_allocator.c"
+    },
+    {
+      "constant": "RETYPING_PRIMITIVE",
+      "value": "Release Datacube",
+      "type": "string",
+      "confidence": "EXTRACTED",
+      "binary_source": "01_pmm_server.macho",
+      "offset": "0x6c47b",
+      "verification_method": "Assertion string '[PMM] failed to retype xnu page via Release Datacube'"
+    },
+    {
+      "constant": "EXCLAVES_CTL_TRAP_SYMBOL",
+      "value": "_exclaves_ctl_trap",
+      "type": "symbol",
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/kernel/kernelcache.release.raw",
+      "offset": "N/A",
+      "verification_method": "XNU Mach/BSD syscall dispatch table inspection"
+    },
+    {
+      "constant": "XNUPROXY_IPC_BUFFER_ALIGNMENT_BYTES",
+      "value": "16384",
+      "decimal_value": 16384,
+      "confidence": "EXTRACTED",
+      "binary_source": "artifacts/kernel/kernelcache.release.raw",
+      "offset": "N/A",
+      "verification_method": "Assertion: trunc_page_64(ipcb_paddr) == trunc_page_64(ipcb_paddr + sizeof(Exclaves_L4_IpcBuffer_t) - 1)"
+    },
+    {
+      "constant": "JUNGLE_EXSURFACE_SIL_SEGMENT",
+      "value": "sharedmem_backboardd_silmanager_exsurface",
+      "type": "string",
+      "confidence": "EXTRACTED",
+      "binary_source": "03_jg_sharedmem_preload.macho",
+      "offset": "N/A",
+      "verification_method": "String search in Jungle preload component table"
+    }
+  ]
+}

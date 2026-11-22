@@ -1,0 +1,112 @@
+{
+  "com.apple.driver.AppleH16ANEInterface": {
+    "bundle_id": "com.apple.driver.AppleH16ANEInterface",
+    "version": "10.102.4",
+    "bundle_path": "/System/Library/Extensions/AppleH16ANEInterface.kext",
+    "dependencies": [
+      "com.apple.driver.AppleARMPlatform",
+      "com.apple.driver.IODARTFamily",
+      "com.apple.driver.RTBuddy",
+      "com.apple.iokit.IOReportFamily",
+      "com.apple.iokit.IOSurface",
+      "com.apple.kec.corecrypto",
+      "com.apple.kpi.bsd",
+      "com.apple.kpi.iokit",
+      "com.apple.kpi.libkern",
+      "com.apple.kpi.mach",
+      "com.apple.kpi.private",
+      "com.apple.kpi.unsupported"
+    ],
+    "num_segments": 5,
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0xfffffe000743eef0",
+        "fileoff": "0x43aef0",
+        "vmsize": 334544,
+        "filesize": 334544
+      },
+      {
+        "name": "__TEXT_EXEC",
+        "vmaddr": "0xfffffe0008c60ad0",
+        "fileoff": "0x1c5cad0",
+        "vmsize": 1428980,
+        "filesize": 1428980
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0xfffffe000b98e308",
+        "fileoff": "0x498a308",
+        "vmsize": 25920,
+        "filesize": 25920
+      },
+      {
+        "name": "__DATA_CONST",
+        "vmaddr": "0xfffffe00080708c0",
+        "fileoff": "0x106c8c0",
+        "vmsize": 134104,
+        "filesize": 134104
+      },
+      {
+        "name": "__LINKEDIT",
+        "vmaddr": "0xfffffe000bae0000",
+        "fileoff": "0x4adc000",
+        "vmsize": 474297,
+        "filesize": 474297
+      }
+    ]
+  },
+  "com.apple.driver.AppleT8150ANEHAL": {
+    "bundle_id": "com.apple.driver.AppleT8150ANEHAL",
+    "version": "10.102.0",
+    "bundle_path": "/System/Library/Extensions/AppleT8150ANEHAL.kext",
+    "dependencies": [
+      "com.apple.driver.AppleARMPlatform",
+      "com.apple.kec.corecrypto",
+      "com.apple.kpi.bsd",
+      "com.apple.kpi.iokit",
+      "com.apple.kpi.libkern",
+      "com.apple.kpi.mach",
+      "com.apple.kpi.private",
+      "com.apple.kpi.unsupported"
+    ],
+    "num_segments": 5,
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0xfffffe00077b9580",
+        "fileoff": "0x7b5580",
+        "vmsize": 4370,
+        "filesize": 4370
+      },
+      {
+        "name": "__TEXT_EXEC",
+        "vmaddr": "0xfffffe0009861d10",
+        "fileoff": "0x285dd10",
+        "vmsize": 71132,
+        "filesize": 71132
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0xfffffe000b9ef8b8",
+        "fileoff": "0x49eb8b8",
+        "vmsize": 13000,
+        "filesize": 13000
+      },
+      {
+        "name": "__DATA_CONST",
+        "vmaddr": "0xfffffe000822eab0",
+        "fileoff": "0x122aab0",
+        "vmsize": 8376,
+        "filesize": 8376
+      },
+      {
+        "name": "__LINKEDIT",
+        "vmaddr": "0xfffffe000bae0000",
+        "fileoff": "0x4adc000",
+        "vmsize": 474297,
+        "filesize": 474297
+      }
+    ]
+  }
+}

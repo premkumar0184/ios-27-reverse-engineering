@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Secure Enclave Processor (SEP) Firmware Container & Envelope Specification",
+  "fourcc_tag": "sepi",
+  "wrapper": "Apple Image4 (IM4P)",
+  "container_magic": "0x30837533",
+  "total_container_size_bytes": 7680809,
+  "payload_length_encoded": 7667712,
+  "encryption_mode": "AES-256-CBC / Hardware Keybag Sealed",
+  "shannon_entropy": 7.999872,
+  "asn1_structure": {
+    "root_sequence": "0x30 [Length: 0x83753324]",
+    "magic_string": "IM4P",
+    "type_tag": "sepi",
+    "version_description": "1",
+    "payload_bytes_offset": 23,
+    "keybag_offset": 7667739,
+    "properties_offset": 7667859
+  },
+  "keybag": {
+    "tag": "KBAG",
+    "asn1_offset": "0x0075001b",
+    "size_bytes": 116,
+    "entries": [
+      {
+        "type": 1,
+        "name": "Production / GID Key Bag",
+        "iv_hex": "33280e01e4172b82f73b9617da98366c",
+        "key_hex": "3da646ed897ea047e8c41272fa2f39bf5bcf07bfdb658890c9c263d7ed952291",
+        "cipher": "AES-256",
+        "key_length_bits": 256,
+        "derivation": "Encrypted under SoC Family Group ID (GID) key burned into Silicon eFuses."
+      },
+      {
+        "type": 2,
+        "name": "Development / UID Key Bag",
+        "iv_hex": "c74d0e26409a5cfe34da839c9cdd70a0",
+        "key_hex": "927e2a9c8b9f6fa10ca4ef9eb8586150f26dcec507cd3df8e90b2151a31983ab",
+        "cipher": "AES-256",
+        "key_length_bits": 256,
+        "derivation": "Encrypted under Die Unique ID (UID) key for engineering/research units."
+      }
+    ]
+  },
+  "payload_properties": {
+    "tag": "PAYP",
+    "asn1_offset": "0x00750093",
+    "size_bytes": 12950,
+    "ar1s": {
+      "value_int": 0,
+      "description": "Apple Research Security Mode 1 Status (0 = Production Sealed)"
+    },
+    "arms": {
+      "value_int": 15728640,
+      "hex": "0x00f00000",
+      "size_human": "15 MB",
+      "description": "Runtime DRAM Execution Base Window"
+    },
+    "tz0s": {
+      "value_int": 102432768,
+      "hex": "0x061b0000",
+      "size_human": "97.6875 MB",
+      "description": "TrustZone 0 (TZ0) Secure DRAM Carveout Size"
+    },
+    "tz1s": {
+      "value_int": 84279296,
+      "hex": "0x05060000",
+      "size_human": "80.375 MB",
+      "description": "TrustZone 1 (TZ1) Secure DRAM Carveout Size"
+    },
+    "dtom": {
+      "value_hex": "ff000000",
+      "description": "Device Tree Override Mask"
+    },
+    "drmc_table_bytes": 11778,
+    "mmap_descriptor_bytes": 384,
+    "raw_data_digest_sha384": "7a3e734356b19c183212b00b4a86b171ba589cee2e9fb4a742909b9b1d47094eda6c93bf5b5ec1f26a2d6fea86ac337c",
+    "tightbeam_module_digests_release_tbms": [
+      "355b8194434d1aee724f0e40820d3696224f48255035996a6694102b466cbce033cc3ed6abda0ac1b3f513d938c79d84",
+      "a0558ec716fa5bff1709ba10abf0bfe0a0b38fa329c7c807cb012722b5841e7a01c1ac01c144e0702af576396e97894f",
+      "92dac0443b66eb0bc901619cd36616502f1da319fbbe1201324e4a784daefe815de82105e81877ef2c1c432bcec9298b",
+      "340953453aadb13aa87fc7184e080ae0988b13ea116d0233bffabf9d7970400378e0c985c8af244eea684837f74b27c7",
+      "2a4bd7b2692df17328674927b29c0006356a873ae45186efb10d9eabfdf083e6b3b410535beb47ece2563b7d787bf67e"
+    ],
+    "tightbeam_module_digests_research_tbmr": [
+      "ce3ca47feabaf584603d22d72525f4e262999e75be6023109d078bdfc2520f00a1dbc02b91cfed715cb969d9ec415fbe",
+      "cdac2903d0b23fd3db55d1ff64235170a608804c016389fa76e0ec138637a5b94b3f52c00c2b5fbe8c1546d8f318086c",
+      "d286da27afdffa7df765ffcda12e5a630eeaf75898d70d95fd8a76b7260f1d71e2355ed17001056ae9d97dae0470dc07",
+      "2082bc87652e77d981421fcdd835c11e63762f9a977531414178ab9b7296a5b96c306167be1130a6ab87b103604f2da2",
+      "06d9db613900b9fd2d7faf41f441e2249768c84bc5b3a6e6a4e6b8d686570bb7cd1014993191b905edc564ff3fdeec34"
+    ]
+  },
+  "stage1_patches": {
+    "source_file": "Firmware/all_flash/sep-patches.v57.im4p",
+    "size_bytes": 21137,
+    "tag": "stg1",
+    "role": "Stage-1 microkernel early exception vector patches and errata table updates loaded by iBoot prior to SEPOS execution."
+  },
+  "embedded_secure_element": {
+    "source_file": "Firmware/SE/StockholmE.RELEASE.sefw",
+    "size_bytes": 13420343,
+    "role": "Stockholm embedded Secure Element (eSE) JCOP SmartCard OS firmware managed by SEPOS via APDU/SPI channels."
+  }
+}

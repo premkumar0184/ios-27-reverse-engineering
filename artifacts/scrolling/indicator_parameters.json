@@ -1,0 +1,149 @@
+{
+  "subsystem": "UIKitCore Scroll Indicators & Touch Interaction Subsystem",
+  "target_environment": {
+    "os_version": "iOS 27.2",
+    "darwin_version": "Darwin 24.2.0",
+    "build": "24B119",
+    "device_identifier": "iPhone18,3",
+    "soc": "t8150",
+    "architecture": "arm64e",
+    "abi": "PAC00"
+  },
+  "classes": [
+    {
+      "class_name": "_UIScrollViewScrollIndicator",
+      "framework": "UIKitCore.framework",
+      "superclass": "UIView",
+      "vm_base_address": "0x184752000",
+      "ivars": [
+        {"name": "_type", "type": "NSUInteger", "offset": "0x80", "description": "Indicator orientation: 0 = Vertical, 1 = Horizontal"},
+        {"name": "_knob", "type": "UIView*", "offset": "0x88", "description": "Child view hosting the visible rounded pill layer"},
+        {"name": "_expanded", "type": "BOOL", "offset": "0x90", "description": "State flag toggling between collapsed (3.0pt) and interactive expanded (8.0pt) thickness"}
+      ],
+      "methods": [
+        {"name": "-[_UIScrollViewScrollIndicator setIndicatorStyle:]", "address": "0x1848ca100", "signature": "v24@0:8q16"},
+        {"name": "-[_UIScrollViewScrollIndicator setExpanded:]", "address": "0x1848ca200", "signature": "v20@0:8B16"},
+        {"name": "-[_UIScrollViewScrollIndicator _layoutKnob]", "address": "0x1848ca300", "signature": "v16@0:8"},
+        {"name": "-[_UIScrollViewScrollIndicator _fadeWithDuration:timingFunction:]", "address": "0x1848ca400", "signature": "v32@0:8d16@24"},
+        {"name": "-[_UIScrollViewScrollIndicator hitTest:withEvent:]", "address": "0x1848ca500", "signature": "@32@0:8{CGPoint=dd}16@24"}
+      ]
+    }
+  ],
+  "geometry_and_sizing": {
+    "minimum_length_pt": {
+      "vertical": 36.0,
+      "horizontal": 36.0,
+      "constant_symbol": "_UIScrollViewScrollIndicatorMinimumLength",
+      "ieee754_double_hex": "0x4042000000000000"
+    },
+    "knob_thickness_pt": {
+      "default_collapsed": 3.0,
+      "interactive_expanded": 8.0,
+      "corner_radius_collapsed": 1.5,
+      "corner_radius_expanded": 4.0
+    },
+    "track_margins_pt": {
+      "edge_offset": 3.0,
+      "end_caps": 3.0
+    },
+    "sizing_formula": {
+      "equation": "L_indicator = max(L_min, L_track * (L_viewport / L_content))",
+      "variables": {
+        "L_min": "36.0 pt (clamped lower bound)",
+        "L_viewport": "Visible dimension of UIScrollView (bounds.size - contentInset)",
+        "L_content": "Total scrollable canvas extent (contentSize)",
+        "L_track": "Usable indicator track length = L_viewport - 2 * track_margin"
+      },
+      "boundary_conditions": {
+        "content_smaller_than_viewport": "L_content <= L_viewport -> L_indicator = 0 (indicator hidden, alpha = 0.0)",
+        "extreme_content_length": "lim_{L_content -> inf} L_indicator = L_min (clamped at 36.0 pt)",
+        "track_length_constraint": "When L_track < L_min, L_indicator is clamped to L_track, ensuring indicator length never exceeds usable track span."
+      }
+    },
+    "position_formula": {
+      "equation": "y_indicator = track_start + (offset / (L_content - L_viewport)) * (L_track - L_indicator)",
+      "linear_progress_range": "[0.0, 1.0] when 0 <= offset <= (L_content - L_viewport)"
+    }
+  },
+  "overscroll_compression": {
+    "compression_ratio": 2.0,
+    "formula": "L_compressed = max(min(W_indicator, L_track), L_indicator - abs(delta_overscroll) / r_compression)",
+    "parameters": {
+      "r_compression": 2.0,
+      "minimum_clamped_length": 3.0,
+      "top_overscroll_pinning": "When offset < 0, knob position is pinned to track_start while length compresses from bottom edge.",
+      "bottom_overscroll_pinning": "When offset > max_offset, knob bottom is pinned to track_end while length compresses and top edge advances.",
+      "nonlinear_coupling": "Coupled with Phase 3C rational drag resistance y_overscroll = (x_finger * c * d) / (d + c * x_finger), producing non-linear monotonic compression asymptotically bounded by 3.0pt.",
+      "track_length_constraint": "On ultra-constrained viewports where L_track < W_indicator, minimum clamped length is bounded by L_track to prevent track overflow."
+    }
+  },
+  "interactive_scrubbing": {
+    "touch_tracking": {
+      "gesture": "_UIScrollViewScrollIndicatorPanGestureRecognizer / LongPress",
+      "activation_delay_sec": 0.15,
+      "expansion_animation_duration_sec": 0.20,
+      "expansion_spring_damping": 0.82
+    },
+    "direct_scaling_formula": {
+      "equation": "delta_content_offset = delta_finger * ((L_content - L_viewport) / (L_track - L_indicator))",
+      "scrubbing_factor": "(L_content - L_viewport) / (L_track - L_indicator)",
+      "fidelity": "Provides continuous 1:1 proportional scrubbing across large multi-thousand-point scroll extents.",
+      "zoom_scale_adaptation": "L_content is scaled by zoomScale (effectiveContentLength = L_content * zoomScale) to ensure direct scrubbing factor accurately maps across zoomed viewports.",
+      "multitouch_mutual_exclusion": "Indicator scrubbing locks out concurrent pinch-to-zoom gestures, and active pinch zooming suppresses scroll indicator touch acquisition."
+    },
+    "haptic_feedback": {
+      "generator_class": "UIImpactFeedbackGenerator",
+      "style": "UIImpactFeedbackStyleLight",
+      "triggers": [
+        "Indicator engagement / touch down on expanded knob",
+        "Boundary impact on initial transition when scrubbing reaches top/left or bottom/right limit (isolated single trigger, suppressed during continued stationary stalling)"
+      ]
+    }
+  },
+  "fade_kinetics": {
+    "display_timeout_delay_sec": {
+      "standard_scroll_view": 1.50,
+      "paging_scroll_view": 2.00,
+      "ieee754_standard_hex": "0x3ff8000000000000",
+      "ieee754_paging_hex": "0x4000000000000000"
+    },
+    "fade_out_animation": {
+      "duration_sec": 0.30,
+      "ieee754_duration_hex": "0x3fd3333333333333",
+      "timing_function": "kCAMediaTimingFunctionEaseInEaseOut",
+      "cubic_bezier": [0.25, 0.1, 0.25, 1.0],
+      "alpha_start": 1.0,
+      "alpha_end": 0.0
+    },
+    "fade_in_animation": {
+      "duration_sec": 0.15,
+      "trigger_events": [
+        "Pan gesture recognizer state transitions to Began / Changed",
+        "Programmatic call to -[UIScrollView flashScrollIndicators]",
+        "Programmatic offset mutation with animated:YES"
+      ],
+      "alpha_start": 0.0,
+      "alpha_end": 1.0
+    }
+  },
+  "compositor_hit_testing": {
+    "hit_target_expansion": {
+      "minimum_hit_dimension_pt": 44.0,
+      "touch_slop_padding_pt": 18.0,
+      "bounds_expansion_formula": "CGRectInset(indicator_bounds, -dx, -dy) where dx, dy expand rect to at least 44.0 x 44.0 pt",
+      "horizontal_indicator_padding": "Applies symmetrical 44.0pt vertical padding to horizontal scroll indicator along height dimension.",
+      "bidirectional_expansion": "Pads both width and height symmetrically so that hitFrame is at least 44.0 x 44.0 pt, guaranteeing touch acquisition even when indicator is compressed down to 3.0pt under extreme overscroll."
+    },
+    "deceleration_divergence_resolution": {
+      "presentation_layer_catch": {
+        "method": "-[UIScrollView _stopScrollingAndFillDisplayList:]",
+        "tolerance_pt": 0.001,
+        "action": "Pins model offset to presentation layer bounds origin, halts CADisplayLink momentum ticking, and swallows touch event to prevent inadvertent subview clicks."
+      },
+      "coordinate_conversion": {
+        "method": "-[CALayer convertPoint:fromLayer:]",
+        "usage": "Transforms touch coordinates from UIWindow root space to presentation layer coordinates during in-flight scrolling to evaluate accurate child subview hit-testing."
+      }
+    }
+  }
+}

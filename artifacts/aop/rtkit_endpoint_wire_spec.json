@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AOP2 RTKit Endpoint Wire Protocol & Message Serialization Specification",
+  "word_geometry": {
+    "total_bits": 64,
+    "fields": {
+      "endpoint_id": {
+        "bits": "63:48",
+        "mask": "0xffff000000000000",
+        "shift": 48,
+        "type": "uint16_t",
+        "description": "Destination endpoint identifier (0x0000..0x0053)"
+      },
+      "message_type": {
+        "bits": "47:44",
+        "mask": "0x0000f00000000000",
+        "shift": 44,
+        "type": "uint8_t",
+        "values": {
+          "0x0": "IMMEDIATE (44-bit inline payload)",
+          "0x1": "BUFFER_DESCRIPTOR (44-bit Device Virtual Address pointer)",
+          "0x2": "ASYNC_EVENT (Unsolicited notification from coprocessor)",
+          "0x3": "COMMAND_ACK (Synchronous command completion status)",
+          "0x4": "COMMAND_NACK (Command rejected or invalid opcode)",
+          "0x8": "TIGHTBEAM_RPC (Strongly-typed Tightbeam message envelope)"
+        }
+      },
+      "payload": {
+        "bits": "43:0",
+        "mask": "0x00000fffffffffff",
+        "shift": 0,
+        "type": "uint64_t (44 bits)",
+        "description": "Payload bits containing command opcode, arguments, or DMA physical address"
+      }
+    }
+  },
+  "endpoints": {
+    "0x00": {
+      "name": "system-ep",
+      "opcodes": {
+        "0x01": {"name": "SYS_HELLO", "direction": "AOP -> Host", "payload": "Version (16 bits) | BuildTrain (16 bits) | CapFlags (12 bits)"},
+        "0x02": {"name": "SYS_HELLO_ACK", "direction": "Host -> AOP", "payload": "NegotiatedVersion (16 bits) | HostFlags (28 bits)"},
+        "0x03": {"name": "SYS_EP_CONFIG", "direction": "Host -> AOP", "payload": "EndpointID (8 bits) | RingDescriptorDVA (36 bits)"},
+        "0x04": {"name": "SYS_EP_READY", "direction": "AOP -> Host", "payload": "EndpointID (8 bits) | Status (8 bits) | BufferCount (28 bits)"},
+        "0x05": {"name": "SYS_TIME_SYNC", "direction": "Host -> AOP", "payload": "ContinuousTimeDelta (44 bits)"},
+        "0x06": {"name": "SYS_SLEEP_REQ", "direction": "Host -> AOP", "payload": "TargetPowerState (4 bits) | WakeSourcesMask (40 bits)"},
+        "0x07": {"name": "SYS_SLEEP_ACK", "direction": "AOP -> Host", "payload": "RetentionConfirmed (1 bit) | Checksum (43 bits)"},
+        "0x08": {"name": "SYS_CRASHLOG_PANIC", "direction": "AOP -> Host", "payload": "CrashDVA (36 bits) | CrashSize (8 bits)"}
+      }
+    },
+    "0x01": {
+      "name": "oslog-ep",
+      "framing": "Circular string descriptor containing length (12 bits) and shared memory offset (32 bits)"
+    },
+    "0x04": {
+      "name": "iopm-ep",
+      "opcodes": {
+        "0x10": {"name": "IOPM_ASSERT_LEVEL", "payload": "AssertionType (8 bits) | AssertionLevel (8 bits) | TimeoutMS (28 bits)"},
+        "0x11": {"name": "IOPM_DEASSERT_LEVEL", "payload": "AssertionType (8 bits) | AssertionLevel (8 bits)"},
+        "0x12": {"name": "IOPM_WAKE_SYSTEM", "payload": "WakeReasonCode (8 bits) | Flags (36 bits)"}
+      }
+    },
+    "0x10": {
+      "name": "ap-motionx-ep",
+      "opcodes": {
+        "0x01": {"name": "MOTION_START_STREAM", "payload": "SampleRateHz (16 bits) | FIFOThreshold (8 bits) | ChannelsMask (20 bits)"},
+        "0x02": {"name": "MOTION_STOP_STREAM", "payload": "0x00000000000"},
+        "0x03": {"name": "MOTION_DATA_AVAILABLE", "payload": "HeadIndex (16 bits) | DroppedSamples (12 bits) | Status (16 bits)"},
+        "0x04": {"name": "MOTION_HISTORICAL_FLUSH", "payload": "RequestedFramesCount (16 bits) | BufferDVA (28 bits)"}
+      }
+    },
+    "0x11": {
+      "name": "ap-asenx-ep",
+      "opcodes": {
+        "0x01": {"name": "ALS_READ_LUX", "payload": "LuxMilliInt (32 bits) | ChannelID (4 bits) | Status (8 bits)"},
+        "0x02": {"name": "ALS_SET_CALIBRATION", "payload": "GainMultiplier (16 bits) | IntegrationTimeMS (16 bits) | Flags (12 bits)"}
+      }
+    },
+    "0x18": {
+      "name": "ap-audio-ep",
+      "opcodes": {
+        "0x01": {"name": "AUDIO_START_HOTWORD", "payload": "SensitivityPreset (8 bits) | ChannelConfig (8 bits)"},
+        "0x02": {"name": "AUDIO_HOTWORD_DETECTED", "payload": "ConfidenceScore (12 bits) | HistoricalBufferOffset (24 bits) | Reserved (8 bits)"},
+        "0x03": {"name": "AUDIO_PLAY_CHIME", "payload": "AssetID (8 bits) | VolumeLevel (8 bits) | BufferDVA (28 bits)"}
+      }
+    },
+    "0x20": {
+      "name": "ap-dcp-ep",
+      "opcodes": {
+        "0x01": {"name": "DCP_AOD_FRAME_READY", "payload": "FrameBufferIndex (4 bits) | UpdateRectX (10 bits) | UpdateRectY (10 bits) | UpdateRectW (10 bits) | UpdateRectH (10 bits)"},
+        "0x02": {"name": "DCP_AOD_ACK", "payload": "RefreshCompletedTimestamp (44 bits)"}
+      }
+    },
+    "0x53": {
+      "name": "sharedmem_xcoproc_AOP2_EP53_in",
+      "type": "TIGHTBEAM_RPC",
+      "channel": "Direct DART SID 0x11 ExclaveOS Bridge",
+      "opcodes": {
+        "0x01": {"name": "EXCLAVE_SIL_UPDATE_STATE", "payload": "MicRailActive (1 bit) | CamRailActive (1 bit) | HardwareInterlock (1 bit) | Nonce (32 bits)"},
+        "0x02": {"name": "EXCLAVE_SIL_HEARTBEAT", "payload": "SensorTimestamp (32 bits) | SecurityDigest (12 bits)"}
+      }
+    }
+  }
+}

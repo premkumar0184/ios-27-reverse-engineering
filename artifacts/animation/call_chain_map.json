@@ -1,0 +1,64 @@
+{
+  "title": "iOS 27 User Interface Animation Dispatch Hierarchy",
+  "target": "iOS 27.2 (24B119) / Apple A19 Pro (t8150)",
+  "confidence_level": "EXTRACTED",
+  "chain": [
+    {
+      "step": 1,
+      "source": "SpringBoard",
+      "target": "SystemUIAnimationKit",
+      "mechanism": "System workspace gesture orchestration & scene transition trigger",
+      "interface": "SBFluidSwitcherAnimationController -> SUIAKAnimationCoordinator"
+    },
+    {
+      "step": 2,
+      "source": "SystemUIAnimationKit",
+      "target": "AnimationKit",
+      "mechanism": "Context-specific fluid spring parameters (duration, bounce, response)",
+      "interface": "SUIAKSpringSettings -> AKSpringAnimationDriver"
+    },
+    {
+      "step": 3,
+      "source": "AnimationKit",
+      "target": "UIKitCore",
+      "mechanism": "Adapter binding to UIKitCore spring behavior pipeline",
+      "interface": "AKFluidSpringBehavior -> UIViewSpringAnimationBehaviorAdapter"
+    },
+    {
+      "step": 4,
+      "source": "UIKitCore",
+      "target": "QuartzCore",
+      "mechanism": "Low-level second-order differential equation parametrization & render commit",
+      "interface": "UISpringTimingParameters -> CASpringAnimation(perceptualDuration:bounce:)"
+    }
+  ],
+  "edges": [
+    {
+      "from": "SpringBoard",
+      "to": "SystemUIAnimationKit",
+      "protocol": "BSServiceConnection / Direct Link",
+      "role": "High-level scene transition trigger"
+    },
+    {
+      "from": "SystemUIAnimationKit",
+      "to": "AnimationKit",
+      "protocol": "Private Framework Direct Import",
+      "role": "Fluid spring curve resolution"
+    },
+    {
+      "from": "AnimationKit",
+      "to": "UIKitCore",
+      "protocol": "Objective-C Runtime Protocol Conformance",
+      "role": "UIViewPropertyAnimator coordination"
+    },
+    {
+      "from": "UIKitCore",
+      "to": "QuartzCore",
+      "protocol": "CoreAnimation Mach-O Linkage",
+      "role": "CASpringAnimation hardware rasterization driver"
+    }
+  ],
+  "architecture_synthesis": {
+    "summary": "Every system animation in iOS 27 traverses a unified 4-stage pipeline. High-level gesture intentions originate in SpringBoard/SystemUI, resolve their perceptual curves (duration, bounce) in AnimationKit, map into standard second-order ODE constants (k, m, c) in UIKitCore, and commit as hardware-synchronized CASpringAnimation render nodes in QuartzCore."
+  }
+}

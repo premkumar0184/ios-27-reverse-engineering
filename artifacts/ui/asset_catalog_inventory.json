@@ -1,0 +1,1157 @@
+[
+  {
+    "catalog_path": "artifacts/ui/SpringBoard/System/Library/CoreServices/SpringBoard.app/Assets.car",
+    "file_size": 3040456,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 811,
+      "total_blocks": 816,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 172,
+        "EXTENDED_METADATA": 661,
+        "BITMAPKEYS": 742
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 175,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "3.bottom.widget",
+      "4.top.widget",
+      "APPEARANCEKEYS",
+      "CancelDownloadApplicationShortcutItemIcon",
+      "ForceDetachWindowedAcessoryButton",
+      "HomeScreen",
+      "HomeScreen.iconstack",
+      "HomeScreen1024x1024_ISAppearanceTintable_B327A87F-6168-4E50-",
+      "HomeScreen1024x1024_UIAppearanceAny_335E5AC4-B965-4BF0-9BEC-",
+      "HomeScreen1024x1024_UIAppearanceDark_D1BC8905-A085-44BD-A3B9",
+      "HomeScreen_Assets",
+      "ISAppearanceTintable",
+      "Icon.pdf",
+      "IconGroup",
+      "OverrideSlideButton",
+      "PauseDownloadApplicationShortcutItemIcon",
+      "ResumeDownloadApplicationShortcutItemIcon",
+      "ScreenSharingIcon",
+      "SlideButton",
+      "SmartStack",
+      "SmartStack.iconstack",
+      "SmartStack1024x1024_ISAppearanceTintable_469CF1E3-303B-4B42-",
+      "SmartStack1024x1024_UIAppearanceAny_5F96539B-345C-4C78-894A-",
+      "SmartStack1024x1024_UIAppearanceDark_761228D3-1860-4C79-8FF7",
+      "SmartStack_Assets",
+      "SpotlightBreadcrumbIcon",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "button.png",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 31
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/Applications/Preferences.app/Assets.car",
+    "file_size": 1393928,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 211,
+      "total_blocks": 256,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 70,
+        "EXTENDED_METADATA": 153,
+        "BITMAPKEYS": 183
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 37,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "Settings.iconstack",
+      "Settings1024x1024_ISAppearanceTintable_9ED454F6-4E26-43C1-B6",
+      "Settings1024x1024_UIAppearanceAny_12EABA2B-362B-49E7-B294-D3",
+      "Settings1024x1024_UIAppearanceDark_F8706B24-345B-4A1E-8619-6",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 11
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/Camera.app/Assets.car",
+    "file_size": 4600792,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 181,
+      "total_blocks": 256,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 54,
+        "EXTENDED_METADATA": 139,
+        "BITMAPKEYS": 161
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 32,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_84DD48FF-06BD-4832-8ED",
+      "AppIcon1024x1024_UIAppearanceAny_A1DDD7C3-971F-470F-856D-DEE",
+      "AppIcon1024x1024_UIAppearanceDark_EE2CC60F-6B40-4E66-B6DE-ED",
+      "AppIcon_Assets",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "cameradark",
+      "cameradefault",
+      "cameramono",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 16
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/FaceTime.app/Assets.car",
+    "file_size": 1062200,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 499,
+      "total_blocks": 504,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 106,
+        "EXTENDED_METADATA": 405,
+        "BITMAPKEYS": 453
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 70,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": true
+    },
+    "sample_renditions_and_assets": [
+      "3.camera",
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_703576F6-1ABA-4C53-95D",
+      "AppIcon1024x1024_UIAppearanceAny_3990A6A6-87BE-46FC-A88D-170",
+      "AppIcon1024x1024_UIAppearanceDark_81776FFB-7A00-4A3B-AD0C-5E",
+      "AppIcon_Assets",
+      "Button",
+      "Glyph",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "iOS_cancel_glyph",
+      "icon-audio",
+      "icon-flipcamera",
+      "icon-mute",
+      "icon-mute-small",
+      "in-call-button-mute-small",
+      "join-button",
+      "join-button.pdf",
+      "swap-camera",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 25
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/Files.app/Assets.car",
+    "file_size": 754008,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 239,
+      "total_blocks": 256,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 74,
+        "EXTENDED_METADATA": 177,
+        "BITMAPKEYS": 209
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 43,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_FCB969F7-5661-4F95-8AA",
+      "AppIcon1024x1024_UIAppearanceAny_D6D6EE9D-A091-467A-9746-9DE",
+      "AppIcon1024x1024_UIAppearanceDark_99EFE5E8-F7FF-472B-8ACA-DB",
+      "AppIcon_Assets",
+      "FamilyIcon",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 14
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/Health.app/Assets.car",
+    "file_size": 16088376,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 3548,
+      "total_blocks": 3552,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 766,
+        "EXTENDED_METADATA": 2790,
+        "BITMAPKEYS": 3170
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 620,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": true
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_04F2F3BD-3B3F-46EB-9DD",
+      "AppIcon1024x1024_UIAppearanceAny_6CA6D9D1-EFF6-47BB-A40E-921",
+      "AppIcon1024x1024_UIAppearanceDark_8BB4EDCB-E19A-4777-8EE3-DF",
+      "AppIcon_Assets",
+      "BloodOxygen.iconstack",
+      "BloodOxygen1024x1024_ISAppearanceTintable_D66D776B-F9D6-4DF1",
+      "BloodOxygen1024x1024_UIAppearanceAny_32448C60-25A7-4BE2-8FC3",
+      "BloodOxygen1024x1024_UIAppearanceDark_40440514-796F-4195-8A1",
+      "CHR-HealthRecords-36",
+      "CHR-HealthRecords-36.pdf",
+      "Clinical-HealthApp",
+      "CycleTracking.iconstack",
+      "CycleTracking1024x1024_ISAppearanceTintable_9FC6EB67-CF1C-42",
+      "CycleTracking1024x1024_UIAppearanceAny_79C96035-A961-48FA-B7",
+      "CycleTracking1024x1024_UIAppearanceDark_C543A7D5-4923-48FA-A",
+      "Electrocardiogram",
+      "Electrocardiogram.iconstack",
+      "Electrocardiogram1024x1024_ISAppearanceTintable_67792A6D-06C",
+      "Electrocardiogram1024x1024_UIAppearanceAny_FE4685D6-5E44-49C",
+      "Electrocardiogram1024x1024_UIAppearanceDark_94D2570B-EE5C-45",
+      "Electrocardiogram_Assets",
+      "HR-Info-glyph",
+      "Handwashing.iconstack",
+      "Handwashing1024x1024_ISAppearanceTintable_3C54B91A-E630-44FF",
+      "Handwashing1024x1024_UIAppearanceAny_EAC795E8-0B46-43C8-9BA6",
+      "Handwashing1024x1024_UIAppearanceDark_980F2F42-5E1C-48A5-AA9",
+      "Health-80.pdf",
+      "Health-Vitals-36-1",
+      "HealthKit-Doc",
+      "HealthLink-80.pdf",
+      "Health_Data_App_Symbol",
+      "Health_Data_App_Symbol_32",
+      "Health_Data_Figure_AVP",
+      "Health_Data_Figure_Bright",
+      "Health_Data_Testtubes_Bright",
+      "Health_Data_Testubes_AVP",
+      "Health_Data_Vial_AVP"
+    ],
+    "total_extracted_named_assets": 129
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/Image Playground.app/Assets.car",
+    "file_size": 4744584,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 221,
+      "total_blocks": 256,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 68,
+        "EXTENDED_METADATA": 165,
+        "BITMAPKEYS": 194
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 42,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_6E6F579C-4E73-4BC6-9A6",
+      "AppIcon1024x1024_UIAppearanceAny_8B164C8D-085E-42E2-9836-B8F",
+      "AppIcon1024x1024_UIAppearanceDark_DEF66B2B-FB1F-4E17-85D4-E4",
+      "AppIcon_Assets",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 13
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/Maps.app/Assets.car",
+    "file_size": 45934824,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 2301,
+      "total_blocks": 2304,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 526,
+        "EXTENDED_METADATA": 1781,
+        "BITMAPKEYS": 2042
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 457,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": true
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_77E44193-16EC-46E2-9F9",
+      "AppIcon1024x1024_UIAppearanceAny_8162BC1A-61D0-4E39-8F56-D14",
+      "AppIcon1024x1024_UIAppearanceDark_8FA301A6-F6B8-4322-B3E9-84",
+      "AppIcon_Assets",
+      "BlueButtonHighlightedTitleColorKey",
+      "BlueButtonTitleColorKey",
+      "CameraModeOverview",
+      "CameraModeOverview.pdf",
+      "ChildItemButtonBackgroundColorKey",
+      "Coaching_Continue_Dark",
+      "Coaching_Start_Dark",
+      "Dark",
+      "DefGuideIcon.pdf",
+      "DefGuideIconDM.pdf",
+      "EnrichmentWarmingSheetGraphic_Dark",
+      "FadedGrayButtonColorKey",
+      "FadedGrayButtonHighlightedTitleColorKey",
+      "FadedGrayButtonTitleColorKey",
+      "FavoriteCollectionIconBackgroundColor",
+      "FavoriteCollectionIconColor",
+      "GreenButtonHighlightedTitleColorKey",
+      "GreenButtonTitleColorKey",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "LPR_onboarding_icon",
+      "LPR_onboarding_icon.pdf",
+      "LocationIntelligenceDark",
+      "MSR_Dark",
+      "MultipleEV_dark",
+      "NavButtonPrimaryColor",
+      "NavResumeButtonColor",
+      "NewGuideIcon",
+      "NewGuideIcon.pdf",
+      "NewGuideIconDM.pdf",
+      "NoImageGuideIcon",
+      "PedestrianAR_feature_intro_dark",
+      "PedestrianAR_raise_to_enter_island_dark"
+    ],
+    "total_extracted_named_assets": 87
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/MobileCal.app/Assets.car",
+    "file_size": 525528,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 255,
+      "total_blocks": 256,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 66,
+        "EXTENDED_METADATA": 201,
+        "BITMAPKEYS": 229
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 55,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_F377C22A-F2E1-4694-A63",
+      "AppIcon1024x1024_UIAppearanceAny_FD0B6299-D1C2-4117-BB7D-659",
+      "AppIcon1024x1024_UIAppearanceDark_C590C12B-B60F-4341-81A9-0B",
+      "AppIcon_Assets",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 13
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/MobileMail.app/Assets.car",
+    "file_size": 1022984,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 331,
+      "total_blocks": 336,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 86,
+        "EXTENDED_METADATA": 257,
+        "BITMAPKEYS": 295
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 62,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": true
+    },
+    "sample_renditions_and_assets": [
+      "-sfsymbols-mot",
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_912F2E4B-4C08-4326-A40",
+      "AppIcon1024x1024_UIAppearanceAny_03442AF8-7B78-48D0-83DB-211",
+      "AppIcon1024x1024_UIAppearanceDark_B1DDC807-D345-41E6-AECA-F4",
+      "AppIcon_Assets",
+      "ISAppearanceTintable",
+      "Icon",
+      "IconGroup",
+      "MFActionViewHeaderIcon",
+      "MFActionViewHeaderIcon.pdf",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "custom.envelope.badge.minus",
+      "custom.envelope.badge.minus.svg",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 19
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/MobileNotes.app/Assets.car",
+    "file_size": 4008296,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 1048,
+      "total_blocks": 1056,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 186,
+        "EXTENDED_METADATA": 885,
+        "BITMAPKEYS": 971
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 207,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": true
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon-xrOS",
+      "AppIcon-xrOS-Debug",
+      "AppIcon-xrOS-Sandbox",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_256AE86A-1EF7-47BB-AD9",
+      "AppIcon1024x1024_UIAppearanceAny_B8812E0B-463A-4516-B3D3-869",
+      "AppIcon1024x1024_UIAppearanceDark_466A660E-43C0-44BA-851C-80",
+      "AppIcon_Assets",
+      "Dark",
+      "Dark.pdf",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "LockedNote",
+      "LockedNote-Dark.pdf",
+      "LockedNote.pdf",
+      "NavigationBarIcons",
+      "Note-Dark.pdf",
+      "Notes-Tip-Bubble-SmartFolder-Dark.pdf",
+      "Notes-Tip-LearnMore-SmartFolder-Cloud-Dark-RTL.pdf",
+      "Notes-Tip-LearnMore-SmartFolder-Cloud-Dark.pdf",
+      "Notes-Tip-LearnMore-SmartFolder-Header-Dark.pdf",
+      "Notes-Tip-LearnMore-Tags-Cloud-Dark-RTL.pdf",
+      "Notes-Tip-LearnMore-Tags-Cloud-Dark.pdf",
+      "Notes-Tip-LearnMore-Tags-Header-Dark.pdf",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceHighContrastAny",
+      "UIAppearanceHighContrastDark",
+      "UIAppearanceLight",
+      "VideoCamera",
+      "attachment_thumb_video_camera_icon",
+      "ios_attachment_thumb_video_camera_icon",
+      "ios_collaboration_share_sheet_folder_icon",
+      "ios_notes_quicknote_settings_dialog_icon",
+      "notes_format_plus_button_gradient_bottom",
+      "notes_format_plus_button_gradient_top",
+      "notes_ios_search_menulist_lock",
+      "paper_palette_symbol_color"
+    ],
+    "total_extracted_named_assets": 43
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/MobileSMS.app/Assets.car",
+    "file_size": 1076504,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 275,
+      "total_blocks": 280,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 56,
+        "EXTENDED_METADATA": 231,
+        "BITMAPKEYS": 254
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 33,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_FD954DA6-5CB8-462D-B43",
+      "AppIcon1024x1024_UIAppearanceAny_99A123C8-3C1C-4798-84A1-EFB",
+      "AppIcon1024x1024_UIAppearanceDark_7AAA246B-27D6-42AC-9FC0-B9",
+      "AppIcon_Assets",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "system-dark",
+      "zelkovaExclaimDark",
+      "zelkovaTriggerNotificationIcon"
+    ],
+    "total_extracted_named_assets": 15
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/MobileSafari.app/Assets.car",
+    "file_size": 2597928,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 797,
+      "total_blocks": 800,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 132,
+        "EXTENDED_METADATA": 677,
+        "BITMAPKEYS": 738
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 202,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIconUpdated",
+      "AppIconUpdated.iconstack",
+      "AppIconUpdated1024x1024_ISAppearanceTintable_32919FDF-33D1-4",
+      "AppIconUpdated1024x1024_UIAppearanceAny_98170AE4-4741-487B-A",
+      "AppIconUpdated1024x1024_UIAppearanceDark_D87CB627-3B37-42D5-",
+      "AppIconUpdated_Assets",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "MoreButtonTipImage",
+      "MoreButtonTipImage.pdf",
+      "NewsIcon",
+      "NewsSearchIcon",
+      "RectangularPlatterDark",
+      "RectangularPlatterPrivateDark",
+      "SafariOnboardingCustomizeStartPage",
+      "SafariOnboardingEnableCloudSync",
+      "SafariOnboardingEnableHighlights",
+      "SafariOnboardingSearchEngineChoice",
+      "SafariOnboardingSetDefaultBrowser",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "hand.raised.badge.faceid.fill",
+      "hand.raised.badge.faceid.fill.svg",
+      "hand.raised.badge.touchid.fill",
+      "hand.raised.badge.touchid.fill.svg",
+      "searchEngineOnboardingCard.pdf",
+      "system-dark",
+      "widget-background"
+    ],
+    "total_extracted_named_assets": 30
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/MobileTimer.app/Assets.car",
+    "file_size": 914952,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 1046,
+      "total_blocks": 1048,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 280,
+        "EXTENDED_METADATA": 785,
+        "BITMAPKEYS": 922
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 188,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_29C164D4-B438-47DC-944",
+      "AppIcon1024x1024_UIAppearanceAny_FD318D9F-E2FF-4B11-B784-EC9",
+      "AppIcon1024x1024_UIAppearanceDark_2E09A22D-B1CE-40F6-BE0C-3E",
+      "AppIcon_Assets",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 13
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/Music.app/Assets.car",
+    "file_size": 1762968,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 891,
+      "total_blocks": 896,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 172,
+        "EXTENDED_METADATA": 731,
+        "BITMAPKEYS": 812
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 184,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": true
+    },
+    "sample_renditions_and_assets": [
+      "-sfsymbols-layer-tags",
+      "APPEARANCEKEYS",
+      "AppIcon-iOS",
+      "AppIcon-iOS.iconstack",
+      "AppIcon-iOS1024x1024_ISAppearanceTintable_89C0CA4B-8185-482C",
+      "AppIcon-iOS1024x1024_UIAppearanceAny_4F165513-4C9A-422B-81D6",
+      "AppIcon-iOS1024x1024_UIAppearanceDark_ECFCFC85-ABD1-425F-943",
+      "AppIcon-iOS_Assets",
+      "Badge.svg",
+      "Glyph.pdf",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "MetadataBadge",
+      "Status_Dark",
+      "Symbol",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "songcredits_toolbar_button_lyrics",
+      "songcredits_toolbar_button_lyrics.svg",
+      "symbol",
+      "system-dark",
+      "whatsapp_dark"
+    ],
+    "total_extracted_named_assets": 23
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/Passbook.app/Assets.car",
+    "file_size": 2160360,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 545,
+      "total_blocks": 552,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 164,
+        "EXTENDED_METADATA": 393,
+        "BITMAPKEYS": 470
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 102,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "3.card1",
+      "4.card2",
+      "5.card3",
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_8C273EE9-8F75-4A71-AB6",
+      "AppIcon1024x1024_UIAppearanceAny_9C95ABDF-97FD-4421-81C2-BDC",
+      "AppIcon1024x1024_UIAppearanceDark_12549678-8CEA-4C6D-8E4D-FD",
+      "AppIcon_Assets",
+      "GenericIcon",
+      "GenericIcon.iconstack",
+      "GenericIcon1024x1024_ISAppearanceTintable_B31ACF62-C1DE-4A49",
+      "GenericIcon1024x1024_UIAppearanceAny_16BDD64B-3F20-40D9-A350",
+      "GenericIcon1024x1024_UIAppearanceDark_06902F57-C895-4776-BC8",
+      "GenericIcon_Assets",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "card2",
+      "card3",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 24
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/Passwords.app/Assets.car",
+    "file_size": 1938504,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 215,
+      "total_blocks": 256,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 66,
+        "EXTENDED_METADATA": 161,
+        "BITMAPKEYS": 189
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 41,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIconUpdated",
+      "AppIconUpdated.iconstack",
+      "AppIconUpdated1024x1024_ISAppearanceTintable_849C16AD-AF01-4",
+      "AppIconUpdated1024x1024_UIAppearanceAny_767BEB2E-E4DD-43F1-8",
+      "AppIconUpdated1024x1024_UIAppearanceDark_4DB039BE-67D5-4A1D-",
+      "AppIconUpdated_Assets",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 13
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/Photos.app/Assets.car",
+    "file_size": 2431192,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 293,
+      "total_blocks": 296,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 92,
+        "EXTENDED_METADATA": 213,
+        "BITMAPKEYS": 254
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 54,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_128C5EF8-2579-4A71-A68",
+      "AppIcon1024x1024_UIAppearanceAny_97F6AE92-F5E3-42FC-A6DB-2D2",
+      "AppIcon1024x1024_UIAppearanceDark_6C6610A1-2A85-4DEA-9666-FA",
+      "AppIcon_Assets",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 13
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/Reminders.app/Assets.car",
+    "file_size": 2009496,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 543,
+      "total_blocks": 544,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 98,
+        "EXTENDED_METADATA": 457,
+        "BITMAPKEYS": 501
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 85,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": false
+    },
+    "sample_renditions_and_assets": [
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_67A3E174-2221-489E-BA8",
+      "AppIcon1024x1024_UIAppearanceAny_EBEEF282-1D9E-4C50-98B4-3D2",
+      "AppIcon1024x1024_UIAppearanceDark_EF3028B6-EE9D-4975-847B-EF",
+      "AppIcon_Assets",
+      "ISAppearanceTintable",
+      "IconGroup",
+      "Reminders-Tip-Bubble-CSL-Dark",
+      "Reminders-Tip-Bubble-CSL-Dark-RTL",
+      "Reminders-Tip-Bubble-Tags-Dark",
+      "Reminders-Tip-LearnMore-CSL-Cloud-Dark",
+      "Reminders-Tip-LearnMore-CSL-Cloud-Dark-RTL",
+      "Reminders-Tip-LearnMore-CSL-Filters-Dark",
+      "Reminders-Tip-LearnMore-CSL-Filters-Dark-RTL",
+      "Reminders-Tip-LearnMore-CSL-Header-Dark",
+      "Reminders-Tip-LearnMore-CSL-Header-Dark-RTL",
+      "Reminders-Tip-LearnMore-Tags-Cloud-Dark",
+      "Reminders-Tip-LearnMore-Tags-Cloud-Dark-RTL",
+      "Reminders-Tip-LearnMore-Tags-Header-Dark",
+      "Reminders-Tip-LearnMore-Tags-Reminder-Dark",
+      "Reminders-Tip-LearnMore-Tags-Reminder-Dark-RTL",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 27
+  },
+  {
+    "catalog_path": "artifacts/ui/assets/private/var/staged_system_apps/Weather.app/Assets.car",
+    "file_size": 1263720,
+    "bom_storage": {
+      "magic": "BOMStore",
+      "version": 1,
+      "num_paths": 331,
+      "total_blocks": 336,
+      "stream_variables": {
+        "CARHEADER": 1,
+        "RENDITIONS": 2,
+        "FACETKEYS": 4,
+        "APPEARANCEKEYS": 6,
+        "KEYFORMAT": 76,
+        "EXTENDED_METADATA": 267,
+        "BITMAPKEYS": 300
+      }
+    },
+    "car_header": {
+      "tag": "RATC",
+      "coreui_version": 1011,
+      "storage_version": 17,
+      "storage_flags": "0x0",
+      "renditions_count": 72,
+      "creator": "RAM:CoreUI  PROJECT:CoreUI-1011.4 [LAR]"
+    },
+    "appearance_features": {
+      "has_dark_mode_variants": true,
+      "has_tintable_variants": true,
+      "has_icon_stacks": true,
+      "has_sf_symbols": true
+    },
+    "sample_renditions_and_assets": [
+      "-sfsymbols-clear-behind",
+      "APPEARANCEKEYS",
+      "AppIcon",
+      "AppIcon.iconstack",
+      "AppIcon1024x1024_ISAppearanceTintable_E282648A-A301-4534-AFE",
+      "AppIcon1024x1024_UIAppearanceAny_7879D7D9-DF8E-43B1-AFF5-B02",
+      "AppIcon1024x1024_UIAppearanceDark_5140128E-5877-499B-B779-C7",
+      "AppIcon_Assets",
+      "ISAppearanceTintable",
+      "Icon",
+      "IconGroup",
+      "UIAppearanceAny",
+      "UIAppearanceDark",
+      "UIAppearanceLight",
+      "system-dark"
+    ],
+    "total_extracted_named_assets": 15
+  }
+]

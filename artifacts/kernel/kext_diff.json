@@ -1,0 +1,922 @@
+{
+  "summary": {
+    "target_device": "iPhone18,3 (D93AP/D94AP)",
+    "target_soc": "t8150 (Apple A18 Pro)",
+    "os_build": "iOS 27.2 (24B119)",
+    "kernelcache_uuid_release": "362a153bd18dda9147c35ecb9063b168",
+    "kernelcache_uuid_research": "bfba6847653f1ccf13728865fb4a57d1",
+    "total_kexts_release": 302,
+    "total_kexts_research": 302,
+    "identical_kexts": 301,
+    "divergent_kexts": 1,
+    "release_exclusive_kexts_count": 0,
+    "research_exclusive_kexts_count": 0,
+    "prelink_bundles_release": 320,
+    "prelink_bundles_research": 320,
+    "prelink_divergent_bundles_count": 13,
+    "binary_match_percentage": 99.67,
+    "raw_binary_differing_bytes_total": 1638529,
+    "raw_binary_differing_bytes_outside_prelink": 35,
+    "architectural_conclusion": "The research kernelcache is not a disparate build with separate research KEXTs, but an almost byte-for-byte identical build where research capabilities are gated by a single 4-byte instruction flip in AppleMobileFileIntegrity (amfi_is_research_variant / is_research_kernel)."
+  },
+  "research_exclusive_kexts": [],
+  "release_exclusive_kexts": [],
+  "common_kexts": [
+    "com.apple.AGXFirmwareKextG18PRTBuddy",
+    "com.apple.AGXFirmwareKextRTBuddy64",
+    "com.apple.AGXG18P",
+    "com.apple.AUC",
+    "com.apple.AppleFSCompression.AppleFSCompressionTypeZlib",
+    "com.apple.EXBrightCalibrationConsumer",
+    "com.apple.EXBrightKext",
+    "com.apple.ExclaveKextClient",
+    "com.apple.IOTextEncryptionFamily",
+    "com.apple.audio.TrustedClockingKEXT",
+    "com.apple.driver.AFKHIDTBDevice",
+    "com.apple.driver.AOPAudio2",
+    "com.apple.driver.AOPTouchKext",
+    "com.apple.driver.ASIOKit",
+    "com.apple.driver.AppleA7IOP",
+    "com.apple.driver.AppleA7IOP-ASCWrap-v6",
+    "com.apple.driver.AppleALSColorSensor",
+    "com.apple.driver.AppleAOP2",
+    "com.apple.driver.AppleAOPAudio",
+    "com.apple.driver.AppleAOPHaptics",
+    "com.apple.driver.AppleARMPMU",
+    "com.apple.driver.AppleARMPlatform",
+    "com.apple.driver.AppleARMWatchdogTimer",
+    "com.apple.driver.AppleAVD",
+    "com.apple.driver.AppleAVE2",
+    "com.apple.driver.AppleActuatorDriver",
+    "com.apple.driver.AppleAstrisGpioProbe",
+    "com.apple.driver.AppleAudioClockLibs",
+    "com.apple.driver.AppleAuthCP",
+    "com.apple.driver.AppleBSDKextStarter",
+    "com.apple.driver.AppleBasebandM20",
+    "com.apple.driver.AppleBasebandPCI",
+    "com.apple.driver.AppleBasebandPCIMAVControl",
+    "com.apple.driver.AppleBasebandPCIMAVPDP",
+    "com.apple.driver.AppleC26Charger",
+    "com.apple.driver.AppleCS42L79Audio",
+    "com.apple.driver.AppleCSEmbeddedAudio",
+    "com.apple.driver.AppleCallbackPowerSource",
+    "com.apple.driver.AppleCentauriManager",
+    "com.apple.driver.AppleDAPF",
+    "com.apple.driver.AppleDCP",
+    "com.apple.driver.AppleDCPDPTXProxy",
+    "com.apple.driver.AppleDiagnosticDataAccessReadOnly",
+    "com.apple.driver.AppleDialogPMU",
+    "com.apple.driver.AppleDiskImages2",
+    "com.apple.driver.AppleDisplayCrossbar",
+    "com.apple.driver.AppleDockChannel",
+    "com.apple.driver.AppleEffaceableBlockDevice",
+    "com.apple.driver.AppleEffaceableStorage",
+    "com.apple.driver.AppleEmbeddedAudio",
+    "com.apple.driver.AppleEmbeddedAudioLibs",
+    "com.apple.driver.AppleEmbeddedAudioResourceManager",
+    "com.apple.driver.AppleEmbeddedGPS",
+    "com.apple.driver.AppleEmbeddedLightSensor",
+    "com.apple.driver.AppleEmbeddedMikeyBus",
+    "com.apple.driver.AppleEmbeddedPCIE",
+    "com.apple.driver.AppleEmbeddedTempSensor",
+    "com.apple.driver.AppleEmbeddedTouchEEPROM",
+    "com.apple.driver.AppleEmbeddedUSB",
+    "com.apple.driver.AppleEmbeddedUSBHost",
+    "com.apple.driver.AppleEpochManager",
+    "com.apple.driver.AppleEventLogHandler",
+    "com.apple.driver.AppleEverestErrorHandler",
+    "com.apple.driver.AppleFAN53740",
+    "com.apple.driver.AppleFirmwareKit",
+    "com.apple.driver.AppleFirmwareUpdateKext",
+    "com.apple.driver.AppleGPIOCanary",
+    "com.apple.driver.AppleGPIOICController",
+    "com.apple.driver.AppleGameControllerPersonality",
+    "com.apple.driver.AppleGenericMultitouch",
+    "com.apple.driver.AppleH10PearlCameraInterface",
+    "com.apple.driver.AppleH16ANEInterface",
+    "com.apple.driver.AppleH16CameraInterface",
+    "com.apple.driver.AppleH16PhotonDetector",
+    "com.apple.driver.AppleHIDALSService",
+    "com.apple.driver.AppleHIDKeyboard",
+    "com.apple.driver.AppleHIDTransport",
+    "com.apple.driver.AppleHIDTransportFIFO",
+    "com.apple.driver.AppleHIDTransportMailbox",
+    "com.apple.driver.AppleHIDTransportSCMCommon",
+    "com.apple.driver.AppleHIDTransportSPI",
+    "com.apple.driver.AppleHPM",
+    "com.apple.driver.AppleHapticsSupportLEAP",
+    "com.apple.driver.AppleHapticsSupportNVM",
+    "com.apple.driver.AppleIDAMInterface",
+    "com.apple.driver.AppleIDV",
+    "com.apple.driver.AppleIISController",
+    "com.apple.driver.AppleIOPADMAStream",
+    "com.apple.driver.AppleIPAppender",
+    "com.apple.driver.AppleInputDeviceSupport",
+    "com.apple.driver.AppleInterruptControllerV3",
+    "com.apple.driver.AppleJPEGDriver",
+    "com.apple.driver.AppleLockdownMode",
+    "com.apple.driver.AppleM2ScalerCSCDriver",
+    "com.apple.driver.AppleM68Buttons",
+    "com.apple.driver.AppleMSG",
+    "com.apple.driver.AppleMikeyBusAudio",
+    "com.apple.driver.AppleMobileApNonce",
+    "com.apple.driver.AppleMobileDispH18P-DCP",
+    "com.apple.driver.AppleMobileFileIntegrity",
+    "com.apple.driver.AppleMultitouchDriver",
+    "com.apple.driver.AppleMultitouchSPI",
+    "com.apple.driver.AppleNANDConfigAccess",
+    "com.apple.driver.AppleOnboardSerial",
+    "com.apple.driver.ApplePIODMA",
+    "com.apple.driver.ApplePMGR",
+    "com.apple.driver.ApplePMP",
+    "com.apple.driver.ApplePMPFirmware",
+    "com.apple.driver.ApplePMUFirmwareDriver",
+    "com.apple.driver.ApplePPMCPMS",
+    "com.apple.driver.ApplePTD",
+    "com.apple.driver.AppleParrot",
+    "com.apple.driver.ApplePearlSEPDriver",
+    "com.apple.driver.ApplePhoneBTM",
+    "com.apple.driver.ApplePhotonDetector",
+    "com.apple.driver.AppleProResHW",
+    "com.apple.driver.AppleProcessorTrace",
+    "com.apple.driver.AppleProxDriver",
+    "com.apple.driver.AppleS5L8920XPWM",
+    "com.apple.driver.AppleS5L8940XI2C",
+    "com.apple.driver.AppleS5L8960XNCO",
+    "com.apple.driver.AppleS8000AES",
+    "com.apple.driver.AppleS8000DWI",
+    "com.apple.driver.AppleSARService",
+    "com.apple.driver.AppleSART",
+    "com.apple.driver.AppleSEPCredentialManager",
+    "com.apple.driver.AppleSEPHDCPManager",
+    "com.apple.driver.AppleSEPKeyStore",
+    "com.apple.driver.AppleSEPManager",
+    "com.apple.driver.AppleSMC",
+    "com.apple.driver.AppleSMCWirelessCharger",
+    "com.apple.driver.AppleSPIMC",
+    "com.apple.driver.AppleSPMI",
+    "com.apple.driver.AppleSPMIPMU",
+    "com.apple.driver.AppleSPU",
+    "com.apple.driver.AppleSPURose",
+    "com.apple.driver.AppleSPUSphere",
+    "com.apple.driver.AppleSSE",
+    "com.apple.driver.AppleSamsungSerial",
+    "com.apple.driver.AppleSerialShim",
+    "com.apple.driver.AppleSmartBatteryManagerEmbedded",
+    "com.apple.driver.AppleSmartIO2",
+    "com.apple.driver.AppleStockholmControl",
+    "com.apple.driver.AppleSynopsysMIPIDSI",
+    "com.apple.driver.AppleT6020PCIePIODMA",
+    "com.apple.driver.AppleT8030SOCTuner",
+    "com.apple.driver.AppleT8103TypeCPhy",
+    "com.apple.driver.AppleT8110DART",
+    "com.apple.driver.AppleT8130TypeCPhy",
+    "com.apple.driver.AppleT8150",
+    "com.apple.driver.AppleT8150ANEHAL",
+    "com.apple.driver.AppleT8150CLPC",
+    "com.apple.driver.AppleT8150MCC",
+    "com.apple.driver.AppleT8150PCIe",
+    "com.apple.driver.AppleT8150PMGR",
+    "com.apple.driver.AppleTemperatureSensor",
+    "com.apple.driver.AppleThunderboltDPAdapterFamily",
+    "com.apple.driver.AppleThunderboltDPInAdapter",
+    "com.apple.driver.AppleThunderboltDPOutAdapter",
+    "com.apple.driver.AppleThunderboltEDMSource",
+    "com.apple.driver.AppleThunderboltIP",
+    "com.apple.driver.AppleThunderboltNHI",
+    "com.apple.driver.AppleThunderboltPCIDownAdapter",
+    "com.apple.driver.AppleThunderboltPCIUpAdapter",
+    "com.apple.driver.AppleThunderboltUSBDownAdapter",
+    "com.apple.driver.AppleThunderboltUSBType2DownAdapter",
+    "com.apple.driver.AppleThunderboltUSBType2UpAdapter",
+    "com.apple.driver.AppleThunderboltUSBUpAdapter",
+    "com.apple.driver.AppleTopCaseHIDEventDriver",
+    "com.apple.driver.AppleTriStar",
+    "com.apple.driver.AppleTypeCPhy",
+    "com.apple.driver.AppleTypeCPhyAUSBC",
+    "com.apple.driver.AppleUSBAudio",
+    "com.apple.driver.AppleUSBCardReader",
+    "com.apple.driver.AppleUSBDeviceAudioController",
+    "com.apple.driver.AppleUSBDeviceMux",
+    "com.apple.driver.AppleUSBDeviceNCM",
+    "com.apple.driver.AppleUSBEthernetDevice",
+    "com.apple.driver.AppleUSBEthernetHost",
+    "com.apple.driver.AppleUSBHostMergeProperties",
+    "com.apple.driver.AppleUSBLightningAdapter",
+    "com.apple.driver.AppleUSBMassStorageInterfaceNub",
+    "com.apple.driver.AppleUSBMike",
+    "com.apple.driver.AppleUSBTopCaseDriver",
+    "com.apple.driver.AppleUSBXDCI",
+    "com.apple.driver.AppleUSBXDCIARM",
+    "com.apple.driver.AppleUVDM",
+    "com.apple.driver.AppleUVDMDriver",
+    "com.apple.driver.AudioDMACLLTEscalationDetector-T8150",
+    "com.apple.driver.AudioDMAController-T8150",
+    "com.apple.driver.AudioDMAFamily",
+    "com.apple.driver.AudioSharedDARTMapperProxy",
+    "com.apple.driver.DCPAVFamilyProxy",
+    "com.apple.driver.DCPDPFamilyProxy",
+    "com.apple.driver.DMAChannelProxy",
+    "com.apple.driver.DiskImages",
+    "com.apple.driver.DiskImages.FileBackingStore",
+    "com.apple.driver.DiskImages.KernelBacked",
+    "com.apple.driver.DiskImages.RAMBackingStore",
+    "com.apple.driver.DiskImages.ReadWriteDiskImage",
+    "com.apple.driver.DiskImages.UDIFDiskImage",
+    "com.apple.driver.EXDisplayPipeH18P",
+    "com.apple.driver.ExclaveSEPManagerProxy",
+    "com.apple.driver.ExclavesAudioKext",
+    "com.apple.driver.FairPlayIOKit",
+    "com.apple.driver.IISAudioIsolatedStreamECProxy",
+    "com.apple.driver.IOAudioCodecs",
+    "com.apple.driver.IODARTFamily",
+    "com.apple.driver.IOHIDPowerSource",
+    "com.apple.driver.IOPAudioAssetManagerDevice",
+    "com.apple.driver.IOPAudioClientManagerDevice",
+    "com.apple.driver.IOPAudioHapticsLEAPControlDevice",
+    "com.apple.driver.IOPAudioIOBufferDevice",
+    "com.apple.driver.IOPAudioIsolatedIOBufferDevice",
+    "com.apple.driver.IOPAudioLEAPControlDevice",
+    "com.apple.driver.IOPAudioLPMicDevice",
+    "com.apple.driver.IOPAudioPCMAssetManagerDevice",
+    "com.apple.driver.IOPAudioSpeaker",
+    "com.apple.driver.IOPAudioVoiceTriggerDevice",
+    "com.apple.driver.IOPEmbeddedAudio",
+    "com.apple.driver.IOPHaptics",
+    "com.apple.driver.IOSlaveProcessor",
+    "com.apple.driver.RTBuddy",
+    "com.apple.driver.SecureRTBuddyProxy",
+    "com.apple.driver.VideoProcessing",
+    "com.apple.driver.corecapture",
+    "com.apple.driver.mDNSOffloadUserClient-Embedded",
+    "com.apple.driver.usb.AppleSynopsysUSB40XHCI",
+    "com.apple.driver.usb.AppleSynopsysUSBXHCI",
+    "com.apple.driver.usb.AppleUSBCommon",
+    "com.apple.driver.usb.AppleUSBHostBillboardDevice",
+    "com.apple.driver.usb.AppleUSBHostCompositeDevice",
+    "com.apple.driver.usb.AppleUSBHostDeviceSupport",
+    "com.apple.driver.usb.AppleUSBHostPacketFilter",
+    "com.apple.driver.usb.AppleUSBHostiOSDevice",
+    "com.apple.driver.usb.AppleUSBHub",
+    "com.apple.driver.usb.AppleUSBXHCI",
+    "com.apple.driver.usb.IOUSBHostHIDDevice",
+    "com.apple.driver.usb.cdc",
+    "com.apple.driver.usb.cdc.ecm",
+    "com.apple.driver.usb.cdc.ncm",
+    "com.apple.driver.usb.ethernet.asix",
+    "com.apple.driver.usb.networking",
+    "com.apple.filesystems.apfs",
+    "com.apple.filesystems.lifs",
+    "com.apple.filesystems.tmpfs",
+    "com.apple.iokit.AppleARMIISAudio",
+    "com.apple.iokit.AppleSEPGenericTransfer",
+    "com.apple.iokit.AppleSecurityResearch",
+    "com.apple.iokit.CoreAnalyticsFamily",
+    "com.apple.iokit.IOAVFamily",
+    "com.apple.iokit.IOAccessoryManager",
+    "com.apple.iokit.IOAccessoryPortUSB",
+    "com.apple.iokit.IOAudio2Family",
+    "com.apple.iokit.IOBiometricFamily",
+    "com.apple.iokit.IOCECFamily",
+    "com.apple.iokit.IOCryptoAcceleratorFamily",
+    "com.apple.iokit.IODisplayPortFamily",
+    "com.apple.iokit.IOGPUFamily",
+    "com.apple.iokit.IOGameControllerFamily",
+    "com.apple.iokit.IOHDCPFamily",
+    "com.apple.iokit.IOHIDFamily",
+    "com.apple.iokit.IOMIPIFamily",
+    "com.apple.iokit.IOMikeyBusFamily",
+    "com.apple.iokit.IOMobileGraphicsFamily",
+    "com.apple.iokit.IOMobileGraphicsFamily-DCP",
+    "com.apple.iokit.IONVMeFamily",
+    "com.apple.iokit.IONetworkFamily",
+    "com.apple.iokit.IONetworkingFamily",
+    "com.apple.iokit.IOPAudioDriverFamily",
+    "com.apple.iokit.IOPCIFamily",
+    "com.apple.iokit.IOPortFamily",
+    "com.apple.iokit.IOReportFamily",
+    "com.apple.iokit.IOSCSIArchitectureModelFamily",
+    "com.apple.iokit.IOSCSIBlockCommandsDevice",
+    "com.apple.iokit.IOSerialFamily",
+    "com.apple.iokit.IOSkywalkFamily",
+    "com.apple.iokit.IOSlowAdaptiveClockingFamily",
+    "com.apple.iokit.IOStorageFamily",
+    "com.apple.iokit.IOStreamFamily",
+    "com.apple.iokit.IOSurface",
+    "com.apple.iokit.IOThunderboltFamily",
+    "com.apple.iokit.IOTimeSyncFamily",
+    "com.apple.iokit.IOUSBDeviceFamily",
+    "com.apple.iokit.IOUSBHostFamily",
+    "com.apple.iokit.IOUSBMassStorageDriver",
+    "com.apple.iokit.IOUserEthernet",
+    "com.apple.kec.Compression",
+    "com.apple.kec.Libm",
+    "com.apple.kec.XrtHostedXnu",
+    "com.apple.kec.corecrypto",
+    "com.apple.kec.pthread",
+    "com.apple.kernel",
+    "com.apple.kext.AppleMatch",
+    "com.apple.kext.CoreTrust",
+    "com.apple.nke.l2tp",
+    "com.apple.nke.ppp",
+    "com.apple.plugin.IOgPTPPlugin",
+    "com.apple.security.AKSAnalytics",
+    "com.apple.security.AppleImage4",
+    "com.apple.security.Image4",
+    "com.apple.security.sandbox"
+  ],
+  "divergent_kexts": [
+    {
+      "bundle_id": "com.apple.driver.AppleMobileFileIntegrity",
+      "fileset_entry": "com.apple.driver.AppleMobileFileIntegrity",
+      "release_uuid": "15b1589b3fd939d4a1e83c81dbf1f0b0",
+      "research_uuid": "d41844facae43bcf947d7ae5edafc49e",
+      "release_path": "AppleMobileFileIntegrity",
+      "research_path": "AppleMobileFileIntegrity_research",
+      "vmaddr": "0xfffffe0007665c40",
+      "fileoff": "0x661c40",
+      "size": 264242,
+      "code_differences": [
+        {
+          "segment": "__TEXT",
+          "section": "__cstring",
+          "virtual_address": "0xfffffe000766c0c0",
+          "virtual_address_int": 18446741874810470592,
+          "file_offset": "0x6680c0",
+          "file_offset_int": 6717632,
+          "diff_bytes_count": 2,
+          "release_hex": "3234",
+          "research_hex": "3133",
+          "release_disassembly": null,
+          "research_disassembly": null,
+          "release_string": "20:57:24",
+          "research_string": "20:57:13"
+        },
+        {
+          "segment": "__TEXT_EXEC",
+          "section": "__text",
+          "virtual_address": "0xfffffe0009297454",
+          "virtual_address_int": 18446741874840007764,
+          "file_offset": "0x2293454",
+          "file_offset_int": 36254804,
+          "diff_bytes_count": 1,
+          "release_hex": "08",
+          "research_hex": "28",
+          "release_disassembly": "mov w8, #0",
+          "research_disassembly": "mov w8, #1",
+          "release_string": null,
+          "research_string": null
+        }
+      ],
+      "divergence_classification": "Hardcoded security gating stub & timestamp modification"
+    }
+  ],
+  "raw_binary_differential": {
+    "total_differing_bytes": 1638529,
+    "prelink_info_differing_bytes": 1638494,
+    "outside_prelink_differing_bytes": 35,
+    "outside_prelink_ranges": [
+      {
+        "file_offset": "0x28",
+        "file_offset_int": 40,
+        "byte_count": 16,
+        "release_hex": "362a153bd18dda9147c35ecb9063b168",
+        "research_hex": "bfba6847653f1ccf13728865fb4a57d1",
+        "description": "Mach-O Container LC_UUID (cmd 0x1b)"
+      },
+      {
+        "file_offset": "0x662388",
+        "file_offset_int": 6693768,
+        "byte_count": 16,
+        "release_hex": "15b1589b3fd939d4a1e83c81dbf1f0b0",
+        "research_hex": "d41844facae43bcf947d7ae5edafc49e",
+        "description": "AMFI Sub-binary LC_UUID (cmd 0x1b)"
+      },
+      {
+        "file_offset": "0x6680c0",
+        "file_offset_int": 6717632,
+        "byte_count": 2,
+        "release_hex": "3234",
+        "research_hex": "3133",
+        "description": "AMFI Build Timestamp String (__TEXT.__cstring)"
+      },
+      {
+        "file_offset": "0x2293454",
+        "file_offset_int": 36254804,
+        "byte_count": 1,
+        "release_hex": "08",
+        "research_hex": "28",
+        "description": "AMFI is_research_kernel() Instruction Opcode (__TEXT_EXEC.__text)"
+      }
+    ]
+  },
+  "apple_security_research_kext": {
+    "bundle_id": "com.apple.iokit.AppleSecurityResearch",
+    "bundle_path": "/System/Library/Extensions/AppleSecurityResearch.kext",
+    "vmaddr": "0xfffffe00077867d0",
+    "size_bytes": 482885,
+    "uuid": "7dd3b482bcb8305aac812184112c7f83",
+    "binary_status": "Byte-for-byte identical in both release and research kernelcaches (482,885 bytes)",
+    "dependencies": [
+      "com.apple.driver.AppleMobileFileIntegrity",
+      "com.apple.kpi.bsd",
+      "com.apple.kpi.dsep",
+      "com.apple.kpi.iokit",
+      "com.apple.kpi.libkern",
+      "com.apple.kpi.mach",
+      "com.apple.kpi.private",
+      "com.apple.kpi.unsupported"
+    ],
+    "release_behavior": {
+      "state": "Inert / Initialization Aborted",
+      "mechanism": "At boot, esk_kext_start() invokes AMFI query to check research mode. Because is_research_kernel() returns false, IOService::init aborts.",
+      "emitted_os_log_messages": [
+        "esk_ios_research: device is not in research mode; refusing IOService::init",
+        "esk_ios_research: device is not in research mode; kext inert"
+      ]
+    },
+    "research_behavior": {
+      "state": "Active / Fully Initialized",
+      "mechanism": "is_research_kernel() returns true; esk_kext_start() successfully initializes EndpointSecurity services.",
+      "instantiated_user_clients": [
+        "EndpointSecurityDriverClient",
+        "EndpointSecurityExternalClient",
+        "EndpointSecurityNoAuthClient"
+      ],
+      "external_methods_count": 28,
+      "supported_telemetry_operations": [
+        "clearCache",
+        "operationResult",
+        "updateSubscription",
+        "unsubscribeAll",
+        "muteOpEvents",
+        "mutedProcs",
+        "mutedProcsEvents",
+        "protect",
+        "updateMuteState",
+        "clearMutedPaths",
+        "clearMutedTargetPaths",
+        "getMuteState",
+        "listProcesses",
+        "subs",
+        "mailboxAddr",
+        "setClientConfig",
+        "invertMuting",
+        "mutingInverted",
+        "setExclusiveMode",
+        "setPowerState",
+        "setDeadlineMissMode",
+        "getDeadlineMissMode",
+        "setDeadlineMaxMS",
+        "getDeadlineMaxMS",
+        "setDeadlineMinMS",
+        "getDeadlineMinMS",
+        "setMprotectPolicy",
+        "diagnosticsCollection"
+      ]
+    },
+    "architectural_role": "Dedicated Security Research Device (SRD) telemetry and introspection driver providing real-time kernel event monitoring without requiring third-party KEXT compilation or compromised SIP/SPTM boundaries."
+  },
+  "symbol_divergence": {
+    "traditional_nlist_symbols": {
+      "release_nsyms": 0,
+      "research_nsyms": 0,
+      "status": "Stripped in both release and research kernelcaches",
+      "analysis": "Both production release and security research kernelcaches strip the Mach-O LC_SYMTAB symbol table entirely (nsyms = 0, strsize = 1). Symbol stripping is maintained uniformly across both images to minimize footprint and maintain identical load layouts."
+    },
+    "indirect_symbols": {
+      "status": "Identical layout and entry counts",
+      "amfi_indirect_syms": 564,
+      "indirect_table_offset": "0x4b2ffbc",
+      "analysis": "Dynamic binding through LC_DYSYMTAB indirect symbol tables is 100% congruent. All 564 indirect symbol entries in AMFI map to identical dynamic stub addresses in __DATA_CONST.__auth_got and __TEXT_EXEC.__auth_stubs."
+    },
+    "kpi_interface_congruence": {
+      "com.apple.kpi.bsd": "Identical exports and load addresses",
+      "com.apple.kpi.dsep": "Identical exports and load addresses",
+      "com.apple.kpi.iokit": "Identical exports and load addresses",
+      "com.apple.kpi.libkern": "Identical exports and load addresses",
+      "com.apple.kpi.mach": "Identical exports and load addresses",
+      "com.apple.kpi.private": "Identical exports and load addresses",
+      "com.apple.kpi.unsupported": "Identical exports and load addresses",
+      "behavioral_divergence_mechanism": "Control-flow redirection occurs at internal predicate evaluation sites (e.g. is_research_kernel()), altering the runtime dispatch and authorization logic of standard KPI hooks without introducing disparate symbol exports."
+    }
+  },
+  "diagnostic_hooks": [
+    {
+      "hook_name": "is_research_kernel() / amfi_is_research_variant()",
+      "hook_type": "Binary Execution Gate",
+      "location_va": "0xfffffe0009297450",
+      "file_offset": "0x2293450",
+      "opcode_divergence_va": "0xfffffe0009297454",
+      "opcode_divergence_fileoff": "0x2293454",
+      "kext": "com.apple.driver.AppleMobileFileIntegrity",
+      "function_disassembly": {
+        "release": [
+          {
+            "va": "0xfffffe0009297450",
+            "bytes": "5f 24 03 d5",
+            "disassembly": "hint #34 ; bti c"
+          },
+          {
+            "va": "0xfffffe0009297454",
+            "bytes": "08 00 80 52",
+            "disassembly": "mov w8, #0"
+          },
+          {
+            "va": "0xfffffe0009297458",
+            "bytes": "00 01 00 12",
+            "disassembly": "and w0, w8, #0x1"
+          },
+          {
+            "va": "0xfffffe000929745c",
+            "bytes": "c0 03 5f d6",
+            "disassembly": "ret"
+          }
+        ],
+        "research": [
+          {
+            "va": "0xfffffe0009297450",
+            "bytes": "5f 24 03 d5",
+            "disassembly": "hint #34 ; bti c"
+          },
+          {
+            "va": "0xfffffe0009297454",
+            "bytes": "28 00 80 52",
+            "disassembly": "mov w8, #1"
+          },
+          {
+            "va": "0xfffffe0009297458",
+            "bytes": "00 01 00 12",
+            "disassembly": "and w0, w8, #0x1"
+          },
+          {
+            "va": "0xfffffe000929745c",
+            "bytes": "c0 03 5f d6",
+            "disassembly": "ret"
+          }
+        ]
+      },
+      "release_behavior": "Returns 0 (false) via 'mov w8, #0' at 0xfffffe0009297454. Locks down all research bypasses.",
+      "research_behavior": "Returns 1 (true) via 'mov w8, #1' at 0xfffffe0009297454. Opens all research diagnostic pathways.",
+      "callers": [
+        {
+          "caller_va": "0xfffffe000928c874",
+          "caller_va_int": 18446741874839963764,
+          "file_offset": "0x2288874",
+          "instruction_hex": "f72a0094",
+          "disassembly": "bl 0xfffffe0009297450",
+          "subsystem": "cs-auxiliary-info",
+          "context": "research_variant auxiliary property registration in code signing metadata",
+          "log_string": "research_variant: true/false"
+        },
+        {
+          "caller_va": "0xfffffe000928e0b8",
+          "caller_va_int": 18446741874839969976,
+          "file_offset": "0x228a0b8",
+          "instruction_hex": "e6240094",
+          "disassembly": "bl 0xfffffe0009297450",
+          "subsystem": "TrustCache Management",
+          "context": "srd_allow_trust_caches_when_locked boot-arg evaluation and lock-state policy",
+          "log_string": "AMFI: research variant relaxes lock-state for trust caches: %u\n"
+        },
+        {
+          "caller_va": "0xfffffe0009290c90",
+          "caller_va_int": 18446741874839981200,
+          "file_offset": "0x228cc90",
+          "instruction_hex": "f0190094",
+          "disassembly": "bl 0xfffffe0009297450",
+          "subsystem": "Developer Mode Controller",
+          "context": "Permanent force-enablement of developer mode on trusted DarwinOS research variant",
+          "log_string": "AMFI: developer mode is enabled in the trusted darwinos research variant\n"
+        },
+        {
+          "caller_va": "0xfffffe0009296ce4",
+          "caller_va_int": 18446741874840005860,
+          "file_offset": "0x2292ce4",
+          "instruction_hex": "db010094",
+          "disassembly": "bl 0xfffffe0009297450",
+          "subsystem": "Kernel Initialization / Code Signing",
+          "context": "_initializeAppleMobileFileIntegrity() evaluates cs_enforcement_disable boot-arg",
+          "log_string": "AMFI booted with research mode\n"
+        },
+        {
+          "caller_va": "0xfffffe000929a6f8",
+          "caller_va_int": 18446741874840020728,
+          "file_offset": "0x22966f8",
+          "instruction_hex": "56f3ff97",
+          "disassembly": "bl 0xfffffe0009297450",
+          "subsystem": "Binary Execution Authorization",
+          "context": "amfi_check_run_invalid() validates research.com.apple.license-to-operate entitlement",
+          "log_string": "AMFI: allowed with a license-to-operate\n"
+        },
+        {
+          "caller_va": "0xfffffe000929b0e4",
+          "caller_va_int": 18446741874840023268,
+          "file_offset": "0x22970e4",
+          "instruction_hex": "dbf0ff97",
+          "disassembly": "bl 0xfffffe0009297450",
+          "subsystem": "JIT / Local Signing Policy",
+          "context": "Bypasses Swift Playgrounds/JIT restriction, returning relaxed authorization mask w21 = 0x5f (95)",
+          "log_string": "Relaxed JIT memory allocation for research processes"
+        }
+      ]
+    },
+    {
+      "hook_name": "srd_allow_trust_caches_when_locked",
+      "hook_type": "Security Policy Gate",
+      "location_va": "0xfffffe000928e0b8",
+      "file_offset": "0x228a0b8",
+      "kext": "com.apple.driver.AppleMobileFileIntegrity",
+      "release_behavior": "Disabled; supplementary trustcaches cannot be mounted while keybag is locked.",
+      "research_behavior": "Enabled; relaxes lock-state requirement for trustcaches ('AMFI: research variant relaxes lock-state for trust caches')."
+    },
+    {
+      "hook_name": "cs_enforcement_disable",
+      "hook_type": "Boot Argument Override",
+      "location_va": "0xfffffe0009296ce4",
+      "file_offset": "0x2292ce4",
+      "kext": "com.apple.driver.AppleMobileFileIntegrity",
+      "release_behavior": "Boot-arg is ignored; Code Signing enforcement remains mandatory.",
+      "research_behavior": "Boot-arg is evaluated; permits disabling code signature verification completely."
+    },
+    {
+      "hook_name": "developer_mode_force",
+      "hook_type": "Developer Mode Automatic State Machine",
+      "location_va": "0xfffffe0009290c90",
+      "file_offset": "0x228cc90",
+      "kext": "com.apple.driver.AppleMobileFileIntegrity",
+      "release_behavior": "Requires explicit user toggle in Settings > Privacy & Security, followed by reboot confirmation.",
+      "research_behavior": "Force-enabled at kernel boot ('AMFI: developer mode is enabled in the trusted darwinos research variant')."
+    },
+    {
+      "hook_name": "amfi_get_out_of_my_way",
+      "hook_type": "Boot Argument Policy Bypass",
+      "location_va": "0xfffffe0009296cf0",
+      "file_offset": "0x2292cf0",
+      "kext": "com.apple.driver.AppleMobileFileIntegrity",
+      "release_behavior": "Rejected by kernel and SPTM validation.",
+      "research_behavior": "Bypasses all mandatory access control (MAC) hooks registered by AMFI."
+    }
+  ],
+  "security_research_entitlements": [
+    {
+      "entitlement": "research.com.apple.license-to-operate",
+      "category": "Master Security Research Privilege",
+      "description": "Primary gate entitlement for the Apple Security Research Device (SRD). Authorizes unnotarized binary execution, arbitrary third-party code loading outside TrustCache, and bypasses platform binary restrictions in AMFI.",
+      "enforcement_site": "com.apple.driver.AppleMobileFileIntegrity: 0xfffffe000929a6f8",
+      "behavior_in_release": "Disallowed and rejected; logged as constraint violation.",
+      "behavior_in_research": "Granted and logged: 'AMFI: allowed with a license-to-operate'."
+    },
+    {
+      "entitlement": "get-task-allow",
+      "category": "Mach Task Port Access / Debugging",
+      "description": "Enables task_for_pid() debugging rights. Allows lldb and debugserver to attach to system processes and extract registers, threads, and memory without requiring special internal build signatures.",
+      "enforcement_site": "com.apple.driver.AppleMobileFileIntegrity: 0xfffffe000929b0e4",
+      "behavior_in_release": "Strictly disallowed on production binaries; revokes task port inheritance.",
+      "behavior_in_research": "Permitted globally; allows task port inheritance across research daemons."
+    },
+    {
+      "entitlement": "com.apple.private.cs.debugger",
+      "category": "Code Signing Debugger Privilege",
+      "description": "Exempts debugging engines from standard Code Signing (CS) enforcement, permitting breakpoint injection (BRK instructions) and executable memory patching.",
+      "enforcement_site": "com.apple.driver.AppleMobileFileIntegrity (CS validation hook)",
+      "behavior_in_release": "Restricted exclusively to Apple internal platform daemons.",
+      "behavior_in_research": "Available to registered research toolchains."
+    },
+    {
+      "entitlement": "task_for_pid-allow",
+      "category": "Mach IPC Privilege",
+      "description": "Controls Mach task port acquisition rights for inspection tools.",
+      "enforcement_site": "com.apple.driver.AppleMobileFileIntegrity (MAC policy hook)",
+      "behavior_in_release": "Requires platform binary status or root entitlement.",
+      "behavior_in_research": "Allowed for research session diagnostics."
+    },
+    {
+      "entitlement": "com.apple.nvram.boot-args-set-allow",
+      "category": "NVRAM Privilege",
+      "description": "Permits setting arbitrary kernel boot arguments in NVRAM, such as debug=0x144, cs_enforcement_disable=1, and amfi_get_out_of_my_way=1.",
+      "enforcement_site": "com.apple.driver.AppleMobileFileIntegrity / iBoot NVRAM filter",
+      "behavior_in_release": "Filtered and discarded by Secure Boot validation.",
+      "behavior_in_research": "Honored across reboots for research sessions."
+    },
+    {
+      "entitlement": "personalized.cryptex-research",
+      "category": "Cryptex Packaging Privilege",
+      "description": "Authorizes mounting and execution of personalized research cryptex bundles (Cryptex1) containing custom analytical toolchains.",
+      "enforcement_site": "com.apple.driver.AppleMobileFileIntegrity",
+      "behavior_in_release": "Only Cryptex1 OS/App cryptexes signed by Apple CA permitted.",
+      "behavior_in_research": "Permits personalized research cryptexes signed with research identities."
+    },
+    {
+      "entitlement": "com.apple.private.security.kext-management",
+      "category": "Kernel Extension Management",
+      "description": "Authorizes communication with KernelManagement subsystem for development KEXT queries and auxiliary collection management.",
+      "enforcement_site": "com.apple.driver.AppleMobileFileIntegrity / KernelManagement.kext",
+      "behavior_in_release": "Strictly restricted to launchd and kmutil with internal entitlements.",
+      "behavior_in_research": "Permitted for research diagnostic utilities."
+    },
+    {
+      "entitlement": "darwinos-security-environment",
+      "category": "ExclaveOS / DarwinOS Environment Selector",
+      "description": "Declares execution context within the trusted DarwinOS research environment, establishing relaxed capability checks across ExclaveCore Tightbeam IPC services.",
+      "enforcement_site": "com.apple.driver.AppleMobileFileIntegrity: 0xfffffe0009290c90",
+      "behavior_in_release": "Standard production enforcement domain.",
+      "behavior_in_research": "Triggers 'AMFI: developer mode is enabled in the trusted darwinos research variant'."
+    },
+    {
+      "entitlement": "com.apple.private.security-research-device.extended-research-mode",
+      "category": "Extended Research Mode Control",
+      "description": "Authorizes reading and writing configuration blobs via sysctl kern.extended_research_mode_config (up to 16 KB payload).",
+      "enforcement_site": "com.apple.kernel (sysctl kern.extended_research_mode_config)",
+      "behavior_in_release": "Sysctl node absent or strictly unauthorized.",
+      "behavior_in_research": "Active; accepts authenticated research policy configuration blobs."
+    },
+    {
+      "entitlement": "com.apple.private.enable-coredump-on-panic",
+      "category": "Kernel Diagnostic Crash Dump",
+      "description": "Authorizes generation of full uncompressed physical memory coredumps on kernel panic.",
+      "enforcement_site": "com.apple.kernel (panic dump handler / kern.coredump)",
+      "behavior_in_release": "Disabled to protect sensitive customer data.",
+      "behavior_in_research": "Active; writes kernel crash dump to panic partition or diagnostic port."
+    }
+  ],
+  "prelink_info_diff": {
+    "root_keys_diff": {
+      "_PrelinkKCID": {
+        "release": "362a153bd18dda9147c35ecb9063b168",
+        "research": "bfba6847653f1ccf13728865fb4a57d1"
+      }
+    },
+    "divergent_bundles": [
+      {
+        "bundle_id": "com.apple.driver.AppleBSDKextStarterTMPFS",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleBSDKextStarter.kext/PlugIns/AppleBSDKextStarterTMPFS.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleBSDKextStarter.kext/PlugIns/AppleBSDKextStarterTMPFS.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "8a6c55a3fff2981e6680599953320e05f1cc54b3441d7d67760c0fb9bf951923",
+            "research": "d56a5e46afb05d6ce74f1bb6c22028d6a552520fda1e3e9da870186482140e24"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.driver.AppleBSDKextStarterVPN",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleBSDKextStarter.kext/PlugIns/AppleBSDKextStarterVPN.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleBSDKextStarter.kext/PlugIns/AppleBSDKextStarterVPN.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "7071a4a1418da8f779f5db02f1abfa9700c6bc796003d2a2c60d287db7292d0b",
+            "research": "bc11728758aa5f917facccb473c7f747f745f3d17a764f487d6d335e62e2056e"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.driver.AppleHIDKeyboardEmbedded",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleHIDKeyboardEmbedded.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleHIDKeyboardEmbedded.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "72a261f6ede6eba56c5d52e079ebf0483c66a60881a3ab51b7e778bd64f44ced",
+            "research": "3f83260bca9d030315bf30e612ca1c3f2879ea901100b296045e2f90bfba307c"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.driver.AppleMobileFileIntegrity",
+        "property_differences": {
+          "OSBundleUUID": {
+            "release": "15b1589b3fd939d4a1e83c81dbf1f0b0",
+            "research": "d41844facae43bcf947d7ae5edafc49e"
+          },
+          "_PrelinkExecutableRelativePath": {
+            "release": "AppleMobileFileIntegrity",
+            "research": "AppleMobileFileIntegrity_research"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.driver.AppleStorageDrivers",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleStorageDrivers.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleStorageDrivers.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "158a445cc0147f7af5e9737be2775906b67082c170367fe0c750f927b8ad062b",
+            "research": "0e32ecec9180f1382a5e69c93931e83faf509cbb92dec0613b58cb271e0ba681"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.driver.AppleThunderboltEDMService",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleThunderboltEDMService.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleThunderboltEDMService.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "b21be09bce0de8f0300659bd0560c74b53d41cd479758113d512d9e11ba8a84d",
+            "research": "61467a441c8d651ea907a99511921d4c2a173e24e393ae42dbb1c218bada39b1"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.driver.AppleTopCaseDriverV2",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleTopCase.kext/PlugIns/AppleTopCaseDriverV2.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleTopCase.kext/PlugIns/AppleTopCaseDriverV2.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "b69146ccf6861be7582b5389d098001f694178fd8d1d6ca45be4831914b838a8",
+            "research": "051495ad501cbe68a0bec08918b65110e7747c9fe41fd5ded04b67e11ca7296b"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.driver.SCSIDeviceSpecifics",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleStorageDrivers.kext/PlugIns/SCSIDeviceSpecifics.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleStorageDrivers.kext/PlugIns/SCSIDeviceSpecifics.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "b0604f64c12e4e404c245bca6b9c25e8451d5f33b0cc88c6fee3c58aa09dcefa",
+            "research": "ba03c4eac7de9fe4d24c62d3ddd7cf77aa17db9756b99f47fe0ef3936c0a18ca"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.driver.USBStorageDeviceSpecifics",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleStorageDrivers.kext/PlugIns/USBStorageDeviceSpecifics.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/AppleStorageDrivers.kext/PlugIns/USBStorageDeviceSpecifics.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "53058ac6b60e6eea6dba03dc1603cdae8190ef548589f78c75d1d29d262b8e1d",
+            "research": "5812ff9ba88f190a8420a92aed6c167545d3c04436cb96d1248c27e1f99e1a11"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.driver.usb.AppleUSBHostPlatformProperties",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/IOUSBHostFamily.kext/PlugIns/AppleUSBHostPlatformProperties.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/IOUSBHostFamily.kext/PlugIns/AppleUSBHostPlatformProperties.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "8823b8fb1710ecc22c4daca62254e3d4ec020fb47f1f9c987055166593dd9529",
+            "research": "f8514d80b0122161a19fbe9849a3cefb852477cebc8c9d9354b7b0eaaef20469"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.driver.usb.IOUSBHostHIDDeviceSafeBoot",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/IOUSBHostFamily.kext/PlugIns/IOUSBHostHIDDeviceSafeBoot.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/IOUSBHostFamily.kext/PlugIns/IOUSBHostHIDDeviceSafeBoot.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "fe0ff4699204aa05eaadbff87de8ab12a24e2bbcd7a3a6a5eb67ccb557cf5bbc",
+            "research": "3415a2c47c3568dbc87b88836c7565ff17502c07fc27f7d6ac24fc1d8c1bf2d7"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.iokit.IOHIDEventDriver",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/IOHIDFamily.kext/PlugIns/IOHIDEventDriver.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/IOHIDFamily.kext/PlugIns/IOHIDEventDriver.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "032c0dc58fcf782b8e87fa91167392154c30872a7a6586773437c6787cddfa67",
+            "research": "7bbf8c4cf5c117ffe844f44aea9369f54bc7b1de0d843ddfa7f933c990c00485"
+          }
+        }
+      },
+      {
+        "bundle_id": "com.apple.iokit.IOHIDEventDriverSafeBoot",
+        "property_differences": {
+          "_CodelessKextBundlePath": {
+            "release": "/AppleInternal/Library/BuildRoots/4~CbJOugAOrhcQJ3Y6s8Y4ulaISdK67ICt-wDMfx4/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/IOHIDFamily.kext/PlugIns/IOHIDEventDriverSafeBoot.kext",
+            "research": "/AppleInternal/Library/BuildRoots/4~CbJOugBAyBAYHIlkmZuhBWjKPhfpA46iSnlHPVc/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS27.2.Internal.sdk/System/Library/Extensions/IOHIDFamily.kext/PlugIns/IOHIDEventDriverSafeBoot.kext"
+          },
+          "kOSBundleDextUniqueIdentifier": {
+            "release": "bfe4a8f4285b165dee427dd74771d3987fe5bc6fa23133bbac913e17d497b3ba",
+            "research": "0da5d4e1735915cf30c4f549ff587f3518a9274513a74f3fd7ff6cbb2b5cb392"
+          }
+        }
+      }
+    ]
+  }
+}
