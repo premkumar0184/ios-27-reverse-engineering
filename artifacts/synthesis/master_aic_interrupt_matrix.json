@@ -1,0 +1,3096 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro (t8150) Master AIC Interrupt Matrix",
+  "aic_controller": {
+    "generation": "AIC Gen3 (Apple Interrupt Controller Version 3)",
+    "base_address": "0x00000000f3c00000",
+    "total_vector_capacity": 1024,
+    "active_vectors_mapped": 509,
+    "interrupt_types": [
+      "FIQ (Fast Interrupt)",
+      "IRQ (Normal Interrupt)",
+      "NMI (Non-Maskable Interrupt)",
+      "Cross-Core IPI (Inter-Processor Interrupt)"
+    ],
+    "device_tree_nodes_mapped": 447,
+    "device_tree_irq_nodes_mapped": 109
+  },
+  "subsystem_allocations": {
+    "cpu_complex": [
+      {
+        "vector_dec": 68,
+        "vector_hex": "0x0044",
+        "source": "cpu0",
+        "role": "Everest Core 0 PMU Overflow / Performance Monitor"
+      },
+      {
+        "vector_dec": 71,
+        "vector_hex": "0x0047",
+        "source": "cpu1",
+        "role": "Everest Core 1 PMU Overflow / Performance Monitor"
+      },
+      {
+        "vector_dec": 74,
+        "vector_hex": "0x004a",
+        "source": "cpu2",
+        "role": "Sawtooth Core 0 PMU Overflow / Performance Monitor"
+      },
+      {
+        "vector_dec": 77,
+        "vector_hex": "0x004d",
+        "source": "cpu3",
+        "role": "Sawtooth Core 1 PMU Overflow / Performance Monitor"
+      },
+      {
+        "vector_dec": 88,
+        "vector_hex": "0x0058",
+        "source": "cpu4",
+        "role": "Sawtooth Core 2 PMU Overflow / Performance Monitor"
+      },
+      {
+        "vector_dec": 91,
+        "vector_hex": "0x005b",
+        "source": "cpu5",
+        "role": "Sawtooth Core 3 PMU Overflow / Performance Monitor"
+      },
+      {
+        "vector_dec": 68,
+        "vector_hex": "0x0044",
+        "source": "device-tree/cpus/cpu0",
+        "role": "Hardware Interrupt for cpu0"
+      },
+      {
+        "vector_dec": 71,
+        "vector_hex": "0x0047",
+        "source": "device-tree/cpus/cpu1",
+        "role": "Hardware Interrupt for cpu1"
+      },
+      {
+        "vector_dec": 74,
+        "vector_hex": "0x004a",
+        "source": "device-tree/cpus/cpu2",
+        "role": "Hardware Interrupt for cpu2"
+      },
+      {
+        "vector_dec": 77,
+        "vector_hex": "0x004d",
+        "source": "device-tree/cpus/cpu3",
+        "role": "Hardware Interrupt for cpu3"
+      },
+      {
+        "vector_dec": 88,
+        "vector_hex": "0x0058",
+        "source": "device-tree/cpus/cpu4",
+        "role": "Hardware Interrupt for cpu4"
+      },
+      {
+        "vector_dec": 91,
+        "vector_hex": "0x005b",
+        "source": "device-tree/cpus/cpu5",
+        "role": "Hardware Interrupt for cpu5"
+      }
+    ],
+    "secure_enclave": [
+      {
+        "vector_dec": 304,
+        "vector_hex": "0x0130",
+        "source": "/device-tree/arm-io/sep",
+        "role": "Host-to-SEP Mailbox Inbox Message Pending"
+      },
+      {
+        "vector_dec": 305,
+        "vector_hex": "0x0131",
+        "source": "/device-tree/arm-io/sep",
+        "role": "SEP-to-Host Mailbox Outbox Message Consumed / Ack"
+      },
+      {
+        "vector_dec": 306,
+        "vector_hex": "0x0132",
+        "source": "/device-tree/arm-io/sep",
+        "role": "SEP Doorbell Interrupt Trigger"
+      },
+      {
+        "vector_dec": 307,
+        "vector_hex": "0x0133",
+        "source": "/device-tree/arm-io/sep",
+        "role": "SEP System Error / Panic Telemetry Interrupt"
+      },
+      {
+        "vector_dec": 308,
+        "vector_hex": "0x0134",
+        "source": "/device-tree/arm-io/esm",
+        "role": "Embedded Security Module Normal Event"
+      },
+      {
+        "vector_dec": 311,
+        "vector_hex": "0x0137",
+        "source": "/device-tree/arm-io/esm",
+        "role": "Embedded Security Module Tamper Alarm"
+      },
+      {
+        "vector_dec": 314,
+        "vector_hex": "0x013a",
+        "source": "/device-tree/arm-io/dart-sep",
+        "role": "DART-SEP IOMMU Translation Fault"
+      },
+      {
+        "vector_dec": 1041,
+        "vector_hex": "0x0411",
+        "source": "/device-tree/arm-io/aes",
+        "role": "Hardware AES Cryptographic Engine Complete"
+      },
+      {
+        "vector_dec": 1041,
+        "vector_hex": "0x0411",
+        "source": "device-tree/arm-io/aes",
+        "role": "Hardware Interrupt for aes"
+      },
+      {
+        "vector_dec": 305,
+        "vector_hex": "0x0131",
+        "source": "device-tree/arm-io/sep",
+        "role": "Hardware Interrupt for sep"
+      },
+      {
+        "vector_dec": 304,
+        "vector_hex": "0x0130",
+        "source": "device-tree/arm-io/sep",
+        "role": "Hardware Interrupt for sep"
+      },
+      {
+        "vector_dec": 307,
+        "vector_hex": "0x0133",
+        "source": "device-tree/arm-io/sep",
+        "role": "Hardware Interrupt for sep"
+      },
+      {
+        "vector_dec": 306,
+        "vector_hex": "0x0132",
+        "source": "device-tree/arm-io/sep",
+        "role": "Hardware Interrupt for sep"
+      },
+      {
+        "vector_dec": 314,
+        "vector_hex": "0x013a",
+        "source": "device-tree/arm-io/dart-sep",
+        "role": "Hardware Interrupt for dart-sep"
+      },
+      {
+        "vector_dec": 311,
+        "vector_hex": "0x0137",
+        "source": "device-tree/arm-io/esm",
+        "role": "Hardware Interrupt for esm"
+      },
+      {
+        "vector_dec": 308,
+        "vector_hex": "0x0134",
+        "source": "device-tree/arm-io/esm",
+        "role": "Hardware Interrupt for esm"
+      }
+    ],
+    "always_on_processor": [
+      {
+        "vector_dec": 349,
+        "vector_hex": "0x015d",
+        "source": "/device-tree/arm-io/aop",
+        "role": "AOP1 Mailbox Inbox"
+      },
+      {
+        "vector_dec": 350,
+        "vector_hex": "0x015e",
+        "source": "/device-tree/arm-io/aop",
+        "role": "AOP1 Mailbox Outbox"
+      },
+      {
+        "vector_dec": 351,
+        "vector_hex": "0x015f",
+        "source": "/device-tree/arm-io/aop",
+        "role": "AOP1 Doorbell"
+      },
+      {
+        "vector_dec": 352,
+        "vector_hex": "0x0160",
+        "source": "/device-tree/arm-io/aop",
+        "role": "AOP1 Error"
+      },
+      {
+        "vector_dec": 353,
+        "vector_hex": "0x0161",
+        "source": "/device-tree/arm-io/aop-exclave-mailbox",
+        "role": "AOP1 Exclave Proxy Inbox"
+      },
+      {
+        "vector_dec": 356,
+        "vector_hex": "0x0164",
+        "source": "/device-tree/arm-io/aop-exclave-mailbox",
+        "role": "AOP1 Exclave Proxy Outbox"
+      },
+      {
+        "vector_dec": 357,
+        "vector_hex": "0x0165",
+        "source": "/device-tree/arm-io/aop2",
+        "role": "AOP2 Primary Mailbox Inbox Message Pending"
+      },
+      {
+        "vector_dec": 358,
+        "vector_hex": "0x0166",
+        "source": "/device-tree/arm-io/aop2",
+        "role": "AOP2 Primary Mailbox Outbox Ack"
+      },
+      {
+        "vector_dec": 359,
+        "vector_hex": "0x0167",
+        "source": "/device-tree/arm-io/aop2",
+        "role": "AOP2 Doorbell Aggregator Trigger"
+      },
+      {
+        "vector_dec": 360,
+        "vector_hex": "0x0168",
+        "source": "/device-tree/arm-io/aop2",
+        "role": "AOP2 Hardware Error / RTKit Panic Notification"
+      },
+      {
+        "vector_dec": 361,
+        "vector_hex": "0x0169",
+        "source": "/device-tree/arm-io/aop2-exclave-mailbox",
+        "role": "AOP2 Exclave Mailbox Proxy Inbox"
+      },
+      {
+        "vector_dec": 364,
+        "vector_hex": "0x016c",
+        "source": "/device-tree/arm-io/aop2-exclave-mailbox",
+        "role": "AOP2 Exclave Mailbox Proxy Outbox"
+      },
+      {
+        "vector_dec": 387,
+        "vector_hex": "0x0183",
+        "source": "/device-tree/arm-io/dart-aop",
+        "role": "DART-AOP IOMMU Translation Fault"
+      },
+      {
+        "vector_dec": 350,
+        "vector_hex": "0x015e",
+        "source": "device-tree/arm-io/aop",
+        "role": "Hardware Interrupt for aop"
+      },
+      {
+        "vector_dec": 349,
+        "vector_hex": "0x015d",
+        "source": "device-tree/arm-io/aop",
+        "role": "Hardware Interrupt for aop"
+      },
+      {
+        "vector_dec": 352,
+        "vector_hex": "0x0160",
+        "source": "device-tree/arm-io/aop",
+        "role": "Hardware Interrupt for aop"
+      },
+      {
+        "vector_dec": 351,
+        "vector_hex": "0x015f",
+        "source": "device-tree/arm-io/aop",
+        "role": "Hardware Interrupt for aop"
+      },
+      {
+        "vector_dec": 387,
+        "vector_hex": "0x0183",
+        "source": "device-tree/arm-io/dart-aop",
+        "role": "Hardware Interrupt for dart-aop"
+      },
+      {
+        "vector_dec": 356,
+        "vector_hex": "0x0164",
+        "source": "device-tree/arm-io/aop-exclave-mailbox",
+        "role": "Hardware Interrupt for aop-exclave-mailbox"
+      },
+      {
+        "vector_dec": 353,
+        "vector_hex": "0x0161",
+        "source": "device-tree/arm-io/aop-exclave-mailbox",
+        "role": "Hardware Interrupt for aop-exclave-mailbox"
+      },
+      {
+        "vector_dec": 358,
+        "vector_hex": "0x0166",
+        "source": "device-tree/arm-io/aop2",
+        "role": "Hardware Interrupt for aop2"
+      },
+      {
+        "vector_dec": 357,
+        "vector_hex": "0x0165",
+        "source": "device-tree/arm-io/aop2",
+        "role": "Hardware Interrupt for aop2"
+      },
+      {
+        "vector_dec": 360,
+        "vector_hex": "0x0168",
+        "source": "device-tree/arm-io/aop2",
+        "role": "Hardware Interrupt for aop2"
+      },
+      {
+        "vector_dec": 359,
+        "vector_hex": "0x0167",
+        "source": "device-tree/arm-io/aop2",
+        "role": "Hardware Interrupt for aop2"
+      },
+      {
+        "vector_dec": 364,
+        "vector_hex": "0x016c",
+        "source": "device-tree/arm-io/aop2-exclave-mailbox",
+        "role": "Hardware Interrupt for aop2-exclave-mailbox"
+      },
+      {
+        "vector_dec": 361,
+        "vector_hex": "0x0169",
+        "source": "device-tree/arm-io/aop2-exclave-mailbox",
+        "role": "Hardware Interrupt for aop2-exclave-mailbox"
+      },
+      {
+        "vector_dec": 339,
+        "vector_hex": "0x0153",
+        "source": "device-tree/arm-io/aop-gpio",
+        "role": "Hardware Interrupt for aop-gpio"
+      },
+      {
+        "vector_dec": 340,
+        "vector_hex": "0x0154",
+        "source": "device-tree/arm-io/aop-gpio",
+        "role": "Hardware Interrupt for aop-gpio"
+      },
+      {
+        "vector_dec": 341,
+        "vector_hex": "0x0155",
+        "source": "device-tree/arm-io/aop-gpio",
+        "role": "Hardware Interrupt for aop-gpio"
+      },
+      {
+        "vector_dec": 342,
+        "vector_hex": "0x0156",
+        "source": "device-tree/arm-io/aop-gpio",
+        "role": "Hardware Interrupt for aop-gpio"
+      },
+      {
+        "vector_dec": 343,
+        "vector_hex": "0x0157",
+        "source": "device-tree/arm-io/aop-gpio",
+        "role": "Hardware Interrupt for aop-gpio"
+      },
+      {
+        "vector_dec": 344,
+        "vector_hex": "0x0158",
+        "source": "device-tree/arm-io/aop-gpio",
+        "role": "Hardware Interrupt for aop-gpio"
+      },
+      {
+        "vector_dec": 345,
+        "vector_hex": "0x0159",
+        "source": "device-tree/arm-io/aop-gpio",
+        "role": "Hardware Interrupt for aop-gpio"
+      },
+      {
+        "vector_dec": 256,
+        "vector_hex": "0x0100",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 391,
+        "vector_hex": "0x0187",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 281,
+        "vector_hex": "0x0119",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 260,
+        "vector_hex": "0x0104",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 261,
+        "vector_hex": "0x0105",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 264,
+        "vector_hex": "0x0108",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 265,
+        "vector_hex": "0x0109",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 266,
+        "vector_hex": "0x010a",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 268,
+        "vector_hex": "0x010c",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 269,
+        "vector_hex": "0x010d",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 279,
+        "vector_hex": "0x0117",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 280,
+        "vector_hex": "0x0118",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 282,
+        "vector_hex": "0x011a",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 283,
+        "vector_hex": "0x011b",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 284,
+        "vector_hex": "0x011c",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 285,
+        "vector_hex": "0x011d",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 272,
+        "vector_hex": "0x0110",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 273,
+        "vector_hex": "0x0111",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 262,
+        "vector_hex": "0x0106",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 263,
+        "vector_hex": "0x0107",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 267,
+        "vector_hex": "0x010b",
+        "source": "device-tree/arm-io/aop-spmi0",
+        "role": "Hardware Interrupt for aop-spmi0"
+      },
+      {
+        "vector_dec": 72,
+        "vector_hex": "0x0048",
+        "source": "device-tree/arm-io/aop-spmi0/baseband-heb",
+        "role": "Hardware Interrupt for baseband-heb"
+      },
+      {
+        "vector_dec": 68,
+        "vector_hex": "0x0044",
+        "source": "device-tree/arm-io/aop-spmi0/baseband-heb",
+        "role": "Hardware Interrupt for baseband-heb"
+      },
+      {
+        "vector_dec": 66,
+        "vector_hex": "0x0042",
+        "source": "device-tree/arm-io/aop-spmi0/baseband-heb",
+        "role": "Hardware Interrupt for baseband-heb"
+      },
+      {
+        "vector_dec": 176,
+        "vector_hex": "0x00b0",
+        "source": "device-tree/arm-io/aop-spmi0/stockholm-spmi",
+        "role": "Hardware Interrupt for stockholm-spmi"
+      },
+      {
+        "vector_dec": 177,
+        "vector_hex": "0x00b1",
+        "source": "device-tree/arm-io/aop-spmi0/stockholm-spmi",
+        "role": "Hardware Interrupt for stockholm-spmi"
+      },
+      {
+        "vector_dec": 178,
+        "vector_hex": "0x00b2",
+        "source": "device-tree/arm-io/aop-spmi0/stockholm-spmi",
+        "role": "Hardware Interrupt for stockholm-spmi"
+      },
+      {
+        "vector_dec": 179,
+        "vector_hex": "0x00b3",
+        "source": "device-tree/arm-io/aop-spmi0/stockholm-spmi",
+        "role": "Hardware Interrupt for stockholm-spmi"
+      },
+      {
+        "vector_dec": 180,
+        "vector_hex": "0x00b4",
+        "source": "device-tree/arm-io/aop-spmi0/stockholm-spmi",
+        "role": "Hardware Interrupt for stockholm-spmi"
+      },
+      {
+        "vector_dec": 181,
+        "vector_hex": "0x00b5",
+        "source": "device-tree/arm-io/aop-spmi0/stockholm-spmi",
+        "role": "Hardware Interrupt for stockholm-spmi"
+      },
+      {
+        "vector_dec": 182,
+        "vector_hex": "0x00b6",
+        "source": "device-tree/arm-io/aop-spmi0/stockholm-spmi",
+        "role": "Hardware Interrupt for stockholm-spmi"
+      },
+      {
+        "vector_dec": 160,
+        "vector_hex": "0x00a0",
+        "source": "device-tree/arm-io/aop-spmi0/hammerfest-spmi",
+        "role": "Hardware Interrupt for hammerfest-spmi"
+      },
+      {
+        "vector_dec": 161,
+        "vector_hex": "0x00a1",
+        "source": "device-tree/arm-io/aop-spmi0/hammerfest-spmi",
+        "role": "Hardware Interrupt for hammerfest-spmi"
+      },
+      {
+        "vector_dec": 162,
+        "vector_hex": "0x00a2",
+        "source": "device-tree/arm-io/aop-spmi0/hammerfest-spmi",
+        "role": "Hardware Interrupt for hammerfest-spmi"
+      },
+      {
+        "vector_dec": 163,
+        "vector_hex": "0x00a3",
+        "source": "device-tree/arm-io/aop-spmi0/hammerfest-spmi",
+        "role": "Hardware Interrupt for hammerfest-spmi"
+      },
+      {
+        "vector_dec": 164,
+        "vector_hex": "0x00a4",
+        "source": "device-tree/arm-io/aop-spmi0/hammerfest-spmi",
+        "role": "Hardware Interrupt for hammerfest-spmi"
+      },
+      {
+        "vector_dec": 165,
+        "vector_hex": "0x00a5",
+        "source": "device-tree/arm-io/aop-spmi0/hammerfest-spmi",
+        "role": "Hardware Interrupt for hammerfest-spmi"
+      },
+      {
+        "vector_dec": 166,
+        "vector_hex": "0x00a6",
+        "source": "device-tree/arm-io/aop-spmi0/hammerfest-spmi",
+        "role": "Hardware Interrupt for hammerfest-spmi"
+      },
+      {
+        "vector_dec": 256,
+        "vector_hex": "0x0100",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 395,
+        "vector_hex": "0x018b",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 281,
+        "vector_hex": "0x0119",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 260,
+        "vector_hex": "0x0104",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 261,
+        "vector_hex": "0x0105",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 264,
+        "vector_hex": "0x0108",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 265,
+        "vector_hex": "0x0109",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 266,
+        "vector_hex": "0x010a",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 268,
+        "vector_hex": "0x010c",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 269,
+        "vector_hex": "0x010d",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 279,
+        "vector_hex": "0x0117",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 280,
+        "vector_hex": "0x0118",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 282,
+        "vector_hex": "0x011a",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 283,
+        "vector_hex": "0x011b",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 284,
+        "vector_hex": "0x011c",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 285,
+        "vector_hex": "0x011d",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 272,
+        "vector_hex": "0x0110",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 273,
+        "vector_hex": "0x0111",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 262,
+        "vector_hex": "0x0106",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 263,
+        "vector_hex": "0x0107",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 267,
+        "vector_hex": "0x010b",
+        "source": "device-tree/arm-io/aop-spmi1",
+        "role": "Hardware Interrupt for aop-spmi1"
+      },
+      {
+        "vector_dec": 28,
+        "vector_hex": "0x001c",
+        "source": "device-tree/arm-io/aop-spmi1/wlan-idc",
+        "role": "Hardware Interrupt for wlan-idc"
+      },
+      {
+        "vector_dec": 428,
+        "vector_hex": "0x01ac",
+        "source": "device-tree/arm-io/admac-aop-ced-ssw",
+        "role": "Hardware Interrupt for admac-aop-ced-ssw"
+      }
+    ],
+    "graphics_and_pmp": [
+      {
+        "vector_dec": 776,
+        "vector_hex": "0x0308",
+        "source": "/device-tree/arm-io/pmp",
+        "role": "PMP Mailbox Inbox"
+      },
+      {
+        "vector_dec": 777,
+        "vector_hex": "0x0309",
+        "source": "/device-tree/arm-io/pmp",
+        "role": "PMP Mailbox Outbox"
+      },
+      {
+        "vector_dec": 778,
+        "vector_hex": "0x030a",
+        "source": "/device-tree/arm-io/pmp",
+        "role": "PMP Doorbell"
+      },
+      {
+        "vector_dec": 779,
+        "vector_hex": "0x030b",
+        "source": "/device-tree/arm-io/pmp",
+        "role": "PMP Error"
+      },
+      {
+        "vector_dec": 780,
+        "vector_hex": "0x030c",
+        "source": "/device-tree/arm-io/dart-pmp",
+        "role": "DART-PMP IOMMU Translation Fault"
+      },
+      {
+        "vector_dec": 933,
+        "vector_hex": "0x03a5",
+        "source": "/device-tree/arm-io/sgx",
+        "role": "AGX G18 Shader Core Cluster 0 Context Done"
+      },
+      {
+        "vector_dec": 934,
+        "vector_hex": "0x03a6",
+        "source": "/device-tree/arm-io/sgx",
+        "role": "AGX G18 Shader Core Cluster 1 Context Done"
+      },
+      {
+        "vector_dec": 935,
+        "vector_hex": "0x03a7",
+        "source": "/device-tree/arm-io/sgx",
+        "role": "AGX G18 BVH Ray Tracing Accelerator Complete"
+      },
+      {
+        "vector_dec": 936,
+        "vector_hex": "0x03a8",
+        "source": "/device-tree/arm-io/sgx",
+        "role": "AGX G18 Hardware Fault / Tile Memory Overflow"
+      },
+      {
+        "vector_dec": 952,
+        "vector_hex": "0x03b8",
+        "source": "/device-tree/arm-io/gfx-asc",
+        "role": "RTBuddy Core 0 Mailbox Inbox"
+      },
+      {
+        "vector_dec": 953,
+        "vector_hex": "0x03b9",
+        "source": "/device-tree/arm-io/gfx-asc",
+        "role": "RTBuddy Core 0 Mailbox Outbox"
+      },
+      {
+        "vector_dec": 954,
+        "vector_hex": "0x03ba",
+        "source": "/device-tree/arm-io/gfx-asc",
+        "role": "RTBuddy Core 0 Doorbell"
+      },
+      {
+        "vector_dec": 955,
+        "vector_hex": "0x03bb",
+        "source": "/device-tree/arm-io/gfx-asc",
+        "role": "RTBuddy Core 0 Error"
+      },
+      {
+        "vector_dec": 956,
+        "vector_hex": "0x03bc",
+        "source": "/device-tree/arm-io/gfx1-asc",
+        "role": "RTBuddy Core 1 Mailbox Inbox"
+      },
+      {
+        "vector_dec": 957,
+        "vector_hex": "0x03bd",
+        "source": "/device-tree/arm-io/gfx1-asc",
+        "role": "RTBuddy Core 1 Mailbox Outbox"
+      },
+      {
+        "vector_dec": 958,
+        "vector_hex": "0x03be",
+        "source": "/device-tree/arm-io/gfx1-asc",
+        "role": "RTBuddy Core 1 Doorbell"
+      },
+      {
+        "vector_dec": 959,
+        "vector_hex": "0x03bf",
+        "source": "/device-tree/arm-io/gfx1-asc",
+        "role": "RTBuddy Core 1 Error"
+      },
+      {
+        "vector_dec": 777,
+        "vector_hex": "0x0309",
+        "source": "device-tree/arm-io/pmp",
+        "role": "Hardware Interrupt for pmp"
+      },
+      {
+        "vector_dec": 776,
+        "vector_hex": "0x0308",
+        "source": "device-tree/arm-io/pmp",
+        "role": "Hardware Interrupt for pmp"
+      },
+      {
+        "vector_dec": 779,
+        "vector_hex": "0x030b",
+        "source": "device-tree/arm-io/pmp",
+        "role": "Hardware Interrupt for pmp"
+      },
+      {
+        "vector_dec": 778,
+        "vector_hex": "0x030a",
+        "source": "device-tree/arm-io/pmp",
+        "role": "Hardware Interrupt for pmp"
+      },
+      {
+        "vector_dec": 780,
+        "vector_hex": "0x030c",
+        "source": "device-tree/arm-io/dart-pmp",
+        "role": "Hardware Interrupt for dart-pmp"
+      },
+      {
+        "vector_dec": 933,
+        "vector_hex": "0x03a5",
+        "source": "device-tree/arm-io/sgx",
+        "role": "Hardware Interrupt for sgx"
+      },
+      {
+        "vector_dec": 934,
+        "vector_hex": "0x03a6",
+        "source": "device-tree/arm-io/sgx",
+        "role": "Hardware Interrupt for sgx"
+      },
+      {
+        "vector_dec": 935,
+        "vector_hex": "0x03a7",
+        "source": "device-tree/arm-io/sgx",
+        "role": "Hardware Interrupt for sgx"
+      },
+      {
+        "vector_dec": 936,
+        "vector_hex": "0x03a8",
+        "source": "device-tree/arm-io/sgx",
+        "role": "Hardware Interrupt for sgx"
+      },
+      {
+        "vector_dec": 960,
+        "vector_hex": "0x03c0",
+        "source": "device-tree/arm-io/sgx",
+        "role": "Hardware Interrupt for sgx"
+      },
+      {
+        "vector_dec": 962,
+        "vector_hex": "0x03c2",
+        "source": "device-tree/arm-io/sgx",
+        "role": "Hardware Interrupt for sgx"
+      },
+      {
+        "vector_dec": 948,
+        "vector_hex": "0x03b4",
+        "source": "device-tree/arm-io/sgx",
+        "role": "Hardware Interrupt for sgx"
+      },
+      {
+        "vector_dec": 950,
+        "vector_hex": "0x03b6",
+        "source": "device-tree/arm-io/sgx",
+        "role": "Hardware Interrupt for sgx"
+      },
+      {
+        "vector_dec": 953,
+        "vector_hex": "0x03b9",
+        "source": "device-tree/arm-io/gfx-asc",
+        "role": "Hardware Interrupt for gfx-asc"
+      },
+      {
+        "vector_dec": 952,
+        "vector_hex": "0x03b8",
+        "source": "device-tree/arm-io/gfx-asc",
+        "role": "Hardware Interrupt for gfx-asc"
+      },
+      {
+        "vector_dec": 955,
+        "vector_hex": "0x03bb",
+        "source": "device-tree/arm-io/gfx-asc",
+        "role": "Hardware Interrupt for gfx-asc"
+      },
+      {
+        "vector_dec": 954,
+        "vector_hex": "0x03ba",
+        "source": "device-tree/arm-io/gfx-asc",
+        "role": "Hardware Interrupt for gfx-asc"
+      },
+      {
+        "vector_dec": 957,
+        "vector_hex": "0x03bd",
+        "source": "device-tree/arm-io/gfx1-asc",
+        "role": "Hardware Interrupt for gfx1-asc"
+      },
+      {
+        "vector_dec": 956,
+        "vector_hex": "0x03bc",
+        "source": "device-tree/arm-io/gfx1-asc",
+        "role": "Hardware Interrupt for gfx1-asc"
+      },
+      {
+        "vector_dec": 959,
+        "vector_hex": "0x03bf",
+        "source": "device-tree/arm-io/gfx1-asc",
+        "role": "Hardware Interrupt for gfx1-asc"
+      },
+      {
+        "vector_dec": 958,
+        "vector_hex": "0x03be",
+        "source": "device-tree/arm-io/gfx1-asc",
+        "role": "Hardware Interrupt for gfx1-asc"
+      }
+    ],
+    "neural_engine": [
+      {
+        "vector_dec": 607,
+        "vector_hex": "0x025f",
+        "source": "/device-tree/arm-io/ane",
+        "role": "ANE H18 Layer Execution Complete / Task Finished"
+      },
+      {
+        "vector_dec": 608,
+        "vector_hex": "0x0260",
+        "source": "/device-tree/arm-io/dart-ane",
+        "role": "DART-ANE IOMMU Translation Fault"
+      },
+      {
+        "vector_dec": 620,
+        "vector_hex": "0x026c",
+        "source": "/device-tree/arm-io/ane",
+        "role": "ANE Hardware Mailbox FIFO Interrupt"
+      },
+      {
+        "vector_dec": 607,
+        "vector_hex": "0x025f",
+        "source": "device-tree/arm-io/ane",
+        "role": "Hardware Interrupt for ane"
+      },
+      {
+        "vector_dec": 620,
+        "vector_hex": "0x026c",
+        "source": "device-tree/arm-io/ane",
+        "role": "Hardware Interrupt for ane"
+      },
+      {
+        "vector_dec": 608,
+        "vector_hex": "0x0260",
+        "source": "device-tree/arm-io/dart-ane",
+        "role": "Hardware Interrupt for dart-ane"
+      }
+    ],
+    "display_and_dcp": [
+      {
+        "vector_dec": 632,
+        "vector_hex": "0x0278",
+        "source": "/device-tree/arm-io/dcp",
+        "role": "DCP Mailbox Inbox"
+      },
+      {
+        "vector_dec": 633,
+        "vector_hex": "0x0279",
+        "source": "/device-tree/arm-io/dcp",
+        "role": "DCP Mailbox Outbox"
+      },
+      {
+        "vector_dec": 634,
+        "vector_hex": "0x027a",
+        "source": "/device-tree/arm-io/dcp",
+        "role": "DCP Doorbell"
+      },
+      {
+        "vector_dec": 635,
+        "vector_hex": "0x027b",
+        "source": "/device-tree/arm-io/dcp",
+        "role": "DCP Error"
+      },
+      {
+        "vector_dec": 636,
+        "vector_hex": "0x027c",
+        "source": "/device-tree/arm-io/dcp-exclave-mailbox",
+        "role": "DCP Exclave Mailbox Inbox"
+      },
+      {
+        "vector_dec": 639,
+        "vector_hex": "0x027f",
+        "source": "/device-tree/arm-io/dcp-exclave-mailbox",
+        "role": "DCP Exclave Mailbox Outbox"
+      },
+      {
+        "vector_dec": 640,
+        "vector_hex": "0x0280",
+        "source": "/device-tree/arm-io/disp0",
+        "role": "Display VSYNC Interrupt"
+      },
+      {
+        "vector_dec": 642,
+        "vector_hex": "0x0282",
+        "source": "/device-tree/arm-io/disp0",
+        "role": "Display Teardown / Line Counter"
+      },
+      {
+        "vector_dec": 651,
+        "vector_hex": "0x028b",
+        "source": "/device-tree/arm-io/dart-dcp",
+        "role": "DART-DCP IOMMU Translation Fault"
+      },
+      {
+        "vector_dec": 633,
+        "vector_hex": "0x0279",
+        "source": "device-tree/arm-io/dcp",
+        "role": "Hardware Interrupt for dcp"
+      },
+      {
+        "vector_dec": 632,
+        "vector_hex": "0x0278",
+        "source": "device-tree/arm-io/dcp",
+        "role": "Hardware Interrupt for dcp"
+      },
+      {
+        "vector_dec": 635,
+        "vector_hex": "0x027b",
+        "source": "device-tree/arm-io/dcp",
+        "role": "Hardware Interrupt for dcp"
+      },
+      {
+        "vector_dec": 634,
+        "vector_hex": "0x027a",
+        "source": "device-tree/arm-io/dcp",
+        "role": "Hardware Interrupt for dcp"
+      },
+      {
+        "vector_dec": 646,
+        "vector_hex": "0x0286",
+        "source": "device-tree/arm-io/dcp0-expert",
+        "role": "Hardware Interrupt for dcp0-expert"
+      },
+      {
+        "vector_dec": 642,
+        "vector_hex": "0x0282",
+        "source": "device-tree/arm-io/disp0",
+        "role": "Hardware Interrupt for disp0"
+      },
+      {
+        "vector_dec": 688,
+        "vector_hex": "0x02b0",
+        "source": "device-tree/arm-io/disp0",
+        "role": "Hardware Interrupt for disp0"
+      },
+      {
+        "vector_dec": 645,
+        "vector_hex": "0x0285",
+        "source": "device-tree/arm-io/disp0",
+        "role": "Hardware Interrupt for disp0"
+      },
+      {
+        "vector_dec": 644,
+        "vector_hex": "0x0284",
+        "source": "device-tree/arm-io/disp0",
+        "role": "Hardware Interrupt for disp0"
+      },
+      {
+        "vector_dec": 643,
+        "vector_hex": "0x0283",
+        "source": "device-tree/arm-io/disp0",
+        "role": "Hardware Interrupt for disp0"
+      },
+      {
+        "vector_dec": 650,
+        "vector_hex": "0x028a",
+        "source": "device-tree/arm-io/disp0",
+        "role": "Hardware Interrupt for disp0"
+      },
+      {
+        "vector_dec": 640,
+        "vector_hex": "0x0280",
+        "source": "device-tree/arm-io/disp0",
+        "role": "Hardware Interrupt for disp0"
+      },
+      {
+        "vector_dec": 654,
+        "vector_hex": "0x028e",
+        "source": "device-tree/arm-io/disp0",
+        "role": "Hardware Interrupt for disp0"
+      },
+      {
+        "vector_dec": 649,
+        "vector_hex": "0x0289",
+        "source": "device-tree/arm-io/disp0",
+        "role": "Hardware Interrupt for disp0"
+      },
+      {
+        "vector_dec": 651,
+        "vector_hex": "0x028b",
+        "source": "device-tree/arm-io/dart-dcp",
+        "role": "Hardware Interrupt for dart-dcp"
+      },
+      {
+        "vector_dec": 651,
+        "vector_hex": "0x028b",
+        "source": "device-tree/arm-io/dart-disp0",
+        "role": "Hardware Interrupt for dart-disp0"
+      },
+      {
+        "vector_dec": 651,
+        "vector_hex": "0x028b",
+        "source": "device-tree/arm-io/dart-dispgrt",
+        "role": "Hardware Interrupt for dart-dispgrt"
+      },
+      {
+        "vector_dec": 674,
+        "vector_hex": "0x02a2",
+        "source": "device-tree/arm-io/dart-disp0-isoc",
+        "role": "Hardware Interrupt for dart-disp0-isoc"
+      },
+      {
+        "vector_dec": 673,
+        "vector_hex": "0x02a1",
+        "source": "device-tree/arm-io/admac-dispint0",
+        "role": "Hardware Interrupt for admac-dispint0"
+      },
+      {
+        "vector_dec": 675,
+        "vector_hex": "0x02a3",
+        "source": "device-tree/arm-io/admac-dispint0-ced-ssw",
+        "role": "Hardware Interrupt for admac-dispint0-ced-ssw"
+      },
+      {
+        "vector_dec": 639,
+        "vector_hex": "0x027f",
+        "source": "device-tree/arm-io/dcp-exclave-mailbox",
+        "role": "Hardware Interrupt for dcp-exclave-mailbox"
+      },
+      {
+        "vector_dec": 636,
+        "vector_hex": "0x027c",
+        "source": "device-tree/arm-io/dcp-exclave-mailbox",
+        "role": "Hardware Interrupt for dcp-exclave-mailbox"
+      },
+      {
+        "vector_dec": 692,
+        "vector_hex": "0x02b4",
+        "source": "device-tree/arm-io/exdisplaypipe",
+        "role": "Hardware Interrupt for exdisplaypipe"
+      },
+      {
+        "vector_dec": 693,
+        "vector_hex": "0x02b5",
+        "source": "device-tree/arm-io/exdisplaypipe",
+        "role": "Hardware Interrupt for exdisplaypipe"
+      },
+      {
+        "vector_dec": 642,
+        "vector_hex": "0x0282",
+        "source": "device-tree/arm-io/exdisplaypipe",
+        "role": "Hardware Interrupt for exdisplaypipe"
+      },
+      {
+        "vector_dec": 694,
+        "vector_hex": "0x02b6",
+        "source": "device-tree/arm-io/exdisplaypipe",
+        "role": "Hardware Interrupt for exdisplaypipe"
+      },
+      {
+        "vector_dec": 714,
+        "vector_hex": "0x02ca",
+        "source": "device-tree/arm-io/dispext0",
+        "role": "Hardware Interrupt for dispext0"
+      },
+      {
+        "vector_dec": 760,
+        "vector_hex": "0x02f8",
+        "source": "device-tree/arm-io/dispext0",
+        "role": "Hardware Interrupt for dispext0"
+      },
+      {
+        "vector_dec": 717,
+        "vector_hex": "0x02cd",
+        "source": "device-tree/arm-io/dispext0",
+        "role": "Hardware Interrupt for dispext0"
+      },
+      {
+        "vector_dec": 716,
+        "vector_hex": "0x02cc",
+        "source": "device-tree/arm-io/dispext0",
+        "role": "Hardware Interrupt for dispext0"
+      },
+      {
+        "vector_dec": 722,
+        "vector_hex": "0x02d2",
+        "source": "device-tree/arm-io/dispext0",
+        "role": "Hardware Interrupt for dispext0"
+      },
+      {
+        "vector_dec": 712,
+        "vector_hex": "0x02c8",
+        "source": "device-tree/arm-io/dispext0",
+        "role": "Hardware Interrupt for dispext0"
+      },
+      {
+        "vector_dec": 721,
+        "vector_hex": "0x02d1",
+        "source": "device-tree/arm-io/dispext0",
+        "role": "Hardware Interrupt for dispext0"
+      },
+      {
+        "vector_dec": 718,
+        "vector_hex": "0x02ce",
+        "source": "device-tree/arm-io/dcpext0-expert",
+        "role": "Hardware Interrupt for dcpext0-expert"
+      },
+      {
+        "vector_dec": 705,
+        "vector_hex": "0x02c1",
+        "source": "device-tree/arm-io/dcpext0",
+        "role": "Hardware Interrupt for dcpext0"
+      },
+      {
+        "vector_dec": 704,
+        "vector_hex": "0x02c0",
+        "source": "device-tree/arm-io/dcpext0",
+        "role": "Hardware Interrupt for dcpext0"
+      },
+      {
+        "vector_dec": 707,
+        "vector_hex": "0x02c3",
+        "source": "device-tree/arm-io/dcpext0",
+        "role": "Hardware Interrupt for dcpext0"
+      },
+      {
+        "vector_dec": 706,
+        "vector_hex": "0x02c2",
+        "source": "device-tree/arm-io/dcpext0",
+        "role": "Hardware Interrupt for dcpext0"
+      },
+      {
+        "vector_dec": 723,
+        "vector_hex": "0x02d3",
+        "source": "device-tree/arm-io/dart-dcpext0",
+        "role": "Hardware Interrupt for dart-dcpext0"
+      },
+      {
+        "vector_dec": 723,
+        "vector_hex": "0x02d3",
+        "source": "device-tree/arm-io/dart-dispext0",
+        "role": "Hardware Interrupt for dart-dispext0"
+      },
+      {
+        "vector_dec": 746,
+        "vector_hex": "0x02ea",
+        "source": "device-tree/arm-io/dart-dispext0-isoc",
+        "role": "Hardware Interrupt for dart-dispext0-isoc"
+      },
+      {
+        "vector_dec": 745,
+        "vector_hex": "0x02e9",
+        "source": "device-tree/arm-io/admac-dispext0",
+        "role": "Hardware Interrupt for admac-dispext0"
+      },
+      {
+        "vector_dec": 747,
+        "vector_hex": "0x02eb",
+        "source": "device-tree/arm-io/admac-dispext0-ced-ssw",
+        "role": "Hardware Interrupt for admac-dispext0-ced-ssw"
+      }
+    ],
+    "storage_and_nand": [
+      {
+        "vector_dec": 972,
+        "vector_hex": "0x03cc",
+        "source": "/device-tree/arm-io/ans",
+        "role": "ANS NVRAM Command Ring 0 Complete"
+      },
+      {
+        "vector_dec": 973,
+        "vector_hex": "0x03cd",
+        "source": "/device-tree/arm-io/ans",
+        "role": "SART-ANS IOMMU Fault"
+      },
+      {
+        "vector_dec": 974,
+        "vector_hex": "0x03ce",
+        "source": "/device-tree/arm-io/ans",
+        "role": "ANS NVRAM Command Ring 1 Complete"
+      },
+      {
+        "vector_dec": 975,
+        "vector_hex": "0x03cf",
+        "source": "/device-tree/arm-io/ans",
+        "role": "ANS Flash Memory Controller Interrupt"
+      },
+      {
+        "vector_dec": 973,
+        "vector_hex": "0x03cd",
+        "source": "device-tree/arm-io/ans",
+        "role": "Hardware Interrupt for ans"
+      },
+      {
+        "vector_dec": 972,
+        "vector_hex": "0x03cc",
+        "source": "device-tree/arm-io/ans",
+        "role": "Hardware Interrupt for ans"
+      },
+      {
+        "vector_dec": 975,
+        "vector_hex": "0x03cf",
+        "source": "device-tree/arm-io/ans",
+        "role": "Hardware Interrupt for ans"
+      },
+      {
+        "vector_dec": 974,
+        "vector_hex": "0x03ce",
+        "source": "device-tree/arm-io/ans",
+        "role": "Hardware Interrupt for ans"
+      },
+      {
+        "vector_dec": 980,
+        "vector_hex": "0x03d4",
+        "source": "device-tree/arm-io/ans",
+        "role": "Hardware Interrupt for ans"
+      }
+    ],
+    "connectivity_and_pcie": [
+      {
+        "vector_dec": 1139,
+        "vector_hex": "0x0473",
+        "source": "/device-tree/arm-io/apcie",
+        "role": "PCIe Port 0 Link State Change"
+      },
+      {
+        "vector_dec": 1140,
+        "vector_hex": "0x0474",
+        "source": "/device-tree/arm-io/apcie",
+        "role": "PCIe Port 0 MSI Vector Aggregation"
+      },
+      {
+        "vector_dec": 1141,
+        "vector_hex": "0x0475",
+        "source": "/device-tree/arm-io/apcie",
+        "role": "PCIe Port 1 Link State Change"
+      },
+      {
+        "vector_dec": 1142,
+        "vector_hex": "0x0476",
+        "source": "/device-tree/arm-io/dart-apcie0",
+        "role": "DART-APCIE0 IOMMU Fault"
+      },
+      {
+        "vector_dec": 1149,
+        "vector_hex": "0x047d",
+        "source": "/device-tree/arm-io/apcie",
+        "role": "PCIe Port 1 MSI Vector Aggregation"
+      },
+      {
+        "vector_dec": 1150,
+        "vector_hex": "0x047e",
+        "source": "/device-tree/arm-io/dart-apcie1",
+        "role": "DART-APCIE1 IOMMU Fault"
+      },
+      {
+        "vector_dec": 1173,
+        "vector_hex": "0x0495",
+        "source": "/device-tree/arm-io/dart-usb0",
+        "role": "DART-USB0 IOMMU Fault"
+      },
+      {
+        "vector_dec": 1161,
+        "vector_hex": "0x0489",
+        "source": "device-tree/arm-io/atc-phy0",
+        "role": "Hardware Interrupt for atc-phy0"
+      },
+      {
+        "vector_dec": 1173,
+        "vector_hex": "0x0495",
+        "source": "device-tree/arm-io/dart-usb0",
+        "role": "Hardware Interrupt for dart-usb0"
+      },
+      {
+        "vector_dec": 1169,
+        "vector_hex": "0x0491",
+        "source": "device-tree/arm-io/usb-drd",
+        "role": "Hardware Interrupt for usb-drd"
+      },
+      {
+        "vector_dec": 1170,
+        "vector_hex": "0x0492",
+        "source": "device-tree/arm-io/usb-drd",
+        "role": "Hardware Interrupt for usb-drd"
+      },
+      {
+        "vector_dec": 1171,
+        "vector_hex": "0x0493",
+        "source": "device-tree/arm-io/usb-drd",
+        "role": "Hardware Interrupt for usb-drd"
+      },
+      {
+        "vector_dec": 1172,
+        "vector_hex": "0x0494",
+        "source": "device-tree/arm-io/usb-drd",
+        "role": "Hardware Interrupt for usb-drd"
+      },
+      {
+        "vector_dec": 1157,
+        "vector_hex": "0x0485",
+        "source": "device-tree/arm-io/usb-drd",
+        "role": "Hardware Interrupt for usb-drd"
+      },
+      {
+        "vector_dec": 1141,
+        "vector_hex": "0x0475",
+        "source": "device-tree/arm-io/apcie",
+        "role": "Hardware Interrupt for apcie"
+      },
+      {
+        "vector_dec": 1149,
+        "vector_hex": "0x047d",
+        "source": "device-tree/arm-io/apcie",
+        "role": "Hardware Interrupt for apcie"
+      },
+      {
+        "vector_dec": 1139,
+        "vector_hex": "0x0473",
+        "source": "device-tree/arm-io/apcie",
+        "role": "Hardware Interrupt for apcie"
+      },
+      {
+        "vector_dec": 1140,
+        "vector_hex": "0x0474",
+        "source": "device-tree/arm-io/apcie",
+        "role": "Hardware Interrupt for apcie"
+      },
+      {
+        "vector_dec": 1142,
+        "vector_hex": "0x0476",
+        "source": "device-tree/arm-io/dart-apcie0",
+        "role": "Hardware Interrupt for dart-apcie0"
+      },
+      {
+        "vector_dec": 1143,
+        "vector_hex": "0x0477",
+        "source": "device-tree/arm-io/apcie0-piodma",
+        "role": "Hardware Interrupt for apcie0-piodma"
+      },
+      {
+        "vector_dec": 1150,
+        "vector_hex": "0x047e",
+        "source": "device-tree/arm-io/dart-apcie1",
+        "role": "Hardware Interrupt for dart-apcie1"
+      },
+      {
+        "vector_dec": 1151,
+        "vector_hex": "0x047f",
+        "source": "device-tree/arm-io/apcie1-piodma",
+        "role": "Hardware Interrupt for apcie1-piodma"
+      },
+      {
+        "vector_dec": 27,
+        "vector_hex": "0x001b",
+        "source": "device-tree/baseband",
+        "role": "Hardware Interrupt for baseband"
+      },
+      {
+        "vector_dec": 83886084,
+        "vector_hex": "0x5000004",
+        "source": "device-tree/baseband",
+        "role": "Hardware Interrupt for baseband"
+      },
+      {
+        "vector_dec": 13,
+        "vector_hex": "0x000d",
+        "source": "device-tree/baseband",
+        "role": "Hardware Interrupt for baseband"
+      },
+      {
+        "vector_dec": 22,
+        "vector_hex": "0x0016",
+        "source": "device-tree/centauri",
+        "role": "Hardware Interrupt for centauri"
+      },
+      {
+        "vector_dec": 83886084,
+        "vector_hex": "0x5000004",
+        "source": "device-tree/centauri",
+        "role": "Hardware Interrupt for centauri"
+      }
+    ],
+    "video_and_multimedia": [
+      {
+        "vector_dec": 1002,
+        "vector_hex": "0x03ea",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1004,
+        "vector_hex": "0x03ec",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1005,
+        "vector_hex": "0x03ed",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1006,
+        "vector_hex": "0x03ee",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1010,
+        "vector_hex": "0x03f2",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1011,
+        "vector_hex": "0x03f3",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1012,
+        "vector_hex": "0x03f4",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1013,
+        "vector_hex": "0x03f5",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1014,
+        "vector_hex": "0x03f6",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1015,
+        "vector_hex": "0x03f7",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1016,
+        "vector_hex": "0x03f8",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1017,
+        "vector_hex": "0x03f9",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1018,
+        "vector_hex": "0x03fa",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1019,
+        "vector_hex": "0x03fb",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1020,
+        "vector_hex": "0x03fc",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1021,
+        "vector_hex": "0x03fd",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1022,
+        "vector_hex": "0x03fe",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1023,
+        "vector_hex": "0x03ff",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1024,
+        "vector_hex": "0x0400",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1025,
+        "vector_hex": "0x0401",
+        "source": "device-tree/arm-io/scaler0",
+        "role": "Hardware Interrupt for scaler0"
+      },
+      {
+        "vector_dec": 1003,
+        "vector_hex": "0x03eb",
+        "source": "device-tree/arm-io/dart-scaler",
+        "role": "Hardware Interrupt for dart-scaler"
+      },
+      {
+        "vector_dec": 981,
+        "vector_hex": "0x03d5",
+        "source": "device-tree/arm-io/jpeg",
+        "role": "Hardware Interrupt for jpeg"
+      },
+      {
+        "vector_dec": 982,
+        "vector_hex": "0x03d6",
+        "source": "device-tree/arm-io/dart-jpeg",
+        "role": "Hardware Interrupt for dart-jpeg"
+      },
+      {
+        "vector_dec": 269,
+        "vector_hex": "0x010d",
+        "source": "device-tree/arm-io/ispRtb",
+        "role": "Hardware Interrupt for ispRtb"
+      },
+      {
+        "vector_dec": 268,
+        "vector_hex": "0x010c",
+        "source": "device-tree/arm-io/ispRtb",
+        "role": "Hardware Interrupt for ispRtb"
+      },
+      {
+        "vector_dec": 271,
+        "vector_hex": "0x010f",
+        "source": "device-tree/arm-io/ispRtb",
+        "role": "Hardware Interrupt for ispRtb"
+      },
+      {
+        "vector_dec": 270,
+        "vector_hex": "0x010e",
+        "source": "device-tree/arm-io/ispRtb",
+        "role": "Hardware Interrupt for ispRtb"
+      },
+      {
+        "vector_dec": 284,
+        "vector_hex": "0x011c",
+        "source": "device-tree/arm-io/ispRtb",
+        "role": "Hardware Interrupt for ispRtb"
+      },
+      {
+        "vector_dec": 285,
+        "vector_hex": "0x011d",
+        "source": "device-tree/arm-io/ispRtb",
+        "role": "Hardware Interrupt for ispRtb"
+      },
+      {
+        "vector_dec": 286,
+        "vector_hex": "0x011e",
+        "source": "device-tree/arm-io/ispRtb",
+        "role": "Hardware Interrupt for ispRtb"
+      },
+      {
+        "vector_dec": 287,
+        "vector_hex": "0x011f",
+        "source": "device-tree/arm-io/ispRtb",
+        "role": "Hardware Interrupt for ispRtb"
+      },
+      {
+        "vector_dec": 297,
+        "vector_hex": "0x0129",
+        "source": "device-tree/arm-io/ispRtb",
+        "role": "Hardware Interrupt for ispRtb"
+      },
+      {
+        "vector_dec": 284,
+        "vector_hex": "0x011c",
+        "source": "device-tree/arm-io/isp",
+        "role": "Hardware Interrupt for isp"
+      },
+      {
+        "vector_dec": 285,
+        "vector_hex": "0x011d",
+        "source": "device-tree/arm-io/isp",
+        "role": "Hardware Interrupt for isp"
+      },
+      {
+        "vector_dec": 286,
+        "vector_hex": "0x011e",
+        "source": "device-tree/arm-io/isp",
+        "role": "Hardware Interrupt for isp"
+      },
+      {
+        "vector_dec": 287,
+        "vector_hex": "0x011f",
+        "source": "device-tree/arm-io/isp",
+        "role": "Hardware Interrupt for isp"
+      },
+      {
+        "vector_dec": 297,
+        "vector_hex": "0x0129",
+        "source": "device-tree/arm-io/isp",
+        "role": "Hardware Interrupt for isp"
+      },
+      {
+        "vector_dec": 302,
+        "vector_hex": "0x012e",
+        "source": "device-tree/arm-io/dart-isp",
+        "role": "Hardware Interrupt for dart-isp"
+      },
+      {
+        "vector_dec": 920,
+        "vector_hex": "0x0398",
+        "source": "device-tree/arm-io/ave",
+        "role": "Hardware Interrupt for ave"
+      },
+      {
+        "vector_dec": 914,
+        "vector_hex": "0x0392",
+        "source": "device-tree/arm-io/ave",
+        "role": "Hardware Interrupt for ave"
+      },
+      {
+        "vector_dec": 913,
+        "vector_hex": "0x0391",
+        "source": "device-tree/arm-io/ave",
+        "role": "Hardware Interrupt for ave"
+      },
+      {
+        "vector_dec": 916,
+        "vector_hex": "0x0394",
+        "source": "device-tree/arm-io/ave",
+        "role": "Hardware Interrupt for ave"
+      },
+      {
+        "vector_dec": 915,
+        "vector_hex": "0x0393",
+        "source": "device-tree/arm-io/ave",
+        "role": "Hardware Interrupt for ave"
+      },
+      {
+        "vector_dec": 917,
+        "vector_hex": "0x0395",
+        "source": "device-tree/arm-io/dart-ave",
+        "role": "Hardware Interrupt for dart-ave"
+      },
+      {
+        "vector_dec": 898,
+        "vector_hex": "0x0382",
+        "source": "device-tree/arm-io/avd",
+        "role": "Hardware Interrupt for avd"
+      },
+      {
+        "vector_dec": 899,
+        "vector_hex": "0x0383",
+        "source": "device-tree/arm-io/avd",
+        "role": "Hardware Interrupt for avd"
+      },
+      {
+        "vector_dec": 905,
+        "vector_hex": "0x0389",
+        "source": "device-tree/arm-io/dart-avd",
+        "role": "Hardware Interrupt for dart-avd"
+      },
+      {
+        "vector_dec": 1185,
+        "vector_hex": "0x04a1",
+        "source": "device-tree/arm-io/apr",
+        "role": "Hardware Interrupt for apr"
+      },
+      {
+        "vector_dec": 1184,
+        "vector_hex": "0x04a0",
+        "source": "device-tree/arm-io/apr",
+        "role": "Hardware Interrupt for apr"
+      },
+      {
+        "vector_dec": 1182,
+        "vector_hex": "0x049e",
+        "source": "device-tree/arm-io/dart-apr",
+        "role": "Hardware Interrupt for dart-apr"
+      }
+    ],
+    "system_power_and_clocks": [
+      {
+        "vector_dec": 792,
+        "vector_hex": "0x0318",
+        "source": "device-tree/arm-io/pmgr",
+        "role": "Hardware Interrupt for pmgr"
+      },
+      {
+        "vector_dec": 162,
+        "vector_hex": "0x00a2",
+        "source": "device-tree/arm-io/pmgr",
+        "role": "Hardware Interrupt for pmgr"
+      },
+      {
+        "vector_dec": 206,
+        "vector_hex": "0x00ce",
+        "source": "device-tree/arm-io/pmgr",
+        "role": "Hardware Interrupt for pmgr"
+      },
+      {
+        "vector_dec": 793,
+        "vector_hex": "0x0319",
+        "source": "device-tree/arm-io/pmgr/clpc",
+        "role": "Hardware Interrupt for clpc"
+      },
+      {
+        "vector_dec": 0,
+        "vector_hex": "0x0000",
+        "source": "device-tree/arm-io/pmgr/clpc",
+        "role": "Hardware Interrupt for clpc"
+      },
+      {
+        "vector_dec": 1380143154,
+        "vector_hex": "0x52435032",
+        "source": "device-tree/arm-io/pmgr/clpc",
+        "role": "Hardware Interrupt for clpc"
+      },
+      {
+        "vector_dec": 1380143155,
+        "vector_hex": "0x52435033",
+        "source": "device-tree/arm-io/pmgr/clpc",
+        "role": "Hardware Interrupt for clpc"
+      },
+      {
+        "vector_dec": 1380143156,
+        "vector_hex": "0x52435034",
+        "source": "device-tree/arm-io/pmgr/clpc",
+        "role": "Hardware Interrupt for clpc"
+      },
+      {
+        "vector_dec": 794,
+        "vector_hex": "0x031a",
+        "source": "device-tree/arm-io/pmgr/ppm",
+        "role": "Hardware Interrupt for ppm"
+      },
+      {
+        "vector_dec": 0,
+        "vector_hex": "0x0000",
+        "source": "device-tree/arm-io/pmgr/ppm",
+        "role": "Hardware Interrupt for ppm"
+      },
+      {
+        "vector_dec": 1330861125,
+        "vector_hex": "0x4f535445",
+        "source": "device-tree/arm-io/pmgr/pmgrtools",
+        "role": "Hardware Interrupt for pmgrtools"
+      },
+      {
+        "vector_dec": 1278297177,
+        "vector_hex": "0x4c314459",
+        "source": "device-tree/arm-io/pmgr/pmgrtools",
+        "role": "Hardware Interrupt for pmgrtools"
+      },
+      {
+        "vector_dec": 228,
+        "vector_hex": "0x00e4",
+        "source": "device-tree/arm-io/wdt",
+        "role": "Hardware Interrupt for wdt"
+      },
+      {
+        "vector_dec": 0,
+        "vector_hex": "0x0000",
+        "source": "device-tree/arm-io/wdt",
+        "role": "Hardware Interrupt for wdt"
+      },
+      {
+        "vector_dec": 526,
+        "vector_hex": "0x020e",
+        "source": "device-tree/arm-io/smc-gpio",
+        "role": "Hardware Interrupt for smc-gpio"
+      },
+      {
+        "vector_dec": 527,
+        "vector_hex": "0x020f",
+        "source": "device-tree/arm-io/smc-gpio",
+        "role": "Hardware Interrupt for smc-gpio"
+      },
+      {
+        "vector_dec": 528,
+        "vector_hex": "0x0210",
+        "source": "device-tree/arm-io/smc-gpio",
+        "role": "Hardware Interrupt for smc-gpio"
+      },
+      {
+        "vector_dec": 529,
+        "vector_hex": "0x0211",
+        "source": "device-tree/arm-io/smc-gpio",
+        "role": "Hardware Interrupt for smc-gpio"
+      },
+      {
+        "vector_dec": 530,
+        "vector_hex": "0x0212",
+        "source": "device-tree/arm-io/smc-gpio",
+        "role": "Hardware Interrupt for smc-gpio"
+      },
+      {
+        "vector_dec": 531,
+        "vector_hex": "0x0213",
+        "source": "device-tree/arm-io/smc-gpio",
+        "role": "Hardware Interrupt for smc-gpio"
+      },
+      {
+        "vector_dec": 532,
+        "vector_hex": "0x0214",
+        "source": "device-tree/arm-io/smc-gpio",
+        "role": "Hardware Interrupt for smc-gpio"
+      },
+      {
+        "vector_dec": 536,
+        "vector_hex": "0x0218",
+        "source": "device-tree/arm-io/smc",
+        "role": "Hardware Interrupt for smc"
+      },
+      {
+        "vector_dec": 535,
+        "vector_hex": "0x0217",
+        "source": "device-tree/arm-io/smc",
+        "role": "Hardware Interrupt for smc"
+      },
+      {
+        "vector_dec": 538,
+        "vector_hex": "0x021a",
+        "source": "device-tree/arm-io/smc",
+        "role": "Hardware Interrupt for smc"
+      },
+      {
+        "vector_dec": 537,
+        "vector_hex": "0x0219",
+        "source": "device-tree/arm-io/smc",
+        "role": "Hardware Interrupt for smc"
+      },
+      {
+        "vector_dec": 541,
+        "vector_hex": "0x021d",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 542,
+        "vector_hex": "0x021e",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 543,
+        "vector_hex": "0x021f",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 544,
+        "vector_hex": "0x0220",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 545,
+        "vector_hex": "0x0221",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 546,
+        "vector_hex": "0x0222",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 547,
+        "vector_hex": "0x0223",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 548,
+        "vector_hex": "0x0224",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 549,
+        "vector_hex": "0x0225",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 550,
+        "vector_hex": "0x0226",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 551,
+        "vector_hex": "0x0227",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 552,
+        "vector_hex": "0x0228",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 553,
+        "vector_hex": "0x0229",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 554,
+        "vector_hex": "0x022a",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 555,
+        "vector_hex": "0x022b",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 556,
+        "vector_hex": "0x022c",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 557,
+        "vector_hex": "0x022d",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 558,
+        "vector_hex": "0x022e",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 559,
+        "vector_hex": "0x022f",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 560,
+        "vector_hex": "0x0230",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 561,
+        "vector_hex": "0x0231",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 562,
+        "vector_hex": "0x0232",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 563,
+        "vector_hex": "0x0233",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 564,
+        "vector_hex": "0x0234",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 565,
+        "vector_hex": "0x0235",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 566,
+        "vector_hex": "0x0236",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 567,
+        "vector_hex": "0x0237",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 568,
+        "vector_hex": "0x0238",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 569,
+        "vector_hex": "0x0239",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 570,
+        "vector_hex": "0x023a",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 571,
+        "vector_hex": "0x023b",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      },
+      {
+        "vector_dec": 572,
+        "vector_hex": "0x023c",
+        "source": "device-tree/arm-io/aon-ptd",
+        "role": "Hardware Interrupt for aon-ptd"
+      }
+    ],
+    "system_io_and_sensors": [
+      {
+        "vector_dec": 216,
+        "vector_hex": "0x00d8",
+        "source": "device-tree/arm-io/gpio",
+        "role": "Hardware Interrupt for gpio"
+      },
+      {
+        "vector_dec": 217,
+        "vector_hex": "0x00d9",
+        "source": "device-tree/arm-io/gpio",
+        "role": "Hardware Interrupt for gpio"
+      },
+      {
+        "vector_dec": 218,
+        "vector_hex": "0x00da",
+        "source": "device-tree/arm-io/gpio",
+        "role": "Hardware Interrupt for gpio"
+      },
+      {
+        "vector_dec": 219,
+        "vector_hex": "0x00db",
+        "source": "device-tree/arm-io/gpio",
+        "role": "Hardware Interrupt for gpio"
+      },
+      {
+        "vector_dec": 220,
+        "vector_hex": "0x00dc",
+        "source": "device-tree/arm-io/gpio",
+        "role": "Hardware Interrupt for gpio"
+      },
+      {
+        "vector_dec": 221,
+        "vector_hex": "0x00dd",
+        "source": "device-tree/arm-io/gpio",
+        "role": "Hardware Interrupt for gpio"
+      },
+      {
+        "vector_dec": 222,
+        "vector_hex": "0x00de",
+        "source": "device-tree/arm-io/gpio",
+        "role": "Hardware Interrupt for gpio"
+      },
+      {
+        "vector_dec": 313,
+        "vector_hex": "0x0139",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 312,
+        "vector_hex": "0x0138",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 316,
+        "vector_hex": "0x013c",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 846,
+        "vector_hex": "0x034e",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 242,
+        "vector_hex": "0x00f2",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 244,
+        "vector_hex": "0x00f4",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 246,
+        "vector_hex": "0x00f6",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 248,
+        "vector_hex": "0x00f8",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 250,
+        "vector_hex": "0x00fa",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 253,
+        "vector_hex": "0x00fd",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 256,
+        "vector_hex": "0x0100",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 259,
+        "vector_hex": "0x0103",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 192,
+        "vector_hex": "0x00c0",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 128,
+        "vector_hex": "0x0080",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 129,
+        "vector_hex": "0x0081",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 130,
+        "vector_hex": "0x0082",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 131,
+        "vector_hex": "0x0083",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 132,
+        "vector_hex": "0x0084",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 133,
+        "vector_hex": "0x0085",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 134,
+        "vector_hex": "0x0086",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 135,
+        "vector_hex": "0x0087",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 136,
+        "vector_hex": "0x0088",
+        "source": "device-tree/arm-io/error-handler",
+        "role": "Hardware Interrupt for error-handler"
+      },
+      {
+        "vector_dec": 1051,
+        "vector_hex": "0x041b",
+        "source": "device-tree/arm-io/pwm",
+        "role": "Hardware Interrupt for pwm"
+      },
+      {
+        "vector_dec": 188,
+        "vector_hex": "0x00bc",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 194,
+        "vector_hex": "0x00c2",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 214,
+        "vector_hex": "0x00d6",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 238,
+        "vector_hex": "0x00ee",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 26,
+        "vector_hex": "0x001a",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 27,
+        "vector_hex": "0x001b",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 604,
+        "vector_hex": "0x025c",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 592,
+        "vector_hex": "0x0250",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 596,
+        "vector_hex": "0x0254",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 196,
+        "vector_hex": "0x00c4",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 59,
+        "vector_hex": "0x003b",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 833,
+        "vector_hex": "0x0341",
+        "source": "device-tree/arm-io/event-log-handler",
+        "role": "Hardware Interrupt for event-log-handler"
+      },
+      {
+        "vector_dec": 433,
+        "vector_hex": "0x01b1",
+        "source": "device-tree/arm-io/nub-gpio",
+        "role": "Hardware Interrupt for nub-gpio"
+      },
+      {
+        "vector_dec": 434,
+        "vector_hex": "0x01b2",
+        "source": "device-tree/arm-io/nub-gpio",
+        "role": "Hardware Interrupt for nub-gpio"
+      },
+      {
+        "vector_dec": 435,
+        "vector_hex": "0x01b3",
+        "source": "device-tree/arm-io/nub-gpio",
+        "role": "Hardware Interrupt for nub-gpio"
+      },
+      {
+        "vector_dec": 436,
+        "vector_hex": "0x01b4",
+        "source": "device-tree/arm-io/nub-gpio",
+        "role": "Hardware Interrupt for nub-gpio"
+      },
+      {
+        "vector_dec": 437,
+        "vector_hex": "0x01b5",
+        "source": "device-tree/arm-io/nub-gpio",
+        "role": "Hardware Interrupt for nub-gpio"
+      },
+      {
+        "vector_dec": 438,
+        "vector_hex": "0x01b6",
+        "source": "device-tree/arm-io/nub-gpio",
+        "role": "Hardware Interrupt for nub-gpio"
+      },
+      {
+        "vector_dec": 1062,
+        "vector_hex": "0x0426",
+        "source": "device-tree/arm-io/mtp-gpio",
+        "role": "Hardware Interrupt for mtp-gpio"
+      },
+      {
+        "vector_dec": 1063,
+        "vector_hex": "0x0427",
+        "source": "device-tree/arm-io/mtp-gpio",
+        "role": "Hardware Interrupt for mtp-gpio"
+      },
+      {
+        "vector_dec": 1064,
+        "vector_hex": "0x0428",
+        "source": "device-tree/arm-io/mtp-gpio",
+        "role": "Hardware Interrupt for mtp-gpio"
+      },
+      {
+        "vector_dec": 1065,
+        "vector_hex": "0x0429",
+        "source": "device-tree/arm-io/mtp-gpio",
+        "role": "Hardware Interrupt for mtp-gpio"
+      },
+      {
+        "vector_dec": 1066,
+        "vector_hex": "0x042a",
+        "source": "device-tree/arm-io/mtp-gpio",
+        "role": "Hardware Interrupt for mtp-gpio"
+      },
+      {
+        "vector_dec": 1067,
+        "vector_hex": "0x042b",
+        "source": "device-tree/arm-io/mtp-gpio",
+        "role": "Hardware Interrupt for mtp-gpio"
+      },
+      {
+        "vector_dec": 1068,
+        "vector_hex": "0x042c",
+        "source": "device-tree/arm-io/mtp-gpio",
+        "role": "Hardware Interrupt for mtp-gpio"
+      },
+      {
+        "vector_dec": 1059,
+        "vector_hex": "0x0423",
+        "source": "device-tree/arm-io/sio",
+        "role": "Hardware Interrupt for sio"
+      },
+      {
+        "vector_dec": 1058,
+        "vector_hex": "0x0422",
+        "source": "device-tree/arm-io/sio",
+        "role": "Hardware Interrupt for sio"
+      },
+      {
+        "vector_dec": 1061,
+        "vector_hex": "0x0425",
+        "source": "device-tree/arm-io/sio",
+        "role": "Hardware Interrupt for sio"
+      },
+      {
+        "vector_dec": 1060,
+        "vector_hex": "0x0424",
+        "source": "device-tree/arm-io/sio",
+        "role": "Hardware Interrupt for sio"
+      },
+      {
+        "vector_dec": 1054,
+        "vector_hex": "0x041e",
+        "source": "device-tree/arm-io/dart-sio",
+        "role": "Hardware Interrupt for dart-sio"
+      },
+      {
+        "vector_dec": 262,
+        "vector_hex": "0x0106",
+        "source": "device-tree/arm-io/rsm",
+        "role": "Hardware Interrupt for rsm"
+      },
+      {
+        "vector_dec": 265,
+        "vector_hex": "0x0109",
+        "source": "device-tree/arm-io/dart-rsm",
+        "role": "Hardware Interrupt for dart-rsm"
+      },
+      {
+        "vector_dec": 430,
+        "vector_hex": "0x01ae",
+        "source": "device-tree/arm-io/dockchannel-uart",
+        "role": "Hardware Interrupt for dockchannel-uart"
+      },
+      {
+        "vector_dec": 1093,
+        "vector_hex": "0x0445",
+        "source": "device-tree/arm-io/mtp",
+        "role": "Hardware Interrupt for mtp"
+      },
+      {
+        "vector_dec": 1092,
+        "vector_hex": "0x0444",
+        "source": "device-tree/arm-io/mtp",
+        "role": "Hardware Interrupt for mtp"
+      },
+      {
+        "vector_dec": 1095,
+        "vector_hex": "0x0447",
+        "source": "device-tree/arm-io/mtp",
+        "role": "Hardware Interrupt for mtp"
+      },
+      {
+        "vector_dec": 1094,
+        "vector_hex": "0x0446",
+        "source": "device-tree/arm-io/mtp",
+        "role": "Hardware Interrupt for mtp"
+      },
+      {
+        "vector_dec": 1069,
+        "vector_hex": "0x042d",
+        "source": "device-tree/arm-io/dart-mtp",
+        "role": "Hardware Interrupt for dart-mtp"
+      },
+      {
+        "vector_dec": 1026,
+        "vector_hex": "0x0402",
+        "source": "device-tree/arm-io/uart0",
+        "role": "Hardware Interrupt for uart0"
+      },
+      {
+        "vector_dec": 1044,
+        "vector_hex": "0x0414",
+        "source": "device-tree/arm-io/i2c2",
+        "role": "Hardware Interrupt for i2c2"
+      },
+      {
+        "vector_dec": 164,
+        "vector_hex": "0x00a4",
+        "source": "device-tree/arm-io/i2c2/audio-codec",
+        "role": "Hardware Interrupt for audio-codec"
+      },
+      {
+        "vector_dec": 1,
+        "vector_hex": "0x0001",
+        "source": "device-tree/arm-io/i2c2/audio-codec",
+        "role": "Hardware Interrupt for audio-codec"
+      },
+      {
+        "vector_dec": 1045,
+        "vector_hex": "0x0415",
+        "source": "device-tree/arm-io/i2c3",
+        "role": "Hardware Interrupt for i2c3"
+      },
+      {
+        "vector_dec": 256,
+        "vector_hex": "0x0100",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 443,
+        "vector_hex": "0x01bb",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 281,
+        "vector_hex": "0x0119",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 260,
+        "vector_hex": "0x0104",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 261,
+        "vector_hex": "0x0105",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 264,
+        "vector_hex": "0x0108",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 265,
+        "vector_hex": "0x0109",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 266,
+        "vector_hex": "0x010a",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 268,
+        "vector_hex": "0x010c",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 269,
+        "vector_hex": "0x010d",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 279,
+        "vector_hex": "0x0117",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 280,
+        "vector_hex": "0x0118",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 282,
+        "vector_hex": "0x011a",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 283,
+        "vector_hex": "0x011b",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 284,
+        "vector_hex": "0x011c",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 285,
+        "vector_hex": "0x011d",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 272,
+        "vector_hex": "0x0110",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 273,
+        "vector_hex": "0x0111",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 262,
+        "vector_hex": "0x0106",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 263,
+        "vector_hex": "0x0107",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 267,
+        "vector_hex": "0x010b",
+        "source": "device-tree/arm-io/nub-spmi0",
+        "role": "Hardware Interrupt for nub-spmi0"
+      },
+      {
+        "vector_dec": 2,
+        "vector_hex": "0x0002",
+        "source": "device-tree/arm-io/nub-spmi0/pmu-main",
+        "role": "Hardware Interrupt for pmu-main"
+      },
+      {
+        "vector_dec": 62,
+        "vector_hex": "0x003e",
+        "source": "device-tree/arm-io/nub-spmi0/pmu-main",
+        "role": "Hardware Interrupt for pmu-main"
+      },
+      {
+        "vector_dec": 1651797296,
+        "vector_hex": "0x62746d30",
+        "source": "device-tree/arm-io/nub-spmi0/btm",
+        "role": "Hardware Interrupt for btm"
+      },
+      {
+        "vector_dec": 1651797297,
+        "vector_hex": "0x62746d31",
+        "source": "device-tree/arm-io/nub-spmi0/btm",
+        "role": "Hardware Interrupt for btm"
+      },
+      {
+        "vector_dec": 256,
+        "vector_hex": "0x0100",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 448,
+        "vector_hex": "0x01c0",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 281,
+        "vector_hex": "0x0119",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 260,
+        "vector_hex": "0x0104",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 261,
+        "vector_hex": "0x0105",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 264,
+        "vector_hex": "0x0108",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 265,
+        "vector_hex": "0x0109",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 266,
+        "vector_hex": "0x010a",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 268,
+        "vector_hex": "0x010c",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 269,
+        "vector_hex": "0x010d",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 279,
+        "vector_hex": "0x0117",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 280,
+        "vector_hex": "0x0118",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 282,
+        "vector_hex": "0x011a",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 283,
+        "vector_hex": "0x011b",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 284,
+        "vector_hex": "0x011c",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 285,
+        "vector_hex": "0x011d",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 272,
+        "vector_hex": "0x0110",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 273,
+        "vector_hex": "0x0111",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 262,
+        "vector_hex": "0x0106",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 263,
+        "vector_hex": "0x0107",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 267,
+        "vector_hex": "0x010b",
+        "source": "device-tree/arm-io/nub-spmi1",
+        "role": "Hardware Interrupt for nub-spmi1"
+      },
+      {
+        "vector_dec": 256,
+        "vector_hex": "0x0100",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 450,
+        "vector_hex": "0x01c2",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 281,
+        "vector_hex": "0x0119",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 260,
+        "vector_hex": "0x0104",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 261,
+        "vector_hex": "0x0105",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 264,
+        "vector_hex": "0x0108",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 265,
+        "vector_hex": "0x0109",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 266,
+        "vector_hex": "0x010a",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 268,
+        "vector_hex": "0x010c",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 269,
+        "vector_hex": "0x010d",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 279,
+        "vector_hex": "0x0117",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 280,
+        "vector_hex": "0x0118",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 282,
+        "vector_hex": "0x011a",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 283,
+        "vector_hex": "0x011b",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 284,
+        "vector_hex": "0x011c",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 285,
+        "vector_hex": "0x011d",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 272,
+        "vector_hex": "0x0110",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 273,
+        "vector_hex": "0x0111",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 262,
+        "vector_hex": "0x0106",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 263,
+        "vector_hex": "0x0107",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 267,
+        "vector_hex": "0x010b",
+        "source": "device-tree/arm-io/nub-spmi-a0",
+        "role": "Hardware Interrupt for nub-spmi-a0"
+      },
+      {
+        "vector_dec": 11,
+        "vector_hex": "0x000b",
+        "source": "device-tree/arm-io/nub-spmi-a0/spmi-hpm0-tnt",
+        "role": "Hardware Interrupt for spmi-hpm0-tnt"
+      },
+      {
+        "vector_dec": 17,
+        "vector_hex": "0x0011",
+        "source": "device-tree/arm-io/nub-spmi-a0/spmi-hpm0-tnt",
+        "role": "Hardware Interrupt for spmi-hpm0-tnt"
+      },
+      {
+        "vector_dec": 19,
+        "vector_hex": "0x0013",
+        "source": "device-tree/arm-io/nub-spmi-a0/spmi-hpm0-tnt",
+        "role": "Hardware Interrupt for spmi-hpm0-tnt"
+      },
+      {
+        "vector_dec": 408,
+        "vector_hex": "0x0198",
+        "source": "device-tree/arm-io/admac-base-ns",
+        "role": "Hardware Interrupt for admac-base-ns"
+      },
+      {
+        "vector_dec": 411,
+        "vector_hex": "0x019b",
+        "source": "device-tree/arm-io/admac-leap-ns",
+        "role": "Hardware Interrupt for admac-leap-ns"
+      },
+      {
+        "vector_dec": 407,
+        "vector_hex": "0x0197",
+        "source": "device-tree/arm-io/admac-base-s",
+        "role": "Hardware Interrupt for admac-base-s"
+      },
+      {
+        "vector_dec": 410,
+        "vector_hex": "0x019a",
+        "source": "device-tree/arm-io/admac-leap-s",
+        "role": "Hardware Interrupt for admac-leap-s"
+      },
+      {
+        "vector_dec": 266,
+        "vector_hex": "0x010a",
+        "source": "device-tree/arm-io/dbgCPU",
+        "role": "Hardware Interrupt for dbgCPU"
+      }
+    ]
+  }
+}

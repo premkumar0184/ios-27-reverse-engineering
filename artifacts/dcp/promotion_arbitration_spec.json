@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple ProMotion Dynamic Refresh Rate Arbitration & State Machine Specification",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "promotion_architecture": {
+    "subsystem": "Software-Managed Pixel Refresh (SWMPR_v1)",
+    "panel_technology": "Low-Temperature Polycrystalline Oxide (LTPO 3.0) Tandem OLED",
+    "range_hz": {
+      "min_aod_hz": 1,
+      "min_interactive_hz": 10,
+      "max_hz": 120
+    },
+    "discrete_refresh_rates": [
+      {
+        "rate_hz": 120,
+        "frame_duration_us": 8333,
+        "divisor_120": 1,
+        "trigger": "Active touch contact, high-velocity fling gestures, 120fps Metal games."
+      },
+      {
+        "rate_hz": 80,
+        "frame_duration_us": 12500,
+        "divisor_120": 1.5,
+        "trigger": "Deceleration ramp-down from 120Hz scroll gestures."
+      },
+      {
+        "rate_hz": 60,
+        "frame_duration_us": 16666,
+        "divisor_120": 2,
+        "trigger": "Standard UI animations, 60fps video playback, web scrolling."
+      },
+      {
+        "rate_hz": 48,
+        "frame_duration_us": 20833,
+        "divisor_120": 2.5,
+        "trigger": "Cinema 24fps content with 2:2 pulldown (zero judder)."
+      },
+      {
+        "rate_hz": 40,
+        "frame_duration_us": 25000,
+        "divisor_120": 3,
+        "trigger": "Intermediate ramp step, high-efficiency scrolling."
+      },
+      {
+        "rate_hz": 30,
+        "frame_duration_us": 33333,
+        "divisor_120": 4,
+        "trigger": "30fps video playback, low-activity interactive apps."
+      },
+      {
+        "rate_hz": 24,
+        "frame_duration_us": 41666,
+        "divisor_120": 5,
+        "trigger": "Native cinema 24fps video playback without frame repetition."
+      },
+      {
+        "rate_hz": 20,
+        "frame_duration_us": 50000,
+        "divisor_120": 6,
+        "trigger": "Static reading with minimal UI updates."
+      },
+      {
+        "rate_hz": 15,
+        "frame_duration_us": 66666,
+        "divisor_120": 8,
+        "trigger": "Extended idle reading, photo viewing."
+      },
+      {
+        "rate_hz": 10,
+        "frame_duration_us": 100000,
+        "divisor_120": 12,
+        "trigger": "Completely static interactive screen (idle user reading book or web article)."
+      },
+      {
+        "rate_hz": 1,
+        "frame_duration_us": 1000000,
+        "divisor_120": 120,
+        "trigger": "Always-On Display (AOD) locked sleep state, driven by AOP via CBAOPEndpoint."
+      }
+    ],
+    "arbitration_state_machine": {
+      "states": [
+        "SWMPR_STATE_IDLE_10HZ",
+        "SWMPR_STATE_INTERACTIVE_RAMP_UP",
+        "SWMPR_STATE_ACTIVE_120HZ",
+        "SWMPR_STATE_DECEL_RAMP_DOWN",
+        "SWMPR_STATE_MEDIA_LOCK_24_48_60HZ",
+        "SWMPR_STATE_AOD_1HZ"
+      ],
+      "ramp_up_latency_us": 8333,
+      "ramp_down_hysteresis_ms": 100,
+      "touch_boost_policy": "Instantaneous jump from 10Hz to 120Hz upon first touch-down event (Phase began) within a single VSYNC interval."
+    }
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Apple Video Encoder 2 (AVE2) Hardware Command Queue Protocol",
+  "soc": "t8150",
+  "command_opcodes": {
+    "ProcessCmd_Open": {
+      "opcode_id": 1,
+      "handler_symbol": "ProcessCmd_Open",
+      "role": "Allocates new hardware encoder session context and reserves DPB frames",
+      "parameters": "SessionID, CodecType (AV1, HEVC, AVC, ProRes), FrameWidth, FrameHeight, Profile, Tier"
+    },
+    "ProcessCmd_Close": {
+      "opcode_id": 2,
+      "handler_symbol": "ProcessCmd_Close",
+      "role": "Terminates active encoder session, flushes DMA pipelines, releases DPB memory",
+      "parameters": "SessionID"
+    },
+    "ProcessCmd_Start": {
+      "opcode_id": 3,
+      "handler_symbol": "ProcessCmd_Start",
+      "role": "Transitions session to active encoding state and initializes clock mesh",
+      "parameters": "SessionID, ClockState, Priority"
+    },
+    "ProcessCmd_Start_AVC": {
+      "opcode_id": 4,
+      "handler_symbol": "ProcessCmd_Start_AVC",
+      "role": "Initializes AVC/H.264 hardware pipeline, loads CAVLC/CABAC tables",
+      "parameters": "SessionID, ProfileLevelIdc, EntropyMode"
+    },
+    "ProcessCmd_Start_HEVC": {
+      "opcode_id": 5,
+      "handler_symbol": "ProcessCmd_Start_HEVC",
+      "role": "Initializes HEVC hardware pipeline, sets up CTU 64x64/32x32 grids",
+      "parameters": "SessionID, ProfileTierLevel, ScalingListFlags"
+    },
+    "ProcessCmd_Process_AVC": {
+      "opcode_id": 6,
+      "handler_symbol": "ProcessCmd_Process_AVC",
+      "role": "Submits frame encode job for AVC/H.264 stream",
+      "parameters": "sCmdInformation pointer, SourceDMA, BitstreamDMA, SliceParams"
+    },
+    "ProcessCmd_Process_HEVC": {
+      "opcode_id": 7,
+      "handler_symbol": "ProcessCmd_Process_HEVC",
+      "role": "Submits frame encode job for HEVC/H.265 stream",
+      "parameters": "sCmdInformation pointer, SourceDMA, BitstreamDMA, SliceParams, RPS"
+    },
+    "ProcessCmd_Process_LRME": {
+      "opcode_id": 8,
+      "handler_symbol": "ProcessCmd_Process_LRME",
+      "role": "Executes low-resolution motion estimation pass across downsampled luma",
+      "parameters": "SourcePlanePA, RefPlanePA, OutputVectorFieldPA"
+    },
+    "ProcessCmd_Process_MCTF": {
+      "opcode_id": 9,
+      "handler_symbol": "ProcessCmd_Process_MCTF",
+      "role": "Executes motion-compensated temporal filtering denoising pass",
+      "parameters": "CurrentFramePA, PrevRefFramePA, NextRefFramePA, DenoisedOutputPA"
+    },
+    "ProcessCmd_Process_DMV": {
+      "opcode_id": 10,
+      "handler_symbol": "ProcessCmd_Process_DMV",
+      "role": "Executes dense motion vector quarter-pel refinement pass",
+      "parameters": "MotionVectorInPA, RefinedMVOutPA"
+    },
+    "ProcessCmd_Process_GGM": {
+      "opcode_id": 11,
+      "handler_symbol": "ProcessCmd_Process_GGM",
+      "role": "Computes global affine camera motion parameters across consecutive frames",
+      "parameters": "Frame1PA, Frame2PA, AffineTransformMatrixPA"
+    },
+    "ProcessCmd_Config": {
+      "opcode_id": 12,
+      "handler_symbol": "ProcessCmd_Config",
+      "role": "Dynamically reconfigures bitrate, frame rate, GOP structure, or ROI matrices",
+      "parameters": "SessionID, TargetBitrate, MaxBitrate, TargetFPS"
+    },
+    "ProcessCmd_Flush": {
+      "opcode_id": 13,
+      "handler_symbol": "ProcessCmd_Flush",
+      "role": "Forces immediate completion and bitstream writeout of all in-flight frames",
+      "parameters": "SessionID"
+    },
+    "ProcessCmd_Reset": {
+      "opcode_id": 14,
+      "handler_symbol": "ProcessCmd_Reset",
+      "role": "Resets hardware encoder pipeline registers following unrecoverable bus faults",
+      "parameters": "PipelineIndex"
+    },
+    "ProcessCmd_Priority": {
+      "opcode_id": 15,
+      "handler_symbol": "ProcessCmd_Priority",
+      "role": "Modifies stream arbitration priority within CAVEPriorityQueue",
+      "parameters": "SessionID, NewPriorityLevel (0=Background, 1=Interactive, 2=Realtime)"
+    },
+    "ProcessCmd_Complete": {
+      "opcode_id": 16,
+      "handler_symbol": "ProcessCmd_Complete",
+      "role": "Signals completion of encoding job, writes back status header, raises doorbell",
+      "parameters": "sCmdInformation pointer, BitstreamBytesEmitted, FrameEncodedStatus"
+    }
+  },
+  "mailbox_protocol": {
+    "channel_type": "Bidirectional 64-word Ring Buffer Mailbox",
+    "ipc_routines": [
+      {
+        "name": "_os_mailbox_queue_init",
+        "role": "Allocates mailbox ring buffer and initializes head/tail pointers"
+      },
+      {
+        "name": "_os_mailbox_queue_send",
+        "role": "Host deposits 64-byte command descriptor and asserts doorbell"
+      },
+      {
+        "name": "_os_mailbox_queue_receivew",
+        "role": "Coprocessor thread blocks waiting for doorbell event"
+      },
+      {
+        "name": "_os_mailbox_queue_destroy",
+        "role": "Deallocates mailbox ring buffer and clears interrupt bindings"
+      }
+    ],
+    "arbitration": {
+      "class": "CAVEPriorityQueue",
+      "methods": [
+        "GetNumClientsPerCodec",
+        "GetClientPriority",
+        "IsClientRegistered",
+        "GetClientIndexFromID"
+      ],
+      "scheduling_policy": "Deficit Weighted Round Robin (DWRR) with Real-Time Video Preemption"
+    }
+  }
+}

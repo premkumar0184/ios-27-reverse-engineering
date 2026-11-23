@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "project": "iOS 27.2 Full-Stack Reverse Engineering Pipeline — Display Coprocessor (DCP) & ProMotion Pipeline",
+  "phase": "dcp_phase_1a_workspace_baseline",
+  "date": "2026-11-23",
+  "target_hardware": {
+    "device_class": "v57ap",
+    "marketing_name": "iPhone 18,3 (iPhone 17 Pro Max)",
+    "soc": "t8150",
+    "soc_generation": "Apple A19 Pro",
+    "display_architecture": "GenPipe_v33 / H18P_int",
+    "panel_technology": "Tandem OLED ProMotion with LTPO 3.0",
+    "max_refresh_rate_hz": 120,
+    "min_refresh_rate_hz": 1,
+    "panel_native_resolution": "2868x1320 @ 460 ppi"
+  },
+  "firmware_container": {
+    "path": "iPhone18,3_27.2_24B119_Restore/Firmware/dcp/t8150dcp.im4p",
+    "format": "Apple Image4 Payload (IM4P)",
+    "fourcc_tag": "dcpf",
+    "file_size_compressed_bytes": 2466452,
+    "compression_algorithm": "LZFSE",
+    "decompressed_payload_size_bytes": 16990208,
+    "uncompressed_container_format": "Apple BUNDLE (DNUB v4.0)",
+    "embedded_macho_binaries_count": 2,
+    "sha256": "50ab10e626188e615e9c3b42c6e6cc1b474e8fa18d4fc8130058f3c24cd49e34"
+  },
+  "hardware_interconnect": {
+    "ascwrap_mailbox_mmio_base": "0x0000000100600000",
+    "ascwrap_mailbox_size_bytes": 557056,
+    "ascwrap_mailbox_size_human": "544 KB",
+    "dart_dcp_base": "0x00000001fa340000",
+    "dart_dcp_size_bytes": 49152,
+    "dart_disp0_base": "0x00000001fa300000",
+    "dart_disp0_isoc_base": "0x00000001fa1c0000",
+    "interrupt_vectors": {
+      "DISP_INT_DCP": 411,
+      "DISP_EXT0_DCP": 412,
+      "DCP0_V": 403,
+      "DCPEXT0_V": 405
+    }
+  }
+}

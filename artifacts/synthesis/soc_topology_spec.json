@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro (t8150) SoC System Topology Specification",
+  "soc_architecture": {
+    "die_layout": "Monolithic TSMC N3P (3-nanometer enhanced)",
+    "package_type": "InFO-PoP (Integrated Fan-Out Package-on-Package)",
+    "dram_generation": "LPDDR5X-8533 (64-bit dual-channel, 16-channel pseudo-channel architecture)",
+    "memory_bus_width_bits": 128,
+    "theoretical_bandwidth_gbps": 136.5,
+    "system_level_cache_slc": {
+      "size_bytes": 33554432,
+      "size_human": "32 MB",
+      "line_size_bytes": 128,
+      "associativity": 16,
+      "partitioning": [
+        "AP Core Partition",
+        "AGX GPU Partition",
+        "ANE Tensor Partition",
+        "CMA / Display Partition"
+      ]
+    }
+  },
+  "interconnect_fabric": {
+    "fabric_name": "Apple Coherent Fabric 7 (ACF7)",
+    "coherency_domains": [
+      "AP_CPU_COHERENT_DOMAIN (Everest + Sawtooth)",
+      "AGX_GPU_SYSTEM_COHERENT_DOMAIN",
+      "ANE_IO_COHERENT_DOMAIN",
+      "DART_DMA_IO_COHERENT_DOMAIN"
+    ],
+    "mmio_bus_aperture": {
+      "base": "0x00000000f0000000",
+      "limit": "0x00000003ffffffff",
+      "total_addressable_range": "12.25 GB"
+    }
+  },
+  "power_and_clock_domains": {
+    "pmgr_base": "0x00000000f3400000",
+    "voltage_rails": [
+      {
+        "rail": "VDD_CPU_E",
+        "domain": "Sawtooth Efficiency Cluster",
+        "nominal_v": 0.82
+      },
+      {
+        "rail": "VDD_CPU_P",
+        "domain": "Everest Performance Cluster",
+        "nominal_v": 0.95
+      },
+      {
+        "rail": "VDD_GPU",
+        "domain": "AGX G18 Graphics Cores",
+        "nominal_v": 0.88
+      },
+      {
+        "rail": "VDD_ANE",
+        "domain": "Neural Engine H18",
+        "nominal_v": 0.78
+      },
+      {
+        "rail": "VDD_SOC",
+        "domain": "System Fabric, Memory Controller, SLC",
+        "nominal_v": 0.75
+      },
+      {
+        "rail": "VDD_AOP",
+        "domain": "AOP2 Retention SRAM & Core",
+        "nominal_v": 0.65
+      },
+      {
+        "rail": "VDD_SEP",
+        "domain": "Secure Enclave Hardware",
+        "nominal_v": 0.72
+      }
+    ]
+  },
+  "security_boundaries": {
+    "gxf_tiers": {
+      "GL2": "SPTM (Hypervisor Boundary & Stage-2 Page Table Protection)",
+      "GL1": "TXM (TrustZone Execution Monitor & CSM Code Signing)",
+      "EL1": "Darwin XNU Kernel (Host Supervisor)",
+      "EL0": "Darwin Userland + Exclave Conclaves"
+    },
+    "hardware_barriers": [
+      {
+        "name": "CTRR",
+        "function": "Configurable Text Region Restriction (prevents W^X violations)"
+      },
+      {
+        "name": "GAPF",
+        "function": "Guarded Address Protection Filter (filters bus requests at fabric port)"
+      },
+      {
+        "name": "DART_SEP",
+        "function": "IOMMU isolation of SEP secure DRAM carveouts"
+      },
+      {
+        "name": "ASCWRAP",
+        "function": "Secure hardware FIFO message queues between coprocessors"
+      }
+    ]
+  }
+}

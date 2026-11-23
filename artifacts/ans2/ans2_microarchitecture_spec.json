@@ -1,0 +1,616 @@
+{
+  "coprocessor_topology": {
+    "name": "Apple Storage Processor 3 (ASP3) / ANS2",
+    "soc": "t8150",
+    "architecture": "ARM64e (PAC00 Pointer Authentication)",
+    "execution_mode": "Bare-metal Preload Executable under RTKit OS",
+    "virtual_memory_range": {
+      "base": "0x00000000",
+      "limit": "0x0055c000",
+      "total_span_bytes": 5619712,
+      "total_span_mb": 5.36
+    },
+    "clock_domains": {
+      "core_clock": "ANS-V / ANS-AF-BW dynamic frequency scaling",
+      "fabric_interface": "af_ansaxi2af (AXI to Application Fabric)",
+      "dma_protection": "sart-ans (SART Coastguard v4 DMA IOMMU)"
+    }
+  },
+  "ftl_subsystems": {
+    "l2p_indirection_engine": {
+      "name": "CSW (Content-Store Window) Indirection System",
+      "features": [
+        "Dynamic LBA-to-PBA Radix Mapping",
+        "Tile-based Indirection Memory Allocation (IND_memory.c)",
+        "Sub-page 4KB fragment resolution",
+        "Low-latency search cache (CSW_search.c)"
+      ]
+    },
+    "journal_clog_engine": {
+      "name": "CLog v2 (Commit Log) Journaling Architecture",
+      "features": [
+        "Transactional FTL metadata persistence across power-loss events",
+        "Fast restart recovery via forward-scanned checkpoint logs (clog_load.c)",
+        "Double-buffered circular in-band commit rings (clog_save.c)"
+      ]
+    },
+    "garbage_collection_wear_leveling": {
+      "name": "Adaptive Multi-Band Wear Leveling & GC",
+      "features": [
+        "SLC Cache Mode (oSLC) with dynamic fold-down into TLC/QLC bands",
+        "Read Disturb mitigation with autonomous sampler thresholds (readdisturb.c)",
+        "Skinny-band fragmentation compression (skinny_bands.c, ldefrag.c)",
+        "Grown Bad Block (GBB) retirement tracking and autonomous reallocation"
+      ]
+    },
+    "hardware_raid_parity": {
+      "name": "Inter-Die Hardware Parity & Reconstruction",
+      "features": [
+        "Hardware-accelerated XOR parity generation across multi-plane dies",
+        "Single-die and multi-die defect tolerant read reconstruction (raid_hw_common.c)",
+        "In-band parity metadata synchronization (raid_in_band.c)"
+      ]
+    },
+    "hardware_crypto_tweak": {
+      "name": "Hardware AES-XTS NAND Encryption Pipeline",
+      "features": [
+        "On-the-fly streaming AES-XTS cipher engine between Host-to-Flash (H2F) and Flash-to-Host (F2H)",
+        "Per-block 128-bit cryptographic tweak derived from LBA, Namespace ID, and Segment Index",
+        "Hardware key ladder integration via Effaceable Storage (Namespace 7)"
+      ]
+    }
+  },
+  "c_source_modules": [
+    {
+      "module_name": "apcie.c",
+      "subsystem": "Host_NVMe_Protocol",
+      "description": "Internal firmware implementation unit for Host NVMe Protocol"
+    },
+    {
+      "module_name": "pci.c",
+      "subsystem": "Host_NVMe_Protocol",
+      "description": "Internal firmware implementation unit for Host NVMe Protocol"
+    },
+    {
+      "module_name": "nvme_protocol.c",
+      "subsystem": "Host_NVMe_Protocol",
+      "description": "Internal firmware implementation unit for Host NVMe Protocol"
+    },
+    {
+      "module_name": "nvme_admin_ans2.c",
+      "subsystem": "Host_NVMe_Protocol",
+      "description": "Internal firmware implementation unit for Host NVMe Protocol"
+    },
+    {
+      "module_name": "cmd_nvme_admin.c",
+      "subsystem": "Host_NVMe_Protocol",
+      "description": "Internal firmware implementation unit for Host NVMe Protocol"
+    },
+    {
+      "module_name": "host_ans2.c",
+      "subsystem": "Host_NVMe_Protocol",
+      "description": "Internal firmware implementation unit for Host NVMe Protocol"
+    },
+    {
+      "module_name": "hiddenlbas.c",
+      "subsystem": "Host_NVMe_Protocol",
+      "description": "Internal firmware implementation unit for Host NVMe Protocol"
+    },
+    {
+      "module_name": "asi.c",
+      "subsystem": "Host_NVMe_Protocol",
+      "description": "Internal firmware implementation unit for Host NVMe Protocol"
+    },
+    {
+      "module_name": "asiExtensions.c",
+      "subsystem": "Host_NVMe_Protocol",
+      "description": "Internal firmware implementation unit for Host NVMe Protocol"
+    },
+    {
+      "module_name": "CSW_ind.c",
+      "subsystem": "FTL_Indirection_L2P",
+      "description": "Internal firmware implementation unit for FTL Indirection L2P"
+    },
+    {
+      "module_name": "CSW_search.c",
+      "subsystem": "FTL_Indirection_L2P",
+      "description": "Internal firmware implementation unit for FTL Indirection L2P"
+    },
+    {
+      "module_name": "IND_memory.c",
+      "subsystem": "FTL_Indirection_L2P",
+      "description": "Internal firmware implementation unit for FTL Indirection L2P"
+    },
+    {
+      "module_name": "ind.c",
+      "subsystem": "FTL_Indirection_L2P",
+      "description": "Internal firmware implementation unit for FTL Indirection L2P"
+    },
+    {
+      "module_name": "capacity.c",
+      "subsystem": "FTL_Indirection_L2P",
+      "description": "Internal firmware implementation unit for FTL Indirection L2P"
+    },
+    {
+      "module_name": "seg.c",
+      "subsystem": "FTL_Indirection_L2P",
+      "description": "Internal firmware implementation unit for FTL Indirection L2P"
+    },
+    {
+      "module_name": "clog_v2.c",
+      "subsystem": "Journal_CLog_Engine",
+      "description": "Internal firmware implementation unit for Journal CLog Engine"
+    },
+    {
+      "module_name": "clog_find.c",
+      "subsystem": "Journal_CLog_Engine",
+      "description": "Internal firmware implementation unit for Journal CLog Engine"
+    },
+    {
+      "module_name": "clog_load.c",
+      "subsystem": "Journal_CLog_Engine",
+      "description": "Internal firmware implementation unit for Journal CLog Engine"
+    },
+    {
+      "module_name": "clog_save.c",
+      "subsystem": "Journal_CLog_Engine",
+      "description": "Internal firmware implementation unit for Journal CLog Engine"
+    },
+    {
+      "module_name": "clogint.c",
+      "subsystem": "Journal_CLog_Engine",
+      "description": "Internal firmware implementation unit for Journal CLog Engine"
+    },
+    {
+      "module_name": "gc.c",
+      "subsystem": "Wear_Leveling_GC_Defrag",
+      "description": "Internal firmware implementation unit for Wear Leveling GC Defrag"
+    },
+    {
+      "module_name": "ldefrag.c",
+      "subsystem": "Wear_Leveling_GC_Defrag",
+      "description": "Internal firmware implementation unit for Wear Leveling GC Defrag"
+    },
+    {
+      "module_name": "band.c",
+      "subsystem": "Wear_Leveling_GC_Defrag",
+      "description": "Internal firmware implementation unit for Wear Leveling GC Defrag"
+    },
+    {
+      "module_name": "bands_temperature.c",
+      "subsystem": "Wear_Leveling_GC_Defrag",
+      "description": "Internal firmware implementation unit for Wear Leveling GC Defrag"
+    },
+    {
+      "module_name": "skinny_bands.c",
+      "subsystem": "Wear_Leveling_GC_Defrag",
+      "description": "Internal firmware implementation unit for Wear Leveling GC Defrag"
+    },
+    {
+      "module_name": "slc_wl_manager.c",
+      "subsystem": "Wear_Leveling_GC_Defrag",
+      "description": "Internal firmware implementation unit for Wear Leveling GC Defrag"
+    },
+    {
+      "module_name": "bg.c",
+      "subsystem": "Wear_Leveling_GC_Defrag",
+      "description": "Internal firmware implementation unit for Wear Leveling GC Defrag"
+    },
+    {
+      "module_name": "bgrefresh.c",
+      "subsystem": "Wear_Leveling_GC_Defrag",
+      "description": "Internal firmware implementation unit for Wear Leveling GC Defrag"
+    },
+    {
+      "module_name": "readdisturb.c",
+      "subsystem": "Wear_Leveling_GC_Defrag",
+      "description": "Internal firmware implementation unit for Wear Leveling GC Defrag"
+    },
+    {
+      "module_name": "oslc.c",
+      "subsystem": "Wear_Leveling_GC_Defrag",
+      "description": "Internal firmware implementation unit for Wear Leveling GC Defrag"
+    },
+    {
+      "module_name": "raid_api_common.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "raid_asi_v2.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "raid_dual_ctx.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "raid_hw_common.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "raid_hw_common_int.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "raid_in_band.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "raid_in_band_pmx.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "raid_int_common.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "raid_mpbx_int.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "raid_page_idx.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "raid_pmx_api_common.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "raid_rmx_int.c",
+      "subsystem": "Hardware_RAID_Engine",
+      "description": "Internal firmware implementation unit for Hardware RAID Engine"
+    },
+    {
+      "module_name": "nand.c",
+      "subsystem": "NAND_Physical_Engine",
+      "description": "Internal firmware implementation unit for NAND Physical Engine"
+    },
+    {
+      "module_name": "cmd_nand.c",
+      "subsystem": "NAND_Physical_Engine",
+      "description": "Internal firmware implementation unit for NAND Physical Engine"
+    },
+    {
+      "module_name": "pre_nand_eng.c",
+      "subsystem": "NAND_Physical_Engine",
+      "description": "Internal firmware implementation unit for NAND Physical Engine"
+    },
+    {
+      "module_name": "post_nand_eng.c",
+      "subsystem": "NAND_Physical_Engine",
+      "description": "Internal firmware implementation unit for NAND Physical Engine"
+    },
+    {
+      "module_name": "mspfw.c",
+      "subsystem": "NAND_Physical_Engine",
+      "description": "Internal firmware implementation unit for NAND Physical Engine"
+    },
+    {
+      "module_name": "geom_err_info.c",
+      "subsystem": "NAND_Physical_Engine",
+      "description": "Internal firmware implementation unit for NAND Physical Engine"
+    },
+    {
+      "module_name": "pg.c",
+      "subsystem": "NAND_Physical_Engine",
+      "description": "Internal firmware implementation unit for NAND Physical Engine"
+    },
+    {
+      "module_name": "vcc.c",
+      "subsystem": "NAND_Physical_Engine",
+      "description": "Internal firmware implementation unit for NAND Physical Engine"
+    },
+    {
+      "module_name": "rxburn.c",
+      "subsystem": "NAND_Physical_Engine",
+      "description": "Internal firmware implementation unit for NAND Physical Engine"
+    },
+    {
+      "module_name": "autowrite_drv.c",
+      "subsystem": "Hardware_Accelerators_DMA",
+      "description": "Internal firmware implementation unit for Hardware Accelerators DMA"
+    },
+    {
+      "module_name": "cmd_accelerator.c",
+      "subsystem": "Hardware_Accelerators_DMA",
+      "description": "Internal firmware implementation unit for Hardware Accelerators DMA"
+    },
+    {
+      "module_name": "cmd_accelerator_v2.c",
+      "subsystem": "Hardware_Accelerators_DMA",
+      "description": "Internal firmware implementation unit for Hardware Accelerators DMA"
+    },
+    {
+      "module_name": "ecc_widget.c",
+      "subsystem": "Hardware_Accelerators_DMA",
+      "description": "Internal firmware implementation unit for Hardware Accelerators DMA"
+    },
+    {
+      "module_name": "sl_hal.c",
+      "subsystem": "Hardware_Accelerators_DMA",
+      "description": "Internal firmware implementation unit for Hardware Accelerators DMA"
+    },
+    {
+      "module_name": "sart.c",
+      "subsystem": "Hardware_Accelerators_DMA",
+      "description": "Internal firmware implementation unit for Hardware Accelerators DMA"
+    },
+    {
+      "module_name": "sll_sld_hal.c",
+      "subsystem": "Hardware_Accelerators_DMA",
+      "description": "Internal firmware implementation unit for Hardware Accelerators DMA"
+    },
+    {
+      "module_name": "vl_hal.c",
+      "subsystem": "Hardware_Accelerators_DMA",
+      "description": "Internal firmware implementation unit for Hardware Accelerators DMA"
+    },
+    {
+      "module_name": "dm.c",
+      "subsystem": "Hardware_Accelerators_DMA",
+      "description": "Internal firmware implementation unit for Hardware Accelerators DMA"
+    },
+    {
+      "module_name": "dm_large.c",
+      "subsystem": "Hardware_Accelerators_DMA",
+      "description": "Internal firmware implementation unit for Hardware Accelerators DMA"
+    },
+    {
+      "module_name": "utildm.c",
+      "subsystem": "Hardware_Accelerators_DMA",
+      "description": "Internal firmware implementation unit for Hardware Accelerators DMA"
+    },
+    {
+      "module_name": "control_fabric.c",
+      "subsystem": "Fabric_Interconnect_Bridge",
+      "description": "Internal firmware implementation unit for Fabric Interconnect Bridge"
+    },
+    {
+      "module_name": "data_fabric.c",
+      "subsystem": "Fabric_Interconnect_Bridge",
+      "description": "Internal firmware implementation unit for Fabric Interconnect Bridge"
+    },
+    {
+      "module_name": "downlink_fabric.c",
+      "subsystem": "Fabric_Interconnect_Bridge",
+      "description": "Internal firmware implementation unit for Fabric Interconnect Bridge"
+    },
+    {
+      "module_name": "uplink_fabric.c",
+      "subsystem": "Fabric_Interconnect_Bridge",
+      "description": "Internal firmware implementation unit for Fabric Interconnect Bridge"
+    },
+    {
+      "module_name": "periph_bridge.c",
+      "subsystem": "Fabric_Interconnect_Bridge",
+      "description": "Internal firmware implementation unit for Fabric Interconnect Bridge"
+    },
+    {
+      "module_name": "dispatcher.c",
+      "subsystem": "Dispatcher_Queue_Management",
+      "description": "Internal firmware implementation unit for Dispatcher Queue Management"
+    },
+    {
+      "module_name": "dispatcher_monitor.c",
+      "subsystem": "Dispatcher_Queue_Management",
+      "description": "Internal firmware implementation unit for Dispatcher Queue Management"
+    },
+    {
+      "module_name": "cmd.c",
+      "subsystem": "Dispatcher_Queue_Management",
+      "description": "Internal firmware implementation unit for Dispatcher Queue Management"
+    },
+    {
+      "module_name": "buf.c",
+      "subsystem": "Dispatcher_Queue_Management",
+      "description": "Internal firmware implementation unit for Dispatcher Queue Management"
+    },
+    {
+      "module_name": "push.c",
+      "subsystem": "Dispatcher_Queue_Management",
+      "description": "Internal firmware implementation unit for Dispatcher Queue Management"
+    },
+    {
+      "module_name": "stream.c",
+      "subsystem": "Dispatcher_Queue_Management",
+      "description": "Internal firmware implementation unit for Dispatcher Queue Management"
+    },
+    {
+      "module_name": "qos.c",
+      "subsystem": "Dispatcher_Queue_Management",
+      "description": "Internal firmware implementation unit for Dispatcher Queue Management"
+    },
+    {
+      "module_name": "sanitize.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "power_budget.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "thermal_throttle.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "perf.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "stats.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "assert_history.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "boot.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "early.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "core.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "format.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "fw.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "fw_params.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "device_parameters.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "platform_child.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "update.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "util.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "local_sram.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "iolog_hw.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "iolog_spd.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "pc_trace.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "ric.c",
+      "subsystem": "Security_Power_Thermal",
+      "description": "Internal firmware implementation unit for Security Power Thermal"
+    },
+    {
+      "module_name": "eye_scan.c",
+      "subsystem": "Physical_PHY_Eye_Scan",
+      "description": "Internal firmware implementation unit for Physical PHY Eye Scan"
+    },
+    {
+      "module_name": "eye_scan_legacy.c",
+      "subsystem": "Physical_PHY_Eye_Scan",
+      "description": "Internal firmware implementation unit for Physical PHY Eye Scan"
+    },
+    {
+      "module_name": "eye_scan_legacy_s5e.c",
+      "subsystem": "Physical_PHY_Eye_Scan",
+      "description": "Internal firmware implementation unit for Physical PHY Eye Scan"
+    },
+    {
+      "module_name": "eye_scan_s6e.c",
+      "subsystem": "Physical_PHY_Eye_Scan",
+      "description": "Internal firmware implementation unit for Physical PHY Eye Scan"
+    },
+    {
+      "module_name": "eye_scan_unsupported.c",
+      "subsystem": "Physical_PHY_Eye_Scan",
+      "description": "Internal firmware implementation unit for Physical PHY Eye Scan"
+    },
+    {
+      "module_name": "FA_Dump.c",
+      "subsystem": "Error_Injection_Diagnostics",
+      "description": "Internal firmware implementation unit for Error Injection Diagnostics"
+    },
+    {
+      "module_name": "FA_Mem.c",
+      "subsystem": "Error_Injection_Diagnostics",
+      "description": "Internal firmware implementation unit for Error Injection Diagnostics"
+    },
+    {
+      "module_name": "errInj_boot.c",
+      "subsystem": "Error_Injection_Diagnostics",
+      "description": "Internal firmware implementation unit for Error Injection Diagnostics"
+    },
+    {
+      "module_name": "errInj_engine.c",
+      "subsystem": "Error_Injection_Diagnostics",
+      "description": "Internal firmware implementation unit for Error Injection Diagnostics"
+    },
+    {
+      "module_name": "errInj_fwUpdate.c",
+      "subsystem": "Error_Injection_Diagnostics",
+      "description": "Internal firmware implementation unit for Error Injection Diagnostics"
+    },
+    {
+      "module_name": "errInj_general.c",
+      "subsystem": "Error_Injection_Diagnostics",
+      "description": "Internal firmware implementation unit for Error Injection Diagnostics"
+    },
+    {
+      "module_name": "errInj_handlers.c",
+      "subsystem": "Error_Injection_Diagnostics",
+      "description": "Internal firmware implementation unit for Error Injection Diagnostics"
+    },
+    {
+      "module_name": "errInj_phyAddr.c",
+      "subsystem": "Error_Injection_Diagnostics",
+      "description": "Internal firmware implementation unit for Error Injection Diagnostics"
+    },
+    {
+      "module_name": "memory_err_injection.c",
+      "subsystem": "Error_Injection_Diagnostics",
+      "description": "Internal firmware implementation unit for Error Injection Diagnostics"
+    },
+    {
+      "module_name": "nand_err_injection.c",
+      "subsystem": "Error_Injection_Diagnostics",
+      "description": "Internal firmware implementation unit for Error Injection Diagnostics"
+    }
+  ],
+  "total_c_modules_cataloged": 110
+}

@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro (t8150) Inter-Enclave IPC Topology Matrix",
+  "security_domains": [
+    {
+      "id": "DARWIN_RING0",
+      "name": "Darwin XNU Host Kernel (EL1)",
+      "isolation": "ARMv9.4-A Exception Level 1"
+    },
+    {
+      "id": "SPTM_GL2",
+      "name": "Secure Page Table Monitor (GL2)",
+      "isolation": "Guarded Execution Feature GL2"
+    },
+    {
+      "id": "TXM_GL1",
+      "name": "Trusted Execution Monitor (GL1)",
+      "isolation": "Guarded Execution Feature GL1"
+    },
+    {
+      "id": "EXCLAVE_CL4",
+      "name": "ExclaveOS Microkernel Conclaves",
+      "isolation": "SPTM Stage-2 Fault Barriers + cL4 Caps"
+    },
+    {
+      "id": "SEPOS_CORE",
+      "name": "Secure Enclave (sepOS 27.2)",
+      "isolation": "Dedicated Core + DART-SEP + TZ0/TZ1 Carveouts"
+    },
+    {
+      "id": "AOP2_RTKIT",
+      "name": "Always-On Processor 2 (PitayaOS / cL4)",
+      "isolation": "Dedicated Low-Power Core + DART-AOP + SRAM"
+    },
+    {
+      "id": "AGX_RTBUDDY",
+      "name": "AGX G18 GPU Firmware (RTBuddy)",
+      "isolation": "Dedicated Dual Cores + DART-PMP"
+    },
+    {
+      "id": "ANE_H18",
+      "name": "Apple Neural Engine (ANE H18)",
+      "isolation": "Dedicated Hardware Matrix Array + DART-ANE"
+    },
+    {
+      "id": "DCP_RTKIT",
+      "name": "Display Co-Processor (DCP)",
+      "isolation": "Dedicated Display Core + DART-DCP"
+    }
+  ],
+  "crossings": [
+    {
+      "id": "IPC_DARWIN_TO_SPTM",
+      "source": "DARWIN_RING0",
+      "destination": "SPTM_GL2",
+      "mechanism": "smc #0 (Function ID in x0, Args in x1..x6)",
+      "purpose": "Stage-2 Page Table Allocation, CTRR State Verification, Dynamic Retyping",
+      "latency_cycles": 180
+    },
+    {
+      "id": "IPC_DARWIN_TO_TXM",
+      "source": "DARWIN_RING0",
+      "destination": "TXM_GL1",
+      "mechanism": "smc #1 (Function ID in x0, Args in x1..x6)",
+      "purpose": "Code Signing Monitor (CSM) Validation, TrustCache Verification",
+      "latency_cycles": 240
+    },
+    {
+      "id": "IPC_DARWIN_TO_SEP",
+      "source": "DARWIN_RING0",
+      "destination": "SEPOS_CORE",
+      "mechanism": "ASCwrap-v6 Mailbox (0x72600000) + Doorbell (0x7262c000)",
+      "purpose": "Hardware Key Unwrapping, Biometric Auth Tokens, ApplePay Transact",
+      "latency_cycles": 850
+    },
+    {
+      "id": "IPC_DARWIN_TO_EXCLAVE",
+      "source": "DARWIN_RING0",
+      "destination": "EXCLAVE_CL4",
+      "mechanism": "Tightbeam RPC over Shared Memory Datacubes (AppleExclaves.kext)",
+      "purpose": "Conclave Service Invocations, PMM Memory Allocation, Audio/Display Bridges",
+      "latency_cycles": 420
+    },
+    {
+      "id": "IPC_DARWIN_TO_AOP2",
+      "source": "DARWIN_RING0",
+      "destination": "AOP2_RTKIT",
+      "mechanism": "ASCwrap-v6 Mailbox (0x101600000) + SPSC FastPath (DART SID 0x10)",
+      "purpose": "Sensor Hub Telemetry Streaming, Always-On Display Updates, Siri History Drain",
+      "latency_cycles": 320
+    },
+    {
+      "id": "IPC_DARWIN_TO_GPU",
+      "source": "DARWIN_RING0",
+      "destination": "AGX_RTBUDDY",
+      "mechanism": "PMP Doorbell (0x23a000000) + Userland Direct Submission Rings",
+      "purpose": "Metal Command Buffer Scheduling, Ray Tracing Acceleration, Compute Enqueue",
+      "latency_cycles": 110
+    },
+    {
+      "id": "IPC_DARWIN_TO_ANE",
+      "source": "DARWIN_RING0",
+      "destination": "ANE_H18",
+      "mechanism": "FIFO Hardware Mailbox (0x2e0000000) + DART SID 0x00/0x01",
+      "purpose": "Compiled HWX Model Dispatch, Neural Network Inference Trigger",
+      "latency_cycles": 190
+    },
+    {
+      "id": "IPC_AOP2_TO_EXCLAVE",
+      "source": "AOP2_RTKIT",
+      "destination": "EXCLAVE_CL4",
+      "mechanism": "Endpoint 0x53 (sharedmem_xcoproc_AOP2_EP53_in) + DART SID 0x11",
+      "purpose": "Tamper-Proof Sensor Indicator Light (SIL) Status Reporting",
+      "latency_cycles": 210
+    },
+    {
+      "id": "IPC_EXCLAVE_TO_DCP",
+      "source": "EXCLAVE_CL4",
+      "destination": "DCP_RTKIT",
+      "mechanism": "dcp-exclave-mailbox (0x1fa27c000) + DART SID 0x02",
+      "purpose": "Hardware Display Overlay Injection (Green/Orange Indicator Dot)",
+      "latency_cycles": 180
+    },
+    {
+      "id": "IPC_ISP_TO_SEP",
+      "source": "Camera ISP",
+      "destination": "SEPOS_CORE",
+      "mechanism": "DART-ISP Stream ID 0x02 direct to SEP TZ1S (0x86a1b0000)",
+      "purpose": "Raw Near-Infrared Biometric Frame Ingest (Pearl NIR)",
+      "latency_cycles": 95
+    },
+    {
+      "id": "IPC_ANE_TO_SEP",
+      "source": "ANE_H18",
+      "destination": "SEPOS_CORE",
+      "mechanism": "DART-ANE Stream ID 0x02 direct to SEP TZ1S (0x86d1b0000)",
+      "purpose": "Biometric Neural Embedding Vector Verification",
+      "latency_cycles": 85
+    }
+  ]
+}

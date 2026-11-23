@@ -1,0 +1,196 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Apple Video Encoder 2 (AVE2) Codec Control Descriptors",
+  "soc": "t8150",
+  "descriptors": {
+    "sCmdInformation": {
+      "structure_size_bytes": 128,
+      "alignment": "64 bytes",
+      "fields": {
+        "session_id": {
+          "offset": "0x00",
+          "size": 4,
+          "role": "Unique client session identifier"
+        },
+        "command_opcode": {
+          "offset": "0x04",
+          "size": 4,
+          "role": "Hardware command opcode (1..16)"
+        },
+        "timestamp_us": {
+          "offset": "0x08",
+          "size": 8,
+          "role": "Microsecond timestamp of frame submission"
+        },
+        "source_input_desc_pa": {
+          "offset": "0x10",
+          "size": 8,
+          "role": "Physical address of 64-byte source input descriptor"
+        },
+        "bitstream_output_desc_pa": {
+          "offset": "0x18",
+          "size": 8,
+          "role": "Physical address of 64-byte bitstream output descriptor"
+        },
+        "reconstructed_dpb_desc_pa": {
+          "offset": "0x20",
+          "size": 8,
+          "role": "Physical address of 128-byte reconstructed frame descriptor"
+        },
+        "slice_params_pa": {
+          "offset": "0x28",
+          "size": 8,
+          "role": "Physical address of codec-specific slice control structure"
+        },
+        "client_cookie": {
+          "offset": "0x30",
+          "size": 8,
+          "role": "Host XNU kernel IOVideoContext tracking pointer"
+        },
+        "status_flags": {
+          "offset": "0x38",
+          "size": 4,
+          "role": "Job status: 0=Queued, 1=InFlight, 2=Done, 3=Fault"
+        },
+        "reserved": {
+          "offset": "0x3c",
+          "size": 68,
+          "role": "Hardware internal scratch and padding"
+        }
+      }
+    },
+    "AVE_PICMGMT_PARAMS": {
+      "structure_size_bytes": 96,
+      "role": "Tracks frame metadata, reference frame relationships, and DPB state",
+      "fields": {
+        "picture_type": {
+          "offset": "0x00",
+          "size": 4,
+          "role": "Slice classification: 0=I, 1=P, 2=B, 3=IDR, 4=CRA"
+        },
+        "picture_order_count": {
+          "offset": "0x04",
+          "size": 4,
+          "role": "POC value for display ordering"
+        },
+        "temporal_id": {
+          "offset": "0x08",
+          "size": 4,
+          "role": "Temporal sub-layer identifier for hierarchical B-frames"
+        },
+        "is_reference_frame": {
+          "offset": "0x0c",
+          "size": 4,
+          "role": "1 = Frame stored in DPB for future reference; 0 = Discardable"
+        },
+        "num_ref_frames_l0": {
+          "offset": "0x10",
+          "size": 4,
+          "role": "Active reference pictures in List 0 (1..4)"
+        },
+        "num_ref_frames_l1": {
+          "offset": "0x14",
+          "size": 4,
+          "role": "Active reference pictures in List 1 (1..4)"
+        },
+        "ref_poc_list_l0": {
+          "offset": "0x18",
+          "size": 16,
+          "role": "Array of 4 32-bit POCs for List 0"
+        },
+        "ref_poc_list_l1": {
+          "offset": "0x28",
+          "size": 16,
+          "role": "Array of 4 32-bit POCs for List 1"
+        },
+        "mctf_noise_frame_index": {
+          "offset": "0x38",
+          "size": 4,
+          "role": "Index within temporal noise filtering window"
+        }
+      }
+    }
+  },
+  "slice_headers": {
+    "HEVC_Slice_Header": {
+      "writer_class": "HEVC_Slice",
+      "syntax_elements": [
+        {
+          "name": "first_slice_segment_in_pic_flag",
+          "bits": 1,
+          "role": "Signals start of new video picture"
+        },
+        {
+          "name": "no_output_of_prior_pics_flag",
+          "bits": 1,
+          "role": "Clears previous DPB pictures on CRA/IDR"
+        },
+        {
+          "name": "slice_pic_parameter_set_id",
+          "bits": "ue(v)",
+          "role": "Selects active PPS"
+        },
+        {
+          "name": "slice_type",
+          "bits": "ue(v)",
+          "role": "0=B, 1=P, 2=I slice"
+        },
+        {
+          "name": "slice_pic_order_cnt_lsb",
+          "bits": "u(v)",
+          "role": "LSB bits of POC based on log2_max_pic_order_cnt_lsb_minus4"
+        },
+        {
+          "name": "short_term_ref_pic_set_sps_flag",
+          "bits": 1,
+          "role": "Indicates whether RPS is inherited from SPS"
+        },
+        {
+          "name": "pred_weight_table",
+          "bits": "variable",
+          "role": "Luma/chroma explicit weighting factors for B-slices"
+        },
+        {
+          "name": "slice_qp_delta",
+          "bits": "se(v)",
+          "role": "Slice-level quantization parameter delta relative to PPS"
+        }
+      ]
+    },
+    "AVC_Slice_Header": {
+      "writer_class": "AVC_Slice",
+      "syntax_elements": [
+        {
+          "name": "first_mb_in_slice",
+          "bits": "ue(v)",
+          "role": "Starting macroblock index for slice"
+        },
+        {
+          "name": "slice_type",
+          "bits": "ue(v)",
+          "role": "AVC slice type (P=0, B=1, I=2)"
+        },
+        {
+          "name": "pic_parameter_set_id",
+          "bits": "ue(v)",
+          "role": "Referenced PPS index"
+        },
+        {
+          "name": "frame_num",
+          "bits": "u(v)",
+          "role": "Sequential frame numbering"
+        },
+        {
+          "name": "ref_pic_list_modification",
+          "bits": "variable",
+          "role": "Dynamic reordering of reference pictures"
+        },
+        {
+          "name": "dec_ref_pic_marking",
+          "bits": "variable",
+          "role": "Sliding window or adaptive memory control"
+        }
+      ]
+    }
+  }
+}

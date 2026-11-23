@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Display Coprocessor (DCP) Firmware Container & Image4 Specification",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "container": {
+    "file_path": "Firmware/dcp/t8150dcp.im4p",
+    "wrapper": "Apple Image4 (IM4P)",
+    "fourcc_tag": "dcpf",
+    "tag_hex": "0x64637066",
+    "total_container_size_bytes": 2466452,
+    "asn1_sequence_header": {
+      "tag": "0x30",
+      "oid": "1.4.840.113635.100.4.1",
+      "oid_description": "Apple Image4 Payload OID",
+      "encoded_payload_length_bytes": 2466416
+    },
+    "compression": {
+      "algorithm": "LZFSE",
+      "magic_header": "bvx2",
+      "decompressed_size_bytes": 16990208,
+      "decompressed_size_human": "16.20 MB",
+      "compression_ratio": "6.89:1"
+    },
+    "internal_bundle": {
+      "magic": "0x42554e44",
+      "ascii": "DNUB",
+      "version": "0x00040000",
+      "toc_entries_count": 11,
+      "embedded_macho_slices": [
+        {
+          "index": 0,
+          "offset_hex": "0x00011000",
+          "magic": "0xfeedfacf",
+          "filetype": "MH_EXECUTE (2)",
+          "cputype": "CPU_TYPE_ARM64 (0x0100000c)",
+          "cpusubtype": "CPU_SUBTYPE_ARM64E (0x80000002)",
+          "pointer_authentication_abi": "PAC00 / QARMA5",
+          "role": "DCP Primary Display Runtime & Pipe Control Service",
+          "segments": [
+            {"name": "__TEXT", "vmaddr": "0x08000000", "vmsize": "0x00022000", "filesize": "0x00022000"},
+            {"name": "__DATA", "vmaddr": "0x08022000", "vmsize": "0x00004000", "filesize": "0x00001000"},
+            {"name": "__DATA_CONST", "vmaddr": "0x08026000", "vmsize": "0x00000000", "filesize": "0x00000000"}
+          ]
+        },
+        {
+          "index": 1,
+          "offset_hex": "0x00fe4000",
+          "magic": "0xfeedfacf",
+          "filetype": "MH_PRELOAD (5)",
+          "cputype": "CPU_TYPE_ARM64 (0x0100000c)",
+          "cpusubtype": "CPU_SUBTYPE_ARM64E (0x80000002)",
+          "pointer_authentication_abi": "PAC00 / QARMA5",
+          "role": "DCP RTKit Executive Microkernel Boot Slice",
+          "segments": [
+            {"name": "__TEXT", "vmaddr": "0xffffffff00000000", "vmsize": "0x00011000", "filesize": "0x00011000"},
+            {"name": "__DATA", "vmaddr": "0xffffffff00011000", "vmsize": "0x00008000", "filesize": "0x00002000"}
+          ]
+        }
+      ]
+    }
+  },
+  "rtos_identification": {
+    "kernel": "Apple RTKitOS",
+    "version_banner": "RTKit_armv8_cl4_Oz_flto_pac-3514.40.18.release",
+    "architecture": "ARM64e (ARMv8.5-A with Pointer Authentication & Branch Target Identification)",
+    "compiler": "Apple clang version 17.0.0 (clang-1700.0.13.1) flto Oz"
+  }
+}

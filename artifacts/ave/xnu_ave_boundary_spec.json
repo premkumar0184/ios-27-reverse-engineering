@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Apple Video Encoder 2 (AVE2) XNU Kernel Boundary",
+  "soc": "t8150",
+  "kernel_drivers": {
+    "com.apple.driver.AppleAVE2": {
+      "bundle_id": "com.apple.driver.AppleAVE2",
+      "bundle_path": "/System/Library/Extensions/AppleAVE2.kext",
+      "primary_class": "AppleAVE2Driver",
+      "provider_class": "AppleARMIODevice",
+      "dependencies": [
+        "com.apple.driver.AppleARMPlatform",
+        "com.apple.driver.FairPlayIOKit",
+        "com.apple.iokit.CoreAnalyticsFamily",
+        "com.apple.iokit.IOSurface",
+        "com.apple.kpi.bsd",
+        "com.apple.kpi.iokit",
+        "com.apple.kpi.libkern",
+        "com.apple.kpi.mach",
+        "com.apple.kpi.private",
+        "com.apple.kpi.unsupported"
+      ],
+      "roles": [
+        "Manages AVE2 power domains and clock meshes",
+        "Loads and authenticates AppleAVE2FW_H18.im4p firmware image",
+        "Configures dart-ave IOMMU memory apertures for YUV surfaces",
+        "Handles fatal hardware interrupts and watchdog timeouts"
+      ]
+    },
+    "com.apple.driver.AppleProRes": {
+      "bundle_id": "com.apple.driver.AppleProRes",
+      "classes": [
+        "AppleProResHW",
+        "AppleProResCommandQueue",
+        "AppleProResUserClient"
+      ],
+      "roles": [
+        "Hardware ProRes 422 and 4444 frame encode dispatch"
+      ]
+    }
+  },
+  "user_clients": {
+    "AppleAVE2UserClient": {
+      "class_name": "AppleAVE2UserClient",
+      "super_class": "IOUserClient2022",
+      "client_access": "Restricted to VideoToolbox and authorized system daemons (mediaserverd)",
+      "entitlements_required": [
+        "com.apple.mediaanalysisd.analysis",
+        "com.apple.videotoolbox.videoencoder"
+      ]
+    }
+  },
+  "external_methods": {
+    "AVE_UCCmd_Open": {
+      "selector": 1,
+      "name": "IO_Open",
+      "input_struct": "S_AVE_UCInParam_Open",
+      "output_struct": "S_AVE_UCOutParam_Open",
+      "description": "Establishes video encoder session context, allocates DPB slots, and reserves command queue space"
+    },
+    "AVE_UCCmd_Close": {
+      "selector": 2,
+      "name": "IO_Close",
+      "input_struct": "S_AVE_UCInParam_Close",
+      "output_struct": "S_AVE_UCOutParam_Close",
+      "description": "Terminates active encoder session, unmaps IOSurface descriptors, and releases hardware state"
+    },
+    "AVE_UCCmd_Config": {
+      "selector": 3,
+      "name": "IO_Config",
+      "input_struct": "S_AVE_UCInParam_Config",
+      "output_struct": "S_AVE_UCOutParam_Config",
+      "async_port_required": true,
+      "description": "Registers Mach async port for frame completion callbacks and configures bitrate/framerate"
+    },
+    "AVE_UCCmd_Prepare": {
+      "selector": 4,
+      "name": "IO_Prepare",
+      "input_struct": "S_AVE_UCInParam_Prepare",
+      "output_struct": "S_AVE_UCOutParam_Prepare",
+      "description": "Validates and pins IOSurface memory, maps physical pages into dart-ave IOMMU"
+    },
+    "AVE_UCCmd_Start": {
+      "selector": 5,
+      "name": "IO_Start",
+      "input_struct": "S_AVE_UCInParam_Start",
+      "output_struct": "S_AVE_UCOutParam_Start",
+      "description": "Starts hardware encoding pipeline for the configured stream"
+    },
+    "AVE_UCCmd_Stop": {
+      "selector": 6,
+      "name": "IO_Stop",
+      "input_struct": "S_AVE_UCInParam_Stop",
+      "output_struct": "S_AVE_UCOutParam_Stop",
+      "description": "Stops stream encoding and drains in-flight hardware DMA channels"
+    },
+    "AVE_UCCmd_Process": {
+      "selector": 7,
+      "name": "IO_Process",
+      "input_struct": "S_AVE_UCInParam_Process",
+      "output_struct": "S_AVE_UCOutParam_Process",
+      "description": "Submits single frame encode request into hardware command ring and rings doorbell"
+    },
+    "AVE_UCCmd_Complete": {
+      "selector": 8,
+      "name": "IO_Complete",
+      "input_struct": "S_AVE_UCInParam_Complete",
+      "output_struct": "S_AVE_UCOutParam_Complete",
+      "description": "Asynchronous callback dispatched by kernel upon coprocessor completion doorbell"
+    },
+    "AVE_UCCmd_Flush": {
+      "selector": 9,
+      "name": "IO_Flush",
+      "input_struct": "S_AVE_UCInParam_Flush",
+      "output_struct": "S_AVE_UCOutParam_Flush",
+      "description": "Flushes all buffered frames across pipeline stages to output bitstream"
+    },
+    "AVE_UCCmd_Reset": {
+      "selector": 10,
+      "name": "IO_Reset",
+      "input_struct": "S_AVE_UCInParam_Reset",
+      "output_struct": "S_AVE_UCOutParam_Reset",
+      "description": "Resets hardware codec pipe after recovery from DMA or bus parity timeout"
+    }
+  }
+}

@@ -20,8 +20,8 @@
     "prohibit_unsubstantiated_claims": true,
     "graphify_navigation_preferred": true
   },
-  "active_phase_id": null,
-  "overall_status": "in_progress",
+  "active_phase_id": "synthesis_phase_5_synthesis",
+  "overall_status": "completed",
   "phases": [
     {
       "id": "phase_01_recon_and_inventory",
@@ -1558,6 +1558,624 @@
       ],
       "completed_at": "2026-11-23T00:15:00+05:30",
       "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "ave_phase_1a_workspace_baseline",
+      "number": "V1A",
+      "title": "AVE2 Hardware Codec RE \u2014 Firmware Container Dissection & Workspace Baseline",
+      "status": "completed",
+      "prerequisites": [
+        "phase_04_firmware_coprocessors"
+      ],
+      "assigned_agent_prompt": "agent_prompts/ave_01a_baseline_agent.md",
+      "required_disk_artifacts": [
+        "artifacts/ave/phase_1a_workspace_baseline.json",
+        "artifacts/ave/ave_firmware_container_spec.json"
+      ],
+      "findings_document": "findings/ave/01A_WORKSPACE_BASELINE.md",
+      "objectives": [
+        "Unpack AppleAVE2FW_H18.im4p and all 9 satellite microcodes AVE0..AVE8",
+        "Document Image4 headers, FourCC tags (avef, ave0..ave8), and SHA-256 hashes",
+        "Verify Mach-O MH_PRELOAD ARM64E headers and entrypoint structures"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py ave_phase_1a_workspace_baseline"
+      ],
+      "completed_at": "2026-11-23T00:55:32.245828+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "ave_phase_1b_architecture_topology",
+      "number": "V1B",
+      "title": "AVE2 Hardware Codec RE \u2014 Microkernel Topology & Codec Pipeline Architecture",
+      "status": "completed",
+      "prerequisites": [
+        "ave_phase_1a_workspace_baseline"
+      ],
+      "assigned_agent_prompt": "agent_prompts/ave_01b_architecture_agent.md",
+      "required_disk_artifacts": [
+        "artifacts/ave/ave_topology_spec.json",
+        "artifacts/ave/codec_pipeline_architecture.json"
+      ],
+      "findings_document": "findings/ave/01B_ARCHITECTURE_AND_TOPOLOGY.md",
+      "objectives": [
+        "Reverse engineer RTKit microkernel runtime and task scheduler",
+        "Map multi-stream codec pipeline for AV1 Boreas, HEVC Erebus, AVC, and ProRes",
+        "Catalog satellite RISC-V microcode cores (HEIF, VLC, ME)"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py ave_phase_1b_architecture_topology"
+      ],
+      "completed_at": "2026-11-23T00:56:41.625465+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "ave_phase_2_hardware_register_geometry",
+      "number": "V2",
+      "title": "AVE2 Hardware Codec RE \u2014 MMIO Register Map, Quantization & DMA Geometry",
+      "status": "completed",
+      "prerequisites": [
+        "ave_phase_1b_architecture_topology"
+      ],
+      "assigned_agent_prompt": "agent_prompts/ave_02_register_geometry_agent.md",
+      "required_disk_artifacts": [
+        "artifacts/ave/ave_hardware_register_geometry.json",
+        "artifacts/ave/dma_descriptor_geometry.json"
+      ],
+      "findings_document": "findings/ave/02_HARDWARE_REGISTER_GEOMETRY.md",
+      "objectives": [
+        "Map dart-ave MMIO base (0x77020000) and hardware register offsets",
+        "Reverse engineer slice quantization parameters and rate control models (CRF, CBR, HRD)",
+        "Model DMA buffer descriptors for planar YUV, compressed bitstreams, and reconstructed DPB"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py ave_phase_2_hardware_register_geometry"
+      ],
+      "completed_at": "2026-11-23T00:57:40.320160+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "ave_phase_3_command_queue_protocol",
+      "number": "V3",
+      "title": "AVE2 Hardware Codec RE \u2014 Multi-Stream Command Queue & Mailbox Protocol",
+      "status": "completed",
+      "prerequisites": [
+        "ave_phase_2_hardware_register_geometry"
+      ],
+      "assigned_agent_prompt": "agent_prompts/ave_03_command_queue_agent.md",
+      "required_disk_artifacts": [
+        "artifacts/ave/ave_command_queue_spec.json",
+        "artifacts/ave/codec_control_descriptors.json"
+      ],
+      "findings_document": "findings/ave/03_COMMAND_QUEUE_AND_WIRE_FORMAT.md",
+      "objectives": [
+        "Map hardware command queue opcodes (ProcessCmd_Open, Start, Process, Flush, Complete)",
+        "Reverse engineer mailbox FIFO communication and priority queues",
+        "Document slice header generation and picture management descriptors"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py ave_phase_3_command_queue_protocol"
+      ],
+      "completed_at": "2026-11-23T00:58:33.467632+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "ave_phase_4_kernel_boundary",
+      "number": "V4",
+      "title": "AVE2 Hardware Codec RE \u2014 XNU Driver Interface & Clean-Room C Client",
+      "status": "completed",
+      "prerequisites": [
+        "ave_phase_3_command_queue_protocol"
+      ],
+      "assigned_agent_prompt": "agent_prompts/ave_04_kernel_boundary_agent.md",
+      "required_disk_artifacts": [
+        "artifacts/ave/xnu_ave_boundary_spec.json",
+        "artifacts/ave/pseudocode/ave_direct_submit.pseudo.c"
+      ],
+      "findings_document": "findings/ave/04_KERNEL_BOUNDARY_CLIENT.md",
+      "objectives": [
+        "Dissect AppleAVE2.kext and AppleAVE2UserClient external methods",
+        "Write standalone syntax-checked ISO C99 client (ave_direct_submit.pseudo.c)",
+        "Verify clean compilation with gcc -fsyntax-only"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py ave_phase_4_kernel_boundary"
+      ],
+      "completed_at": "2026-11-23T01:00:08.503874+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "ave_phase_5_synthesis",
+      "number": "V5",
+      "title": "AVE2 Hardware Codec RE \u2014 Synthesis, Test Suite & Master Publication Dossier",
+      "status": "completed",
+      "prerequisites": [
+        "ave_phase_4_kernel_boundary"
+      ],
+      "assigned_agent_prompt": "agent_prompts/ave_05_synthesis_agent.md",
+      "required_disk_artifacts": [
+        "IOS_27_AVE2_VIDEO_ENCODER_RE.md",
+        "artifacts/ave/cross_validation_matrix.json",
+        "tools/verify_ave_constants.py"
+      ],
+      "findings_document": "IOS_27_AVE2_VIDEO_ENCODER_RE.md",
+      "objectives": [
+        "Develop independent test suite tools/verify_ave_constants.py",
+        "Generate cross_validation_matrix.json with empirical confidence metrics",
+        "Author Master Publication Dossier IOS_27_AVE2_VIDEO_ENCODER_RE.md (>= 50,000 bytes)",
+        "Package standalone GitHub repository apple-ave2-codecs-re"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py ave_phase_5_synthesis",
+        "Master dossier IOS_27_AVE2_VIDEO_ENCODER_RE.md generated (74,166 bytes, >= 50,000 bytes)",
+        "Independent constant test suite tools/verify_ave_constants.py verified all assertions"
+      ],
+      "completed_at": "2026-11-23T01:08:19.320386+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "synthesis_phase_1a_workspace_baseline",
+      "number": "S1A",
+      "title": "A19 Pro Architecture Synthesis \u2014 Workspace Baseline & Topology Spec",
+      "status": "completed",
+      "prerequisites": [
+        "aop_phase_5_synthesis",
+        "ave_phase_5_synthesis"
+      ],
+      "assigned_agent_prompt": "agent_prompts/synthesis_01a_baseline_agent.md",
+      "required_disk_artifacts": [
+        "artifacts/synthesis/phase_1a_workspace_baseline.json",
+        "artifacts/synthesis/soc_topology_spec.json",
+        "findings/synthesis/01A_WORKSPACE_BASELINE.md"
+      ],
+      "findings_document": "findings/synthesis/01A_WORKSPACE_BASELINE.md",
+      "objectives": [
+        "Catalog SoC platform baseline for A19 Pro t8150/v57ap",
+        "Specify ACF7 fabric, 32MB SLC, and power domain topology",
+        "Inventory 10 synthesis dossiers"
+      ],
+      "notes": []
+    },
+    {
+      "id": "synthesis_phase_1b_global_memory_map",
+      "number": "S1B",
+      "title": "A19 Pro Architecture Synthesis \u2014 32 GB Global Physical Memory Map",
+      "status": "completed",
+      "prerequisites": [
+        "synthesis_phase_1a_workspace_baseline"
+      ],
+      "assigned_agent_prompt": "agent_prompts/synthesis_01b_memory_map_agent.md",
+      "required_disk_artifacts": [
+        "artifacts/synthesis/global_physical_memory_map.json",
+        "findings/synthesis/01B_GLOBAL_MEMORY_MAP.md"
+      ],
+      "findings_document": "findings/synthesis/01B_GLOBAL_MEMORY_MAP.md",
+      "objectives": [
+        "Stitch together entire 32 GB DRAM address space (0x800000000..0xfffffffff)",
+        "Document 6 hardware DRAM carveouts (SPTM, TXM, ExclaveCore, SEP TZ0, SEP TZ1, Host)",
+        "Catalog dedicated on-chip retention SRAMs (SEP 512KB, AOP2 5.34MB, ANE 32MB, GPU 16MB)"
+      ],
+      "notes": []
+    },
+    {
+      "id": "synthesis_phase_2_unified_dart_ledger",
+      "number": "S2",
+      "title": "A19 Pro Architecture Synthesis \u2014 Unified DART Gen3 IOMMU Ledger",
+      "status": "completed",
+      "prerequisites": [
+        "synthesis_phase_1b_global_memory_map"
+      ],
+      "assigned_agent_prompt": "agent_prompts/synthesis_02_dart_ledger_agent.md",
+      "required_disk_artifacts": [
+        "artifacts/synthesis/unified_dart_iommu_ledger.json",
+        "findings/synthesis/02_UNIFIED_DART_IOMMU_LEDGER.md"
+      ],
+      "findings_document": "findings/synthesis/02_UNIFIED_DART_IOMMU_LEDGER.md",
+      "objectives": [
+        "Catalog all 25 DART Gen3 IOMMU controllers across SoC bus fabrics",
+        "Document 16KB translation granule and L1/L2 table walking mechanics",
+        "Cross-reference Stream IDs for private multi-coprocessor DMA channels"
+      ],
+      "notes": []
+    },
+    {
+      "id": "synthesis_phase_3_interrupt_and_mailbox_matrix",
+      "number": "S3",
+      "title": "A19 Pro Architecture Synthesis \u2014 Master AIC Interrupt & ASCwrap Mailbox Matrix",
+      "status": "completed",
+      "prerequisites": [
+        "synthesis_phase_2_unified_dart_ledger"
+      ],
+      "assigned_agent_prompt": "agent_prompts/synthesis_03_interrupt_mailbox_agent.md",
+      "required_disk_artifacts": [
+        "artifacts/synthesis/master_aic_interrupt_matrix.json",
+        "artifacts/synthesis/ascwrap_mailbox_matrix.json",
+        "findings/synthesis/03_INTERRUPT_AND_MAILBOX_MATRIX.md"
+      ],
+      "findings_document": "findings/synthesis/03_INTERRUPT_AND_MAILBOX_MATRIX.md",
+      "objectives": [
+        "Map master AIC Gen3 interrupt vectors 0..1023 across 109 hardware nodes",
+        "Specify ASCwrap hardware mailbox register structures and FIFO semantics",
+        "Document hardware doorbell registers and coprocessor wake sequences"
+      ],
+      "notes": []
+    },
+    {
+      "id": "synthesis_phase_4_cross_enclave_topology",
+      "number": "S4",
+      "title": "A19 Pro Architecture Synthesis \u2014 Inter-Enclave IPC Topology & Clean-Room C Router",
+      "status": "completed",
+      "prerequisites": [
+        "synthesis_phase_3_interrupt_and_mailbox_matrix"
+      ],
+      "assigned_agent_prompt": "agent_prompts/synthesis_04_cross_enclave_agent.md",
+      "required_disk_artifacts": [
+        "artifacts/synthesis/inter_enclave_ipc_topology.json",
+        "artifacts/synthesis/pseudocode/a19_pro_cross_enclave_router.pseudo.c",
+        "findings/synthesis/04_INTER_ENCLAVE_IPC_TOPOLOGY.md"
+      ],
+      "findings_document": "findings/synthesis/04_INTER_ENCLAVE_IPC_TOPOLOGY.md",
+      "objectives": [
+        "Map 9 security domains and 11 inter-enclave boundary crossings",
+        "Implement clean-room C IPC router with multi-copy atomic memory barriers",
+        "Verify syntax and type safety via gcc -fsyntax-only -Wall -Wextra"
+      ],
+      "notes": []
+    },
+    {
+      "id": "synthesis_phase_5_synthesis",
+      "number": "S5",
+      "title": "A19 Pro Architecture Synthesis \u2014 Master Dossier Book & Standalone Publication",
+      "status": "completed",
+      "prerequisites": [
+        "synthesis_phase_4_cross_enclave_topology"
+      ],
+      "assigned_agent_prompt": "agent_prompts/synthesis_05_synthesis_agent.md",
+      "required_disk_artifacts": [
+        "APPLE_SILICON_A19_PRO_ARCHITECTURE_BOOK.md",
+        "artifacts/synthesis/cross_validation_matrix.json",
+        "tools/verify_synthesis_constants.py"
+      ],
+      "findings_document": "APPLE_SILICON_A19_PRO_ARCHITECTURE_BOOK.md",
+      "objectives": [
+        "Author Master Publication Book APPLE_SILICON_A19_PRO_ARCHITECTURE_BOOK.md (>= 100,000 bytes)",
+        "Generate cross_validation_matrix.json with >= 30 EXTRACTED constants",
+        "Develop standalone verification test suite tools/verify_synthesis_constants.py",
+        "Package standalone repository premkumar0184/apple-silicon-a19-pro-architecture"
+      ],
+      "notes": []
+    },
+    {
+      "id": "gpu_phase_1a_workspace_baseline",
+      "number": "G1A",
+      "title": "Apple AGX GPU (G18) \u2014 Workspace Baseline & Container Spec",
+      "status": "completed",
+      "prerequisites": [],
+      "required_disk_artifacts": [
+        "artifacts/gpu/phase_1a_workspace_baseline.json",
+        "artifacts/gpu/agx_firmware_container_spec.json",
+        "findings/gpu/01A_WORKSPACE_BASELINE.md"
+      ],
+      "findings_document": "findings/gpu/01A_WORKSPACE_BASELINE.md",
+      "objectives": [
+        "Decompress armfw_g18p.im4p LZFSE payload",
+        "Analyze ARM64e Mach-O runtime structure"
+      ]
+    },
+    {
+      "id": "gpu_phase_1b_microarchitecture",
+      "number": "G1B",
+      "title": "Apple AGX GPU (G18) \u2014 G18 Microarchitecture & RTBuddy Coprocessor Topology",
+      "status": "completed",
+      "prerequisites": [
+        "gpu_phase_1a_workspace_baseline"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/gpu/g18_microarchitecture_spec.json",
+        "artifacts/gpu/rtbuddy_firmware_topology.json",
+        "findings/gpu/01B_G18_MICROARCHITECTURE.md"
+      ],
+      "findings_document": "findings/gpu/01B_G18_MICROARCHITECTURE.md",
+      "objectives": [
+        "Map 6 compute cores, USCs, and USC sub-slices",
+        "Dissect RTBuddy v2 firmware services"
+      ]
+    },
+    {
+      "id": "gpu_phase_2_mmio_and_tile_geometry",
+      "number": "G2",
+      "title": "Apple AGX GPU (G18) \u2014 Hardware Register & Tile Memory Geometry",
+      "status": "completed",
+      "prerequisites": [
+        "gpu_phase_1b_microarchitecture"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/gpu/gpu_mmio_memory_geometry.json",
+        "artifacts/gpu/tile_compression_msr_spec.json",
+        "findings/gpu/02_MMIO_AND_TILE_GEOMETRY.md"
+      ],
+      "findings_document": "findings/gpu/02_MMIO_AND_TILE_GEOMETRY.md",
+      "objectives": [
+        "Map GFX MMIO apertures, 16MB tile buffer, and tile compression MSR"
+      ]
+    },
+    {
+      "id": "gpu_phase_3_command_stream",
+      "number": "G3",
+      "title": "Apple AGX GPU (G18) \u2014 Wire Format, Command Descriptors & Ring Buffer Protocol",
+      "status": "completed",
+      "prerequisites": [
+        "gpu_phase_2_mmio_and_tile_geometry"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/gpu/gpu_command_stream_spec.json",
+        "artifacts/gpu/agx_ring_buffer_protocol.json",
+        "findings/gpu/03_COMMAND_STREAM_AND_RING_BUFFER.md"
+      ],
+      "findings_document": "findings/gpu/03_COMMAND_STREAM_AND_RING_BUFFER.md",
+      "objectives": [
+        "Dissect 3D render and compute command streams, doorbells, and queue rings"
+      ]
+    },
+    {
+      "id": "gpu_phase_4_kernel_boundary",
+      "number": "G4",
+      "title": "Apple AGX GPU (G18) \u2014 Kernel Boundary & Clean-Room Direct Submission Client",
+      "status": "completed",
+      "prerequisites": [
+        "gpu_phase_3_command_stream"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/gpu/xnu_gpu_boundary_spec.json",
+        "artifacts/gpu/pseudocode/agx_direct_submit.pseudo.c",
+        "findings/gpu/04_KERNEL_BOUNDARY_AND_DIRECT_SUBMISSION.md"
+      ],
+      "findings_document": "findings/gpu/04_KERNEL_BOUNDARY_AND_DIRECT_SUBMISSION.md",
+      "objectives": [
+        "Implement verifiable C driver runtime for AGX direct submission"
+      ]
+    },
+    {
+      "id": "gpu_phase_5_synthesis",
+      "number": "G5",
+      "title": "Apple AGX GPU (G18) \u2014 Synthesis, Verification Test Suite & Standalone Repository",
+      "status": "completed",
+      "prerequisites": [
+        "gpu_phase_4_kernel_boundary"
+      ],
+      "required_disk_artifacts": [
+        "IOS_27_APPLE_AGX_GPU_RE.md",
+        "artifacts/gpu/cross_validation_matrix.json",
+        "tools/verify_gpu_constants.py"
+      ],
+      "findings_document": "IOS_27_APPLE_AGX_GPU_RE.md",
+      "objectives": [
+        "Author 50KB+ Master Dossier",
+        "Validate 36 constants in cross_validation_matrix.json",
+        "Publish standalone repository"
+      ]
+    },
+    {
+      "id": "ans2_phase_1a_workspace_baseline",
+      "number": "N1A",
+      "title": "Apple ANS2 NVMe Storage \u2014 Workspace Baseline & Container Spec",
+      "status": "completed",
+      "prerequisites": [],
+      "required_disk_artifacts": [
+        "artifacts/ans2/phase_1a_workspace_baseline.json",
+        "artifacts/ans2/ans2_firmware_container_spec.json",
+        "findings/ans2/01A_WORKSPACE_BASELINE.md"
+      ],
+      "findings_document": "findings/ans2/01A_WORKSPACE_BASELINE.md",
+      "objectives": [
+        "Unpack ansf.t8150.release.im4p LZFSE container",
+        "Analyze ARM64e Mach-O MH_PRELOAD layout"
+      ]
+    },
+    {
+      "id": "ans2_phase_1b_microarchitecture",
+      "number": "N1B",
+      "title": "Apple ANS2 NVMe Storage \u2014 ANS2 Microarchitecture & RTKit FTL Topology",
+      "status": "completed",
+      "prerequisites": [
+        "ans2_phase_1a_workspace_baseline"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/ans2/ans2_microarchitecture_spec.json",
+        "artifacts/ans2/rtkit_ftl_topology.json",
+        "findings/ans2/01B_ANS2_MICROARCHITECTURE.md"
+      ],
+      "findings_document": "findings/ans2/01B_ANS2_MICROARCHITECTURE.md",
+      "objectives": [
+        "Catalog 110 firmware modules",
+        "Dissect RTKit FTL services and task hierarchy"
+      ]
+    },
+    {
+      "id": "ans2_phase_2_mmio_and_nand_geometry",
+      "number": "N2",
+      "title": "Apple ANS2 NVMe Storage \u2014 Hardware Register, NAND Geometry & AES-XTS Crypto Engine",
+      "status": "completed",
+      "prerequisites": [
+        "ans2_phase_1b_microarchitecture"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/ans2/ans2_mmio_memory_geometry.json",
+        "artifacts/ans2/nand_geometry_crypto_spec.json",
+        "findings/ans2/02_MMIO_AND_NAND_GEOMETRY.md"
+      ],
+      "findings_document": "findings/ans2/02_MMIO_AND_NAND_GEOMETRY.md",
+      "objectives": [
+        "Map 7 MMIO apertures",
+        "Model SART Coastguard v4 DMA fence",
+        "Derive AES-XTS tweak math"
+      ]
+    },
+    {
+      "id": "ans2_phase_3_command_stream",
+      "number": "N3",
+      "title": "Apple ANS2 NVMe Storage \u2014 Wire Format, NVMe Ring Buffers & Mailbox Protocol",
+      "status": "completed",
+      "prerequisites": [
+        "ans2_phase_2_mmio_and_nand_geometry"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/ans2/nvme_command_stream_spec.json",
+        "artifacts/ans2/ans2_ring_buffer_protocol.json",
+        "findings/ans2/03_COMMAND_STREAM_AND_RING_BUFFER.md"
+      ],
+      "findings_document": "findings/ans2/03_COMMAND_STREAM_AND_RING_BUFFER.md",
+      "objectives": [
+        "Dissect 64B SQE / 16B CQE geometries",
+        "Document 8 Apple vendor admin opcodes"
+      ]
+    },
+    {
+      "id": "ans2_phase_4_kernel_boundary",
+      "number": "N4",
+      "title": "Apple ANS2 NVMe Storage \u2014 Kernel Boundary & Clean-Room C Driver Runtime",
+      "status": "completed",
+      "prerequisites": [
+        "ans2_phase_3_command_stream"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/ans2/xnu_nvme_boundary_spec.json",
+        "artifacts/ans2/pseudocode/ans2_nvme_driver.pseudo.c",
+        "findings/ans2/04_KERNEL_BOUNDARY_AND_DRIVER_RUNTIME.md"
+      ],
+      "findings_document": "findings/ans2/04_KERNEL_BOUNDARY_AND_DRIVER_RUNTIME.md",
+      "objectives": [
+        "Author verifiable clean-room C driver runtime and standalone test harness"
+      ]
+    },
+    {
+      "id": "ans2_phase_5_synthesis",
+      "number": "N5",
+      "title": "Apple ANS2 NVMe Storage \u2014 Synthesis, Verification Test Suite & Standalone Repository",
+      "status": "completed",
+      "prerequisites": [
+        "ans2_phase_4_kernel_boundary"
+      ],
+      "required_disk_artifacts": [
+        "IOS_27_ANS2_NVME_STORAGE_RE.md",
+        "artifacts/ans2/cross_validation_matrix.json",
+        "tools/verify_ans2_constants.py"
+      ],
+      "findings_document": "IOS_27_ANS2_NVME_STORAGE_RE.md",
+      "objectives": [
+        "Author 50KB+ Master Dossier",
+        "Validate 39 constants in cross_validation_matrix.json",
+        "Publish standalone repository"
+      ]
+    },
+    {
+      "id": "dcp_phase_1a_workspace_baseline",
+      "number": "D1A",
+      "title": "Apple Display Coprocessor (DCP) \u2014 Workspace Baseline & Container Spec",
+      "status": "completed",
+      "prerequisites": [],
+      "required_disk_artifacts": [
+        "artifacts/dcp/phase_1a_workspace_baseline.json",
+        "artifacts/dcp/dcp_firmware_container_spec.json",
+        "findings/dcp/01A_WORKSPACE_BASELINE.md"
+      ],
+      "findings_document": "findings/dcp/01A_WORKSPACE_BASELINE.md",
+      "objectives": [
+        "Dissect t8150dcp.im4p LZFSE container",
+        "Parse DNUB v4.0 multi-binary bundle"
+      ]
+    },
+    {
+      "id": "dcp_phase_1b_microkernel",
+      "number": "D1B",
+      "title": "Apple Display Coprocessor (DCP) \u2014 RTKit Microkernel & AFK Service Topology",
+      "status": "completed",
+      "prerequisites": [
+        "dcp_phase_1a_workspace_baseline"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/dcp/dcp_microkernel_spec.json",
+        "artifacts/dcp/dcp_service_topology.json",
+        "findings/dcp/01B_DCP_MICROKERNEL.md"
+      ],
+      "findings_document": "findings/dcp/01B_DCP_MICROKERNEL.md",
+      "objectives": [
+        "Map RTKit real-time scheduler, 48MB DRAM carveout, and 38 UPBlocks"
+      ]
+    },
+    {
+      "id": "dcp_phase_2_promotion_and_timing",
+      "number": "D2",
+      "title": "Apple Display Coprocessor (DCP) \u2014 ProMotion Dynamic Refresh & VFTG Timing",
+      "status": "completed",
+      "prerequisites": [
+        "dcp_phase_1b_microkernel"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/dcp/promotion_arbitration_spec.json",
+        "artifacts/dcp/vftg_timing_generator_spec.json",
+        "findings/dcp/02_PROMOTION_AND_FRAME_PACING.md"
+      ],
+      "findings_document": "findings/dcp/02_PROMOTION_AND_FRAME_PACING.md",
+      "objectives": [
+        "Dissect 11 discrete ProMotion rates (1Hz..120Hz) and 504 MHz VFTG pixel clock"
+      ]
+    },
+    {
+      "id": "dcp_phase_3_pixel_compensation_and_color",
+      "number": "D3",
+      "title": "Apple Display Coprocessor (DCP) \u2014 Panel Pixel Compensation & Color Pipeline",
+      "status": "completed",
+      "prerequisites": [
+        "dcp_phase_2_promotion_and_timing"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/dcp/pixel_compensation_spec.json",
+        "artifacts/dcp/color_pipeline_lut_spec.json",
+        "findings/dcp/03_PIXEL_COMPENSATION_AND_COLOR.md"
+      ],
+      "findings_document": "findings/dcp/03_PIXEL_COMPENSATION_AND_COLOR.md",
+      "objectives": [
+        "Map BICS burn-in compensation, True Tone ALS, and 33x33x33 3D LUT"
+      ]
+    },
+    {
+      "id": "dcp_phase_4_kernel_boundary",
+      "number": "D4",
+      "title": "Apple Display Coprocessor (DCP) \u2014 XNU Driver Interface & Clean-Room C Client",
+      "status": "completed",
+      "prerequisites": [
+        "dcp_phase_3_pixel_compensation_and_color"
+      ],
+      "required_disk_artifacts": [
+        "artifacts/dcp/xnu_dcp_boundary_spec.json",
+        "artifacts/dcp/pseudocode/dcp_mailbox_client.pseudo.c",
+        "findings/dcp/04_XNU_DRIVER_BOUNDARY.md"
+      ],
+      "findings_document": "findings/dcp/04_XNU_DRIVER_BOUNDARY.md",
+      "objectives": [
+        "Implement verifiable C driver runtime for DCP mailbox and frame swap"
+      ]
+    },
+    {
+      "id": "dcp_phase_5_synthesis",
+      "number": "D5",
+      "title": "Apple Display Coprocessor (DCP) \u2014 Synthesis, Verification Suite & Standalone Repository",
+      "status": "completed",
+      "prerequisites": [
+        "dcp_phase_4_kernel_boundary"
+      ],
+      "required_disk_artifacts": [
+        "IOS_27_DISPLAY_COPROCESSOR_DCP_RE.md",
+        "artifacts/dcp/cross_validation_matrix.json",
+        "tools/verify_dcp_constants.py"
+      ],
+      "findings_document": "IOS_27_DISPLAY_COPROCESSOR_DCP_RE.md",
+      "objectives": [
+        "Author 50KB+ Master Dossier",
+        "Validate 40 constants in cross_validation_matrix.json",
+        "Publish standalone repository"
+      ]
     }
   ],
   "verification_log": [
@@ -1806,7 +2424,43 @@
       "verified_at": "2026-11-23T00:29:32.571944+05:30",
       "status": "passed",
       "command": "python3 tools/verify_phase.py sptm_phase_5_synthesis"
+    },
+    {
+      "phase_id": "ave_phase_1a_workspace_baseline",
+      "verified_at": "2026-11-23T00:55:32.245828+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py ave_phase_1a_workspace_baseline"
+    },
+    {
+      "phase_id": "ave_phase_1b_architecture_topology",
+      "verified_at": "2026-11-23T00:56:41.625465+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py ave_phase_1b_architecture_topology"
+    },
+    {
+      "phase_id": "ave_phase_2_hardware_register_geometry",
+      "verified_at": "2026-11-23T00:57:40.320160+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py ave_phase_2_hardware_register_geometry"
+    },
+    {
+      "phase_id": "ave_phase_3_command_queue_protocol",
+      "verified_at": "2026-11-23T00:58:33.467632+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py ave_phase_3_command_queue_protocol"
+    },
+    {
+      "phase_id": "ave_phase_4_kernel_boundary",
+      "verified_at": "2026-11-23T01:00:08.503874+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py ave_phase_4_kernel_boundary"
+    },
+    {
+      "phase_id": "ave_phase_5_synthesis",
+      "verified_at": "2026-11-23T01:08:19.320386+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py ave_phase_5_synthesis"
     }
   ],
-  "last_updated": "2026-11-23T00:29:32.571944+05:30"
+  "last_updated": "2026-11-23T01:08:19.320386+05:30"
 }

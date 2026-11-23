@@ -1,0 +1,82 @@
+{
+  "hardware_crypto_engine": {
+    "cipher": "AES-XTS (XEX-based Tweakable Block Cipher with Ciphertext Stealing)",
+    "key_sizes": [
+      "128-bit",
+      "256-bit"
+    ],
+    "data_streaming_paths": {
+      "H2F": "Host-to-Flash: High-bandwidth streaming encryption during NVMe Write DMA",
+      "F2H": "Flash-to-Host: Real-time streaming decryption during NVMe Read DMA"
+    },
+    "per_block_tweak_generation": {
+      "tweak_size_bits": 128,
+      "formula": "Tweak = AES_ECB(K_tweak, (LBA & 0xFFFFFFFFFFFF) | ((Namespace_ID & 0xFF) << 48) | ((Segment_Idx & 0xFFFF) << 56))",
+      "security_property": "Guarantees identical data written across different LBAs or namespaces produces distinct ciphertext on NAND flash"
+    },
+    "key_ladder_integration": {
+      "root_of_trust": "Secure Enclave Processor (SEP) UID / GID hardware key ladder",
+      "unwrapping_mechanism": "Effaceable Storage (Namespace 7) provides encrypted Key Encryption Keys (KEK)",
+      "key_slot_programming": "Programmed over secure internal bus into dedicated hardware key slots in 0x17dd47c00"
+    },
+    "error_registers": [
+      {
+        "name": "status_reg",
+        "offset": "0x00",
+        "description": "Global cipher engine status and pipeline ready flag"
+      },
+      {
+        "name": "load_err_info0",
+        "offset": "0x08",
+        "description": "Key slot descriptor load failure info"
+      },
+      {
+        "name": "load_err_info1",
+        "offset": "0x0C",
+        "description": "Tweak generator overflow and alignment fault flags"
+      },
+      {
+        "name": "h2f_err",
+        "offset": "0x14",
+        "description": "Host-to-Flash streaming data beat parity mismatch"
+      },
+      {
+        "name": "f2h_err",
+        "offset": "0x18",
+        "description": "Flash-to-Host streaming data beat decryption fault"
+      }
+    ]
+  },
+  "wear_leveling_bbt": {
+    "nand_organization": {
+      "channels": 4,
+      "dies_per_channel": 2,
+      "planes_per_die": 4,
+      "page_size_bytes": 16384,
+      "block_pages": 768,
+      "block_size_bytes": 12582912
+    },
+    "multi_tier_wear_leveling": {
+      "bands": "Multi-tier Wear Leveling Bands (W: Wear Level Bands)",
+      "slc_tier": "Fast on-demand single-level cell cache (oSLC, BI: BLKS(SLC))",
+      "tlc_tier": "High-density triple-level cell bulk storage (BU: BLKS(MLC/TLC))",
+      "wear_thresholds": "Dynamic stepover limits (SoMx: Maximal stepovers, SoAvg: Average stepovers)"
+    },
+    "bad_block_retirement": {
+      "factory_bad_blocks": "Preserved in persistent bootloader NAND defect tables",
+      "grown_bad_blocks": "Monitored at runtime via GBB counter (GB: total number GBBs)",
+      "retirement_policy": "Blocks exceeding maximum uncorrectable ECC error thresholds (UE num ueccs) or erase retry counts are immediately marked retired and excluded from band allocation"
+    },
+    "read_disturb_mitigation": {
+      "sampling_engine": "Hardware Read Disturb Sampler (RDS: Sectors read due to RD sampler)",
+      "scrubbing_threshold": 100000,
+      "action": "Autonomous proactive background relocation to new block followed by block erase"
+    }
+  },
+  "hmb_dma_arbitration": {
+    "mechanism": "Host Memory Buffer (HMB) DMA Allocation",
+    "iommu_protection": "SART Coastguard v4 filter window at 0x17dcc0000",
+    "fabric_bridge": "af_ansaxi2af (ANS AXI to Application Fabric)",
+    "bandwidth_governor": "ans-af-bw-threshold dynamic arbitration protecting CPU DRAM latency"
+  }
+}

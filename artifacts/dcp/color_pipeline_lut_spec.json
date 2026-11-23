@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Display Coprocessor Color Pipeline & 3D LUT Architecture",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "color_pipeline": {
+    "gamut_coverage": ["sRGB", "Display P3", "ITU-R BT.2020"],
+    "peak_hdr_brightness_nits": 2000,
+    "typical_sdr_brightness_nits": 1000,
+    "min_aod_brightness_nits": 1,
+    "pipeline_blocks": [
+      {
+        "module": "UPBlock_ColorManager_v19",
+        "name": "Hardware Color Management Engine",
+        "lut_architecture": {
+          "type": "Tetrahedral Interpolated 3D LUT",
+          "grid_points": "33x33x33 (35,937 nodes)",
+          "bit_depth_per_channel": 16,
+          "memory_size_bytes": 215622
+        },
+        "color_spaces": "Performs zero-overhead color space conversions between Rec.709, P3, and Rec.2020."
+      },
+      {
+        "module": "UPBlock_PCC2DLTM_v12",
+        "name": "Pixel Color Calibration 2D Local Tone Mapping",
+        "grid_resolution": "96x44 spatial analysis grid",
+        "role": "Analyzes localized frame brightness and dynamically tone-maps HDR/EDR specular highlights without clipping midtones."
+      },
+      {
+        "module": "UPBlock_ALSS",
+        "name": "Ambient Light Sensor Shift (True Tone)",
+        "inputs": "6-channel multichannel ambient light sensor (ALS)",
+        "adjustment": "Computes real-time Bradford chromatic adaptation transform matrix to adjust display white point to ambient environment."
+      },
+      {
+        "module": "UPBlock_Dither_v24",
+        "name": "Spatial & Temporal Dithering (FRC)",
+        "algorithm": "Blue-noise error diffusion dither",
+        "output_depth_bits": 10,
+        "role": "Prevents banding in smooth gradients and shadows across low-luminance Always-On Display levels."
+      }
+    ]
+  }
+}

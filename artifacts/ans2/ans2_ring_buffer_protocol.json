@@ -1,0 +1,55 @@
+{
+  "soc": "t8150",
+  "subsystem": "Apple NVMe Storage Controller 2 (ANS2)",
+  "doorbell_protocol": {
+    "bar_base_address": "0x17dcc0000",
+    "doorbell_stride_bytes": 8,
+    "doorbell_base_offset": "0x1000",
+    "submission_queue_doorbell": {
+      "formula": "0x17dcc0000 + 0x1000 + (2 * QID * 8)",
+      "example_sq0_admin": "0x17dcc1000",
+      "example_sq1_io": "0x17dcc1010",
+      "access_width_bits": 32,
+      "action": "Host writes new 16-bit SQ Tail index; signals hardware DMA fetch"
+    },
+    "completion_queue_doorbell": {
+      "formula": "0x17dcc0000 + 0x1000 + ((2 * QID + 1) * 8)",
+      "example_cq0_admin": "0x17dcc1008",
+      "example_cq1_io": "0x17dcc1018",
+      "access_width_bits": 32,
+      "action": "Host writes new 16-bit CQ Head index; acknowledges completion reap"
+    }
+  },
+  "ascwrap_mailbox_protocol": {
+    "mailbox_base_address": "0x179600000",
+    "controller_version": "v6 (iop,ascwrap-v6)",
+    "registers": [
+      {
+        "name": "ASC_CPU_INBOX_CTRL",
+        "offset": "0x00",
+        "description": "Host-to-ANS2 inbox status & interrupt trigger"
+      },
+      {
+        "name": "ASC_CPU_INBOX_DATA",
+        "offset": "0x08",
+        "description": "64-bit message payload register"
+      },
+      {
+        "name": "ASC_ANS_OUTBOX_CTRL",
+        "offset": "0x20",
+        "description": "ANS2-to-Host outbox status & interrupt acknowledge"
+      },
+      {
+        "name": "ASC_ANS_OUTBOX_DATA",
+        "offset": "0x28",
+        "description": "64-bit response message payload register"
+      }
+    ],
+    "message_format_bits": {
+      "endpoint_id": "Bits [63:56] (8 bits): Identifies RTKit Mailbox endpoint (e.g. FTL, Power, NVMe Admin)",
+      "message_type": "Bits [55:48] (8 bits): Message opcode (Hello, Request, Response, Ping)",
+      "sequence_id": "Bits [47:32] (16 bits): Transaction sequence tag for matching async replies",
+      "payload": "Bits [31:0] (32 bits): Command-specific payload, status code, or memory token"
+    }
+  }
+}

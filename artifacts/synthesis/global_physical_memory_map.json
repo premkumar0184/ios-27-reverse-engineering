@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro (t8150) Global Physical Memory Map",
+  "physical_address_width_bits": 36,
+  "total_addressable_range_bytes": 68719476736,
+  "total_addressable_range_human": "64 GB (Architecture Maximum)",
+  "installed_dram_bytes": 34359738368,
+  "installed_dram_human": "32 GB LPDDR5X-8533",
+  "dram_base_physical": "0x0000000800000000",
+  "dram_limit_physical": "0x0000000fffffffff",
+  "dram_carveouts": [
+    {
+      "id": "SPTM_RESERVED",
+      "name": "SPTM Hypervisor & Monitor Reserve",
+      "base_physical": "0x0000000800000000",
+      "limit_physical": "0x000000081fffffff",
+      "size_bytes": 536870912,
+      "size_hex": "0x20000000",
+      "size_human": "512 MB",
+      "privilege": "GL2 only (Hardware CTRR Protected)",
+      "purpose": "VTTBR_EL2 Stage-2 Translation Tables, PAPT Frame Table, Monitor Stacks, Xenon Hypervisor Core"
+    },
+    {
+      "id": "TXM_RESERVED",
+      "name": "TXM Code Signing Monitor Reserve",
+      "base_physical": "0x0000000820000000",
+      "limit_physical": "0x0000000823ffffff",
+      "size_bytes": 67108864,
+      "size_hex": "0x04000000",
+      "size_human": "64 MB",
+      "privilege": "GL1 only (Guarded Execution)",
+      "purpose": "CSM (Code Signing Monitor), TrustCache Database, Image4 Validation Engine, Cryptographic Manifests"
+    },
+    {
+      "id": "EXCLAVECORE_RESERVED",
+      "name": "ExclaveOS Microkernel Conclave Pool",
+      "base_physical": "0x0000000824000000",
+      "limit_physical": "0x0000000863ffffff",
+      "size_bytes": 1073741824,
+      "size_hex": "0x40000000",
+      "size_human": "1 GB",
+      "privilege": "cL4 Conclaves (VasCore / PMM Managed)",
+      "purpose": "Secure enclaves for Biometric matching, SIL display overlays, Secure Storage, and Tightbeam endpoints"
+    },
+    {
+      "id": "SEP_TZ0S_RESERVED",
+      "name": "Secure Enclave Primary DRAM (TZ0S)",
+      "base_physical": "0x0000000864000000",
+      "limit_physical": "0x000000086a1affff",
+      "size_bytes": 102432768,
+      "size_hex": "0x061b0000",
+      "size_human": "97.6875 MB",
+      "privilege": "SEP Secure Core only (DART-SEP SID 0)",
+      "purpose": "sepOS 27.2 microkernel text, kernel heap, user service pools, and AES-XTS key cache"
+    },
+    {
+      "id": "SEP_TZ1S_RESERVED",
+      "name": "Secure Enclave Sensor Buffer (TZ1S)",
+      "base_physical": "0x000000086a1b0000",
+      "limit_physical": "0x000000086f20ffff",
+      "size_bytes": 84279296,
+      "size_hex": "0x05060000",
+      "size_human": "80.375 MB",
+      "privilege": "SEP + Camera ISP + ANE (DART-SEP SID 1..2)",
+      "purpose": "Pearl NIR sensor raw frame buffer (48 MB), ANE embedding staging (16 MB), and Exclave bridge (16.38 MB)"
+    },
+    {
+      "id": "DARWIN_HOST_USABLE",
+      "name": "Darwin XNU Host Physical DRAM Pool",
+      "base_physical": "0x000000086f210000",
+      "limit_physical": "0x0000000fffffffff",
+      "size_bytes": 32495304704,
+      "size_hex": "0x790df0000",
+      "size_human": "30.26 GB",
+      "privilege": "EL1 (XNU Kernel) & EL0 (Userland)",
+      "purpose": "Darwin kernel text, zone allocators, page cache, user application address spaces, and unified Metal graphics memory"
+    }
+  ],
+  "coprocessor_retention_srams": [
+    {
+      "coprocessor": "Secure Enclave (SEP)",
+      "size_bytes": 524288,
+      "size_human": "512 KB",
+      "purpose": "Zero-leakage hardware key registers, intermediate AES state, instant tamper zeroization"
+    },
+    {
+      "coprocessor": "Always-On Processor 2 (AOP2)",
+      "size_bytes": 5603328,
+      "size_human": "5.34 MB",
+      "purpose": "PitayaOS cL4 microkernel code/data, 3.0s Siri hotword circular FIFO, IMU fastpath queue"
+    },
+    {
+      "coprocessor": "Apple Neural Engine (ANE H18)",
+      "size_bytes": 33554432,
+      "size_human": "32 MB",
+      "purpose": "Spatial tensor weight cache, 16 KB tile accumulation buffers, zero-DRAM-overhead intermediate layers"
+    },
+    {
+      "coprocessor": "Apple AGX G18 Pro GPU",
+      "size_bytes": 16777216,
+      "size_human": "16 MB On-Chip Tile Memory",
+      "purpose": "Tile-based deferred rendering (TBDR) local tile buffers and hardware BVH cache"
+    }
+  ],
+  "mmio_peripheral_windows": [
+    {
+      "name": "Low MMIO Aperture (System Peripherals)",
+      "base": "0x0000000070000000",
+      "limit": "0x000000008fffffff",
+      "controllers": [
+        "DART-SEP (0x70c80000)",
+        "ASCwrap-SEP (0x72600000)",
+        "DART-AVE (0x77020000)",
+        "DART-JPEG (0x7d020000)",
+        "DART-SCALER (0x81260000)",
+        "DART-AVD (0x85020000)"
+      ]
+    },
+    {
+      "name": "PMP & Core Fabric Aperture",
+      "base": "0x00000000f0000000",
+      "limit": "0x00000000ffffffff",
+      "controllers": [
+        "DART-PMP (0xf0300000)",
+        "PMGR (0xf3400000)",
+        "AIC (0xf3c00000)",
+        "DART-RSM (0xf99a0000)"
+      ]
+    },
+    {
+      "name": "Mid MMIO Aperture (Coprocessors & Audio)",
+      "base": "0x0000000100000000",
+      "limit": "0x00000001ffffffff",
+      "controllers": [
+        "AOP1 (0x100600000)",
+        "DART-AOP (0x100fc0000)",
+        "AOP2 ASCwrap (0x101600000)",
+        "AOP2 Doorbell (0x10162c000)",
+        "DART-MTP (0x104800000)",
+        "DART-ISP (0x1128c0000)",
+        "DART-SIO (0x175060000)",
+        "DART-APCIE0 (0x180000000)",
+        "DART-APCIE1 (0x181000000)",
+        "DART-DCP (0x1fa340000)",
+        "DART-DISP0 (0x1fa300000)"
+      ]
+    },
+    {
+      "name": "High MMIO Aperture (GPU, ANE & Exclave Proxies)",
+      "base": "0x0000000200000000",
+      "limit": "0x00000003ffffffff",
+      "controllers": [
+        "DART-ANE (0x271800000)",
+        "ANE MMIO Base (0x2e0000000)",
+        "AGX G18 MMIO (0x230000000)",
+        "AGX PMP Doorbell (0x23a000000)",
+        "AOP2 Exclave Mailbox Proxy (0x35167c000)",
+        "DART-USB0 (0x402f00000)"
+      ]
+    }
+  ],
+  "hardware_protection_fences": {
+    "ctrr_region_a": {
+      "base": "0x0000000800000000",
+      "limit": "0x0000000802000000",
+      "size": "32 MB",
+      "enforcement": "Hardware-enforced Read-Only / Execute-Only for SPTM text"
+    },
+    "ctrr_region_b": {
+      "base": "0x0000000820000000",
+      "limit": "0x0000000821000000",
+      "size": "16 MB",
+      "enforcement": "Hardware-enforced Read-Only for TXM code signing rules"
+    },
+    "gapf_filters": {
+      "ports_monitored": [
+        "Port 0 (CPUs)",
+        "Port 1 (AGX GPU)",
+        "Port 2 (ANE)",
+        "Port 3 (DART DMA)"
+      ],
+      "policy": "Block non-secure bus access to physical addresses 0x800000000..0x86f20ffff"
+    }
+  }
+}

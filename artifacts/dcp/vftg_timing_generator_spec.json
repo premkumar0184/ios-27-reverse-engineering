@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Vertical Flexible Timing Generator (VFTG_v38) Specification",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "vftg_hardware": {
+    "module": "UPBlock_VFTG_v38",
+    "timing_standard": "Apple Flexible-V Dynamic Timing Standard",
+    "pixel_clock_hz": 504000000,
+    "pixel_clock_human": "504.0 MHz",
+    "horizontal_geometry": {
+      "active_pixels": 1320,
+      "front_porch_pixels": 24,
+      "sync_width_pixels": 16,
+      "back_porch_pixels": 40,
+      "total_pixels_per_line": 1400,
+      "line_time_ns": 2777.77
+    },
+    "vertical_geometry": {
+      "active_lines": 2868,
+      "front_porch_lines": 12,
+      "sync_width_lines": 4,
+      "base_back_porch_lines_120hz": 116,
+      "total_lines_120hz": 3000,
+      "frame_time_120hz_us": 8333.33
+    },
+    "dynamic_blanking_modulation": {
+      "mechanism": "Vertical Back Porch Expansion (VBP Modulation)",
+      "line_scan_invariance": "Active scan lines (2868 lines) are ALWAYS scanned out at a constant 504 MHz line rate (2.778 microseconds per line) regardless of frame rate, eliminating OLED charge leakage and color shifts.",
+      "back_porch_lines_by_rate": {
+        "120hz": 116,
+        "80hz": 1616,
+        "60hz": 3116,
+        "48hz": 4616,
+        "40hz": 6116,
+        "30hz": 9116,
+        "24hz": 12116,
+        "20hz": 15116,
+        "15hz": 21116,
+        "10hz": 33116,
+        "1hz": 357116
+      }
+    },
+    "panel_synchronization": {
+      "tearing_effect_signal": "Fast_TE (Hardware GPIO line from panel TCON)",
+      "te_sample_clock_hz": 24000000,
+      "max_te_jitter_ticks": 48,
+      "quick_media_switching": "QMS Cinema VRR Supported without black-screen resync"
+    }
+  }
+}

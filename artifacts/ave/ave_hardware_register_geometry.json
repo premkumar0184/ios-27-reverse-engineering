@@ -1,0 +1,164 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Apple Video Encoder 2 (AVE2) Hardware Register Geometry",
+  "soc": "t8150",
+  "mmio_registers": {
+    "dart_ave_iommu": {
+      "base_address": "0x77020000",
+      "aperture_size": "0x20000",
+      "page_granule": "16 KB",
+      "role": "IOMMU DMA Memory Translation and Aperture Isolation",
+      "registers": {
+        "DART_CONFIG": {
+          "offset": "0x0000",
+          "role": "Global IOMMU Enable, Bypass Mode & Translation Control"
+        },
+        "DART_TLB_INVALIDATE": {
+          "offset": "0x0020",
+          "role": "Hardware TLB Invalidation Trigger"
+        },
+        "DART_STREAM_SELECT": {
+          "offset": "0x0034",
+          "role": "Hardware Context Stream ID Selection"
+        },
+        "DART_ERROR_STATUS": {
+          "offset": "0x0040",
+          "role": "DMA Page Fault & Access Violation Reporting"
+        }
+      }
+    },
+    "ave_controller_core": {
+      "base_address": "0x77000000",
+      "aperture_size": "0x10000",
+      "role": "AVE2 Hardware Encoder Execution & Command Submission",
+      "registers": {
+        "AVE_CTRL_ENABLE": {
+          "offset": "0x0000",
+          "bits": 32,
+          "role": "Master Core Enable & Soft Reset"
+        },
+        "AVE_CTRL_STATUS": {
+          "offset": "0x0004",
+          "bits": 32,
+          "role": "Pipeline Operational State (Idle, Busy, Fault)"
+        },
+        "AVE_DOORBELL_IN": {
+          "offset": "0x0010",
+          "bits": 32,
+          "role": "Host-to-Coprocessor Doorbell Ring"
+        },
+        "AVE_DOORBELL_OUT": {
+          "offset": "0x0014",
+          "bits": 32,
+          "role": "Coprocessor-to-Host Completion Doorbell"
+        },
+        "AVE_IRQ_STATUS": {
+          "offset": "0x0020",
+          "bits": 32,
+          "role": "Interrupt Status Mask (Bit 0: Done, Bit 1: Error)"
+        },
+        "AVE_IRQ_CLEAR": {
+          "offset": "0x0024",
+          "bits": 32,
+          "role": "Interrupt Acknowledge and Clear"
+        },
+        "AVE_CMD_QUEUE_HEAD": {
+          "offset": "0x0040",
+          "bits": 64,
+          "role": "Command Ring Buffer Read Pointer (PA)"
+        },
+        "AVE_CMD_QUEUE_TAIL": {
+          "offset": "0x0048",
+          "bits": 64,
+          "role": "Command Ring Buffer Write Pointer (PA)"
+        },
+        "AVE_CMD_QUEUE_LEN": {
+          "offset": "0x0050",
+          "bits": 32,
+          "role": "Command Ring Buffer Depth (Entries)"
+        },
+        "AVE_PERF_COUNTER_CYCLES": {
+          "offset": "0x0080",
+          "bits": 64,
+          "role": "Hardware Encoding Clock Cycles Elapsed"
+        },
+        "AVE_PERF_COUNTER_BITS": {
+          "offset": "0x0088",
+          "bits": 64,
+          "role": "Total Bitstream Bits Emitted"
+        }
+      }
+    }
+  },
+  "rate_control_models": {
+    "ConstantQpRateControl": {
+      "vtable": "__ZTV21ConstantQpRateControl",
+      "algorithm": "Fixed Quantization Parameter per Slice Type",
+      "parameters": {
+        "qp_intra": {
+          "range": "0..51",
+          "default": 26,
+          "description": "Luma QP for I-slices and IDR frames"
+        },
+        "qp_inter_p": {
+          "range": "0..51",
+          "default": 28,
+          "description": "Luma QP for Uni-directional P-slices"
+        },
+        "qp_inter_b": {
+          "range": "0..51",
+          "default": 30,
+          "description": "Luma QP for Bi-directional B-slices"
+        },
+        "chroma_qp_offset": {
+          "range": "-12..12",
+          "default": 0,
+          "description": "Chroma Cb/Cr Quantization Delta"
+        }
+      }
+    },
+    "ConstantRateFactorRateControl": {
+      "vtable": "__ZTV29ConstantRateFactorRateControl",
+      "algorithm": "Constant Rate Factor (CRF) with Quadratic Rate-Distortion Model",
+      "parameters": {
+        "crf_target": {
+          "range": "0.0..51.0",
+          "default": 23.0,
+          "description": "Perceptual quality index"
+        },
+        "rq_model": "ConstantRateFactorRQModel (__ZTV25ConstantRateFactorRQModel)",
+        "blur_ratio_scaling": "BlurRatio (__ZN9BlurRatio14calcBaseQScaleE)",
+        "adaptive_b_cascading": "AdaptiveB (__ZN9AdaptiveB11UpdateStatsE)"
+      }
+    },
+    "VariableBitRate_CBR_HRD": {
+      "vtable": "__ZTV11RateControl",
+      "algorithm": "Hypothetical Reference Decoder (HRD) Compliant CBR/VBR",
+      "parameters": {
+        "target_bitrate_bps": "Host configured bitrate (e.g. 20 Mbps for 4K60)",
+        "hrd_buffer_size_bits": "Decoder buffer model size",
+        "hrd_initial_fullness_bits": "Buffer preload fullness prior to playback",
+        "cbr_filler_insertion": "__ZN11RateControl19insertCBRFillerHEVCEP"
+      }
+    }
+  },
+  "quantization_parameters": {
+    "avc_hevc_qp_range": {
+      "min": 0,
+      "max": 51,
+      "step": 1
+    },
+    "av1_base_q_index_range": {
+      "min": 0,
+      "max": 255,
+      "step": 1
+    },
+    "scaling_lists_supported": [
+      "4x4 Intra/Inter",
+      "8x8 Intra/Inter",
+      "16x16 Intra/Inter",
+      "32x32 Intra/Inter"
+    ],
+    "delta_qp_macroblock_variance": "Enabled via IsPerMbStatsLumaVarEnForCurFrame (Dynamic QP modulation based on spatial texture)"
+  }
+}

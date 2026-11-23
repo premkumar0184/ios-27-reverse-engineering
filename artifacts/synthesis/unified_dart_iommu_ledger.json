@@ -1,0 +1,487 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro (t8150) Unified DART IOMMU Architecture Ledger",
+  "dart_generation": "DART Gen3 (Apple Device Address Resolution Table Version 3)",
+  "page_granule_bytes": 16384,
+  "page_granule_human": "16 KB",
+  "virtual_address_width_bits": 36,
+  "physical_address_width_bits": 36,
+  "total_dart_controllers": 25,
+  "controllers": [
+    {
+      "id": "DART_AOP",
+      "node_name": "dart-aop",
+      "base_address": "0x0000000100fc0000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x0183 (387)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-aop-system",
+          "target": "AOP2 Control Registers & Mailboxes"
+        },
+        {
+          "sid": "0x01",
+          "name": "mapper-aop-motion",
+          "target": "Motion Sensor Queue DMA"
+        },
+        {
+          "sid": "0x10",
+          "name": "mapper-aop2",
+          "target": "Host AP DRAM Shared Memory (FastPath Ring Buffer)"
+        },
+        {
+          "sid": "0x11",
+          "name": "mapper-exclave-aop2",
+          "target": "ExclaveOS Secure Memory Channel (EP 0x53)"
+        }
+      ]
+    },
+    {
+      "id": "DART_PMP",
+      "node_name": "dart-pmp",
+      "base_address": "0x00000000f0300000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x030c (780)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-pmp-ctrl",
+          "target": "PMP Power Management Firmware"
+        },
+        {
+          "sid": "0x01",
+          "name": "mapper-rtbuddy-g18-c0",
+          "target": "AGX G18 RTBuddy Core 0 Command Descriptors"
+        },
+        {
+          "sid": "0x02",
+          "name": "mapper-rtbuddy-g18-c1",
+          "target": "AGX G18 RTBuddy Core 1 Command Descriptors"
+        }
+      ]
+    },
+    {
+      "id": "DART_SEP",
+      "node_name": "dart-sep",
+      "base_address": "0x0000000070c80000",
+      "size_hex": "0x20000",
+      "size_bytes": 131072,
+      "aic_irq": "0x013a (314)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-sep-tz0",
+          "target": "Secure Enclave TZ0S Dedicated Memory (97.68 MB)"
+        },
+        {
+          "sid": "0x01",
+          "name": "mapper-sep-pearl",
+          "target": "Camera ISP Pearl NIR Biometric Frames (48 MB)"
+        },
+        {
+          "sid": "0x02",
+          "name": "mapper-sep-exclave",
+          "target": "ExclaveOS Biometric Evaluation Window (16.38 MB)"
+        }
+      ]
+    },
+    {
+      "id": "DART_ANE",
+      "node_name": "dart-ane",
+      "base_address": "0x0000000271800000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x0260 (608)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-ane-in",
+          "target": "Neural Network Input Tensors"
+        },
+        {
+          "sid": "0x01",
+          "name": "mapper-ane-out",
+          "target": "Neural Network Output Tensors & Activations"
+        },
+        {
+          "sid": "0x02",
+          "name": "mapper-ane-model",
+          "target": "HWX Compiled Binary & Layer Descriptors"
+        }
+      ]
+    },
+    {
+      "id": "DART_DCP",
+      "node_name": "dart-dcp",
+      "base_address": "0x00000001fa340000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x028b (651)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-dcp-ctrl",
+          "target": "Display Co-Processor Firmware & Control Tables"
+        },
+        {
+          "sid": "0x01",
+          "name": "mapper-dcp-aod",
+          "target": "1Hz AOD 256 KB Direct Scanout Frame Buffer"
+        },
+        {
+          "sid": "0x02",
+          "name": "mapper-dcp-exclave",
+          "target": "Exclave Secure Display Plane (SIL Indicator)"
+        }
+      ]
+    },
+    {
+      "id": "DART_DISP0",
+      "node_name": "dart-disp0",
+      "base_address": "0x00000001fa300000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x028b (651)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-disp-primary",
+          "target": "Primary Panel Frame Buffer Surfaces"
+        },
+        {
+          "sid": "0x01",
+          "name": "mapper-disp-cursor",
+          "target": "Hardware Overlay & Cursor Plane"
+        }
+      ]
+    },
+    {
+      "id": "DART_ISP",
+      "node_name": "dart-isp",
+      "base_address": "0x00000001128c0000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x012e (302)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-isp-raw",
+          "target": "Raw Camera Bayer Sensor Ingest"
+        },
+        {
+          "sid": "0x01",
+          "name": "mapper-isp-yuv",
+          "target": "Processed YUV Video / Preview Frames"
+        },
+        {
+          "sid": "0x02",
+          "name": "mapper-isp-pearl",
+          "target": "Pearl NIR FaceID Infrared Ingest (Routes to SEP TZ1S)"
+        }
+      ]
+    },
+    {
+      "id": "DART_USB0",
+      "node_name": "dart-usb0",
+      "base_address": "0x0000000402f00000",
+      "size_hex": "0x20000",
+      "size_bytes": 131072,
+      "aic_irq": "0x0495 (1173)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-usb-xhci",
+          "target": "USB 3.2 / USB4 SuperSpeed DMA"
+        },
+        {
+          "sid": "0x01",
+          "name": "mapper-usb-isoc",
+          "target": "Isochronous Audio / Video Endpoint DMA"
+        }
+      ]
+    },
+    {
+      "id": "DART_APCIE0",
+      "node_name": "dart-apcie0",
+      "base_address": "0x0000000180000000",
+      "size_hex": "0x20000",
+      "size_bytes": 131072,
+      "aic_irq": "0x0476 (1142)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x11",
+          "name": "mapper-pcie0-piodma",
+          "target": "PCIe Port 0 (Baseband Modem DMA)"
+        }
+      ]
+    },
+    {
+      "id": "DART_APCIE1",
+      "node_name": "dart-apcie1",
+      "base_address": "0x0000000181000000",
+      "size_hex": "0x20000",
+      "size_bytes": 131072,
+      "aic_irq": "0x047e (1150)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x11",
+          "name": "mapper-pcie1-piodma",
+          "target": "PCIe Port 1 (WLAN / Bluetooth / Centauri DMA)"
+        }
+      ]
+    },
+    {
+      "id": "DART_SIO",
+      "node_name": "dart-sio",
+      "base_address": "0x0000000175060000",
+      "size_hex": "0x20000",
+      "size_bytes": 131072,
+      "aic_irq": "0x041e (1054)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-sio-dma",
+          "target": "High-Speed SPI / UART / I2S Audio Serial I/O"
+        }
+      ]
+    },
+    {
+      "id": "SART_ANS",
+      "node_name": "sart-ans",
+      "base_address": "0x000000017dc50000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x03cd (973)",
+      "compatible": "sart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-ans-nand",
+          "target": "Apple NAND Subsystem Hardware NVRAM/NAND Storage DMA"
+        }
+      ]
+    },
+    {
+      "id": "DART_RSM",
+      "node_name": "dart-rsm",
+      "base_address": "0x00000000f99a0000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x0109 (265)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-rsm-ctrl",
+          "target": "Remote Security Monitor"
+        }
+      ]
+    },
+    {
+      "id": "DART_MTP",
+      "node_name": "dart-mtp",
+      "base_address": "0x0000000104800000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x042d (1069)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-mtp-touch",
+          "target": "Multi-Touch Processor Ingest Buffer"
+        }
+      ]
+    },
+    {
+      "id": "DART_DISPGRT",
+      "node_name": "dart-dispgrt",
+      "base_address": "0x00000001fa320000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x028b (651)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-dispgrt",
+          "target": "Display Graphics Real-Time Plane"
+        }
+      ]
+    },
+    {
+      "id": "DART_DISP0_ISOC",
+      "node_name": "dart-disp0-isoc",
+      "base_address": "0x00000001fa1c0000",
+      "size_hex": "0x20000",
+      "size_bytes": 131072,
+      "aic_irq": "0x02a2 (674)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-disp-isoc",
+          "target": "Display Isochronous Scanout Pipeline"
+        }
+      ]
+    },
+    {
+      "id": "DART_DCPEXT0",
+      "node_name": "dart-dcpext0",
+      "base_address": "0x00000001fe340000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x02d3 (723)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-dcpext",
+          "target": "External Display DCP Controller"
+        }
+      ]
+    },
+    {
+      "id": "DART_DISPEXT0",
+      "node_name": "dart-dispext0",
+      "base_address": "0x00000001fe300000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x02d3 (723)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-dispext-frame",
+          "target": "External Display Frame Buffer"
+        }
+      ]
+    },
+    {
+      "id": "DART_DISPEXT0_ISOC",
+      "node_name": "dart-dispext0-isoc",
+      "base_address": "0x00000001fe1c0000",
+      "size_hex": "0x20000",
+      "size_bytes": 131072,
+      "aic_irq": "0x02ea (746)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-dispext-isoc",
+          "target": "External Display Isochronous Pipe"
+        }
+      ]
+    },
+    {
+      "id": "DART_SCALER",
+      "node_name": "dart-scaler",
+      "base_address": "0x0000000081260000",
+      "size_hex": "0x20000",
+      "size_bytes": 131072,
+      "aic_irq": "0x03eb (1003)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-scaler",
+          "target": "Hardware Image Scaler DMA"
+        }
+      ]
+    },
+    {
+      "id": "DART_JPEG",
+      "node_name": "dart-jpeg",
+      "base_address": "0x000000007d020000",
+      "size_hex": "0xc000",
+      "size_bytes": 49152,
+      "aic_irq": "0x03d6 (982)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-jpeg",
+          "target": "Hardware JPEG Codec DMA"
+        }
+      ]
+    },
+    {
+      "id": "DART_AVE",
+      "node_name": "dart-ave",
+      "base_address": "0x0000000077020000",
+      "size_hex": "0x20000",
+      "size_bytes": 131072,
+      "aic_irq": "0x0395 (917)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-ave",
+          "target": "Apple Video Encoder DMA"
+        }
+      ]
+    },
+    {
+      "id": "DART_AVD",
+      "node_name": "dart-avd",
+      "base_address": "0x0000000085020000",
+      "size_hex": "0x20000",
+      "size_bytes": 131072,
+      "aic_irq": "0x0389 (905)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-avd",
+          "target": "Apple Video Decoder DMA"
+        }
+      ]
+    },
+    {
+      "id": "DART_APR",
+      "node_name": "dart-apr",
+      "base_address": "0x0000000171020000",
+      "size_hex": "0x20000",
+      "size_bytes": 131072,
+      "aic_irq": "0x049e (1182)",
+      "compatible": "dart,t8110",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-apr",
+          "target": "Apple Pixel Realizer DMA"
+        }
+      ]
+    },
+    {
+      "id": "AUDIO_SHARED_DART_PROXY",
+      "node_name": "audio-shared-dart-proxy",
+      "base_address": "0x0000000000000000",
+      "size_hex": "0x0",
+      "size_bytes": 0,
+      "aic_irq": "0x0000 (0)",
+      "compatible": "dart,proxy",
+      "stream_ids": [
+        {
+          "sid": "0x00",
+          "name": "mapper-audio-proxy",
+          "target": "Shared Low-Power Audio DMA Proxy"
+        }
+      ]
+    }
+  ]
+}

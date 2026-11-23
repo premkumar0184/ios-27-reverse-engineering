@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro (t8150) Unified ASCwrap Mailbox & Doorbell Matrix",
+  "register_offsets": {
+    "MBI_INBOX_CTRL": {
+      "offset_hex": "0x0000",
+      "bits": 32,
+      "role": "Inbox control, interrupt enable, message count"
+    },
+    "MBI_INBOX_DATA": {
+      "offset_hex": "0x0008",
+      "bits": 64,
+      "role": "64-bit message read register (EP[63:48] | Payload[47:0])"
+    },
+    "MBI_OUTBOX_CTRL": {
+      "offset_hex": "0x0020",
+      "bits": 32,
+      "role": "Outbox control, interrupt acknowledge, status"
+    },
+    "MBI_OUTBOX_DATA": {
+      "offset_hex": "0x0028",
+      "bits": 64,
+      "role": "64-bit message write register"
+    },
+    "MBI_STATUS": {
+      "offset_hex": "0x0040",
+      "bits": 32,
+      "role": "FIFO full/empty flags and hardware busy indicators"
+    }
+  },
+  "doorbell_offsets": {
+    "DOORBELL_SET": {
+      "offset_hex": "0x0000",
+      "bits": 32,
+      "role": "Write-1-to-set destination interrupt"
+    },
+    "DOORBELL_CLEAR": {
+      "offset_hex": "0x0004",
+      "bits": 32,
+      "role": "Write-1-to-clear pending interrupt"
+    },
+    "DOORBELL_STATUS": {
+      "offset_hex": "0x0008",
+      "bits": 32,
+      "role": "Pending doorbell interrupt mask"
+    }
+  },
+  "instances": [
+    {
+      "subsystem": "Secure Enclave (SEP)",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base": "0x0000000072600000",
+      "mailbox_size": "0x88000",
+      "doorbell_base": "0x000000007262c000",
+      "aic_irq_inbox": "0x0130 (304)",
+      "aic_irq_outbox": "0x0131 (305)",
+      "aic_irq_doorbell": "0x0132 (306)",
+      "peer_core": "SEP A19 Secure Enclave Core",
+      "os_layer": "sepOS 27.2"
+    },
+    {
+      "subsystem": "Always-On Processor 1 (AOP1)",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base": "0x0000000100600000",
+      "mailbox_size": "0x88000",
+      "doorbell_base": "0x000000010062c000",
+      "aic_irq_inbox": "0x015d (349)",
+      "aic_irq_outbox": "0x015e (350)",
+      "aic_irq_doorbell": "0x015f (351)",
+      "peer_core": "AOP1 Ancillary Sensor Core",
+      "os_layer": "RTKit Legacy"
+    },
+    {
+      "subsystem": "Always-On Processor 2 (AOP2)",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base": "0x0000000101600000",
+      "mailbox_size": "0x88000",
+      "doorbell_base": "0x000000010162c000",
+      "aic_irq_inbox": "0x0165 (357)",
+      "aic_irq_outbox": "0x0166 (358)",
+      "aic_irq_doorbell": "0x0167 (359)",
+      "peer_core": "AOP2 64-bit Core",
+      "os_layer": "RTKitOS / PitayaOS (cL4)"
+    },
+    {
+      "subsystem": "AOP2 Exclave Mailbox Proxy",
+      "compatible": "iop,secure-rtbuddy-proxy",
+      "mailbox_base": "0x000000035167c000",
+      "mailbox_size": "0x4000",
+      "doorbell_base": "0x000000035167c000",
+      "aic_irq_inbox": "0x0169 (361)",
+      "aic_irq_outbox": "0x016c (364)",
+      "aic_irq_doorbell": "None (SPTM Stage-2 Trapped)",
+      "peer_core": "ExclaveOS Conclaves",
+      "os_layer": "Tightbeam RPC Relay"
+    },
+    {
+      "subsystem": "Power Management Processor (PMP)",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base": "0x00000000f0300000",
+      "mailbox_size": "0x88000",
+      "doorbell_base": "0x00000000f032c000",
+      "aic_irq_inbox": "0x0308 (776)",
+      "aic_irq_outbox": "0x0309 (777)",
+      "aic_irq_doorbell": "0x030a (778)",
+      "peer_core": "PMP Firmware Core",
+      "os_layer": "PMP RTKit"
+    },
+    {
+      "subsystem": "AGX GPU RTBuddy Core 0",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base": "0x000000023b800000",
+      "mailbox_size": "0x40000",
+      "doorbell_base": "0x000000023a000000",
+      "aic_irq_inbox": "0x03b8 (952)",
+      "aic_irq_outbox": "0x03b9 (953)",
+      "aic_irq_doorbell": "0x03ba (954)",
+      "peer_core": "AGX G18 RTBuddy Core 0",
+      "os_layer": "RTBuddy G18 Firmware"
+    },
+    {
+      "subsystem": "AGX GPU RTBuddy Core 1",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base": "0x000000023bc00000",
+      "mailbox_size": "0x40000",
+      "doorbell_base": "0x000000023a000000",
+      "aic_irq_inbox": "0x03bc (956)",
+      "aic_irq_outbox": "0x03bd (957)",
+      "aic_irq_doorbell": "0x03be (958)",
+      "peer_core": "AGX G18 RTBuddy Core 1",
+      "os_layer": "RTBuddy G18 Firmware"
+    },
+    {
+      "subsystem": "Display Co-Processor (DCP)",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base": "0x00000001fa000000",
+      "mailbox_size": "0x88000",
+      "doorbell_base": "0x00000001fa02c000",
+      "aic_irq_inbox": "0x0278 (632)",
+      "aic_irq_outbox": "0x0279 (633)",
+      "aic_irq_doorbell": "0x027a (634)",
+      "peer_core": "DCP Display Engine Core",
+      "os_layer": "DCP RTKit"
+    },
+    {
+      "subsystem": "DCP Exclave Mailbox Proxy",
+      "compatible": "iop,secure-rtbuddy-proxy",
+      "mailbox_base": "0x00000001fa27c000",
+      "mailbox_size": "0x4000",
+      "doorbell_base": "0x00000001fa27c000",
+      "aic_irq_inbox": "0x027c (636)",
+      "aic_irq_outbox": "0x027f (639)",
+      "aic_irq_doorbell": "None (SPTM Stage-2 Trapped)",
+      "peer_core": "ExclaveOS Conclaves",
+      "os_layer": "Tightbeam Display Overlay"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Display Coprocessor (DCP) RTKit Microkernel & Memory Architecture",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "microkernel": {
+    "name": "Apple RTKitOS",
+    "version": "RTKit_armv8_cl4_Oz_flto_pac-3514.40.18.release",
+    "execution_mode": "ARM64e (AArch64 with PAC00 and BTI)",
+    "scheduler": {
+      "type": "Deterministic fixed-priority preemptive real-time scheduler",
+      "priority_levels": 64,
+      "tick_granularity_micros": 50,
+      "critical_threads": [
+        {
+          "name": "VFTG_Subframe_ISR",
+          "priority": 62,
+          "role": "Hard real-time VSYNC generation, flexible vertical timing, and Tearing Effect (TE) synchronization."
+        },
+        {
+          "name": "PIODMA_Tagging_Worker",
+          "priority": 56,
+          "role": "Programmed I/O DMA descriptor scheduling and hardware compensation LUT transfers."
+        },
+        {
+          "name": "SWMPR_Refresh_Governor",
+          "priority": 48,
+          "role": "Software-Managed Pixel Refresh state machine, evaluating frame intervals and dynamic refresh rate requests."
+        },
+        {
+          "name": "AOP_Flipbook_Consumer",
+          "priority": 40,
+          "role": "Consumes 1Hz Always-On Display flipbook buffers from Always-On Processor via CBAOPEndpoint."
+        },
+        {
+          "name": "BICS_Aging_Accumulator",
+          "priority": 24,
+          "role": "Calculates long-term subpixel luminance accumulation for OLED burn-in compensation."
+        }
+      ]
+    },
+    "memory_protection": {
+      "mmu_granule": 16384,
+      "mmu_granule_hex": "0x4000",
+      "pointer_authentication": {
+        "enabled": true,
+        "algorithm": "QARMA5 / PAC00",
+        "keys": ["APIAKey", "APIBKey", "APDAKey", "APDBKey"]
+      },
+      "hardware_memory_encryption": "Memory Encryption Engine (MEE) dynamic AES-256-XTS"
+    }
+  },
+  "memory_carveouts": {
+    "dcp_firmware_dram": {
+      "name": "dcp_runtime_window",
+      "base_physical_address": "0x0000000810000000",
+      "size_bytes": 50331648,
+      "size_human": "48 MB",
+      "role": "DCP code, RTKit heap pools, task descriptors, and pipe state context tables."
+    },
+    "disp_framebuffer_pool": {
+      "name": "disp0_isoc_dram_pool",
+      "base_physical_address": "0x0000000813000000",
+      "size_bytes": 83886080,
+      "size_human": "80 MB",
+      "role": "Tandem OLED ProMotion triple framebuffers (2868x1320 @ 4 bytes/pixel), HDR/EDR metadata planes, and alpha surfaces."
+    },
+    "calibration_lut_carveout": {
+      "name": "dcp_lut_staging_window",
+      "base_physical_address": "0x0000000818000000",
+      "size_bytes": 16777216,
+      "size_human": "16 MB",
+      "role": "2D PCC Local Tone Mapping LUTs, Subpixel Uniformity Compensation maps (SPUC), and BICS history matrices."
+    }
+  }
+}

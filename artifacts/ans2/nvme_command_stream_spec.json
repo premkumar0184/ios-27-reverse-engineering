@@ -1,0 +1,173 @@
+{
+  "soc": "t8150",
+  "subsystem": "Apple NVMe Storage Controller 2 (ANS2)",
+  "queue_geometry": {
+    "submission_queue_entry_bytes": 64,
+    "completion_queue_entry_bytes": 16,
+    "queue_depth_entries": 64,
+    "sq_total_buffer_bytes": 4096,
+    "cq_total_buffer_bytes": 1024,
+    "descriptor_alignment_bytes": 64,
+    "linear_submission_queue_mode": true,
+    "max_supported_queues": 32,
+    "prp_page_size_bytes": 16384
+  },
+  "submission_queue_entry_format": {
+    "size_bytes": 64,
+    "fields": [
+      {
+        "name": "cdw0_opcode_flags",
+        "offset_bytes": 0,
+        "size_bytes": 4,
+        "description": "Opcode [7:0], FUSE [9:8], PSDT [15:14], CID [31:16]"
+      },
+      {
+        "name": "nsid",
+        "offset_bytes": 4,
+        "size_bytes": 4,
+        "description": "Target Namespace ID (1..7)"
+      },
+      {
+        "name": "cdw2_cdw3_reserved",
+        "offset_bytes": 8,
+        "size_bytes": 8,
+        "description": "Reserved / Vendor metadata pointers"
+      },
+      {
+        "name": "mptr",
+        "offset_bytes": 16,
+        "size_bytes": 8,
+        "description": "Metadata Pointer (Physical DMA address or SART token)"
+      },
+      {
+        "name": "dptr_prp1",
+        "offset_bytes": 24,
+        "size_bytes": 8,
+        "description": "PRP Entry 1 / Data Buffer physical address (16KB aligned)"
+      },
+      {
+        "name": "dptr_prp2",
+        "offset_bytes": 32,
+        "size_bytes": 8,
+        "description": "PRP Entry 2 / PRP List Pointer"
+      },
+      {
+        "name": "cdw10_slba_low",
+        "offset_bytes": 40,
+        "size_bytes": 4,
+        "description": "Starting LBA bits [31:0]"
+      },
+      {
+        "name": "cdw11_slba_high",
+        "offset_bytes": 44,
+        "size_bytes": 4,
+        "description": "Starting LBA bits [63:32]"
+      },
+      {
+        "name": "cdw12_length_control",
+        "offset_bytes": 48,
+        "size_bytes": 4,
+        "description": "Number of logical blocks [15:0], Protection/FUA flags"
+      },
+      {
+        "name": "cdw13_dsm_dsmg",
+        "offset_bytes": 52,
+        "size_bytes": 4,
+        "description": "Dataset management attributes / Sequential hint"
+      },
+      {
+        "name": "cdw14_vendor_key",
+        "offset_bytes": 56,
+        "size_bytes": 4,
+        "description": "AES-XTS crypto key slot index [7:0] & tweak flags"
+      },
+      {
+        "name": "cdw15_vendor_seg",
+        "offset_bytes": 60,
+        "size_bytes": 4,
+        "description": "Segment context index & hardware barrier token"
+      }
+    ]
+  },
+  "completion_queue_entry_format": {
+    "size_bytes": 16,
+    "fields": [
+      {
+        "name": "command_specific",
+        "offset_bytes": 0,
+        "size_bytes": 4,
+        "description": "Result of command or vendor diagnostic data"
+      },
+      {
+        "name": "reserved",
+        "offset_bytes": 4,
+        "size_bytes": 4,
+        "description": "Reserved / Unused"
+      },
+      {
+        "name": "sq_head_sq_id",
+        "offset_bytes": 8,
+        "size_bytes": 4,
+        "description": "SQ Head Pointer [15:0], SQ ID [31:16]"
+      },
+      {
+        "name": "status_cid_phase",
+        "offset_bytes": 12,
+        "size_bytes": 4,
+        "description": "Command ID [15:0], Phase Tag [16], Status Code [31:17]"
+      }
+    ]
+  },
+  "apple_vendor_opcodes": {
+    "admin_opcodes": {
+      "0xC0": {
+        "symbol": "NVME_APPLE_CMD_READ_BAND_STATS",
+        "c_identifier": "Cmd_NvmeAdminReadBandStats",
+        "direction": "In (Controller to Host)",
+        "description": "Dumps wear-leveling band wear distribution, SLC/TLC counts, and stepovers"
+      },
+      "0xC1": {
+        "symbol": "NVME_APPLE_CMD_GET_NAND_MATURITY",
+        "c_identifier": "Cmd_tunnelGetNandMaturity",
+        "direction": "In (Controller to Host)",
+        "description": "Queries silicon maturity parameters, process revision, and lithography voltage offsets"
+      },
+      "0xC2": {
+        "symbol": "NVME_APPLE_CMD_GET_NAND_INFO",
+        "c_identifier": "Host_GetNANDInfo",
+        "direction": "In (Controller to Host)",
+        "description": "Queries channel geometry, die count, plane count, and vendor ID"
+      },
+      "0xC4": {
+        "symbol": "NVME_APPLE_CMD_DEBUG_RECLAIM_BOOT_BLOCK",
+        "c_identifier": "Nand_DebugReclaimBootBlock",
+        "direction": "Out (Host to Controller)",
+        "description": "Instructs FTL to force refresh and reclaim pre-boot blocks"
+      },
+      "0xC8": {
+        "symbol": "NVME_APPLE_CMD_ASI_DELETE_FW",
+        "c_identifier": "ASI_NAND_OP_DELETE_FW",
+        "direction": "Out (Host to Controller)",
+        "description": "Erases staging firmware image slots in preparation for DFU update"
+      },
+      "0xCA": {
+        "symbol": "NVME_APPLE_CMD_SET_PROTOCOL_VALIDATION",
+        "c_identifier": "ASI_NAND_OP_SET_PROTOCOL_VALIDATION",
+        "direction": "Out (Host to Controller)",
+        "description": "Sets hardware protocol validation and error injection masks"
+      },
+      "0xD0": {
+        "symbol": "NVME_APPLE_CMD_READ_INTERNAL_TELEMETRY",
+        "c_identifier": "Host_GetInternalTelemetry",
+        "direction": "In (Controller to Host)",
+        "description": "Fetches raw ASCII telemetry stream (GC move times, UE counts, GBBs, AES beats)"
+      },
+      "0xD2": {
+        "symbol": "NVME_APPLE_CMD_EFFACEABLE_LOCKER_OP",
+        "c_identifier": "Host_EffaceableLockerOp",
+        "direction": "Bidirectional",
+        "description": "Hardware-authenticated read/write/erase operations targeting Namespace 7"
+      }
+    }
+  }
+}

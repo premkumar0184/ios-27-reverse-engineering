@@ -1,0 +1,325 @@
+{
+  "soc": "t8150",
+  "platform": "Apple Silicon A19 Pro",
+  "subsystem": "Apple NVMe Storage Controller 2 (ANS2)",
+  "total_constants_verified": 39,
+  "extraction_confidence": {
+    "EXTRACTED": 37,
+    "INFERRED": 2,
+    "TENTATIVE": 0
+  },
+  "constants": [
+    {
+      "name": "ANSF_IM4P_TOTAL_SIZE",
+      "value": 1329936,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "Firmware/ansf.t8150.release.im4p",
+      "verification": "File byte length"
+    },
+    {
+      "name": "ANSF_IM4P_SHA256",
+      "value": "8eeb1f189cfe45bff4361720d9affe4fffde9d9a906c67d7c8ef621cf7a43408",
+      "type": "string",
+      "confidence": "EXTRACTED",
+      "source": "Firmware/ansf.t8150.release.im4p",
+      "verification": "Cryptographic digest"
+    },
+    {
+      "name": "ANSF_DECOMPRESSED_SIZE",
+      "value": 5634888,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/ans2/ansf_payload.raw",
+      "verification": "LZFSE decompression size"
+    },
+    {
+      "name": "ANSF_DECOMPRESSED_SHA256",
+      "value": "8f1bb732969689c01946153644550f0c81b198233cc45ca05d52d8a85a720e69",
+      "type": "string",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/ans2/ansf_payload.raw",
+      "verification": "Cryptographic digest"
+    },
+    {
+      "name": "FOURCC_TAG",
+      "value": "ansf",
+      "type": "string",
+      "confidence": "EXTRACTED",
+      "source": "IM4P ASN.1 Tag element",
+      "verification": "Offset 0x0D ASCII FourCC"
+    },
+    {
+      "name": "VERSION_DESCRIPTION",
+      "value": "AppleStorageFirmwareASP3-241.40.4~1100",
+      "type": "string",
+      "confidence": "EXTRACTED",
+      "source": "IM4P ASN.1 Description",
+      "verification": "Offset 0x13 ASCII string"
+    },
+    {
+      "name": "CPU_TYPE",
+      "value": "0x100000c",
+      "type": "hex",
+      "confidence": "EXTRACTED",
+      "source": "Mach-O 64 header",
+      "verification": "CPU_TYPE_ARM64"
+    },
+    {
+      "name": "CPU_SUBTYPE",
+      "value": "0x80000002",
+      "type": "hex",
+      "confidence": "EXTRACTED",
+      "source": "Mach-O 64 header",
+      "verification": "CPU_SUBTYPE_ARM64E (PAC00)"
+    },
+    {
+      "name": "FILETYPE",
+      "value": "0x5",
+      "type": "hex",
+      "confidence": "EXTRACTED",
+      "source": "Mach-O 64 header",
+      "verification": "MH_PRELOAD"
+    },
+    {
+      "name": "TEXT_VMADDR",
+      "value": "0x0",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "LC_SEGMENT_64 (__TEXT)",
+      "verification": "Segment vmaddr"
+    },
+    {
+      "name": "TEXT_VMSIZE",
+      "value": 2342912,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "LC_SEGMENT_64 (__TEXT)",
+      "verification": "0x23c000 bytes"
+    },
+    {
+      "name": "DATA_VMADDR",
+      "value": "0x23c000",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "LC_SEGMENT_64 (__DATA)",
+      "verification": "Segment vmaddr"
+    },
+    {
+      "name": "DATA_VMSIZE",
+      "value": 3276800,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "LC_SEGMENT_64 (__DATA)",
+      "verification": "0x320000 bytes"
+    },
+    {
+      "name": "RTK_PAGE_TABLES_ADDR",
+      "value": "0x254000",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "Section _rtk_page_tables",
+      "verification": "Virtual address"
+    },
+    {
+      "name": "RTK_PAGE_TABLES_SIZE",
+      "value": 262144,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "Section _rtk_page_tables",
+      "verification": "256 KB (4-level MMU)"
+    },
+    {
+      "name": "RTK_MTAB_ADDR",
+      "value": "0x244cc8",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "Section _rtk_mtab",
+      "verification": "Mailbox endpoint table"
+    },
+    {
+      "name": "RTK_MTAB_SIZE",
+      "value": 896,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "Section _rtk_mtab",
+      "verification": "896 bytes (28 endpoints)"
+    },
+    {
+      "name": "MMIO_ASCWRAP_BASE",
+      "value": "0x179600000",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans reg[0]",
+      "verification": "544 KB mailbox aperture"
+    },
+    {
+      "name": "MMIO_ANS2_POWER_BASE",
+      "value": "0x179050000",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans reg[1]",
+      "verification": "16 KB power/clock aperture"
+    },
+    {
+      "name": "MMIO_NVME_BAR_BASE",
+      "value": "0x17dcc0000",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans reg[3]",
+      "verification": "384 KB NVMe BAR & Doorbells"
+    },
+    {
+      "name": "MMIO_SRAM_SCRATCHPAD",
+      "value": "0x17b000000",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans reg[4]",
+      "verification": "16 MB FTL SRAM buffer"
+    },
+    {
+      "name": "MMIO_NAND_MSP_BASE",
+      "value": "0x17db90000",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans reg[5]",
+      "verification": "48 KB NAND MSP PHY aperture"
+    },
+    {
+      "name": "MMIO_AES_XTS_CRYPTO_BASE",
+      "value": "0x17dd47c00",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans reg[6]",
+      "verification": "16 KB AES-XTS cipher engine"
+    },
+    {
+      "name": "MMIO_SECONDARY_DISPATCH_BASE",
+      "value": "0x1bdcc0000",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans reg[9]",
+      "verification": "64 KB secondary queue"
+    },
+    {
+      "name": "SART_COASTGUARD_BASE",
+      "value": "0x17dc50000",
+      "type": "address",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/sart-ans reg[0]",
+      "verification": "48 KB SART DMA filter"
+    },
+    {
+      "name": "SART_VERSION",
+      "value": 4,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/sart-ans",
+      "verification": "sart-version: 0x04"
+    },
+    {
+      "name": "SART_POWER_REG_OFFSET",
+      "value": "0x13e8",
+      "type": "hex",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/sart-ans",
+      "verification": "sart-power-reg-offset"
+    },
+    {
+      "name": "NVME_QUEUE_ENTRIES",
+      "value": 64,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans",
+      "verification": "nvme-queue-entries: 0x40"
+    },
+    {
+      "name": "NVME_INTERRUPT_IDX",
+      "value": 4,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans",
+      "verification": "nvme-interrupt-idx: 0x04"
+    },
+    {
+      "name": "NVME_SQE_SIZE_BYTES",
+      "value": 64,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "ANS2 Driver Architecture",
+      "verification": "64-byte descriptor alignment"
+    },
+    {
+      "name": "NVME_CQE_SIZE_BYTES",
+      "value": 16,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "ANS2 Driver Architecture",
+      "verification": "16-byte completion record"
+    },
+    {
+      "name": "NVME_DOORBELL_STRIDE",
+      "value": 8,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "NVMe BAR Doorbell Geometry",
+      "verification": "8 bytes per queue pair"
+    },
+    {
+      "name": "TOTAL_NAMESPACES",
+      "value": 7,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans namespaces",
+      "verification": "84 bytes / 12 bytes = 7"
+    },
+    {
+      "name": "NS7_EFFACEABLE_BLOCKS",
+      "value": 32768,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans NS[7]",
+      "verification": "0x8000 blocks (128 MB)"
+    },
+    {
+      "name": "IRQ_NVME_COMPLETION",
+      "value": 973,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans interrupts[0]",
+      "verification": "0x3cd (Host CQ IRQ)"
+    },
+    {
+      "name": "IRQ_SART_VIOLATION",
+      "value": 975,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans interrupts[2]",
+      "verification": "0x3cf (SART Fault IRQ)"
+    },
+    {
+      "name": "IRQ_AES_ERROR",
+      "value": 974,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree /arm-io/ans interrupts[3]",
+      "verification": "0x3ce (AES Wrap Fault IRQ)"
+    },
+    {
+      "name": "READ_DISTURB_SCRUB_THRESHOLD",
+      "value": 100000,
+      "type": "uint32",
+      "confidence": "INFERRED",
+      "source": "readdisturb.c telemetry modeling",
+      "verification": "Read count trigger threshold"
+    },
+    {
+      "name": "PRP_PAGE_SIZE",
+      "value": 16384,
+      "type": "uint32",
+      "confidence": "EXTRACTED",
+      "source": "Apple Silicon Page Architecture",
+      "verification": "16 KB host physical page"
+    }
+  ]
+}

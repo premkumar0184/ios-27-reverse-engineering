@@ -1,0 +1,99 @@
+{
+  "target_device": {
+    "platform": "v57ap",
+    "model": "iPhone18,3",
+    "soc": "t8150",
+    "architecture": "ARM64E (ARMv8.6-A + PAC + MTE2) / RISC-V 32-bit",
+    "os_version": "27.2",
+    "build_number": "24B119",
+    "kernel_version": "Darwin Kernel Version 24.2.0: Fri Oct 11 20:30:45 PDT 2026; root:xnu-11215.41.3~1/RELEASE_ARM64_T8150"
+  },
+  "firmware_assets": {
+    "main_encoder_firmware": {
+      "rel_path": "Firmware/ave/AppleAVE2FW_H18.im4p",
+      "fourcc": "avef",
+      "size_bytes": 2687585,
+      "sha256": "faf92ec00ef4a7d47f8d533594003bc4ef1af3f96d2432166b6643816e9379c2",
+      "extracted_raw_bytes": 2687560,
+      "extracted_raw_sha256": "ad40e1b21680cdac523249322186569a6aa7ffe9c0a95fd2d9d5206e8f1aef83"
+    },
+    "satellite_microcodes": {
+      "AVE0": {
+        "fourcc": "ave0",
+        "container_size": 9543,
+        "payload_size": 9520,
+        "sha256": "6bcbba7146a30a9b131001319104e1d5cae9d70a44f300b85c1605f5de460c22"
+      },
+      "AVE1": {
+        "fourcc": "ave1",
+        "container_size": 16463,
+        "payload_size": 16440,
+        "sha256": "bc734399d26e3f7387757cc0c56acfb791297d68933eb98d26b7eaf93401ca74"
+      },
+      "AVE2": {
+        "fourcc": "ave2",
+        "container_size": 10763,
+        "payload_size": 10740,
+        "sha256": "1e15af0dd6a3d7459ec829610d11da8acc597f501114d1a6377214d139b4c7f2"
+      },
+      "AVE3": {
+        "fourcc": "ave3",
+        "container_size": 9067,
+        "payload_size": 9044,
+        "sha256": "6d87cf8a3ded795f375eb969c9e9913f92654f5093b82d2e03bbfe2b9d3fe0cc"
+      },
+      "AVE4": {
+        "fourcc": "ave4",
+        "container_size": 11327,
+        "payload_size": 11304,
+        "sha256": "83c47583305d5dea9bb2bd5aa5178d0da0cebe4f2d5153fc01af1f55316596f8"
+      },
+      "AVE5": {
+        "fourcc": "ave5",
+        "container_size": 11003,
+        "payload_size": 10980,
+        "sha256": "b2db8f82c393be83142cd54b24b5ac376e54c61b2c0ddd3e8d948be6250ece38"
+      },
+      "AVE6": {
+        "fourcc": "ave6",
+        "container_size": 8783,
+        "payload_size": 8760,
+        "sha256": "cabdfe08031d95e9097ddd58cc0f079601739bb8b172a4ec60d55ffcc106ace1"
+      },
+      "AVE7": {
+        "fourcc": "ave7",
+        "container_size": 11943,
+        "payload_size": 11920,
+        "sha256": "9d5155e24adb746d3accf9af3119eca2c916237da0865298438f0d488b47868c"
+      },
+      "AVE8": {
+        "fourcc": "ave8",
+        "container_size": 26303,
+        "payload_size": 26280,
+        "sha256": "431412d31b1cd1b350e5267a386a60ae6f015802d99e3e848a8afa20a6b80189"
+      }
+    }
+  },
+  "hardware_context": {
+    "dart_iommu_device": "dart-ave",
+    "dart_iommu_mmio_base": "0x77020000",
+    "dart_iommu_aperture_size": "0x20000",
+    "coprocessor_architecture": "Heterogeneous ARM64e Chinook Master + 9x RISC-V Micro-CPUs",
+    "supported_hardware_codecs": [
+      "AV1 (Boreas Architecture Profile 0 / Main)",
+      "HEVC / H.265 (Erebus Architecture Main / Main10 / 4:2:2)",
+      "AVC / H.264 (Erebus Architecture High / Main / Baseline)",
+      "ProRes (422 HQ / 422 / 422 LT / 422 Proxy / 4444 XQ / 4444)",
+      "HEIF (Hardware Quadra Image Subsampling & Quantization)"
+    ],
+    "coprocessor_features": [
+      "Hierarchical Motion Estimation (HMESC)",
+      "Low-Resolution Motion Estimation (LRME)",
+      "Dense Motion Vector (DMV) Pipeline",
+      "Motion-Compensated Temporal Filtering (MCTF)",
+      "Global & Group Motion Estimation (GGM)",
+      "Hardware Bitstream VLC Entropy Insertion",
+      "Hardware Rate Control (CBR, VBR, Constant QP, CRF, HRD)"
+    ]
+  }
+}

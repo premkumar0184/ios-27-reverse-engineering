@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Display Coprocessor (DCP) Service Topology & AFK Endpoints",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "endpoints": [
+    {
+      "endpoint_name": "AFKBuiltinAPMailboxEndpoint",
+      "endpoint_id": 1,
+      "direction": "Bidirectional (Host AP <-> DCP)",
+      "protocol": "Apple Firmware Kit (AFK) v2 / RTBuddy-v2",
+      "role": "Receives frame swap requests, timing configurations, and dynamic refresh rate targets from IOMobileFramebuffer."
+    },
+    {
+      "endpoint_name": "CBAOPEndpoint",
+      "endpoint_id": 2,
+      "direction": "Ingress from Always-On Processor (AOP -> DCP)",
+      "protocol": "AFK Context Buffer (CB) Flipbook Stream",
+      "role": "Transfers 1Hz Always-On Display flipbook frame descriptors and ambient light compensation updates."
+    },
+    {
+      "endpoint_name": "RTKExclaveTBEndpoint",
+      "endpoint_id": 3,
+      "direction": "Bidirectional (ExclaveOS Conclave <-> DCP)",
+      "protocol": "Tightbeam RPC over DART-SEP Stream ID 2",
+      "role": "Direct, unforgeable hardware presentation bridge for ExclaveOS privacy indicators (EXSurface / SIL)."
+    },
+    {
+      "endpoint_name": "RTKTrustedTBEndpoint",
+      "endpoint_id": 4,
+      "direction": "Bidirectional (Secure Enclave / SEP <-> DCP)",
+      "protocol": "Tightbeam Trusted RPC",
+      "role": "Protected HDCP 2.3 key exchange, DRM surface decryption, and Apple Pay card visual authentication."
+    }
+  ],
+  "hardware_pipe_blocks": {
+    "count": 38,
+    "architecture": "GenPipe_v33 (H18P)",
+    "pipeline_stages": [
+      {
+        "stage": 1,
+        "name": "DMA Ingestion & Plane Decompression",
+        "blocks": ["UPBlock_GenPipe_v33", "UPBlock_CDI_v1"],
+        "function": "Fetches raw/compressed framebuffer scanlines from DRAM via DART-DISP0."
+      },
+      {
+        "stage": 2,
+        "name": "Multi-Layer Composition & Blending",
+        "blocks": ["UPBlock_Blend_v18", "UPBlock_DPE_v1"],
+        "function": "Alpha blends hardware UI overlays, video planes, and cursor surfaces."
+      },
+      {
+        "stage": 3,
+        "name": "Color Management & Dynamic Tone Mapping",
+        "blocks": ["UPBlock_ColorManager_v19", "UPBlock_PCC2DLTM_v12", "UPBlock_WPC_v5"],
+        "function": "Performs 3D LUT gamut mapping (sRGB / DCI-P3 / BT.2020), local tone mapping, and white point tuning."
+      },
+      {
+        "stage": 4,
+        "name": "Environmental & True Tone Adaptation",
+        "blocks": ["UPBlock_ALSS", "UPBlock_ACSS_v11", "UPBlock_ABG_v4"],
+        "function": "Modulates per-channel luminance based on Ambient Light Sensor (ALS) and off-axis angle compensation."
+      },
+      {
+        "stage": 5,
+        "name": "Panel Uniformity & OLED Burn-In Compensation",
+        "blocks": ["UPBlock_BICS_v19", "UPBlock_PDC_v11", "UPBlock_PTUC_v4"],
+        "function": "Applies subpixel degradation history offsets (BICS) and temperature-dependent voltage compensation (PTUC)."
+      },
+      {
+        "stage": 6,
+        "name": "Timing Generation & Refresh Rate Rate-Limiting",
+        "blocks": ["UPBlock_VFTG_v38", "UPBlock_SWMPR_v1"],
+        "function": "Drives dynamic VSYNC intervals, flexible vertical back porch modulation, and ProMotion frame pacing."
+      },
+      {
+        "stage": 7,
+        "name": "Dither & Physical Output Transmission",
+        "blocks": ["UPBlock_Dither_v24", "UPBlock_Regamma_v5", "AppleDCPSynopsysMIPIDSIController"],
+        "function": "10-bit to 8-bit spatial/temporal dithering, panel EOTF regamma, and MIPI DSI / DisplayPort serialization."
+      }
+    ]
+  }
+}

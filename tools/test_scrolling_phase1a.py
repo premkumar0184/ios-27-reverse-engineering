@@ -8,10 +8,13 @@ pointer fixup alignment, tool non-clobber invariants, and baseline dossier compl
 import unittest
 import json
 import struct
+import sys
 from pathlib import Path
 import subprocess
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 class TestScrollingPhase1AAdversarial(unittest.TestCase):
 

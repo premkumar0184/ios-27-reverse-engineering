@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Display Coprocessor (DCP) XNU Boundary & Driver Interface Specification",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "xnu_drivers": [
+    {
+      "bundle_id": "com.apple.driver.AppleCLCD2",
+      "class_name": "AppleCLCD2",
+      "super_class": "IOService",
+      "role": "Primary kernel driver binding to /arm-io/dcp. Coordinates ASCwrap-v6 mailbox transactions, DMA descriptor submissions, and VFTG timing transitions."
+    },
+    {
+      "bundle_id": "com.apple.driver.AppleDCP",
+      "class_name": "AppleDCP",
+      "super_class": "IOService",
+      "role": "RTKit coprocessor life-cycle manager, responsible for Image4 firmware decompression, early boot staging, and panic telemetry extraction."
+    },
+    {
+      "bundle_id": "com.apple.iokit.IOMobileFramebuffer",
+      "class_name": "IOMobileFramebuffer",
+      "super_class": "IOFramebuffer",
+      "role": "Exposes frame presentation tokens, VSYNC event mach ports, swap interval controls, and ProMotion dynamic refresh rate policies to WindowServer."
+    }
+  ],
+  "ipc_command_descriptors": [
+    {
+      "opcode": "0x0101",
+      "name": "dcp_cmd_SUBMIT_FRAME_SWAP",
+      "description": "Submits a new composited surface descriptor with DART DVAs, swap interval, and target VSYNC timestamp."
+    },
+    {
+      "opcode": "0x0102",
+      "name": "dcp_cmd_SET_REFRESH_RATE_POLICY",
+      "description": "Configures SWMPR refresh rate constraints (e.g. clamp to 60Hz in Low Power Mode, lock 24Hz for media)."
+    },
+    {
+      "opcode": "0x0103",
+      "name": "dcp_cmd_UPDATE_CALIBRATION_LUT",
+      "description": "Transfers updated True Tone, ambient light, or 2D local tone mapping matrices into DCP staging DRAM."
+    },
+    {
+      "opcode": "0x0104",
+      "name": "dcp_cmd_ENTER_AOD_MODE",
+      "description": "Transitions DCP into 1Hz Always-On Display mode and delegates frame pacing to Always-On Processor (AOP)."
+    }
+  ],
+  "hardware_interrupt_vectors": {
+    "DISP_INT_DCP": 411,
+    "DISP_EXT0_DCP": 412,
+    "DCP0_V": 403,
+    "DCPEXT0_V": 405
+  }
+}

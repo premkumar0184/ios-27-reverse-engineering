@@ -1,0 +1,93 @@
+{
+  "rtkit_operating_system": {
+    "os_family": "Apple RTKit OS",
+    "kernel_personality": "Real-Time Preemptive Microkernel",
+    "privilege_level": "EL1 (with GXF memory protection anchor)"
+  },
+  "task_hierarchy": [
+    {
+      "task_name": "bootstrap_init",
+      "stack": "_rtk_init_stack",
+      "stack_address": "0x24dcf0",
+      "stack_size_bytes": 4096,
+      "priority": "Highest (Boot)",
+      "role": "Initializes MMU page tables, verifies SART Coastguard configuration, transitions to scheduler"
+    },
+    {
+      "task_name": "hardware_irq_handler",
+      "stack": "_rtk_irq_stack",
+      "stack_address": "0x24ecf0",
+      "stack_size_bytes": 4096,
+      "priority": "Real-Time Preemptive",
+      "role": "Services hardware doorbells, DMA completion signals, SART exceptions, and AES wrap errors"
+    },
+    {
+      "task_name": "exception_trap_handler",
+      "stack": "_rtk_exc_stack",
+      "stack_address": "0x24fcf0",
+      "stack_size_bytes": 4096,
+      "priority": "Critical Trap",
+      "role": "Captures hardware panics, unaligned accesses, bitflips, and reports telemetry to host"
+    },
+    {
+      "task_name": "nvme_io_dispatcher",
+      "stack": "large_stacks (Slot 0)",
+      "stack_address": "0x294000",
+      "stack_size_bytes": 16384,
+      "priority": "High Normal",
+      "role": "Fetches 64-byte SQE descriptors from host Submission Queues, coordinates AES tweak setup and DMA"
+    },
+    {
+      "task_name": "ftl_gc_defrag_worker",
+      "stack": "large_stacks (Slot 1)",
+      "stack_address": "0x298000",
+      "stack_size_bytes": 16384,
+      "priority": "Background Normal",
+      "role": "Executes background wear leveling, skinny-band compaction, TLC fold-down, and read-disturb scrubbing"
+    },
+    {
+      "task_name": "clog_commit_worker",
+      "stack": "large_stacks (Slot 2)",
+      "stack_address": "0x29c000",
+      "stack_size_bytes": 16384,
+      "priority": "High Transactional",
+      "role": "Serializes L2P dirty checkpoint records to persistent NAND commit log streams"
+    }
+  ],
+  "memory_segmentation": {
+    "code_segment": {
+      "name": "__TEXT",
+      "vm_start": "0x00000000",
+      "vm_end": "0x0023c000",
+      "size_bytes": 2342912,
+      "sections": 8
+    },
+    "data_segment": {
+      "name": "__DATA",
+      "vm_start": "0x0023c000",
+      "vm_end": "0x0055c000",
+      "size_bytes": 3276800,
+      "sections": 21
+    },
+    "mmu_page_tables": {
+      "section": "_rtk_page_tables",
+      "address": "0x00254000",
+      "size_bytes": 262144,
+      "levels": 4,
+      "page_size_bytes": 16384
+    },
+    "scratchpad_bss": {
+      "section": "__zerofill",
+      "address": "0x002b6000",
+      "size_bytes": 2775880,
+      "description": "Zero-initialized buffer used for in-flight FTL cache pages, wear tables, and HMB DMA bounce buffers"
+    }
+  },
+  "endpoint_routing": {
+    "mtab_section": "_rtk_mtab",
+    "mtab_address": "0x00244cc8",
+    "size_bytes": 896,
+    "max_endpoints": 28,
+    "routing_architecture": "PAC-signed function descriptors routing ASCwrap v6 IPC messages from host AP"
+  }
+}

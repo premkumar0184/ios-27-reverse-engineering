@@ -1,0 +1,158 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Apple Video Encoder 2 (AVE2) DMA Descriptor Geometry",
+  "soc": "t8150",
+  "dma_channels": {
+    "channel_source_input": {
+      "channel_id": 0,
+      "direction": "Host DRAM -> AVE Hardware Pipeline",
+      "descriptor_size_bytes": 64,
+      "alignment": "64 bytes",
+      "fields": {
+        "luma_plane_pa": {
+          "offset": "0x00",
+          "size": 8,
+          "description": "Base physical address of Y luma plane (16 KB aligned)"
+        },
+        "chroma_plane_pa": {
+          "offset": "0x08",
+          "size": 8,
+          "description": "Base physical address of UV chroma plane"
+        },
+        "alpha_plane_pa": {
+          "offset": "0x10",
+          "size": 8,
+          "description": "Base physical address of Alpha plane (ProRes 4444)"
+        },
+        "luma_stride_bytes": {
+          "offset": "0x18",
+          "size": 4,
+          "description": "Bytes per line for luma plane"
+        },
+        "chroma_stride_bytes": {
+          "offset": "0x1c",
+          "size": 4,
+          "description": "Bytes per line for chroma plane"
+        },
+        "frame_width_pixels": {
+          "offset": "0x20",
+          "size": 4,
+          "description": "Active frame width in pixels"
+        },
+        "frame_height_pixels": {
+          "offset": "0x24",
+          "size": 4,
+          "description": "Active frame height in pixels"
+        },
+        "pixel_format": {
+          "offset": "0x28",
+          "size": 4,
+          "description": "Pixel format code (NV12, P010, NV16, P210, RGBA64)"
+        },
+        "flags": {
+          "offset": "0x2c",
+          "size": 4,
+          "description": "DMA sync fences, cache flush, endianness"
+        }
+      }
+    },
+    "channel_bitstream_output": {
+      "channel_id": 1,
+      "direction": "AVE Hardware Pipeline -> Host DRAM",
+      "descriptor_size_bytes": 64,
+      "alignment": "64 bytes",
+      "fields": {
+        "bitstream_buffer_pa": {
+          "offset": "0x00",
+          "size": 8,
+          "description": "Output bitstream ring buffer base physical address"
+        },
+        "buffer_capacity_bytes": {
+          "offset": "0x08",
+          "size": 4,
+          "description": "Total capacity of output bitstream ring buffer"
+        },
+        "written_bytes_counter": {
+          "offset": "0x0c",
+          "size": 4,
+          "description": "Number of compressed bytes written by hardware"
+        },
+        "slice_offset_table_pa": {
+          "offset": "0x10",
+          "size": 8,
+          "description": "Physical address of slice byte offset array"
+        },
+        "flags": {
+          "offset": "0x18",
+          "size": 4,
+          "description": "Bitstream complete, buffer full, emulation prevention applied"
+        }
+      }
+    },
+    "channel_reconstructed_dpb": {
+      "channel_id": 2,
+      "direction": "Bidirectional AVE Hardware Pipeline <-> Decoded Picture Buffer (DRAM)",
+      "descriptor_size_bytes": 128,
+      "alignment": "64 bytes",
+      "fields": {
+        "ref_l0_frame_pa": {
+          "offset": "0x00",
+          "size": 8,
+          "description": "List 0 primary reference frame base physical address"
+        },
+        "ref_l1_frame_pa": {
+          "offset": "0x08",
+          "size": 8,
+          "description": "List 1 secondary reference frame base physical address"
+        },
+        "reconstructed_frame_pa": {
+          "offset": "0x10",
+          "size": 8,
+          "description": "Output reconstructed frame storage address"
+        },
+        "motion_vector_storage_pa": {
+          "offset": "0x18",
+          "size": 8,
+          "description": "Temporal motion vector field cache address"
+        },
+        "dpb_slot_id": {
+          "offset": "0x20",
+          "size": 4,
+          "description": "DPB buffer pool slot index (0..16)"
+        },
+        "picture_order_count": {
+          "offset": "0x24",
+          "size": 4,
+          "description": "POC value of reconstructed frame"
+        }
+      }
+    }
+  },
+  "buffer_formats": {
+    "kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange": {
+      "fourcc": "420v",
+      "bpp": 8,
+      "chroma": "4:2:0"
+    },
+    "kCVPixelFormatType_420YpCbCr8BiPlanarFullRange": {
+      "fourcc": "420f",
+      "bpp": 8,
+      "chroma": "4:2:0"
+    },
+    "kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange": {
+      "fourcc": "x420",
+      "bpp": 10,
+      "chroma": "4:2:0"
+    },
+    "kCVPixelFormatType_422YpCbCr10BiPlanarVideoRange": {
+      "fourcc": "x422",
+      "bpp": 10,
+      "chroma": "4:2:2"
+    },
+    "kCVPixelFormatType_64RGBAHalf": {
+      "fourcc": "b64a",
+      "bpp": 16,
+      "chroma": "4:4:4:4"
+    }
+  }
+}

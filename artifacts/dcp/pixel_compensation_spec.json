@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Display Coprocessor Panel Pixel Compensation (PPC) Specification",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "panel_compensation_engines": {
+    "bics": {
+      "module": "UPBlock_BICS_v19",
+      "name": "Burn-In Compensation System (BICS)",
+      "target": "Tandem OLED differential subpixel degradation mitigation",
+      "history_buffer_size_bytes": 8388608,
+      "history_buffer_human": "8 MB compressed history table",
+      "aging_formula": "Cumulative subpixel stress: S(x, y, c) = sum(Luminance(x, y, c)^gamma * dt * TempFactor(T))",
+      "gain_correction": "Applies per-subpixel voltage boost to worn pixels, restoring uniform luminance across the panel lifetime."
+    },
+    "ptuc": {
+      "module": "UPBlock_PTUC_v4",
+      "name": "Panel Temperature Uniformity Compensation (PTUC)",
+      "target": "Temperature gradient compensation across SoC and battery regions",
+      "sensor_inputs": [
+        "A19 Pro die temperature sensors (T8150_TTR0..3)",
+        "Battery temperature thermistors",
+        "Display driver IC (DDIC) temperature telemetry"
+      ],
+      "grid_resolution": "64x32 thermal interpolation zone",
+      "compensation_action": "Modulates subpixel drive currents to prevent thermal discoloration over hot SoC components."
+    },
+    "pdc": {
+      "module": "UPBlock_PDC_v11",
+      "name": "Pixel Distortion & Density Compensation (PDC)",
+      "target": "Dynamic Island subpixel geometric distortion correction",
+      "features": [
+        "Anti-aliased border feathering around sensor cutouts",
+        "Curved display corner subpixel luminance smoothing",
+        "Subpixel Uniformity Compensation (SPUC) per-panel factory calibration map"
+      ]
+    },
+    "acss": {
+      "module": "UPBlock_ACSS_v11",
+      "name": "Active / Angle Color Shift (ACSS)",
+      "target": "Off-axis OLED viewing angle color shift mitigation",
+      "features": [
+        "Compensates for blue/yellow chromaticity drift at viewing angles > 30 degrees",
+        "Dynamic micro-cavity optical resonance tuning"
+      ]
+    }
+  }
+}

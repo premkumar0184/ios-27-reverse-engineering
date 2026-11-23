@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Apple Video Encoder 2 (AVE2)",
+  "soc": "t8150 (Apple A19 Pro)",
+  "firmware_image": "AppleAVE2FW_H18.raw",
+  "entry_point": {
+    "virtual_address": "0x0000000000000000",
+    "file_offset": "0x00004000",
+    "instruction_architecture": "ARM64E (ARMv8.6-A PAC00)",
+    "calling_standard": "AAPCS64 + Apple PAC Extension"
+  },
+  "memory_segments": {
+    "__TEXT": {
+      "vmaddr": "0x0000000000000000",
+      "vmsize": 1343488,
+      "vmsize_hex": "0x148000",
+      "fileoff": "0x00004000",
+      "filesize": 1343488,
+      "maxprot": "r-x",
+      "initprot": "r-x",
+      "sections": {
+        "__text": {
+          "addr": "0x00000000",
+          "size": 1144252,
+          "size_hex": "0x1175bc",
+          "role": "Chinook ARM64E Microkernel & Codec Algorithms"
+        },
+        "__const": {
+          "addr": "0x001175c0",
+          "size": 94356,
+          "size_hex": "0x17094",
+          "role": "Quantization Matrices, Huffman Tables & Consts"
+        },
+        "__cstring": {
+          "addr": "0x0012e654",
+          "size": 104654,
+          "size_hex": "0x198ce",
+          "role": "Diagnostic Strings & Formatting Templates"
+        },
+        "__chain_starts": {
+          "addr": "0x00147f24",
+          "size": 24,
+          "size_hex": "0x18",
+          "role": "Chained Fixup Relocation Metadata"
+        }
+      }
+    },
+    "__DATA": {
+      "vmaddr": "0x0000000000148000",
+      "vmsize": 1228800,
+      "vmsize_hex": "0x12c000",
+      "fileoff": "0x0014c000",
+      "filesize": 1228800,
+      "maxprot": "rw-",
+      "initprot": "rw-",
+      "sections": {
+        "_rtk_patchbay": {
+          "addr": "0x00148000",
+          "size": 529,
+          "role": "RTKit Dynamic Runtime Function Patchbay"
+        },
+        "__data": {
+          "addr": "0x00148218",
+          "size": 5536,
+          "role": "Global Initialized Driver Variables"
+        },
+        "_rtk_mtab": {
+          "addr": "0x001497b8",
+          "size": 720,
+          "role": "Memory Translation & Page Mapping Table"
+        },
+        "__const": {
+          "addr": "0x00149a88",
+          "size": 18216,
+          "role": "Runtime Data Constants & VTable Initializers"
+        },
+        "_rtk_power": {
+          "addr": "0x0014e1b0",
+          "size": 952,
+          "role": "Power Management State & Clock Mesh Structs"
+        },
+        "__gxf_data": {
+          "addr": "0x0014e568",
+          "size": 16,
+          "role": "Guarded Execution Facility Data Anchor"
+        },
+        "_rtk_tunables": {
+          "addr": "0x0014e578",
+          "size": 1696,
+          "role": "Silicon Tunables & Calibration Vectors"
+        },
+        "_rtk_init_stack": {
+          "addr": "0x0014ec20",
+          "size": 65536,
+          "size_hex": "0x10000",
+          "role": "Bootstrap Initialization Stack (64 KB)"
+        },
+        "_rtk_irq_stack": {
+          "addr": "0x0015ec20",
+          "size": 4096,
+          "size_hex": "0x1000",
+          "role": "Hardware IRQ Servicing Stack (4 KB)"
+        },
+        "_rtk_exc_stack": {
+          "addr": "0x0015fc20",
+          "size": 4096,
+          "size_hex": "0x1000",
+          "role": "Fatal Exception Trap Stack (4 KB)"
+        },
+        "_rtk_boot": {
+          "addr": "0x00164000",
+          "size": 32768,
+          "size_hex": "0x8000",
+          "role": "Early Boot Scratchpad (Reclaimed)"
+        },
+        "_rtk_page_tables": {
+          "addr": "0x0016c000",
+          "size": 262144,
+          "size_hex": "0x40000",
+          "role": "Stage-1 ARM64 MMU Translation Tables (256 KB)"
+        },
+        "__zerofill": {
+          "addr": "0x001ac000",
+          "size": 813152,
+          "size_hex": "0xc6860",
+          "role": "Dynamic BSS Heap, Packet Buffers & Queues"
+        }
+      }
+    }
+  },
+  "interrupt_vectors": {
+    "irq_base_offset": "0x0015ec20",
+    "handlers": [
+      {
+        "name": "AvePipeDoneHandler",
+        "addr": "0x000e6044",
+        "role": "Video Encoder Pipeline Execution Completion"
+      },
+      {
+        "name": "CAVEPipeISRManager",
+        "addr": "0x000ad384",
+        "role": "Hardware Slice & DMA Interrupt Manager"
+      },
+      {
+        "name": "_AVE_ISR_HWResults",
+        "addr": "0x00001040",
+        "role": "Coprocessor Hardware Result Ready Interrupt"
+      },
+      {
+        "name": "_AVE_ISR_WakeUp",
+        "addr": "0x00001080",
+        "role": "Asynchronous Host Mailbox Wakeup Interrupt"
+      }
+    ]
+  }
+}

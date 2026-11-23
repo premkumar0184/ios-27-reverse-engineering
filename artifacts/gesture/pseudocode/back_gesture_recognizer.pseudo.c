@@ -112,6 +112,7 @@ extern void _UINavigationControllerCancelInteractivePop(void *navController);
  * touchesBegan:withEvent: - Validates edge inception
  */
 void _UIBackGestureRecognizerTouchesBegan(_UIBackGestureRecognizer *self, void *touches, void *event) {
+    (void)event;
     void *touch = touches; // Primary tracking touch
     CGPoint p0 = _UITouchGetLocationInView(touch, self->_view);
     NSTimeInterval t0 = _UITouchGetTimestamp(touch);
@@ -148,6 +149,7 @@ void _UIBackGestureRecognizerTouchesBegan(_UIBackGestureRecognizer *self, void *
  * touchesMoved:withEvent: - Evaluates directional angle, slop, and interactive progress
  */
 void _UIBackGestureRecognizerTouchesMoved(_UIBackGestureRecognizer *self, void *touches, void *event) {
+    (void)event;
     if (self->_state == UIGestureRecognizerStateFailed ||
         self->_state == UIGestureRecognizerStateCancelled) {
         return;
@@ -221,6 +223,7 @@ void _UIBackGestureRecognizerTouchesMoved(_UIBackGestureRecognizer *self, void *
  * touchesEnded:withEvent: - Decides whether to finish or cancel pop transition
  */
 void _UIBackGestureRecognizerTouchesEnded(_UIBackGestureRecognizer *self, void *touches, void *event) {
+    (void)event;
     if (self->_state != UIGestureRecognizerStateBegan &&
         self->_state != UIGestureRecognizerStateChanged) {
         _UIGestureRecognizerSetState(self, UIGestureRecognizerStateFailed);
@@ -271,6 +274,8 @@ void _UIBackGestureRecognizerTouchesEnded(_UIBackGestureRecognizer *self, void *
  * touchesCancelled:withEvent: - System interruption cleanup
  */
 void _UIBackGestureRecognizerTouchesCancelled(_UIBackGestureRecognizer *self, void *touches, void *event) {
+    (void)touches;
+    (void)event;
     if (self->_isInteractiveTransitionActive) {
         _UINavigationControllerCancelInteractivePop(self->_navigationController);
         self->_isInteractiveTransitionActive = false;

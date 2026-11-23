@@ -1,0 +1,65 @@
+{
+  "project": "Apple NVMe Storage Controller (ANS2) & Hardware Flash Engine Reverse Engineering",
+  "soc": "t8150",
+  "device": "iPhone18,3 (v57ap)",
+  "version": "27.2",
+  "build": "24B119",
+  "active_phase_id": "ans2_phase_5_synthesis",
+  "phases": {
+    "ans2_phase_1a_workspace_baseline": {
+      "title": "Workspace Baseline & Container Spec",
+      "status": "completed",
+      "required_artifacts": [
+        "artifacts/ans2/phase_1a_workspace_baseline.json",
+        "artifacts/ans2/ans2_firmware_container_spec.json",
+        "findings/ans2/01A_WORKSPACE_BASELINE.md"
+      ]
+    },
+    "ans2_phase_1b_microarchitecture": {
+      "title": "ANS2 Microarchitecture & RTKit FTL Topology",
+      "status": "completed",
+      "required_artifacts": [
+        "artifacts/ans2/ans2_microarchitecture_spec.json",
+        "artifacts/ans2/rtkit_ftl_topology.json",
+        "findings/ans2/01B_ANS2_MICROARCHITECTURE.md"
+      ]
+    },
+    "ans2_phase_2_mmio_and_nand_geometry": {
+      "title": "Hardware Register, NAND Geometry & AES-XTS Crypto Engine",
+      "status": "completed",
+      "required_artifacts": [
+        "artifacts/ans2/ans2_mmio_memory_geometry.json",
+        "artifacts/ans2/nand_geometry_crypto_spec.json",
+        "findings/ans2/02_MMIO_AND_NAND_GEOMETRY.md"
+      ]
+    },
+    "ans2_phase_3_command_stream": {
+      "title": "Wire Format, NVMe Ring Buffers & Mailbox Protocol",
+      "status": "completed",
+      "required_artifacts": [
+        "artifacts/ans2/nvme_command_stream_spec.json",
+        "artifacts/ans2/ans2_ring_buffer_protocol.json",
+        "findings/ans2/03_COMMAND_STREAM_AND_RING_BUFFER.md"
+      ]
+    },
+    "ans2_phase_4_kernel_boundary": {
+      "title": "Kernel Boundary & Clean-Room C Driver Runtime",
+      "status": "completed",
+      "required_artifacts": [
+        "artifacts/ans2/xnu_nvme_boundary_spec.json",
+        "artifacts/ans2/pseudocode/ans2_nvme_driver.pseudo.c",
+        "findings/ans2/04_KERNEL_BOUNDARY_AND_DRIVER_RUNTIME.md"
+      ]
+    },
+    "ans2_phase_5_synthesis": {
+      "title": "Synthesis, Verification Test Suite & Standalone Repository",
+      "status": "completed",
+      "required_artifacts": [
+        "IOS_27_ANS2_NVME_STORAGE_RE.md",
+        "artifacts/ans2/cross_validation_matrix.json",
+        "tools/verify_ans2_constants.py"
+      ]
+    }
+  },
+  "overall_status": "completed"
+}

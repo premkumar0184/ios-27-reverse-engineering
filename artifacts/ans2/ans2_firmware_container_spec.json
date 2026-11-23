@@ -1,0 +1,44 @@
+{
+  "im4p_container": {
+    "file_path": "iPhone18,3_27.2_24B119_Restore/Firmware/ansf.t8150.release.im4p",
+    "total_size_bytes": 1329936,
+    "sha256": "8eeb1f189cfe45bff4361720d9affe4fffde9d9a906c67d7c8ef621cf7a43408",
+    "asn1_structure": {
+      "sequence_tag": "0x30",
+      "sequence_length": 1329931,
+      "magic_element": {
+        "tag": "0x16 (IA5String)",
+        "value": "IM4P",
+        "offset": 7,
+        "length": 4
+      },
+      "type_element": {
+        "tag": "0x16 (IA5String)",
+        "fourcc": "ansf",
+        "offset": 13,
+        "length": 4
+      },
+      "description_element": {
+        "tag": "0x16 (IA5String)",
+        "description": "AppleStorageFirmwareASP3-241.40.4~1100",
+        "offset": 19,
+        "length": 38
+      },
+      "payload_element": {
+        "tag": "0x04 (OCTET STRING)",
+        "offset": 57,
+        "encoded_length": 1329864,
+        "data_offset": 62,
+        "compression_magic": "bvx2",
+        "compression_type": "lzfse"
+      }
+    }
+  },
+  "extracted_payload": {
+    "file_path": "artifacts/ans2/ansf_payload.raw",
+    "decompressed_size_bytes": 5634888,
+    "sha256": "8f1bb732969689c01946153644550f0c81b198233cc45ca05d52d8a85a720e69",
+    "format": "Mach-O 64-bit preload executable",
+    "compression_ratio": 4.237
+  }
+}

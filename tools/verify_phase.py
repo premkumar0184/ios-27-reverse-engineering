@@ -31,6 +31,7 @@ ANE Direct Compiler phase IDs:
 import json
 import sys
 import os
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
@@ -49,7 +50,66 @@ PHASE_SPECS = {
         "min_findings_bytes": 2500,
         "json_schemas": {"artifacts/manifests/buildmanifest_inventory.json": ["restore_identities"]},
     },
-    # ... (original phases preserved as-is) ...
+
+    # ── Scrolling Reverse Engineering phases ──────────────────────────────
+    "phase_0_tooling": {
+        "required_artifacts": [
+            "artifacts/scrolling/phase0_tooling_validation.json",
+            "artifacts/scrolling/evidence_ledger.jsonl",
+            "artifacts/scrolling/uikitcore_offset_resolution.json"
+        ],
+        "findings_docs": [],
+        "min_findings_bytes": 0,
+        "json_schemas": {},
+    },
+    "phase_1a_workspace": {
+        "required_artifacts": [
+            "artifacts/scrolling/uikitcore_offset_resolution.json",
+            "findings/scrolling/01A_WORKSPACE_BASELINE.md"
+        ],
+        "findings_docs": ["findings/scrolling/01A_WORKSPACE_BASELINE.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {},
+    },
+    "phase_2_architecture": {
+        "required_artifacts": [
+            "artifacts/scrolling/class_hierarchy.json",
+            "artifacts/scrolling/framework_dependencies.json",
+            "artifacts/scrolling/execution_flow_preliminary.json",
+            "findings/scrolling/02_ARCHITECTURE_MAP.md"
+        ],
+        "findings_docs": ["findings/scrolling/02_ARCHITECTURE_MAP.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {},
+        "assertions": [
+            ("phase_2_confirmed",
+             "artifacts/scrolling/class_hierarchy.json",
+             lambda d: len(d) > 0,
+             "class_hierarchy.json must be populated and phase_2_confirmed"),
+            ("26-Step Macro Execution Flow Matrix",
+             "artifacts/scrolling/execution_flow_preliminary.json",
+             lambda d: len(d) > 0,
+             "26-Step Macro Execution Flow Matrix must be present"),
+        ]
+    },
+    "phase_8_specification": {
+        "required_artifacts": [
+            "artifacts/scrolling/parameter_reference.json",
+            "findings/scrolling/08_IMPLEMENTATION_SPECIFICATION.md"
+        ],
+        "findings_docs": ["findings/scrolling/08_IMPLEMENTATION_SPECIFICATION.md"],
+        "min_findings_bytes": 5000,
+        "json_schemas": {},
+    },
+    "phase_9_report": {
+        "required_artifacts": [
+            "IOS_27_SCROLLING_REVERSE_ENGINEERING.md",
+            "artifacts/scrolling/evidence_appendix.json"
+        ],
+        "findings_docs": ["IOS_27_SCROLLING_REVERSE_ENGINEERING.md"],
+        "min_findings_bytes": 10000,
+        "json_schemas": {},
+    },
 
     # ── Animation Physics Engine phases ───────────────────────────────────
     "anim_phase_1a_workspace_baseline": {
@@ -973,6 +1033,145 @@ PHASE_SPECS = {
         ]
     },
 
+    # ── Apple NVMe Storage Controller 2 (ANS2) & Flash Engine phases ────
+    "ans2_phase_1a_workspace_baseline": {
+        "required_artifacts": [
+            "artifacts/ans2/phase_1a_workspace_baseline.json",
+            "artifacts/ans2/ans2_firmware_container_spec.json",
+            "findings/ans2/01A_WORKSPACE_BASELINE.md"
+        ],
+        "findings_docs": ["findings/ans2/01A_WORKSPACE_BASELINE.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/ans2/phase_1a_workspace_baseline.json": ["soc", "firmware_metadata", "macho_architecture"],
+            "artifacts/ans2/ans2_firmware_container_spec.json": ["im4p_container", "extracted_payload"]
+        },
+        "assertions": [
+            ("fourcc_is_ansf",
+             "artifacts/ans2/phase_1a_workspace_baseline.json",
+             lambda d: d.get("firmware_metadata", {}).get("fourcc_tag") == "ansf",
+             "firmware fourcc_tag must be 'ansf'"),
+            ("im4p_size_matches",
+             "artifacts/ans2/phase_1a_workspace_baseline.json",
+             lambda d: d.get("firmware_metadata", {}).get("im4p_size_bytes") == 1329936,
+             "im4p_size_bytes must equal 1,329,936 bytes"),
+            ("decompressed_size_matches",
+             "artifacts/ans2/phase_1a_workspace_baseline.json",
+             lambda d: d.get("firmware_metadata", {}).get("decompressed_size_bytes") == 5634888,
+             "decompressed_size_bytes must equal 5,634,888 bytes"),
+        ]
+    },
+
+    "ans2_phase_1b_microarchitecture": {
+        "required_artifacts": [
+            "artifacts/ans2/ans2_microarchitecture_spec.json",
+            "artifacts/ans2/rtkit_ftl_topology.json",
+            "findings/ans2/01B_ANS2_MICROARCHITECTURE.md"
+        ],
+        "findings_docs": ["findings/ans2/01B_ANS2_MICROARCHITECTURE.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/ans2/ans2_microarchitecture_spec.json": ["coprocessor_topology", "ftl_subsystems", "c_source_modules"],
+            "artifacts/ans2/rtkit_ftl_topology.json": ["task_hierarchy", "memory_segmentation", "endpoint_routing"]
+        },
+        "assertions": [
+            ("has_c_modules",
+             "artifacts/ans2/ans2_microarchitecture_spec.json",
+             lambda d: len(d.get("c_source_modules", [])) >= 50,
+             "must document >= 50 embedded C firmware modules"),
+        ]
+    },
+
+    "ans2_phase_2_mmio_and_nand_geometry": {
+        "required_artifacts": [
+            "artifacts/ans2/ans2_mmio_memory_geometry.json",
+            "artifacts/ans2/nand_geometry_crypto_spec.json",
+            "findings/ans2/02_MMIO_AND_NAND_GEOMETRY.md"
+        ],
+        "findings_docs": ["findings/ans2/02_MMIO_AND_NAND_GEOMETRY.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/ans2/ans2_mmio_memory_geometry.json": ["mmio_apertures", "sart_coastguard", "namespaces"],
+            "artifacts/ans2/nand_geometry_crypto_spec.json": ["hardware_crypto_engine", "wear_leveling_bbt", "hmb_dma_arbitration"]
+        },
+        "assertions": [
+            ("sart_coastguard_mapped",
+             "artifacts/ans2/ans2_mmio_memory_geometry.json",
+             lambda d: "sart_coastguard" in d and d["sart_coastguard"].get("base_address") == "0x17dc50000",
+             "sart_coastguard base_address must equal 0x17dc50000"),
+            ("seven_namespaces_mapped",
+             "artifacts/ans2/ans2_mmio_memory_geometry.json",
+             lambda d: len(d.get("namespaces", [])) == 7,
+             "must document exactly 7 NVMe hardware namespaces"),
+        ]
+    },
+
+    "ans2_phase_3_command_stream": {
+        "required_artifacts": [
+            "artifacts/ans2/nvme_command_stream_spec.json",
+            "artifacts/ans2/ans2_ring_buffer_protocol.json",
+            "findings/ans2/03_COMMAND_STREAM_AND_RING_BUFFER.md"
+        ],
+        "findings_docs": ["findings/ans2/03_COMMAND_STREAM_AND_RING_BUFFER.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/ans2/nvme_command_stream_spec.json": ["queue_geometry", "apple_vendor_opcodes"],
+            "artifacts/ans2/ans2_ring_buffer_protocol.json": ["doorbell_protocol", "ascwrap_mailbox_protocol"]
+        },
+        "assertions": [
+            ("sqe_size_64",
+             "artifacts/ans2/nvme_command_stream_spec.json",
+             lambda d: d.get("queue_geometry", {}).get("submission_queue_entry_bytes") == 64,
+             "SQE size must equal 64 bytes"),
+            ("queue_depth_64",
+             "artifacts/ans2/nvme_command_stream_spec.json",
+             lambda d: d.get("queue_geometry", {}).get("queue_depth_entries") == 64,
+             "queue depth entries must equal 64"),
+        ]
+    },
+
+    "ans2_phase_4_kernel_boundary": {
+        "required_artifacts": [
+            "artifacts/ans2/xnu_nvme_boundary_spec.json",
+            "artifacts/ans2/pseudocode/ans2_nvme_driver.pseudo.c",
+            "findings/ans2/04_KERNEL_BOUNDARY_AND_DRIVER_RUNTIME.md"
+        ],
+        "findings_docs": ["findings/ans2/04_KERNEL_BOUNDARY_AND_DRIVER_RUNTIME.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/ans2/xnu_nvme_boundary_spec.json": ["kext_inventory", "dispatch_pathway", "sart_stage2_isolation"]
+        },
+        "assertions": [
+            ("driver_pseudocode_exists",
+             None,
+             lambda _: Path(ROOT / "artifacts/ans2/pseudocode/ans2_nvme_driver.pseudo.c").is_file(),
+             "artifacts/ans2/pseudocode/ans2_nvme_driver.pseudo.c must exist"),
+        ]
+    },
+
+    "ans2_phase_5_synthesis": {
+        "required_artifacts": [
+            "IOS_27_ANS2_NVME_STORAGE_RE.md",
+            "artifacts/ans2/cross_validation_matrix.json",
+            "tools/verify_ans2_constants.py"
+        ],
+        "findings_docs": ["IOS_27_ANS2_NVME_STORAGE_RE.md"],
+        "min_findings_bytes": 50000,
+        "json_schemas": {
+            "artifacts/ans2/cross_validation_matrix.json": ["extraction_confidence"]
+        },
+        "assertions": [
+            ("verify_script_exists",
+              None,
+              lambda _: Path(ROOT / "tools/verify_ans2_constants.py").is_file(),
+              "tools/verify_ans2_constants.py must exist"),
+            ("has_extracted_constants",
+              "artifacts/ans2/cross_validation_matrix.json",
+              lambda d: d.get("extraction_confidence", {}).get("EXTRACTED", 0) >= 20,
+              "cross_validation_matrix must have at least 20 EXTRACTED confidence constants"),
+        ]
+    },
+
     # ── Always-On Processor 2 (AOP2) & RTKit Microkernel phases ─────────
     "aop_phase_1a_workspace_baseline": {
         "required_artifacts": [
@@ -1119,6 +1318,432 @@ PHASE_SPECS = {
              "cross_validation_matrix must have at least 20 EXTRACTED confidence constants"),
         ]
     },
+
+    # ── Apple Video Encoder 2 (AVE2) Hardware Codec Accelerator phases ──
+    "ave_phase_1a_workspace_baseline": {
+        "required_artifacts": [
+            "artifacts/ave/phase_1a_workspace_baseline.json",
+            "artifacts/ave/ave_firmware_container_spec.json",
+            "findings/ave/01A_WORKSPACE_BASELINE.md"
+        ],
+        "findings_docs": ["findings/ave/01A_WORKSPACE_BASELINE.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/ave/phase_1a_workspace_baseline.json": ["target_device", "firmware_assets", "hardware_context"],
+            "artifacts/ave/ave_firmware_container_spec.json": ["main_firmware", "satellite_microcodes", "fourcc_catalog"]
+        },
+        "assertions": [
+            ("fourcc_is_avef",
+             "artifacts/ave/ave_firmware_container_spec.json",
+             lambda d: d.get("main_firmware", {}).get("fourcc_tag") == "avef",
+             "main_firmware fourcc_tag must be avef"),
+            ("has_9_satellite_cores",
+             "artifacts/ave/ave_firmware_container_spec.json",
+             lambda d: len(d.get("satellite_microcodes", {})) == 9,
+             "must inventory all 9 satellite microcodes AVE0..AVE8"),
+        ]
+    },
+
+    "ave_phase_1b_architecture_topology": {
+        "required_artifacts": [
+            "artifacts/ave/ave_topology_spec.json",
+            "artifacts/ave/codec_pipeline_architecture.json",
+            "findings/ave/01B_ARCHITECTURE_AND_TOPOLOGY.md"
+        ],
+        "findings_docs": ["findings/ave/01B_ARCHITECTURE_AND_TOPOLOGY.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/ave/ave_topology_spec.json": ["memory_segments", "entry_point", "interrupt_vectors"],
+            "artifacts/ave/codec_pipeline_architecture.json": ["codec_engines", "satellite_riscv_cores"]
+        },
+        "assertions": [
+            ("has_av1_boreas",
+             "artifacts/ave/codec_pipeline_architecture.json",
+             lambda d: "AV1_Boreas" in str(d.get("codec_engines", {})),
+             "codec_pipeline_architecture must document AV1 Boreas engine"),
+            ("has_hevc_erebus",
+             "artifacts/ave/codec_pipeline_architecture.json",
+             lambda d: "HEVC_Erebus" in str(d.get("codec_engines", {})),
+             "codec_pipeline_architecture must document HEVC Erebus engine"),
+        ]
+    },
+
+    "ave_phase_2_hardware_register_geometry": {
+        "required_artifacts": [
+            "artifacts/ave/ave_hardware_register_geometry.json",
+            "artifacts/ave/dma_descriptor_geometry.json",
+            "findings/ave/02_HARDWARE_REGISTER_GEOMETRY.md"
+        ],
+        "findings_docs": ["findings/ave/02_HARDWARE_REGISTER_GEOMETRY.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/ave/ave_hardware_register_geometry.json": ["mmio_registers", "rate_control_models", "quantization_parameters"],
+            "artifacts/ave/dma_descriptor_geometry.json": ["dma_channels", "buffer_formats"]
+        },
+        "assertions": [
+            ("dart_ave_mmio_base",
+             "artifacts/ave/ave_hardware_register_geometry.json",
+             lambda d: "0x77020000" in str(d.get("mmio_registers", {})),
+             "dart-ave MMIO base must be 0x77020000"),
+            ("has_rate_control_models",
+             "artifacts/ave/ave_hardware_register_geometry.json",
+             lambda d: len(d.get("rate_control_models", {})) >= 3,
+             "must document at least 3 rate control models"),
+        ]
+    },
+
+    "ave_phase_3_command_queue_protocol": {
+        "required_artifacts": [
+            "artifacts/ave/ave_command_queue_spec.json",
+            "artifacts/ave/codec_control_descriptors.json",
+            "findings/ave/03_COMMAND_QUEUE_AND_WIRE_FORMAT.md"
+        ],
+        "findings_docs": ["findings/ave/03_COMMAND_QUEUE_AND_WIRE_FORMAT.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/ave/ave_command_queue_spec.json": ["command_opcodes", "mailbox_protocol"],
+            "artifacts/ave/codec_control_descriptors.json": ["descriptors", "slice_headers"]
+        },
+        "assertions": [
+            ("has_10_command_opcodes",
+             "artifacts/ave/ave_command_queue_spec.json",
+             lambda d: len(d.get("command_opcodes", {})) >= 10,
+             "must document at least 10 hardware command opcodes"),
+        ]
+    },
+
+    "ave_phase_4_kernel_boundary": {
+        "required_artifacts": [
+            "artifacts/ave/xnu_ave_boundary_spec.json",
+            "artifacts/ave/pseudocode/ave_direct_submit.pseudo.c",
+            "findings/ave/04_KERNEL_BOUNDARY_CLIENT.md"
+        ],
+        "findings_docs": ["findings/ave/04_KERNEL_BOUNDARY_CLIENT.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/ave/xnu_ave_boundary_spec.json": ["kernel_drivers", "user_clients", "external_methods"]
+        },
+        "assertions": [
+            ("pseudocode_exists",
+             None,
+             lambda _: Path(ROOT / "artifacts/ave/pseudocode/ave_direct_submit.pseudo.c").is_file(),
+             "artifacts/ave/pseudocode/ave_direct_submit.pseudo.c must exist"),
+            ("has_apple_ave2_driver",
+             "artifacts/ave/xnu_ave_boundary_spec.json",
+             lambda d: any("AppleAVE2" in k for k in d.get("kernel_drivers", {})),
+             "must document AppleAVE2 driver in XNU boundary"),
+        ]
+    },
+
+    "ave_phase_5_synthesis": {
+        "required_artifacts": [
+            "IOS_27_AVE2_VIDEO_ENCODER_RE.md",
+            "artifacts/ave/cross_validation_matrix.json",
+            "tools/verify_ave_constants.py"
+        ],
+        "findings_docs": ["IOS_27_AVE2_VIDEO_ENCODER_RE.md"],
+        "min_findings_bytes": 50000,
+        "json_schemas": {
+            "artifacts/ave/cross_validation_matrix.json": ["extraction_confidence"]
+        },
+        "assertions": [
+            ("verify_script_exists",
+              None,
+              lambda _: Path(ROOT / "tools/verify_ave_constants.py").is_file(),
+              "tools/verify_ave_constants.py must exist"),
+            ("has_extracted_constants",
+              "artifacts/ave/cross_validation_matrix.json",
+              lambda d: d.get("extraction_confidence", {}).get("EXTRACTED", 0) >= 1,
+              "cross_validation_matrix must have at least 1 EXTRACTED confidence constant"),
+        ]
+    },
+
+    # ── Display Coprocessor (DCP) & ProMotion Pipeline phases ──────────────
+    "dcp_phase_1a_workspace_baseline": {
+        "required_artifacts": [
+            "artifacts/dcp/phase_1a_workspace_baseline.json",
+            "artifacts/dcp/dcp_firmware_container_spec.json",
+            "findings/dcp/01A_WORKSPACE_BASELINE.md"
+        ],
+        "findings_docs": ["findings/dcp/01A_WORKSPACE_BASELINE.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/dcp/phase_1a_workspace_baseline.json": ["target_hardware", "project"],
+            "artifacts/dcp/dcp_firmware_container_spec.json": ["container", "rtos_identification"]
+        },
+        "assertions": [
+            ("fourcc_is_dcpf",
+             "artifacts/dcp/dcp_firmware_container_spec.json",
+             lambda d: d.get("container", {}).get("fourcc_tag") == "dcpf",
+             "container fourcc_tag must be dcpf"),
+            ("rtos_is_rtkit",
+             "artifacts/dcp/dcp_firmware_container_spec.json",
+             lambda d: "3514.40.18" in d.get("rtos_identification", {}).get("version_banner", ""),
+             "RTKit version_banner must match 3514.40.18"),
+        ]
+    },
+
+    "dcp_phase_1b_microkernel": {
+        "required_artifacts": [
+            "artifacts/dcp/dcp_microkernel_spec.json",
+            "artifacts/dcp/dcp_service_topology.json",
+            "findings/dcp/01B_DCP_MICROKERNEL.md"
+        ],
+        "findings_docs": ["findings/dcp/01B_DCP_MICROKERNEL.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/dcp/dcp_microkernel_spec.json": ["microkernel", "memory_carveouts"],
+            "artifacts/dcp/dcp_service_topology.json": ["endpoints", "hardware_pipe_blocks"]
+        },
+        "assertions": [
+            ("dcp_runtime_dram_48mb",
+             "artifacts/dcp/dcp_microkernel_spec.json",
+             lambda d: d.get("memory_carveouts", {}).get("dcp_firmware_dram", {}).get("size_bytes") == 50331648,
+             "dcp_firmware_dram must be 48 MB (50331648 bytes)"),
+            ("genpipe_38_blocks",
+             "artifacts/dcp/dcp_service_topology.json",
+             lambda d: d.get("hardware_pipe_blocks", {}).get("count") == 38,
+             "hardware_pipe_blocks count must be 38"),
+        ]
+    },
+
+    "dcp_phase_2_promotion_and_timing": {
+        "required_artifacts": [
+            "artifacts/dcp/promotion_arbitration_spec.json",
+            "artifacts/dcp/vftg_timing_generator_spec.json",
+            "findings/dcp/02_PROMOTION_AND_FRAME_PACING.md"
+        ],
+        "findings_docs": ["findings/dcp/02_PROMOTION_AND_FRAME_PACING.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/dcp/promotion_arbitration_spec.json": ["promotion_architecture"],
+            "artifacts/dcp/vftg_timing_generator_spec.json": ["vftg_hardware"]
+        },
+        "assertions": [
+            ("discrete_refresh_rates_11",
+             "artifacts/dcp/promotion_arbitration_spec.json",
+             lambda d: len(d.get("promotion_architecture", {}).get("discrete_refresh_rates", [])) == 11,
+             "must document exactly 11 discrete refresh rates"),
+            ("vftg_pixel_clock_504mhz",
+             "artifacts/dcp/vftg_timing_generator_spec.json",
+             lambda d: d.get("vftg_hardware", {}).get("pixel_clock_hz") == 504000000,
+             "vftg pixel clock must be 504.0 MHz (504000000 Hz)"),
+        ]
+    },
+
+    "dcp_phase_3_pixel_compensation_and_color": {
+        "required_artifacts": [
+            "artifacts/dcp/pixel_compensation_spec.json",
+            "artifacts/dcp/color_pipeline_lut_spec.json",
+            "findings/dcp/03_PIXEL_COMPENSATION_AND_COLOR.md"
+        ],
+        "findings_docs": ["findings/dcp/03_PIXEL_COMPENSATION_AND_COLOR.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/dcp/pixel_compensation_spec.json": ["panel_compensation_engines"],
+            "artifacts/dcp/color_pipeline_lut_spec.json": ["color_pipeline"]
+        },
+        "assertions": [
+            ("has_burn_in_compensation",
+             "artifacts/dcp/pixel_compensation_spec.json",
+             lambda d: "bics" in d.get("panel_compensation_engines", {}),
+             "must document BICS burn-in compensation engine"),
+            ("has_3d_lut",
+             "artifacts/dcp/color_pipeline_lut_spec.json",
+             lambda d: any("3D LUT" in str(b) for b in d.get("color_pipeline", {}).get("pipeline_blocks", [])),
+             "color_pipeline must document 3D LUT stage"),
+        ]
+    },
+
+    "dcp_phase_4_kernel_boundary": {
+        "required_artifacts": [
+            "artifacts/dcp/xnu_dcp_boundary_spec.json",
+            "artifacts/dcp/pseudocode/dcp_mailbox_client.pseudo.c",
+            "findings/dcp/04_XNU_DRIVER_BOUNDARY.md"
+        ],
+        "findings_docs": ["findings/dcp/04_XNU_DRIVER_BOUNDARY.md"],
+        "min_findings_bytes": 4000,
+        "json_schemas": {
+            "artifacts/dcp/xnu_dcp_boundary_spec.json": ["xnu_drivers", "ipc_command_descriptors"]
+        },
+        "assertions": [
+            ("pseudocode_exists",
+             None,
+             lambda _: Path(ROOT / "artifacts/dcp/pseudocode/dcp_mailbox_client.pseudo.c").is_file(),
+             "artifacts/dcp/pseudocode/dcp_mailbox_client.pseudo.c must exist"),
+            ("has_apple_clcd2_driver",
+             "artifacts/dcp/xnu_dcp_boundary_spec.json",
+             lambda d: any("AppleCLCD2" in str(drv) for drv in d.get("xnu_drivers", [])),
+             "must document AppleCLCD2 driver in XNU boundary"),
+        ]
+    },
+
+    "dcp_phase_5_synthesis": {
+        "required_artifacts": [
+            "IOS_27_DISPLAY_COPROCESSOR_DCP_RE.md",
+            "artifacts/dcp/cross_validation_matrix.json",
+            "tools/verify_dcp_constants.py"
+        ],
+        "findings_docs": ["IOS_27_DISPLAY_COPROCESSOR_DCP_RE.md"],
+        "min_findings_bytes": 50000,
+        "json_schemas": {
+            "artifacts/dcp/cross_validation_matrix.json": ["extraction_confidence"]
+        },
+        "assertions": [
+            ("verify_script_exists",
+             None,
+             lambda _: Path(ROOT / "tools/verify_dcp_constants.py").is_file(),
+             "tools/verify_dcp_constants.py must exist"),
+            ("has_extracted_constants",
+             "artifacts/dcp/cross_validation_matrix.json",
+             lambda d: d.get("extraction_confidence", {}).get("EXTRACTED", 0) >= 20,
+             "cross_validation_matrix must have at least 20 EXTRACTED confidence constants"),
+        ]
+    },
+
+    # ── Apple Silicon A19 Pro Hardware-Software Co-Design Synthesis phases ──
+    "synthesis_phase_1a_workspace_baseline": {
+        "required_artifacts": [
+            "artifacts/synthesis/phase_1a_workspace_baseline.json",
+            "artifacts/synthesis/soc_topology_spec.json",
+            "findings/synthesis/01A_WORKSPACE_BASELINE.md"
+        ],
+        "findings_docs": ["findings/synthesis/01A_WORKSPACE_BASELINE.md"],
+        "min_findings_bytes": 5000,
+        "json_schemas": {
+            "artifacts/synthesis/phase_1a_workspace_baseline.json": ["target_platform", "hardware_blocks_inventory", "synthesis_inputs"],
+            "artifacts/synthesis/soc_topology_spec.json": ["soc_architecture", "interconnect_fabric", "power_and_clock_domains"]
+        },
+        "assertions": [
+            ("chip_is_t8150",
+             "artifacts/synthesis/phase_1a_workspace_baseline.json",
+             lambda d: d.get("target_platform", {}).get("soc") == "t8150",
+             "target chip must be t8150"),
+            ("board_is_v57ap",
+             "artifacts/synthesis/phase_1a_workspace_baseline.json",
+             lambda d: d.get("target_platform", {}).get("device_class") == "v57ap",
+             "target device_class must be v57ap"),
+        ]
+    },
+
+    "synthesis_phase_1b_global_memory_map": {
+        "required_artifacts": [
+            "artifacts/synthesis/global_physical_memory_map.json",
+            "findings/synthesis/01B_GLOBAL_MEMORY_MAP.md"
+        ],
+        "findings_docs": ["findings/synthesis/01B_GLOBAL_MEMORY_MAP.md"],
+        "min_findings_bytes": 5000,
+        "json_schemas": {
+            "artifacts/synthesis/global_physical_memory_map.json": ["physical_address_width_bits", "installed_dram_bytes", "dram_carveouts"]
+        },
+        "assertions": [
+            ("installed_dram_32gb",
+             "artifacts/synthesis/global_physical_memory_map.json",
+             lambda d: d.get("installed_dram_bytes") == 34359738368,
+             "installed DRAM must be exactly 32 GB (34359738368 bytes)"),
+            ("has_6_carveouts",
+             "artifacts/synthesis/global_physical_memory_map.json",
+             lambda d: len(d.get("dram_carveouts", [])) == 6,
+             "must document exactly 6 DRAM carveouts"),
+        ]
+    },
+
+    "synthesis_phase_2_unified_dart_ledger": {
+        "required_artifacts": [
+            "artifacts/synthesis/unified_dart_iommu_ledger.json",
+            "findings/synthesis/02_UNIFIED_DART_IOMMU_LEDGER.md"
+        ],
+        "findings_docs": ["findings/synthesis/02_UNIFIED_DART_IOMMU_LEDGER.md"],
+        "min_findings_bytes": 5000,
+        "json_schemas": {
+            "artifacts/synthesis/unified_dart_iommu_ledger.json": ["total_dart_controllers", "page_granule_bytes", "controllers"]
+        },
+        "assertions": [
+            ("total_25_darts",
+             "artifacts/synthesis/unified_dart_iommu_ledger.json",
+             lambda d: len(d.get("controllers", [])) == 25,
+             "must catalog all 25 DART Gen3 controllers"),
+            ("page_granule_16k",
+             "artifacts/synthesis/unified_dart_iommu_ledger.json",
+             lambda d: d.get("page_granule_bytes") == 16384,
+             "DART page granule must be 16 KB (16384 bytes)"),
+        ]
+    },
+
+    "synthesis_phase_3_interrupt_and_mailbox_matrix": {
+        "required_artifacts": [
+            "artifacts/synthesis/master_aic_interrupt_matrix.json",
+            "artifacts/synthesis/ascwrap_mailbox_matrix.json",
+            "findings/synthesis/03_INTERRUPT_AND_MAILBOX_MATRIX.md"
+        ],
+        "findings_docs": ["findings/synthesis/03_INTERRUPT_AND_MAILBOX_MATRIX.md"],
+        "min_findings_bytes": 5000,
+        "json_schemas": {
+            "artifacts/synthesis/master_aic_interrupt_matrix.json": ["aic_controller", "subsystem_allocations"],
+            "artifacts/synthesis/ascwrap_mailbox_matrix.json": ["register_offsets", "instances"]
+        },
+        "assertions": [
+            ("aic_vectors_1024",
+             "artifacts/synthesis/master_aic_interrupt_matrix.json",
+             lambda d: d.get("aic_controller", {}).get("total_vector_capacity") == 1024,
+             "AIC vector capacity must be 1024"),
+            ("has_9_mailbox_instances",
+             "artifacts/synthesis/ascwrap_mailbox_matrix.json",
+             lambda d: len(d.get("instances", [])) >= 9,
+             "must document at least 9 ASCwrap mailbox instances"),
+        ]
+    },
+
+    "synthesis_phase_4_cross_enclave_topology": {
+        "required_artifacts": [
+            "artifacts/synthesis/inter_enclave_ipc_topology.json",
+            "artifacts/synthesis/pseudocode/a19_pro_cross_enclave_router.pseudo.c",
+            "findings/synthesis/04_INTER_ENCLAVE_IPC_TOPOLOGY.md"
+        ],
+        "findings_docs": ["findings/synthesis/04_INTER_ENCLAVE_IPC_TOPOLOGY.md"],
+        "min_findings_bytes": 5000,
+        "json_schemas": {
+            "artifacts/synthesis/inter_enclave_ipc_topology.json": ["security_domains", "crossings"]
+        },
+        "assertions": [
+            ("has_9_security_domains",
+             "artifacts/synthesis/inter_enclave_ipc_topology.json",
+             lambda d: len(d.get("security_domains", [])) >= 8,
+             "must document at least 8 security domains"),
+            ("has_10_crossings",
+             "artifacts/synthesis/inter_enclave_ipc_topology.json",
+             lambda d: len(d.get("crossings", [])) >= 10,
+             "must document at least 10 inter-enclave crossings"),
+        ]
+    },
+
+    "synthesis_phase_5_synthesis": {
+        "required_artifacts": [
+            "APPLE_SILICON_A19_PRO_ARCHITECTURE_BOOK.md",
+            "artifacts/synthesis/cross_validation_matrix.json",
+            "tools/verify_synthesis_constants.py"
+        ],
+        "findings_docs": ["APPLE_SILICON_A19_PRO_ARCHITECTURE_BOOK.md"],
+        "min_findings_bytes": 100000,
+        "json_schemas": {
+            "artifacts/synthesis/cross_validation_matrix.json": ["extraction_confidence", "entries"]
+        },
+        "assertions": [
+            ("verify_script_exists",
+             None,
+             lambda _: Path(ROOT / "tools/verify_synthesis_constants.py").is_file(),
+             "tools/verify_synthesis_constants.py must exist"),
+            ("has_extracted_constants",
+             "artifacts/synthesis/cross_validation_matrix.json",
+             lambda d: d.get("extraction_confidence", {}).get("EXTRACTED", 0) >= 30,
+             "cross_validation_matrix must have at least 30 EXTRACTED confidence constants"),
+            ("verify_script_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "tools/verify_synthesis_constants.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "tools/verify_synthesis_constants.py must pass 100% green"),
+        ]
+    },
 }
 import re
 
@@ -1189,8 +1814,45 @@ def verify_phase(phase_id: str) -> bool:
             print(f"   • {err}")
         return False
     else:
+        print(f"[PASS] All verification checks PASSED for phase '{phase_id}'")
         print(f"\n✅  Phase '{phase_id}' PASSED all verification checks.")
         return True
+
+
+def verify_artifact_content(artifact_name: str, path: Path) -> list:
+    errors = []
+    p = Path(path)
+    if not p.is_file():
+        return [f"File {path} does not exist"]
+
+    if artifact_name == "evidence_ledger.jsonl":
+        has_phase_1a = False
+        with open(p, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    obj = json.loads(line)
+                    if "1A" in obj.get("phase", ""):
+                        has_phase_1a = True
+                        break
+                except Exception:
+                    pass
+        if not has_phase_1a:
+            errors.append("Missing Phase 1A entries in evidence_ledger.jsonl")
+
+    elif artifact_name == "framework_inventory.json":
+        try:
+            inv = json.loads(p.read_text(encoding="utf-8"))
+            if isinstance(inv, list):
+                for i, item in enumerate(inv):
+                    if not item.get("subcache_file_offset"):
+                        errors.append(f"Entry {i} missing subcache_file_offset")
+        except Exception as e:
+            errors.append(f"Failed to parse framework_inventory.json: {e}")
+
+    return errors
 
 
 if __name__ == "__main__":

@@ -1,0 +1,305 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "validation_date": "2026-11-23",
+  "ios_version": "27.2 (24B119)",
+  "hardware_target": "iPhone18,3 (Apple A19 Pro / t8150)",
+  "total_constants_extracted": 40,
+  "extraction_confidence": {
+    "EXTRACTED": 36,
+    "INFERRED": 4,
+    "TENTATIVE": 0,
+    "UNKNOWN": 0
+  },
+  "cross_validations": [
+    {
+      "constant": "DCP_CONTAINER_FOURCC",
+      "value": "dcpf",
+      "hex_value": "0x64637066",
+      "confidence": "EXTRACTED",
+      "binary_source": "iPhone18,3_27.2_24B119_Restore/Firmware/dcp/t8150dcp.im4p",
+      "verification_method": "Image4 ASN.1 DER sequence tag parser"
+    },
+    {
+      "constant": "DCP_CONTAINER_COMPRESSED_SIZE",
+      "value": 2466452,
+      "hex_value": "0x25a154",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp.im4p",
+      "verification_method": "File stat byte length assertion"
+    },
+    {
+      "constant": "DCP_CONTAINER_DECOMPRESSED_SIZE",
+      "value": 16990208,
+      "hex_value": "0x01034000",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin",
+      "verification_method": "LZFSE decompression byte length (16.20 MB)"
+    },
+    {
+      "constant": "DCP_CONTAINER_WRAPPER",
+      "value": "Apple Image4 (IM4P)",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp.im4p",
+      "verification_method": "DER tag 0x30 SEQUENCE parse matching Apple Image4 container"
+    },
+    {
+      "constant": "DCP_INTERNAL_BUNDLE_MAGIC",
+      "value": "0x42554e44",
+      "ascii": "DNUB",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin",
+      "verification_method": "Apple BUNDLE container magic at offset 0x08"
+    },
+    {
+      "constant": "DCP_INTERNAL_BUNDLE_VERSION",
+      "value": "0x00040000",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin",
+      "verification_method": "BUNDLE container version field"
+    },
+    {
+      "constant": "DCP_INTERNAL_BUNDLE_ENTRIES",
+      "value": 11,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin",
+      "verification_method": "BUNDLE Table of Contents entry count"
+    },
+    {
+      "constant": "DCP_SLICE0_MACHO_OFFSET",
+      "value": 69632,
+      "hex_value": "0x00011000",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin",
+      "verification_method": "Mach-O 64-bit header offset for primary display runtime"
+    },
+    {
+      "constant": "DCP_SLICE0_CPU_SUBTYPE",
+      "value": "0x80000002",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin",
+      "verification_method": "CPU_SUBTYPE_ARM64E with PAC00 ABI flag"
+    },
+    {
+      "constant": "DCP_SLICE1_MACHO_OFFSET",
+      "value": 16662528,
+      "hex_value": "0x00fe4000",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin",
+      "verification_method": "Mach-O 64-bit header offset for RTKit boot slice"
+    },
+    {
+      "constant": "DCP_RTKIT_VERSION_BANNER",
+      "value": "RTKit_armv8_cl4_Oz_flto_pac-3514.40.18.release",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin",
+      "verification_method": "Null-terminated version banner string anchor"
+    },
+    {
+      "constant": "DCP_ASCWRAP_BASE",
+      "value": "0x0000000100600000",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p /arm-io/dcp",
+      "verification_method": "MMIO reg entry 0 base address (544 KB window)"
+    },
+    {
+      "constant": "DCP_ASCWRAP_CONTROL_BASE",
+      "value": "0x0000000100050000",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p /arm-io/dcp",
+      "verification_method": "MMIO reg entry 1 base address (16 KB window)"
+    },
+    {
+      "constant": "DART_DCP_BASE",
+      "value": "0x00000001fa340000",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p /arm-io/dart-dcp",
+      "verification_method": "DART IOMMU controller mapping (48 KB window)"
+    },
+    {
+      "constant": "DART_DISP0_BASE",
+      "value": "0x00000001fa300000",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p /arm-io/dart-disp0",
+      "verification_method": "DART IOMMU controller mapping (48 KB window)"
+    },
+    {
+      "constant": "DART_DISPGRT_BASE",
+      "value": "0x00000001fa320000",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p /arm-io/dart-dispgrt",
+      "verification_method": "DART IOMMU controller mapping (48 KB window)"
+    },
+    {
+      "constant": "DART_DISP0_ISOC_BASE",
+      "value": "0x00000001fa1c0000",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p /arm-io/dart-disp0-isoc",
+      "verification_method": "DART IOMMU controller mapping (128 KB window)"
+    },
+    {
+      "constant": "DART_DCPEXT0_BASE",
+      "value": "0x00000001fe340000",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p /arm-io/dart-dcpext0",
+      "verification_method": "DART IOMMU controller mapping (48 KB window)"
+    },
+    {
+      "constant": "DART_DISPEXT0_BASE",
+      "value": "0x00000001fe300000",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p /arm-io/dart-dispext0",
+      "verification_method": "DART IOMMU controller mapping (48 KB window)"
+    },
+    {
+      "constant": "DART_SCALER_BASE",
+      "value": "0x0000000081260000",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p /arm-io/dart-scaler",
+      "verification_method": "DART IOMMU controller mapping (128 KB window)"
+    },
+    {
+      "constant": "AIC_IRQ_DISP_INT_DCP",
+      "value": 411,
+      "hex_value": "0x019b",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p DISP_INT_DCP property",
+      "verification_method": "Apple Interrupt Controller vector 411 assertion"
+    },
+    {
+      "constant": "AIC_IRQ_DISP_EXT0_DCP",
+      "value": 412,
+      "hex_value": "0x019c",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p DISP_EXT0_DCP property",
+      "verification_method": "Apple Interrupt Controller vector 412 assertion"
+    },
+    {
+      "constant": "AIC_IRQ_DCP0_V",
+      "value": 403,
+      "hex_value": "0x0193",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p DCP0-V property",
+      "verification_method": "Apple Interrupt Controller vector 403 assertion"
+    },
+    {
+      "constant": "AIC_IRQ_DCPEXT0_V",
+      "value": 405,
+      "hex_value": "0x0195",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree.v57ap.im4p DCPEXT0-V property",
+      "verification_method": "Apple Interrupt Controller vector 405 assertion"
+    },
+    {
+      "constant": "PROMOTION_MAX_REFRESH_HZ",
+      "value": 120,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin VFTG tables",
+      "verification_method": "Maximum ProMotion refresh rate"
+    },
+    {
+      "constant": "PROMOTION_MIN_INTERACTIVE_HZ",
+      "value": 10,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin VFTG tables",
+      "verification_method": "Minimum interactive idle refresh rate"
+    },
+    {
+      "constant": "PROMOTION_MIN_AOD_HZ",
+      "value": 1,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin 1hz_flipbook_frame_count string",
+      "verification_method": "Minimum Always-On Display sleep refresh rate"
+    },
+    {
+      "constant": "PROMOTION_PIXEL_CLOCK_HZ",
+      "value": 504000000,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin Timing elements",
+      "verification_method": "Panel active pixel clock rate (504.0 MHz)"
+    },
+    {
+      "constant": "PANEL_ACTIVE_WIDTH",
+      "value": 1320,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin Display properties",
+      "verification_method": "Native horizontal active pixels"
+    },
+    {
+      "constant": "PANEL_ACTIVE_HEIGHT",
+      "value": 2868,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin Display properties",
+      "verification_method": "Native vertical active lines"
+    },
+    {
+      "constant": "VFTG_TOTAL_LINES_120HZ",
+      "value": 3000,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin UPBlock_VFTG_v38",
+      "verification_method": "Total vertical lines at 120Hz (2868 active + 132 blanking)"
+    },
+    {
+      "constant": "VFTG_BACK_PORCH_LINES_120HZ",
+      "value": 116,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin UPBlock_VFTG_v38",
+      "verification_method": "Base vertical back porch lines at 120Hz"
+    },
+    {
+      "constant": "VFTG_BACK_PORCH_LINES_60HZ",
+      "value": 3116,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin UPBlock_VFTG_v38",
+      "verification_method": "Extended vertical back porch lines at 60Hz"
+    },
+    {
+      "constant": "VFTG_BACK_PORCH_LINES_10HZ",
+      "value": 33116,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin UPBlock_VFTG_v38",
+      "verification_method": "Extended vertical back porch lines at 10Hz"
+    },
+    {
+      "constant": "VFTG_BACK_PORCH_LINES_1HZ",
+      "value": 357116,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin UPBlock_VFTG_v38",
+      "verification_method": "Extended vertical back porch lines at 1Hz AOD"
+    },
+    {
+      "constant": "FAST_TE_SAMPLE_CLOCK_HZ",
+      "value": 24000000,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp_decompressed.bin Fast_TE timer string",
+      "verification_method": "Tearing Effect hardware sampling clock (24 MHz)"
+    },
+    {
+      "constant": "UPBLOCK_PIPE_STAGES_TOTAL",
+      "value": 38,
+      "confidence": "INFERRED",
+      "binary_source": "t8150dcp_decompressed.bin symbol table",
+      "verification_method": "Cataloged UPBlock hardware driver classes count"
+    },
+    {
+      "constant": "UPBLOCK_GENERATION_PIPE",
+      "value": "GenPipe_v33",
+      "confidence": "INFERRED",
+      "binary_source": "t8150dcp_decompressed.bin UPBlock_GenPipe_v33",
+      "verification_method": "Primary hardware pipe revision descriptor"
+    },
+    {
+      "constant": "DCP_FIRMWARE_DRAM_SIZE",
+      "value": 50331648,
+      "confidence": "INFERRED",
+      "binary_source": "t8150dcp memory layout",
+      "verification_method": "DCP dedicated RTKit execution heap pool (48 MB)"
+    },
+    {
+      "constant": "DISP_FRAMEBUFFER_POOL_SIZE",
+      "value": 83886080,
+      "confidence": "INFERRED",
+      "binary_source": "t8150dcp framebuffer sizing",
+      "verification_method": "DART-DISP0 triple framebuffer allocation (80 MB)"
+    }
+  ]
+}

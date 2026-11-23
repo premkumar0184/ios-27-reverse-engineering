@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Apple Video Encoder 2 (AVE2) Pipeline Architecture",
+  "soc": "t8150",
+  "codec_engines": {
+    "AV1_Boreas": {
+      "symbolic_map": "_gc_sAVE_DevCap_DPMMap_AV1_Boreas",
+      "profile": "AV1 Profile 0 (Main Profile, 8-bit / 10-bit YUV 4:2:0)",
+      "max_resolution": "8192x4320 (8K Ultra HD)",
+      "max_framerate_fps": 120,
+      "features": [
+        "Tile Groups & Uniform Tile Grid Encoding",
+        "CDF-based Symbol Boolean Entropy Coding",
+        "Directional Intra Prediction (56 Angles)",
+        "Warped Motion Compensation & Global Motion Models",
+        "Restoration Filter (Wiener & Sgrproj)",
+        "Constrained Directional Enhancement Filter (CDEF)"
+      ]
+    },
+    "HEVC_Erebus": {
+      "symbolic_map": "_gc_sAVE_DevCap_DPMMap_HEVC_Erebus",
+      "controller_class": "CHEVCController",
+      "profiles_supported": [
+        "Main Profile (8-bit 4:2:0)",
+        "Main 10 Profile (10-bit 4:2:0)",
+        "Main 4:2:2 10 Profile (10-bit 4:2:2 Professional Video)"
+      ],
+      "syntax_generators": {
+        "VPS": "HEVC_VPS (Video Parameter Set RBSP Writer)",
+        "SPS": "HEVC_SPS (Sequence Parameter Set RBSP Writer with VUI & HRD)",
+        "PPS": "HEVC_PPS (Picture Parameter Set RBSP Writer with Scaling Lists)",
+        "RPS": "HEVC_RPS (Short-Term & Long-Term Reference Picture Set)",
+        "Slice": "HEVC_Slice (Slice Header Writer & Pred Weight Table)"
+      },
+      "max_resolution": "8192x4320 (8K HDR10 / Dolby Vision)"
+    },
+    "AVC_Erebus": {
+      "symbolic_map": "_gc_sAVE_DevCap_DPMMap_AVC_Erebus",
+      "controller_class": "CAVCController",
+      "profiles_supported": [
+        "Baseline",
+        "Main",
+        "High Profile (HiP)"
+      ],
+      "syntax_generators": {
+        "SPS": "AVC_SPS (Sequence Parameter Set)",
+        "PPS": "AVC_PPS (Picture Parameter Set)",
+        "Slice": "AVC_Slice (Slice Header & Modification Tables)"
+      },
+      "entropy_engines": [
+        "CABAC",
+        "CAVLC"
+      ]
+    },
+    "ProRes_Hardware": {
+      "driver_module": "AppleAVE2.kext / AppleProResHW",
+      "command_queue": "AppleProResCommandQueue",
+      "codec_formats": [
+        "ProRes 422 Proxy",
+        "ProRes 422 LT",
+        "ProRes 422 Standard",
+        "ProRes 422 HQ",
+        "ProRes 4444 (12-bit RGB/YUV with Alpha Channel)",
+        "ProRes 4444 XQ (High Data Rate Mastery)"
+      ],
+      "color_spaces": [
+        "Rec.709",
+        "BT.2020",
+        "Apple Log",
+        "ACES"
+      ]
+    }
+  },
+  "coprocessor_pipelines": {
+    "LRME": {
+      "name": "Low-Resolution Motion Estimation",
+      "symbol": "_gc_sAVE_DevCap_DPMMap_LRME_Erebus",
+      "controllers": [
+        "CLRMEFSController",
+        "CLRMERSController"
+      ],
+      "role": "Calculates coarse motion vector fields across 16x downsampled luma pyramids"
+    },
+    "HMESC": {
+      "name": "Hierarchical Motion Estimation and Spatial Complexity",
+      "symbol": "__ZN20CAVECommonController9HMESCDoneEP15sCmdInformationi",
+      "role": "Generates hierarchical quadtree motion hypotheses and macroblock spatial variance metrics"
+    },
+    "DMV": {
+      "name": "Dense Motion Vector Engine",
+      "symbol": "_gc_sAVE_DevCap_DPMMap_DMV_Erebus",
+      "controller": "CDMVController",
+      "role": "Refines integer motion vectors into quarter-pixel precision sub-pel displacement vectors"
+    },
+    "MCTF": {
+      "name": "Motion-Compensated Temporal Filtering",
+      "symbol": "_gc_sAVE_DevCap_DPMMap_MCTF_Erebus",
+      "controller": "CMCTFController",
+      "role": "Multi-frame temporal denoising before quantization to maximize bitstream compression efficiency"
+    },
+    "GGM": {
+      "name": "Global and Group Motion Estimation",
+      "symbol": "_gc_sAVE_DevCap_DPMMap_GGM_Erebus",
+      "controller": "CGGMController",
+      "role": "Estimates affine camera pan/zoom transformations across successive frames"
+    },
+    "OF": {
+      "name": "Optical Flow Coprocessor",
+      "controller": "COFController",
+      "role": "High-density optical flow vector generation for cinematic frame interpolation and temporal stabilization"
+    }
+  },
+  "satellite_riscv_cores": {
+    "AVE0": {
+      "name": "TaskDispatcher",
+      "role": "Hardware job submission and priority FIFO arbitration"
+    },
+    "AVE1": {
+      "name": "HEIFQuadraTuning",
+      "role": "Still capture Quadra pixel binning and per-tile adaptive quantization"
+    },
+    "AVE2": {
+      "name": "HWResultManager",
+      "role": "Interrupt aggregation and hardware completion packet unpacking"
+    },
+    "AVE3": {
+      "name": "SubPelMotionSearch",
+      "role": "Interpolation filter execution for half-pel and quarter-pel motion"
+    },
+    "AVE4": {
+      "name": "MVCandidateSifter",
+      "role": "Spatial and temporal merge candidate list construction"
+    },
+    "AVE5": {
+      "name": "RDOAndSkipDecision",
+      "role": "Lagrangian rate-distortion cost evaluation and skip flag decision"
+    },
+    "AVE6": {
+      "name": "InLoopDeblocking",
+      "role": "Edge filtering parameter calculation and boundary strength determination"
+    },
+    "AVE7": {
+      "name": "VLCSlicePacker",
+      "role": "Bitstream NAL unit framing, emulation prevention byte insertion, and VLC headers"
+    },
+    "AVE8": {
+      "name": "CoreArbitrator",
+      "role": "Cross-core synchronization, inter-core mailboxes, and power island clock gating"
+    }
+  }
+}

@@ -1,0 +1,292 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Video Encoder 2 (AVE2) Architectural Constants Cross-Validation Matrix",
+  "platform": "Apple Silicon A19 Pro (t8150) / iOS 27.2 (24B119)",
+  "extraction_confidence": {
+    "EXTRACTED": 36,
+    "INFERRED": 4,
+    "TOTAL": 40
+  },
+  "constants": [
+    {
+      "name": "AVE2_MAIN_FW_MAGIC",
+      "value": "0xfeedfacf",
+      "type": "Mach-O Magic 64-bit (MH_MAGIC_64)",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw offset 0x00"
+    },
+    {
+      "name": "AVE2_MAIN_FW_CPUTYPE",
+      "value": "0x0100000c",
+      "type": "CPU_TYPE_ARM64",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw offset 0x04"
+    },
+    {
+      "name": "AVE2_MAIN_FW_CPUSUBTYPE",
+      "value": "0x80000002",
+      "type": "CPU_SUBTYPE_ARM64E_PTRAUTH",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw offset 0x08"
+    },
+    {
+      "name": "AVE2_MAIN_FW_FILETYPE",
+      "value": "0x00000005",
+      "type": "MH_PRELOAD",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw offset 0x0c"
+    },
+    {
+      "name": "AVE2_MAIN_FW_NCMDS",
+      "value": 7,
+      "type": "uint32_t",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw offset 0x10"
+    },
+    {
+      "name": "AVE2_MAIN_FW_UUID",
+      "value": "11ae57422a7137f9ac2fe78ce47ab324",
+      "type": "uuid_t",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw LC_UUID command"
+    },
+    {
+      "name": "AVE2_FOURCC_MAIN",
+      "value": "avef",
+      "type": "FourCC",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.im4p DER header"
+    },
+    {
+      "name": "AVE2_FOURCC_AVE0",
+      "value": "ave0",
+      "type": "FourCC",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE0.im4p DER header"
+    },
+    {
+      "name": "AVE2_FOURCC_AVE1",
+      "value": "ave1",
+      "type": "FourCC",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE1.im4p DER header"
+    },
+    {
+      "name": "AVE2_FOURCC_AVE2",
+      "value": "ave2",
+      "type": "FourCC",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE2.im4p DER header"
+    },
+    {
+      "name": "AVE2_FOURCC_AVE3",
+      "value": "ave3",
+      "type": "FourCC",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE3.im4p DER header"
+    },
+    {
+      "name": "AVE2_FOURCC_AVE4",
+      "value": "ave4",
+      "type": "FourCC",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE4.im4p DER header"
+    },
+    {
+      "name": "AVE2_FOURCC_AVE5",
+      "value": "ave5",
+      "type": "FourCC",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE5.im4p DER header"
+    },
+    {
+      "name": "AVE2_FOURCC_AVE6",
+      "value": "ave6",
+      "type": "FourCC",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE6.im4p DER header"
+    },
+    {
+      "name": "AVE2_FOURCC_AVE7",
+      "value": "ave7",
+      "type": "FourCC",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE7.im4p DER header"
+    },
+    {
+      "name": "AVE2_FOURCC_AVE8",
+      "value": "ave8",
+      "type": "FourCC",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE8.im4p DER header"
+    },
+    {
+      "name": "AVE2_DART_IOMMU_MMIO_BASE",
+      "value": "0x77020000",
+      "type": "Physical Address",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree.v57ap.raw node dart-ave"
+    },
+    {
+      "name": "AVE2_DART_IOMMU_APERTURE_SIZE",
+      "value": "0x20000",
+      "type": "Aperture Size (128 KB)",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree.v57ap.raw node dart-ave"
+    },
+    {
+      "name": "AVE2_DART_COMPATIBLE",
+      "value": "dart,t8110",
+      "type": "String",
+      "confidence": "EXTRACTED",
+      "source": "DeviceTree.v57ap.raw node dart-ave"
+    },
+    {
+      "name": "AVE2_RTK_INIT_STACK_SIZE",
+      "value": "0x10000",
+      "type": "Stack Size (64 KB)",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw section _rtk_init_stack"
+    },
+    {
+      "name": "AVE2_RTK_IRQ_STACK_SIZE",
+      "value": "0x1000",
+      "type": "Stack Size (4 KB)",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw section _rtk_irq_stack"
+    },
+    {
+      "name": "AVE2_RTK_EXC_STACK_SIZE",
+      "value": "0x1000",
+      "type": "Stack Size (4 KB)",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw section _rtk_exc_stack"
+    },
+    {
+      "name": "AVE2_RTK_PAGE_TABLES_SIZE",
+      "value": "0x40000",
+      "type": "Size (256 KB)",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw section _rtk_page_tables"
+    },
+    {
+      "name": "AVE2_SYMBOL_AV1_BOREAS",
+      "value": "_gc_sAVE_DevCap_DPMMap_AV1_Boreas",
+      "type": "Symbolic Address 0x128ab8",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw LC_SYMTAB"
+    },
+    {
+      "name": "AVE2_SYMBOL_HEVC_EREBUS",
+      "value": "_gc_sAVE_DevCap_DPMMap_HEVC_Erebus",
+      "type": "Symbolic Address 0x128aac",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw LC_SYMTAB"
+    },
+    {
+      "name": "AVE2_SYMBOL_AVC_EREBUS",
+      "value": "_gc_sAVE_DevCap_DPMMap_AVC_Erebus",
+      "type": "Symbolic Address 0x128aa0",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw LC_SYMTAB"
+    },
+    {
+      "name": "AVE2_SYMBOL_LRME_EREBUS",
+      "value": "_gc_sAVE_DevCap_DPMMap_LRME_Erebus",
+      "type": "Symbolic Address 0x128a94",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw LC_SYMTAB"
+    },
+    {
+      "name": "AVE2_SYMBOL_MCTF_EREBUS",
+      "value": "_gc_sAVE_DevCap_DPMMap_MCTF_Erebus",
+      "type": "Symbolic Address 0x128a88",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw LC_SYMTAB"
+    },
+    {
+      "name": "AVE2_SYMBOL_DMV_EREBUS",
+      "value": "_gc_sAVE_DevCap_DPMMap_DMV_Erebus",
+      "type": "Symbolic Address 0x128a70",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw LC_SYMTAB"
+    },
+    {
+      "name": "AVE2_SYMBOL_GGM_EREBUS",
+      "value": "_gc_sAVE_DevCap_DPMMap_GGM_Erebus",
+      "type": "Symbolic Address 0x128a7c",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18.raw LC_SYMTAB"
+    },
+    {
+      "name": "AVE2_SATELLITE_RISCV_START",
+      "value": "_RTK_riscv32i_start",
+      "type": "Symbol",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE0..8.raw string tables"
+    },
+    {
+      "name": "AVE2_SATELLITE_HEIF_PROCESS",
+      "value": "_AVE_HEIF_Process",
+      "type": "Symbol",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE1.raw string table"
+    },
+    {
+      "name": "AVE2_SATELLITE_VLC_HEVC_SLICE",
+      "value": "_AVE_VLC_InsertHevcSliceHeader",
+      "type": "Symbol",
+      "confidence": "EXTRACTED",
+      "source": "AppleAVE2FW_H18_AVE7.raw string table"
+    },
+    {
+      "name": "AVE2_KEXT_BUNDLE_ID",
+      "value": "com.apple.driver.AppleAVE2",
+      "type": "Bundle Identifier",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/kernel/kext_catalog_release.json"
+    },
+    {
+      "name": "AVE2_USERCLIENT_CLASS",
+      "value": "AppleAVE2UserClient",
+      "type": "C++ Class Name",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/kernel/kernelcache.release.raw"
+    },
+    {
+      "name": "AVE2_USERCLIENT_SELECTORS_COUNT",
+      "value": 10,
+      "type": "Selector Range (1..10)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/kernel/kernelcache.release.raw"
+    },
+    {
+      "name": "AVE2_PRORES_HARDWARE_MODULE",
+      "value": "AppleProResHW",
+      "type": "Kernel Driver Class",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/kernel/kernelcache.release.raw"
+    },
+    {
+      "name": "AVE2_COMMAND_DESCRIPTOR_SIZE",
+      "value": 128,
+      "type": "Bytes",
+      "confidence": "INFERRED",
+      "source": "sCmdInformation structure alignment and field layout"
+    },
+    {
+      "name": "AVE2_SOURCE_DMA_DESCRIPTOR_SIZE",
+      "value": 64,
+      "type": "Bytes",
+      "confidence": "INFERRED",
+      "source": "Hardware DMA pipeline descriptor geometry"
+    },
+    {
+      "name": "AVE2_MAX_STREAM_CONCURRENCY",
+      "value": 8,
+      "type": "Simultaneous Streams",
+      "confidence": "INFERRED",
+      "source": "CAVEPriorityQueue client index limit (8 clients max)"
+    }
+  ]
+}

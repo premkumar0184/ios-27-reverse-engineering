@@ -1,0 +1,180 @@
+{
+  "soc": "t8150",
+  "platform": "Apple Silicon A19 Pro",
+  "subsystem": "Apple NVMe Storage Controller 2 (ANS2)",
+  "controller_role": "ANS2",
+  "compatible": "iop,ascwrap-v6",
+  "mmio_apertures": [
+    {
+      "index": 0,
+      "name": "ASCWRAP_MAILBOX_BASE",
+      "base_address": "0x179600000",
+      "base_int": 6331301888,
+      "size_bytes": 557056,
+      "size_hex": "0x88000",
+      "description": "Apple Storage Controller Wrapper v6 Mailbox interface between AP and ANS2"
+    },
+    {
+      "index": 1,
+      "name": "ANS2_CTRL_POWER_BASE",
+      "base_address": "0x179050000",
+      "base_int": 6325338112,
+      "size_bytes": 16384,
+      "size_hex": "0x4000",
+      "description": "ANS2 controller power-state control, clock gating, and reset registers"
+    },
+    {
+      "index": 3,
+      "name": "NVME_BAR_DOORBELL_BASE",
+      "base_address": "0x17dcc0000",
+      "base_int": 6405980160,
+      "size_bytes": 393216,
+      "size_hex": "0x60000",
+      "description": "Standard & Apple NVMe Register BAR, Submission Queue (SQ) & Completion Queue (CQ) Doorbells"
+    },
+    {
+      "index": 4,
+      "name": "COPROC_SRAM_SCRATCHPAD",
+      "base_address": "0x17b000000",
+      "base_int": 6358564864,
+      "size_bytes": 16777216,
+      "size_hex": "0x1000000",
+      "description": "16 MB on-chip high-speed SRAM scratchpad for FTL indirection cache and DMA descriptors"
+    },
+    {
+      "index": 5,
+      "name": "NAND_MSP_INTERFACE_BASE",
+      "base_address": "0x17db90000",
+      "base_int": 6404734976,
+      "size_bytes": 49152,
+      "size_hex": "0xc000",
+      "description": "Memory Subsystem Processor (MSP) NAND interface, PHY control, and timing tunables"
+    },
+    {
+      "index": 6,
+      "name": "AES_XTS_CRYPTO_ENGINE_BASE",
+      "base_address": "0x17dd47c00",
+      "base_int": 6406536192,
+      "size_bytes": 16384,
+      "size_hex": "0x4000",
+      "description": "Hardware AES-XTS NAND streaming cipher engine, key slot registers, and tweak generators"
+    },
+    {
+      "index": 9,
+      "name": "SECONDARY_DISPATCH_QUEUE_BASE",
+      "base_address": "0x1bdcc0000",
+      "base_int": 7479263232,
+      "size_bytes": 65536,
+      "size_hex": "0x10000",
+      "description": "Secondary hardware dispatch queue doorbell and barrier synchronization registers"
+    }
+  ],
+  "sart_coastguard": {
+    "name": "sart-ans",
+    "compatible": "sart,coastguard",
+    "sart_version": 4,
+    "base_address": "0x17dc50000",
+    "size_bytes": 49152,
+    "size_hex": "0xc000",
+    "power_reg_offset": "0x13e8",
+    "secondary_range": {
+      "base": "0x17dd44000",
+      "size_bytes": 16384,
+      "description": "SART power management and hardware canary validation"
+    },
+    "filter_window": {
+      "base": "0x17dcc0000",
+      "size_bytes": 393216,
+      "description": "Protected physical DMA aperture allowing ANS2 to access designated host DRAM pages"
+    }
+  },
+  "namespaces": [
+    {
+      "ns_id": 1,
+      "name": "OS_DATA",
+      "flags": "0x01",
+      "size_blocks": "Dynamic (NAND Capacity)",
+      "block_size_bytes": 4096,
+      "purpose": "Primary APFS encrypted rootfs, data volume, and user application storage"
+    },
+    {
+      "ns_id": 2,
+      "name": "SYSCFG",
+      "flags": "0x0e",
+      "size_blocks": 2048,
+      "block_size_bytes": 4096,
+      "purpose": "Hardware manufacturing configuration, serial numbers, factory calibration data"
+    },
+    {
+      "ns_id": 3,
+      "name": "NVRAM",
+      "flags": "0x03",
+      "size_blocks": 32,
+      "block_size_bytes": 4096,
+      "purpose": "Hardware NVRAM storage for boot arguments, OS environment flags, and recovery state"
+    },
+    {
+      "ns_id": 4,
+      "name": "DIAGNOSTICS",
+      "flags": "0x04",
+      "size_blocks": 2,
+      "block_size_bytes": 4096,
+      "purpose": "Factory test diagnostics, hardware self-test logs, and sensor calibration cache"
+    },
+    {
+      "ns_id": 5,
+      "name": "BOOT_PARAMS",
+      "flags": "0x05",
+      "size_blocks": 2,
+      "block_size_bytes": 4096,
+      "purpose": "Low-level bootloader configuration, LLB/iBoot staging metadata"
+    },
+    {
+      "ns_id": 6,
+      "name": "PANIC_LOG",
+      "flags": "0x08",
+      "size_blocks": 256,
+      "block_size_bytes": 4096,
+      "purpose": "Raw hardware crashdump and kernel panic log preservation storage"
+    },
+    {
+      "ns_id": 7,
+      "name": "EFFACEABLE_STORAGE",
+      "flags": "0x0d",
+      "size_blocks": 32768,
+      "block_size_bytes": 4096,
+      "purpose": "Hardware Effaceable Locker storing cryptographic bag keys and anti-rollback nonces"
+    }
+  ],
+  "hardware_interrupts": {
+    "interrupt_parent": 33,
+    "nvme_interrupt_idx": 4,
+    "irq_lines": [
+      {
+        "irq_id": 973,
+        "hex": "0x3cd",
+        "role": "Host NVMe CQ completion interrupt"
+      },
+      {
+        "irq_id": 972,
+        "hex": "0x3cc",
+        "role": "ASCwrap mailbox incoming message interrupt"
+      },
+      {
+        "irq_id": 975,
+        "hex": "0x3cf",
+        "role": "SART Coastguard DMA access violation interrupt"
+      },
+      {
+        "irq_id": 974,
+        "hex": "0x3ce",
+        "role": "Hardware AES-XTS cipher error and wrap interrupt"
+      },
+      {
+        "irq_id": 980,
+        "hex": "0x3d4",
+        "role": "NAND PHY interface / MSP error interrupt"
+      }
+    ]
+  }
+}

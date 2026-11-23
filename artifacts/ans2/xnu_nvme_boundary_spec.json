@@ -1,0 +1,64 @@
+{
+  "soc": "t8150",
+  "subsystem": "Apple NVMe Storage Controller 2 (ANS2)",
+  "kext_inventory": [
+    {
+      "bundle_id": "com.apple.iokit.IONVMeFamily",
+      "class_name": "IONVMeController",
+      "role": "Host NVMe bus driver managing queue creation, interrupt registration, and power management transitions"
+    },
+    {
+      "bundle_id": "com.apple.driver.AppleEffaceableStorage",
+      "class_name": "AppleEffaceableStorage",
+      "role": "Host interface driver mediating access to cryptographic locker in Namespace 7"
+    },
+    {
+      "bundle_id": "com.apple.driver.AppleNANDConfigAccess",
+      "class_name": "AppleNANDConfigAccess",
+      "role": "Administrative diagnostic driver querying NAND maturity, temperature, and wear-leveling band stats"
+    },
+    {
+      "bundle_id": "com.apple.driver.AppleEffaceableBlockDevice",
+      "class_name": "AppleEffaceableBlockDevice",
+      "role": "Block device abstraction layer exposing Effaceable partitions to userland security daemons"
+    },
+    {
+      "bundle_id": "com.apple.iokit.IOStorageFamily",
+      "class_name": "IOBlockStorageDevice",
+      "role": "XNU root storage family providing APFS block mapping and I/O buffer management"
+    }
+  ],
+  "dispatch_pathway": {
+    "userland_to_kernel": {
+      "mechanism": "IOKit Mach message traps (IOUserClient)",
+      "classes": [
+        "IOBlockStorageDeviceUserClient",
+        "AppleEffaceableStorageUserClient"
+      ],
+      "services": [
+        "apfs.util",
+        "diskmanagementd",
+        "keybagd",
+        "securityd"
+      ]
+    },
+    "kernel_to_ans2": {
+      "mechanism": "Lockless circular ring submission via memory-mapped doorbells",
+      "direct_ring_buffer": "Host writes 64-byte SQE into DRAM -> Issues 32-bit MMIO store to SQ Tail Doorbell (0x17dcc1000 + 16 * QID)",
+      "completion_flow": "ANS2 DMA engine fetches SQE -> SART authorizes transfer -> AES-XTS pipeline processes beats -> Flash completes -> ANS2 DMA engine writes 16-byte CQE -> ANS2 asserts IRQ 0x3cd -> Host reaps and writes CQ Head Doorbell"
+    }
+  },
+  "sart_stage2_isolation": {
+    "controller": "sart-ans (SART Coastguard v4 at 0x17dc50000)",
+    "hypervisor_layer": "Secure Page Table Monitor (SPTM) & Trusted Execution Monitor (TXM)",
+    "dma_containment": [
+      "SPTM maps host queue pages into SART hardware table during IONVMeFamily queue initialization",
+      "ANS2 internal firmware cannot alter its own SART table entries; tables are locked in Stage-2 physical memory",
+      "Any out-of-bounds DMA request by rogue firmware triggers hardware SART bus error (LLT_WR_ERR / LLT_RD_ERR) and isolates coprocessor"
+    ],
+    "effaceable_key_isolation": [
+      "Namespace 7 keys are never exposed in plaintext to XNU or host DRAM",
+      "Secure Enclave unwraps volume keys directly into ANS2 AES hardware key slots over secure on-die fabric"
+    ]
+  }
+}

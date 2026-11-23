@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0.0",
+  "target_soc": "t8150",
+  "platform": "Apple A19 Pro (iPhone18,3 / v57ap)",
+  "os_build": "24B119",
+  "main_firmware": {
+    "asset_name": "AppleAVE2FW_H18.im4p",
+    "fourcc_tag": "avef",
+    "container_format": "Image4 (IM4P)",
+    "container_size_bytes": 2687585,
+    "container_sha256": "faf92ec00ef4a7d47f8d533594003bc4ef1af3f96d2432166b6643816e9379c2",
+    "payload_format": "Mach-O 64-bit (MH_PRELOAD)",
+    "payload_size_bytes": 2687560,
+    "payload_sha256": "ad40e1b21680cdac523249322186569a6aa7ffe9c0a95fd2d9d5206e8f1aef83",
+    "compression": "none",
+    "macho_header": {
+      "magic": "0xfeedfacf",
+      "magic_name": "MH_MAGIC_64",
+      "cputype": "0x0100000c",
+      "cputype_name": "CPU_TYPE_ARM64",
+      "cpusubtype": "0x80000002",
+      "cpusubtype_name": "CPU_SUBTYPE_ARM64E_PTRAUTH",
+      "filetype": "0x00000005",
+      "filetype_name": "MH_PRELOAD",
+      "ncmds": 7,
+      "sizeofcmds": 2552,
+      "flags": "0x00200001"
+    }
+  },
+  "satellite_microcodes": {
+    "AVE0": {
+      "filename": "AppleAVE2FW_H18_AVE0.im4p",
+      "fourcc_tag": "ave0",
+      "target_core": "RISC-V 32-bit (riscv32i) Micro-CPU",
+      "binary_magic": "0xfeedface",
+      "container_size_bytes": 9543,
+      "container_sha256": "6bcbba7146a30a9b131001319104e1d5cae9d70a44f300b85c1605f5de460c22",
+      "payload_size_bytes": 9520,
+      "payload_sha256": "b4c71a3b8bacdb3e930c3f46334453cd61bc3ff878f1b4a5f44c866aaaf34ab6",
+      "role": "General Execution & Low-Level Hardware Dispatch Microcode"
+    },
+    "AVE1": {
+      "filename": "AppleAVE2FW_H18_AVE1.im4p",
+      "fourcc_tag": "ave1",
+      "target_core": "RISC-V 32-bit (riscv32i) Micro-CPU",
+      "binary_magic": "0xfeedface",
+      "container_size_bytes": 16463,
+      "container_sha256": "bc734399d26e3f7387757cc0c56acfb791297d68933eb98d26b7eaf93401ca74",
+      "payload_size_bytes": 16440,
+      "payload_sha256": "38c00f9b9365f13100e14314baf4ca910d2ccdda828e14bb8ea27e57eb1e2bd9",
+      "role": "HEIF Quadra Tuning & Still Picture Quantization Microcode"
+    },
+    "AVE2": {
+      "filename": "AppleAVE2FW_H18_AVE2.im4p",
+      "fourcc_tag": "ave2",
+      "target_core": "RISC-V 32-bit (riscv32i) Micro-CPU",
+      "binary_magic": "0xfeedface",
+      "container_size_bytes": 10763,
+      "container_sha256": "1e15af0dd6a3d7459ec829610d11da8acc597f501114d1a6377214d139b4c7f2",
+      "payload_size_bytes": 10740,
+      "payload_sha256": "09390b8003039cb53366a52e82600fa83f105aadad8241573f8d05dfed972e1a",
+      "role": "Hardware Results Management & Interrupt Dispatcher Microcode"
+    },
+    "AVE3": {
+      "filename": "AppleAVE2FW_H18_AVE3.im4p",
+      "fourcc_tag": "ave3",
+      "target_core": "RISC-V 32-bit (riscv32i) Micro-CPU",
+      "binary_magic": "0xfeedface",
+      "container_size_bytes": 9067,
+      "container_sha256": "6d87cf8a3ded795f375eb969c9e9913f92654f5093b82d2e03bbfe2b9d3fe0cc",
+      "payload_size_bytes": 9044,
+      "payload_sha256": "6aa8326b0f1867f5ad171a61fa4042088166c8cac324580a0490e3c056ec8e59",
+      "role": "Spatial Motion Search & Sub-Pel Interpolator Microcode"
+    },
+    "AVE4": {
+      "filename": "AppleAVE2FW_H18_AVE4.im4p",
+      "fourcc_tag": "ave4",
+      "target_core": "RISC-V 32-bit (riscv32i) Micro-CPU",
+      "binary_magic": "0xfeedface",
+      "container_size_bytes": 11327,
+      "container_sha256": "83c47583305d5dea9bb2bd5aa5178d0da0cebe4f2d5153fc01af1f55316596f8",
+      "payload_size_bytes": 11304,
+      "payload_sha256": "11fe9c7ba170246706bcefb8c1e61cc92f10da95f6b865f2c2c23b0576538a3a",
+      "role": "Motion Vector Candidate Sifting & Predictor Microcode"
+    },
+    "AVE5": {
+      "filename": "AppleAVE2FW_H18_AVE5.im4p",
+      "fourcc_tag": "ave5",
+      "target_core": "RISC-V 32-bit (riscv32i) Micro-CPU",
+      "binary_magic": "0xfeedface",
+      "container_size_bytes": 11003,
+      "container_sha256": "b2db8f82c393be83142cd54b24b5ac376e54c61b2c0ddd3e8d948be6250ece38",
+      "payload_size_bytes": 10980,
+      "payload_sha256": "221c679744a4b4f0478e550e407ae7f9ecb0bf3dbadc5669e5a31052cf815321",
+      "role": "Skip Mode Decision & Rate-Distortion Optimization Microcode"
+    },
+    "AVE6": {
+      "filename": "AppleAVE2FW_H18_AVE6.im4p",
+      "fourcc_tag": "ave6",
+      "target_core": "RISC-V 32-bit (riscv32i) Micro-CPU",
+      "binary_magic": "0xfeedface",
+      "container_size_bytes": 8783,
+      "container_sha256": "cabdfe08031d95e9097ddd58cc0f079601739bb8b172a4ec60d55ffcc106ace1",
+      "payload_size_bytes": 8760,
+      "payload_sha256": "0cbc4ed7b6dd9d80584e2dc02123ff52ecbe805c4dcc767b7fe41adc56d3a7f9",
+      "role": "Deblocking Filter & Temporal Boundary Artifact Filter Microcode"
+    },
+    "AVE7": {
+      "filename": "AppleAVE2FW_H18_AVE7.im4p",
+      "fourcc_tag": "ave7",
+      "target_core": "RISC-V 32-bit (riscv32i) Micro-CPU",
+      "binary_magic": "0xfeedface",
+      "container_size_bytes": 11943,
+      "container_sha256": "9d5155e24adb746d3accf9af3119eca2c916237da0865298438f0d488b47868c",
+      "payload_size_bytes": 11920,
+      "payload_sha256": "3a1dc86aeb442cfdaf67460d33ffa481b5ce88ea9c37bf285ba2902c7a49a56c",
+      "role": "Entropy Coding & Variable Length Codec (VLC) Header Insert Microcode"
+    },
+    "AVE8": {
+      "filename": "AppleAVE2FW_H18_AVE8.im4p",
+      "fourcc_tag": "ave8",
+      "target_core": "RISC-V 32-bit (riscv32i) Micro-CPU",
+      "binary_magic": "0xfeedface",
+      "container_size_bytes": 26303,
+      "container_sha256": "431412d31b1cd1b350e5267a386a60ae6f015802d99e3e848a8afa20a6b80189",
+      "payload_size_bytes": 26280,
+      "payload_sha256": "be57afdbff96929dda7756c0ef7895f55e53903b7ef9225ce13eae81b22fccc1",
+      "role": "Multi-Stream Core Arbitrator & Firmware State Sequencer Microcode"
+    }
+  },
+  "fourcc_catalog": {
+    "avef": "Main ARM64e Video Encoder Firmware",
+    "ave0": "General Execution & Low-Level Hardware Dispatch Microcode",
+    "ave1": "HEIF Quadra Tuning & Still Picture Quantization Microcode",
+    "ave2": "Hardware Results Management & Interrupt Dispatcher Microcode",
+    "ave3": "Spatial Motion Search & Sub-Pel Interpolator Microcode",
+    "ave4": "Motion Vector Candidate Sifting & Predictor Microcode",
+    "ave5": "Skip Mode Decision & Rate-Distortion Optimization Microcode",
+    "ave6": "Deblocking Filter & Temporal Boundary Artifact Filter Microcode",
+    "ave7": "Entropy Coding & Variable Length Codec (VLC) Header Insert Microcode",
+    "ave8": "Multi-Stream Core Arbitrator & Firmware State Sequencer Microcode"
+  }
+}

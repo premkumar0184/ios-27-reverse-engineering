@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro (t8150) Synthesis Workspace Baseline",
+  "target_platform": {
+    "soc": "t8150",
+    "soc_generation": "Apple A19 Pro",
+    "device_model": "iPhone18,3",
+    "device_class": "v57ap",
+    "build_train": "RaveB",
+    "target_os": "iOS 27.2",
+    "build_number": "24B119",
+    "darwin_version": "24.2.0"
+  },
+  "hardware_blocks_inventory": {
+    "cpu_complex": {
+      "cores": 6,
+      "clusters": {
+        "efficiency": {
+          "name": "Sawtooth",
+          "count": 4,
+          "isa": "ARMv9.4-A",
+          "pac": "PAC00"
+        },
+        "performance": {
+          "name": "Everest",
+          "count": 2,
+          "isa": "ARMv9.4-A",
+          "pac": "PAC00",
+          "sme": true
+        }
+      }
+    },
+    "gpu_complex": {
+      "architecture": "Apple AGX G18 Pro",
+      "cores": 6,
+      "clusters": 2,
+      "rtbuddy_cores": 2,
+      "ray_tracing_units": true,
+      "mesh_shading": true
+    },
+    "neural_engine": {
+      "generation": "ANE H18 (Generative Neural Engine)",
+      "cores": 16,
+      "peak_tops": 45,
+      "tiling_granule_bytes": 16384,
+      "spatial_tensors": true
+    },
+    "secure_enclave": {
+      "processor": "SEP A19 (ARM64e / Cortex-based secure core)",
+      "os": "sepOS 27.2",
+      "crypto_engine": "AES-XTS hardware ladder + PKA + True Random Number Generator",
+      "pki_ladder": "UID/GID Key Ladder"
+    },
+    "hypervisor_guard": {
+      "layers": [
+        "SPTM (Secure Page Table Monitor)",
+        "TXM (Trusted Execution Monitor)"
+      ],
+      "privilege_tiers": [
+        "GL2 (SPTM)",
+        "GL1 (TXM)",
+        "EL1 (XNU)",
+        "EL0 (Conclaves)"
+      ],
+      "hardware_fences": [
+        "CTRR (Configurable Text Region Restriction)",
+        "GAPF (Guarded Address Protection Filter)"
+      ]
+    },
+    "exclaves_subsystem": {
+      "os": "ExclaveOS",
+      "kernel": "cL4 Capability Microkernel (VasCore)",
+      "ipc_transport": "Tightbeam RPC",
+      "memory_abstraction": "Datacubes & Physical Memory Manager (PMM)"
+    },
+    "always_on_processor": {
+      "generation": "AOP2 (64-bit RTKit / PitayaOS)",
+      "power_envelope_mw": 1.85,
+      "peripherals": [
+        "6-Axis IMU",
+        "TrueTone ALS",
+        "1Hz AOD Frame Streamer",
+        "Local Siri SRAM FIFO"
+      ]
+    },
+    "display_coprocessor": {
+      "name": "DCP (Display Co-Processor)",
+      "protocol": "Panel Self-Refresh (PSR) & 1Hz AOD scanout bridge"
+    }
+  },
+  "synthesis_inputs": [
+    "IOS_27_SECURE_ENCLAVE_SEPOS_RE.md",
+    "IOS_27_SPTM_TXM_BOOT_RE.md",
+    "IOS_27_EXCLAVEOS_TIGHTBEAM_RE.md",
+    "IOS_27_APPLE_AGX_GPU_RE.md",
+    "IOS_27_APPLE_NEURAL_ENGINE_RE.md",
+    "IOS_27_AOP_RTKIT_SENSOR_RE.md",
+    "IOS_27_ANIMATION_PHYSICS_RE.md",
+    "IOS_27_GESTURE_ARBITRATION_RE.md",
+    "IOS_27_SCROLLING_REVERSE_ENGINEERING.md",
+    "findings/01_RECON_AND_INVENTORY.md through 09_APPLE_ECOSYSTEM_DEEP_DIVE.md"
+  ]
+}
