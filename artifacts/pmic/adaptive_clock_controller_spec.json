@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Adaptive Clock Controller (ACC) & Power Servos",
+  "controllers": {
+    "EACC0": {
+      "name": "Efficiency Cluster Adaptive Clock Controller",
+      "cores": 4,
+      "clock_domain": "ECPU"
+    },
+    "PACC0": {
+      "name": "Performance Cluster Adaptive Clock Controller",
+      "cores": 2,
+      "clock_domain": "PCPU"
+    }
+  },
+  "power_servos": {
+    "compatible": "ppm,cpms",
+    "v_droop_target_mv": 25,
+    "brownout_risk_p_margin_mw": 1000,
+    "brownout_risk_debounce_time_us": 3000,
+    "brownout_risk_ce_lane": 6,
+    "pmax_ilim_enabled": true,
+    "dynamic_pmu_vthr_enabled": true,
+    "dynamic_pmax_vcut_enabled": true,
+    "ir_compensation_enabled": true,
+    "aging_model_enabled": true
+  },
+  "dvmr_agent": {
+    "description": "Dynamic Voltage Margin Reduction (DVMR) tracking voltage droop against safe operating threshold",
+    "slew_rate_mv_us": 25.0
+  }
+}

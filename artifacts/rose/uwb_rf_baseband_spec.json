@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple U2 / U3 Ultra-Wideband (UWB) RF Physical Layer & Baseband Specification",
+  "target_soc": "Apple Rose 2 (r2p1 / hammerfest)",
+  "platform": "iOS 27.2 / Darwin 24.2.0 (Build 24B119)",
+  "device_model": "iPhone18,3 (v57ap)",
+  "rf_phy_architecture": {
+    "standard_compliance": "IEEE 802.15.4z-2020 High Rate Pulse (HRP) UWB PHY",
+    "chip_rate_mhz": 499.2,
+    "chip_duration_ns": 2.003205,
+    "pulse_repetition_frequency_mhz": 64.0,
+    "modulation": "BPRF (Base Pulse Repetition Frequency) & HPRF (Higher Pulse Repetition Frequency) with BPM-BPSK",
+    "channel_allocations": [
+      {
+        "channel_number": 5,
+        "center_frequency_mhz": 6489.6,
+        "bandwidth_mhz": 499.2,
+        "frequency_range_mhz": "6240.0 - 6739.2",
+        "regulatory_status": "Worldwide Authorized (US FCC, EU ETSI, Japan MIC)"
+      },
+      {
+        "channel_number": 6,
+        "center_frequency_mhz": 6988.8,
+        "bandwidth_mhz": 499.2,
+        "frequency_range_mhz": "6739.2 - 7238.4",
+        "regulatory_status": "Regional Authorization"
+      },
+      {
+        "channel_number": 8,
+        "center_frequency_mhz": 7488.0,
+        "bandwidth_mhz": 499.2,
+        "frequency_range_mhz": "7238.4 - 7737.6",
+        "regulatory_status": "Worldwide Authorized"
+      },
+      {
+        "channel_number": 9,
+        "center_frequency_mhz": 7987.2,
+        "bandwidth_mhz": 499.2,
+        "frequency_range_mhz": "7737.6 - 8236.8",
+        "regulatory_status": "Primary High-Band Channel for Apple Nearby Interaction & AirTags"
+      }
+    ]
+  },
+  "front_end_module_control": {
+    "routine": "ft_get_ant_cfg()",
+    "fem_interfaces": {
+      "txfem": "Power Amplifier (PA) front-end switch and pre-driver",
+      "rxfem": "Low-Noise Amplifier (LNA) front-end switch across 3-antenna array",
+      "lbfem": "Internal Loopback Front-End Module for self-calibration"
+    },
+    "loopback_calibration": {
+      "routine": "lb_tf (Loopback Transfer Function)",
+      "parameters": ["rad_band", "type", "tx", "rx", "gdB", "delay"],
+      "pulse_pair_calibration": {
+        "lbtf_ref": "ppcal_lbtf_ref",
+        "rxtf_ref": "ppcal_rxtf_ref",
+        "lbtf_des": "ppcal_lbtf_des"
+      },
+      "purpose": "Measures internal transceiver group delay and phase skew at boot, removing hardware circuit delay from spatial ToF calculations."
+    }
+  },
+  "power_management_and_sar": {
+    "table_architecture": "NB_PWR_TBL (Narrowband & UWB Power Table)",
+    "sar_budget_integration": "Dynamic Specific Absorption Rate power capping driven by proximity sensors via devicetree billboard-addr-tx-sar-budget.",
+    "power_control_routines": [
+      "nb_pwr_tbl_set_reg_entry",
+      "nb_pwr_tbl_set_sar_entry",
+      "get_tx_power"
+    ],
+    "pa_slice_control": {
+      "routine": "TX_PWR set_tx_pwr",
+      "registers": [
+        {"name": "pa_slice", "description": "PA output stage transistor slice enable mask (0x000 - 0x3ff)"},
+        {"name": "pa_ldo_vtrim", "description": "Low-dropout regulator voltage trim for PA stages {vtrm0, vtrm1}"},
+        {"name": "pa_fb_ratio", "description": "Feedback attenuation ratio for linearizing high-power pulses"},
+        {"name": "pa_dig_gain", "description": "Digital baseband scaling gain"}
+      ]
+    }
+  },
+  "multi_radio_coexistence": {
+    "subsystem": "COEX (In-Device Coexistence Controller)",
+    "interface": "SPMI Real-Time AR (Auto-Read) Mailbox Bus (0x03)",
+    "coexisting_radios": [
+      {"radio": "Wi-Fi 7 (802.11be)", "controller": "Centauri (w2* / w5*)", "interrupt": "COEX Wifi Critical ISR"},
+      {"radio": "Bluetooth 5.4", "controller": "Centauri BT Subsystem (bt*)", "interrupt": "COEX CNV Critical ISR"},
+      {"radio": "5G NR / LTE Cellular", "controller": "Baseband Transceiver", "mechanism": "COEX Watch LTE blanking request / release"}
+    ],
+    "state_machine": "Dynamically halts UWB transmission during Cellular high-power uplink pulses or Wi-Fi beacon reception, preventing LNA desensitization."
+  }
+}

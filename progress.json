@@ -20,7 +20,7 @@
     "prohibit_unsubstantiated_claims": true,
     "graphify_navigation_preferred": true
   },
-  "active_phase_id": "synthesis_phase_5_synthesis",
+  "active_phase_id": "qemu_phase_5_virtualization_emulation",
   "overall_status": "completed",
   "phases": [
     {
@@ -2454,6 +2454,69 @@
       ],
       "completed_at": "2026-11-23T12:00:00+05:30",
       "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "qemu_phase_5_virtualization_emulation",
+      "number": "Q5",
+      "title": "Clean-Room QEMU Virtualization & RTKit Coprocessor Emulation Platform",
+      "status": "completed",
+      "prerequisites": [
+        "silenus_phase_5_master_synthesis"
+      ],
+      "assigned_agent_prompt": "Clean-Room QEMU Virtualization Architect",
+      "required_disk_artifacts": [
+        "artifacts/qemu/include/apple_a19_platform.h",
+        "artifacts/qemu/devices/apple_aic.h",
+        "artifacts/qemu/devices/apple_aic.c",
+        "artifacts/qemu/devices/apple_ascwrap.h",
+        "artifacts/qemu/devices/apple_ascwrap.c",
+        "artifacts/qemu/devices/apple_dart.h",
+        "artifacts/qemu/devices/apple_dart.c",
+        "artifacts/qemu/devices/apple_agx_direct.h",
+        "artifacts/qemu/devices/apple_agx_direct.c",
+        "artifacts/qemu/devices/apple_silenus_dma.h",
+        "artifacts/qemu/devices/apple_silenus_dma.c",
+        "artifacts/qemu/devices/apple_prores_hw.h",
+        "artifacts/qemu/devices/apple_prores_hw.c",
+        "artifacts/qemu/devices/apple_tightbeam_ipc.h",
+        "artifacts/qemu/devices/apple_tightbeam_ipc.c",
+        "artifacts/qemu/specs/platform_hardware_topology.json",
+        "artifacts/qemu/specs/accelerator_device_specs.json",
+        "artifacts/qemu/specs/rtkit_firmware_stub_spec.json",
+        "artifacts/qemu/firmware/stub_rtkit_boot.S",
+        "artifacts/qemu/firmware/stub_rtkit_core.h",
+        "artifacts/qemu/firmware/stub_rtkit_core.c",
+        "artifacts/qemu/firmware/stub_rtkit_linker.ld",
+        "artifacts/qemu/firmware/build_stubs.py",
+        "artifacts/qemu/firmware/stub_rtkit_aop2.elf",
+        "artifacts/qemu/firmware/stub_rtkit_aop2.bin",
+        "artifacts/qemu/firmware/stub_rtkit_silenus.elf",
+        "artifacts/qemu/firmware/stub_rtkit_silenus.bin",
+        "artifacts/qemu/firmware/stub_rtkit_rtbuddy.elf",
+        "artifacts/qemu/firmware/stub_rtkit_rtbuddy.bin",
+        "artifacts/qemu/machine/qemu_apple_a19_pro.c",
+        "artifacts/qemu/harness/apple_a19_emulation_runner.c",
+        "artifacts/qemu/harness/Makefile",
+        "artifacts/qemu/logs/emulation_trace.json",
+        "findings/qemu/05_QEMU_VIRTUALIZATION_LAYER.md",
+        "IOS_27_QEMU_VIRTUALIZATION_EMULATION_RE.md",
+        "tools/verify_qemu_emulation.py"
+      ],
+      "findings_document": "findings/qemu/05_QEMU_VIRTUALIZATION_LAYER.md",
+      "objectives": [
+        "Model 36-bit DRAM map, CTRR fences, and retention SRAMs on Apple Silicon A19 Pro",
+        "Implement AIC v3/v4 interrupt controller handling 1024 vector lines",
+        "Implement ASCwrap-v6 mailbox and doorbell engine with 64-bit FIFO protocol",
+        "Implement Apple DART Gen3/Gen4 IOMMU supporting 16 KB pages and Stream ID isolation",
+        "Integrate 4 clean-room accelerator models: AppleMetalDirect, Silenus DMA, ProRes HW, Tightbeam IPC",
+        "Cross-compile bare-metal ARM64 RTKit firmware stubs with RTKSTACK canary watermark",
+        "Achieve 100% green pass in automated verification suite (tools/verify_qemu_emulation.py)"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py qemu_phase_5_virtualization_emulation"
+      ],
+      "completed_at": "2026-11-23T20:30:00+05:30",
+      "verified_by": "tools/verify_phase.py"
     }
   ],
   "verification_log": [
@@ -2798,7 +2861,13 @@
       "verified_at": "2026-11-23T12:01:38+05:30",
       "status": "passed",
       "command": "python3 tools/verify_phase.py silenus_phase_5_master_synthesis"
+    },
+    {
+      "phase_id": "qemu_phase_5_virtualization_emulation",
+      "verified_at": "2026-11-23T20:40:00+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py qemu_phase_5_virtualization_emulation"
     }
   ],
-  "last_updated": "2026-11-23T12:01:38+05:30"
+  "last_updated": "2026-11-23T20:40:00+05:30"
 }

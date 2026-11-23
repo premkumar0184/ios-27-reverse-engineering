@@ -1,0 +1,424 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Multichannel Audio (MCA) Bus Topology & Serial Interconnect Specification",
+  "description": "Hardware bus routing, clock domains, error status bitfields, PDM microphone interfaces, and loopback topologies on Apple Silicon A19 Pro (t8150 / iOS 27.2).",
+  "soc": "t8150",
+  "target_os": "iOS 27.2",
+  "architecture": "Apple Silicon ARM64e",
+  "drivers": [
+    "com.apple.driver.AppleAOPAudio (AppleAOPAudioMCA2Device, AppleAOPAudioPDM2Device)",
+    "com.apple.iokit.AppleARMIISAudio (AppleARMIISAudioDevice, AppleARMDMAAudioDevice)",
+    "com.apple.driver.AppleEmbeddedAudio (AppleAOPMCALoopbackAudio)",
+    "com.apple.driver.AppleIOPADMAStream",
+    "com.apple.driver.AppleSmartIO2"
+  ],
+  "clock_domains": {
+    "niam": {
+      "identifier": "0x6e69616d",
+      "name": "Main Audio Clock Domain",
+      "pll_source": "AUDIO_PLL0",
+      "frequencies_hz": [24576000, 22579200, 49152000, 45158400],
+      "base_sample_rates_hz": [8000, 16000, 32000, 44100, 48000, 96000, 192000]
+    },
+    "leap": {
+      "identifier": "0x6c656170",
+      "name": "LEAP Haptics High-Speed Low-Latency Clock Domain",
+      "frequencies_hz": [24576000, 49152000]
+    }
+  },
+  "pmgr_power_domains": [
+    {"index": 172, "name": "AUDIO_A", "parent": "0xae", "device_type": "audio_analog_top", "description": "Audio analog and power infrastructure"},
+    {"index": 179, "name": "AUDIO_FR", "parent": "0xb0", "device_type": "audio_fast_ring", "description": "Fast ring audio low-latency fabric"},
+    {"index": 183, "name": "AUDIO_P", "parent": "0xb6", "device_type": "audio_peripheral", "description": "Audio peripheral bridge and DMA dispatch"},
+    {"index": 184, "name": "AUDIO_LEAP_A", "parent": "0xb6", "device_type": "audio_leap_analog", "description": "LEAP analog front-end and haptic motor drive power"},
+    {"index": 185, "name": "AUDIO_SENSE_PDMC", "parent": "0xba", "device_type": "audio_pdm_controller", "description": "PDM digital microphone controller power rail"},
+    {"index": 186, "name": "AUDIO_BASE_S_A", "parent": "0xba", "device_type": "admac_base_secure", "description": "Secure Base ADMAC DMA controller power domain"},
+    {"index": 187, "name": "AUDIO_BASE_NS_A", "parent": "0xba", "device_type": "admac_base_nonsecure", "description": "Non-Secure Base ADMAC DMA controller power domain"},
+    {"index": 188, "name": "AUDIO_LEAP_MCA", "parent": "0xba", "device_type": "mca_leap_serial", "description": "LEAP Multichannel Audio serial interconnect rail"},
+    {"index": 189, "name": "AUDIO_MCA0_M", "parent": "0xba", "device_type": "mca_serial_bus_0", "description": "MCA Bus 0: Primary CS42L79 Audio Codec serial link"},
+    {"index": 190, "name": "AUDIO_MCA1_M", "parent": "0xba", "device_type": "mca_serial_bus_1", "description": "MCA Bus 1: Secondary Codec / Digital Accessory link"},
+    {"index": 191, "name": "AUDIO_MCA2_M", "parent": "0xba", "device_type": "mca_serial_bus_2", "description": "MCA Bus 2: AOP Audio low-power coprocessor interconnect"},
+    {"index": 192, "name": "AUDIO_MCA3_M", "parent": "0xba", "device_type": "mca_serial_bus_3", "description": "MCA Bus 3: Bluetooth / Centauri baseband serial link"},
+    {"index": 193, "name": "AUDIO_MCA4_M", "parent": "0xba", "device_type": "mca_serial_bus_4", "description": "MCA Bus 4: Cellular Modem / Telephony baseband voice path"},
+    {"index": 194, "name": "AUDIO_MCA5_M", "parent": "0xbb", "device_type": "mca_serial_bus_5", "description": "MCA Bus 5: Ultra-low latency voice trigger / barge-in path"},
+    {"index": 195, "name": "AUDIO_LEAP_C", "parent": "0xc6", "device_type": "leap_core", "description": "LEAP core coprocessor power domain"},
+    {"index": 196, "name": "AUDIO_LEAP_S_A", "parent": "0xc6", "device_type": "admac_leap_secure", "description": "Secure LEAP ADMAC controller power domain"},
+    {"index": 197, "name": "AUDIO_LEAP_NS_A", "parent": "0xc6", "device_type": "admac_leap_nonsecure", "description": "Non-Secure LEAP ADMAC controller power domain"},
+    {"index": 198, "name": "AUDIO_LEAP_RX0", "parent": "0xc6", "device_type": "leap_serial_rx0", "description": "LEAP Serial RX Channel 0"},
+    {"index": 199, "name": "AUDIO_LEAP_RX1", "parent": "0xc6", "device_type": "leap_serial_rx1", "description": "LEAP Serial RX Channel 1"},
+    {"index": 200, "name": "AUDIO_LEAP_RX2", "parent": "0xc6", "device_type": "leap_serial_rx2", "description": "LEAP Serial RX Channel 2"},
+    {"index": 201, "name": "AUDIO_LEAP_RX3", "parent": "0xc6", "device_type": "leap_serial_rx3", "description": "LEAP Serial RX Channel 3"},
+    {"index": 202, "name": "AUDIO_LEAP_RX4", "parent": "0xc6", "device_type": "leap_serial_rx4", "description": "LEAP Serial RX Channel 4"},
+    {"index": 203, "name": "AUDIO_LEAP_TX0", "parent": "0x00", "device_type": "leap_serial_tx0", "description": "LEAP Serial TX Channel 0"},
+    {"index": 204, "name": "PDM0_AUDIO_REF", "parent": "0x00", "device_type": "pdm_reference_0", "description": "Pulse Density Modulation Clock 0 reference rail"},
+    {"index": 205, "name": "PDM1_AUDIO_REF", "parent": "0x00", "device_type": "pdm_reference_1", "description": "Pulse Density Modulation Clock 1 reference rail"},
+    {"index": 263, "name": "AUDIO-LLT-V", "parent": "0x00", "device_type": "cllt_voltage_rail", "description": "Critical Low-Latency Transfer dynamic voltage boost rail"}
+  ],
+  "mca_buses": [
+    {
+      "bus_id": 0,
+      "name": "audio-mca0",
+      "pmgr_device": "AUDIO_MCA0_M",
+      "description": "Primary high-fidelity audio codec interface (Cirrus Logic CS42L79 / Smart Amp)",
+      "protocol": "TDM / Dual-Port I2S",
+      "ports": ["PortA", "PortB"],
+      "max_tdm_slots": 16,
+      "slot_width_bits": 32,
+      "max_sample_rate_hz": 192000,
+      "clock_master": "SoC",
+      "dma_channel_tx": "base-s-adma-tx-3",
+      "dma_channel_rx": "base-ns-adma-rx-3",
+      "target_endpoints": ["audio-speaker-mca", "audio-speaker"]
+    },
+    {
+      "bus_id": 1,
+      "name": "audio-mca1",
+      "pmgr_device": "AUDIO_MCA1_M",
+      "description": "Secondary audio codec interface and digital accessory transceiver",
+      "protocol": "TDM / I2S",
+      "ports": ["PortA", "PortB"],
+      "max_tdm_slots": 8,
+      "slot_width_bits": 32,
+      "max_sample_rate_hz": 96000,
+      "clock_master": "SoC",
+      "dma_channel_tx": "base-ns-adma-tx-1",
+      "dma_channel_rx": "base-ns-adma-rx-1",
+      "target_endpoints": ["audio-mca-loopback"]
+    },
+    {
+      "bus_id": 2,
+      "name": "audio-mca2",
+      "pmgr_device": "AUDIO_MCA2_M",
+      "driver_personality": "AppleAOPAudioMCA2Device",
+      "description": "Always-On Processor (AOP) low-power multichannel audio coprocessor bus",
+      "protocol": "AOP-TDM with HW Shim Overrun Protection",
+      "ports": ["PortA", "PortB"],
+      "max_tdm_slots": 16,
+      "slot_width_bits": 32,
+      "max_sample_rate_hz": 48000,
+      "clock_master": "AOP/SoC Shared",
+      "dma_channel_rx": "base-s-adma-rx-5",
+      "target_endpoints": ["lp-mic-device", "lp-mic-io-buffer-device", "siri-listening-device"],
+      "telemetry_metrics": [
+        "MCA2RxAShimOverrun",
+        "mMCARuntimeReporter",
+        "mMCARunCountReporter"
+      ]
+    },
+    {
+      "bus_id": 3,
+      "name": "audio-mca3",
+      "pmgr_device": "AUDIO_MCA3_M",
+      "description": "Bluetooth Core / Centauri wireless audio synchronous PCM/mSBC/AAC bus",
+      "protocol": "PCM / I2S Synchronous",
+      "ports": ["PortA"],
+      "max_tdm_slots": 4,
+      "slot_width_bits": 16,
+      "max_sample_rate_hz": 48000,
+      "clock_master": "SoC",
+      "target_endpoints": ["centauri-bluetooth-audio"]
+    },
+    {
+      "bus_id": 4,
+      "name": "audio-mca4",
+      "pmgr_device": "AUDIO_MCA4_M",
+      "description": "Cellular Baseband voice audio interconnect (Narrowband/Wideband/EVS speech)",
+      "protocol": "PCM Multi-Slot TDM",
+      "ports": ["PortA"],
+      "max_tdm_slots": 4,
+      "slot_width_bits": 16,
+      "max_sample_rate_hz": 48000,
+      "clock_master": "Baseband/SoC",
+      "dma_channel_tx": "base-s-adma-tx-4",
+      "target_endpoints": ["audio-receiver"]
+    },
+    {
+      "bus_id": 5,
+      "name": "audio-mca5",
+      "pmgr_device": "AUDIO_MCA5_M",
+      "description": "Ultra-Low Latency Voice Trigger & Barge-in Acoustic Echo Cancellation path",
+      "protocol": "TDM Circular Stream",
+      "ports": ["PortA"],
+      "max_tdm_slots": 4,
+      "slot_width_bits": 32,
+      "max_sample_rate_hz": 48000,
+      "clock_master": "SoC",
+      "dma_channel_rx": "base-ns-adma-rx-4",
+      "target_endpoints": ["audio-speaker-tap"]
+    }
+  ],
+  "mca_hardware_status_and_errors": {
+    "mca2_rx_shim_overrun_key": "MCA2RxAShimOverrun",
+    "rx_status_bitfields": {
+      "RxAFifoFrameError": {"bit": 0, "severity": "Recoverable", "description": "Port A RX FIFO frame synchronization framing boundary lost"},
+      "RxAFifoOverflow": {"bit": 1, "severity": "DataLoss", "description": "Port A RX FIFO overflowed due to DMA ingestion stall"},
+      "RxADMAFifoUnderflow": {"bit": 2, "severity": "FatalDMA", "description": "Port A RX DMA FIFO underflow during burst writeout"},
+      "RxBFifoFrameError": {"bit": 4, "severity": "Recoverable", "description": "Port B RX FIFO frame synchronization framing boundary lost"},
+      "RxBFifoOverflow": {"bit": 5, "severity": "DataLoss", "description": "Port B RX FIFO overflowed due to DMA ingestion stall"},
+      "RxBDMAFifoUnderflow": {"bit": 6, "severity": "FatalDMA", "description": "Port B RX DMA FIFO underflow during burst writeout"}
+    },
+    "tx_status_bitfields": {
+      "TxAFifoFrameError": {"bit": 0, "severity": "Recoverable", "description": "Port A TX FIFO frame alignment failure"},
+      "TxAFifoUnderflow": {"bit": 1, "severity": "DataLoss", "description": "Port A TX FIFO starved for audio sample words"},
+      "TxADMAFifoOverflow": {"bit": 2, "severity": "FatalDMA", "description": "Port A TX DMA FIFO burst exceeded buffer boundary"},
+      "TxAIOTimeout": {"bit": 3, "severity": "BusTimeout", "description": "Port A TX I/O bus handshake timeout"},
+      "TxAShimDrainFailure": {"bit": 4, "severity": "ProtocolStall", "description": "Port A TX hardware shim drain sequence failed"},
+      "TxAOutputPadFailure": {"bit": 5, "severity": "HardwareFault", "description": "Port A TX output pad drive level fault"},
+      "TxBFifoFrameError": {"bit": 8, "severity": "Recoverable", "description": "Port B TX FIFO frame alignment failure"},
+      "TxBFifoUnderflow": {"bit": 9, "severity": "DataLoss", "description": "Port B TX FIFO starved for audio sample words"},
+      "TxBDMAFifoOverflow": {"bit": 10, "severity": "FatalDMA", "description": "Port B TX DMA FIFO burst exceeded buffer boundary"},
+      "TxBIOTimeout": {"bit": 11, "severity": "BusTimeout", "description": "Port B TX I/O bus handshake timeout"},
+      "TxBShimDrainFailure": {"bit": 12, "severity": "ProtocolStall", "description": "Port B TX hardware shim drain sequence failed"},
+      "TxBOutputPadFailure": {"bit": 13, "severity": "HardwareFault", "description": "Port B TX output pad drive level fault"}
+    }
+  },
+  "pdm_microphone_buses": [
+    {
+      "bus_id": 0,
+      "name": "audio-pdm0",
+      "clock_ref_node": "PDM0_AUDIO_REF",
+      "description": "Primary digital microphone pair (Front Bottom / Main Talk Mic)",
+      "pdm_frequency_hz": 3072000,
+      "pdmc_frequency_hz": 6144000,
+      "max_microphones": 2
+    },
+    {
+      "bus_id": 1,
+      "name": "audio-pdm1",
+      "clock_ref_node": "PDM1_AUDIO_REF",
+      "description": "Secondary digital microphone pair (Rear Camera / Noise Suppression)",
+      "pdm_frequency_hz": 3072000,
+      "pdmc_frequency_hz": 6144000,
+      "max_microphones": 2
+    },
+    {
+      "bus_id": 2,
+      "name": "audio-pdm2",
+      "driver_personality": "AppleAOPAudioPDM2Device",
+      "description": "Low-power spatial microphone beamforming array and always-listening Siri VAD",
+      "device_id": "kAppleAOPAudioPDMDeviceId",
+      "pdm_frequency_hz": 3072000,
+      "pdmc_frequency_hz": 6144000,
+      "max_microphones": 4,
+      "decimator_configurations": {
+        "low_power_decimator": {
+          "property_id": "AppleAOPPDM2Properties::kLowPowerConfiguration",
+          "decimator_ratios": [16, 32, 64],
+          "filter_lengths": [32, 64, 128]
+        },
+        "high_power_decimator": {
+          "property_id": "AppleAOPPDM2Properties::kDecimatorCfgForHighPowerClock",
+          "decimator_ratios": [8, 16, 32],
+          "filter_lengths": [64, 128, 256]
+        },
+        "high_frequency_decimator": {
+          "property_id": "AppleAOPPDM2Properties::kHFDecimatorCfg",
+          "hf_ratios": [4, 8],
+          "hf_latency_samples": 8
+        }
+      },
+      "tuning_parameters": {
+        "channel_polarity_select": "uint32[4]",
+        "channel_phase_select": "uint32[4]",
+        "mic_turn_on_time_ms": 15,
+        "mic_settle_time_ms": 30,
+        "sensitivity_dbfs_per_pa": -26,
+        "trim_gain_syscfg_keys": ["syscfg/MiGH", "syscfg/MiGB"],
+        "trim_gain_versions": ["V1", "V2"]
+      },
+      "fifo_watermarks": {
+        "rx_fifo_low_watermark": 16,
+        "rx_fifo_high_watermark": 96
+      }
+    }
+  ],
+  "hardware_loopback_monitors": [
+    {
+      "name": "audio-aop-mca-loopback",
+      "device_uid": "AOPMCALoopback",
+      "device_name": "AOPMCALoopback",
+      "matched_io_name": "audio-data,audio-aop-mca-loopback",
+      "driver_bundle": "com.apple.driver.AppleEmbeddedAudio",
+      "io_class": "AppleSecondaryAudio",
+      "io_provider_class": "AppleARMIISDevice",
+      "probe_score": 1000,
+      "description": "Hardware loopback monitor tapping MCA audio output for AOP voice processing and speaker thermal/excursion modeling"
+    },
+    {
+      "name": "audio-mca-loopback",
+      "device_uid": "NonSecure MCA Loopback",
+      "device_name": "NonSecure MCA Loopback",
+      "compatible": "audio-data,audio-loopback",
+      "identifier": "kbpl",
+      "identifier_hex": "0x6b62706c",
+      "fourcc": "lpbk",
+      "dma_provider_tx": "base-ns-adma-tx-1",
+      "dma_provider_rx": "base-ns-adma-rx-1",
+      "clock_domain": "niam",
+      "description": "Non-secure base audio MCA loopback monitor for latency verification and driver loopback testing"
+    },
+    {
+      "name": "audio-s-leap-internal-loopback",
+      "device_uid": "Secure LEAP Loopback",
+      "device_name": "Secure LEAP Loopback",
+      "compatible": "iop-adma-stream,leap",
+      "identifier": "blls",
+      "identifier_hex": "0x626c6c73",
+      "fourcc": "sllb",
+      "dma_provider_tx": "leap-ns-adma-tx-4",
+      "dma_provider_rx": "leap-s-adma-rx-4",
+      "clock_domain": "niam",
+      "exclave_proxy": "audio-sllb-proxy",
+      "exclave_service": "com.apple.service.SecureLEAPLoopbackDevice",
+      "description": "Exclave-isolated secure LEAP loopback monitor verifying haptic actuator drive signals against excursion limits"
+    },
+    {
+      "name": "audio-leap-internal-loopback",
+      "device_uid": "NonSecure MCA LEAP Loopback",
+      "device_name": "NonSecure MCA LEAP Loopback",
+      "compatible": "iop-adma-stream,leap",
+      "identifier": "blil",
+      "identifier_hex": "0x626c696c",
+      "fourcc": "lilb",
+      "dma_provider_tx": "leap-ns-adma-tx-5",
+      "dma_provider_rx": "leap-ns-adma-rx-5",
+      "clock_domain": "niam",
+      "description": "Non-secure LEAP internal loopback monitoring haptic motor telemetry and back-EMF feedback"
+    }
+  ],
+  "iop_audio_controller_endpoints": [
+    {
+      "name": "audio-hp",
+      "fourcc": "iaph",
+      "identifier_hex": "0x69617068",
+      "dma_provider_rx": "base-s-adma-rx-5",
+      "clock_domain": "niam",
+      "security": "Secure (Exclave isolated)",
+      "exclave_proxy": "audio-hp-proxy",
+      "exclave_service": "com.apple.service.HPMicAudioDriver",
+      "description": "Headphone high-resolution analog input stream"
+    },
+    {
+      "name": "audio-receiver",
+      "fourcc": "vcer",
+      "identifier_hex": "0x76636572",
+      "dma_provider_tx": "base-s-adma-tx-4",
+      "clock_domain": "niam",
+      "security": "Secure (Exclave isolated)",
+      "exclave_proxy": "admac-receiver-tx-ec-proxy",
+      "exclave_service": "com.apple.service.ReceiverOutputStreamDMA",
+      "description": "Earpiece receiver private audio output stream"
+    },
+    {
+      "name": "audio-speaker-mca",
+      "fourcc": "kpsm",
+      "identifier_hex": "0x6b70736d",
+      "dma_provider_tx": "base-s-adma-tx-3",
+      "dma_provider_rx": "base-ns-adma-rx-3",
+      "clock_domain": "niam",
+      "security": "Dual (Secure TX, Non-Secure RX sense)",
+      "exclave_proxy": "admac-speaker-tx-ec-proxy",
+      "exclave_service": "com.apple.service.SpeakerOutputStreamDMA",
+      "description": "Primary stereo speaker audio output with hardware V/I telemetry return"
+    },
+    {
+      "name": "audio-speaker-tap",
+      "fourcc": " pat",
+      "identifier_hex": "0x20706174",
+      "dma_provider_rx": "base-ns-adma-rx-4",
+      "clock_domain": "niam",
+      "security": "Non-Secure",
+      "description": "Acoustic echo cancellation reference tap stream"
+    },
+    {
+      "name": "audio-speaker",
+      "fourcc": "rkps",
+      "identifier_hex": "0x726b7073",
+      "compatible": "audio-iop-speaker",
+      "clock_domain": "niam",
+      "description": "IOP audio speaker management device"
+    },
+    {
+      "name": "audio-flicker",
+      "fourcc": "kclf",
+      "identifier_hex": "0x6b636c66",
+      "dma_provider_rx": "base-ns-adma-rx-6",
+      "clock_domain": "niam",
+      "security": "Non-Secure",
+      "description": "Display refresh flicker compensation optical/audio sensor stream"
+    },
+    {
+      "name": "lp-mic-device",
+      "fourcc": "iapl",
+      "identifier_hex": "0x6961706c",
+      "compatible": "iop-audio,lp-mic-device",
+      "description": "Low-power microphone hardware device"
+    },
+    {
+      "name": "lp-mic-io-buffer-device",
+      "fourcc": "xpda",
+      "identifier_hex": "0x78706461",
+      "compatible": "iop-audio,isolated-io-buffer-device",
+      "exclave_service": "com.apple.service.AudioDriverLPMic",
+      "description": "Isolated circular I/O buffer for low-power microphone ingestion"
+    },
+    {
+      "name": "lp-mic-injection-device",
+      "fourcc": "jipl",
+      "identifier_hex": "0x6a69706c",
+      "dma_provider_tx": "base-ns-adma-tx-8",
+      "clock_domain": "niam",
+      "description": "Low-power mic acoustic test and calibration injection stream"
+    },
+    {
+      "name": "siri-listening-device",
+      "fourcc": " ial",
+      "identifier_hex": "0x2069616c",
+      "compatible": "iop-audio,client-manager-device",
+      "description": "Siri voice activation detector client manager"
+    },
+    {
+      "name": "audio-haptic",
+      "fourcc": "chpa",
+      "identifier_hex": "0x63687061",
+      "compatible": "audio-control,audio-iop-haptics",
+      "description": "Taptic engine haptic feedback control device"
+    },
+    {
+      "name": "audio-haptic-transport",
+      "fourcc": " hpa",
+      "identifier_hex": "0x20687061",
+      "dma_provider_tx": "leap-ns-adma-tx-3",
+      "clock_domain": "niam",
+      "description": "High-bandwidth haptic waveform DMA transport stream"
+    },
+    {
+      "name": "audio-hpdbg",
+      "fourcc": "cdha",
+      "identifier_hex": "0x63646861",
+      "compatible": "audio-control,audio-iop-haptic-debug",
+      "description": "Haptic engineering debug control device"
+    },
+    {
+      "name": "audio-hpdbg-transport",
+      "fourcc": "dhpa",
+      "identifier_hex": "0x64687061",
+      "dma_provider_rx": "leap-ns-adma-rx-3",
+      "clock_domain": "niam",
+      "description": "Haptic sensor telemetry and acceleration return DMA transport"
+    },
+    {
+      "name": "audio-haptic-leap",
+      "fourcc": "cmpl",
+      "identifier_hex": "0x636d706c",
+      "compatible": "iop-audio,haptics-leap-control-device",
+      "description": "LEAP coprocessor haptic profile arbiter"
+    },
+    {
+      "name": "audio-haptic-parking",
+      "fourcc": "Nkrp",
+      "identifier_hex": "0x4e6b7270",
+      "description": "Haptic actuator voice-coil park and safety positioner"
+    }
+  ]
+}

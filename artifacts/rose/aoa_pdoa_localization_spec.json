@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple U2 / U3 Ultra-Wideband (UWB) Angle-of-Arrival (AoA) & PDoA Specification",
+  "target_soc": "Apple Rose 2 (r2p1 / hammerfest)",
+  "platform": "iOS 27.2 / Darwin 24.2.0 (Build 24B119)",
+  "device_model": "iPhone18,3 (v57ap)",
+  "antenna_array_architecture": {
+    "num_rx_antennas": 3,
+    "antenna_designations": ["Rx0 (Upper Left)", "Rx1 (Reference / Vertex)", "Rx2 (Lower Center)"],
+    "geometry": "L-shaped orthogonal 2D planar interferometric array",
+    "baselines": {
+      "horizontal_baseline_d_h_mm": 15.5,
+      "vertical_baseline_d_v_mm": 14.8,
+      "channel_9_wavelength_lambda_mm": 37.534,
+      "half_wavelength_limit_mm": 18.767,
+      "spatial_anti_aliasing": "Antenna spacings strictly satisfy d < lambda/2, precluding 2pi phase wrap ambiguity within the forward hemispherical field of view."
+    }
+  },
+  "pdoa_interferometry_equations": {
+    "phase_difference_formula": "Delta_psi = psi_rx_b - psi_rx_a",
+    "azimuth_angle_formula": "theta_rad = asin((lambda * Delta_psi_01) / (2 * pi * d_h))",
+    "elevation_angle_formula": "phi_rad = asin((lambda * Delta_psi_12) / (2 * pi * d_v))",
+    "carrier_frequency_offset_compensation": "PDoA phase is rotated by residual CFO before angle computation to eliminate phase drift during frame reception."
+  },
+  "devicetree_spherical_calibration": {
+    "format": "Q16.16 fixed-point radians (value = raw_int / 65536.0)",
+    "parameters": {
+      "theta_attach_high_cal": {
+        "raw_hex": "0x0002f851",
+        "raw_int": 194641,
+        "radians": 2.970108,
+        "degrees": 170.174
+      },
+      "theta_attach_low_cal": {
+        "raw_hex": "0x00000000",
+        "raw_int": 0,
+        "radians": 0.0,
+        "degrees": 0.0
+      },
+      "theta_detach_high_cal": {
+        "raw_hex": "0x000323d7",
+        "raw_int": 205783,
+        "radians": 3.139999,
+        "degrees": 179.914
+      },
+      "theta_detach_low_cal": {
+        "raw_hex": "0x00002b85",
+        "raw_int": 11141,
+        "radians": 0.170000,
+        "degrees": 9.740
+      },
+      "phi_attach_high_cal": {
+        "raw_hex": "0xfffd9c29",
+        "raw_int": -156631,
+        "radians": -2.389999,
+        "degrees": -136.936
+      },
+      "phi_attach_low_cal": {
+        "raw_hex": "0x0001851e",
+        "raw_int": 99614,
+        "radians": 1.519989,
+        "degrees": 87.089
+      },
+      "phi_detach_high_cal": {
+        "raw_hex": "0x0000c000",
+        "raw_int": 49152,
+        "radians": 0.750000,
+        "degrees": 42.972
+      },
+      "phi_detach_low_cal": {
+        "raw_hex": "0xfffe6148",
+        "raw_int": -106168,
+        "radians": -1.619995,
+        "degrees": -92.819
+      },
+      "phi_ignore_high_cal": {
+        "raw_hex": "0x0002b5c2",
+        "raw_int": 177602,
+        "radians": 2.709991,
+        "degrees": 155.271
+      },
+      "phi_ignore_low_cal": {
+        "raw_hex": "0x000070a3",
+        "raw_int": 28835,
+        "radians": 0.439987,
+        "degrees": 25.210
+      },
+      "std_dev_x_cal": {
+        "raw_hex": "0x00430000",
+        "raw_int": 4390912,
+        "scaled_value": 67.0
+      },
+      "std_dev_y_cal": {
+        "raw_hex": "0x00410000",
+        "raw_int": 4259840,
+        "scaled_value": 65.0
+      },
+      "std_dev_z_cal": {
+        "raw_hex": "0x001e0000",
+        "raw_int": 1966080,
+        "scaled_value": 30.0
+      },
+      "magnitude_cal": {
+        "raw_hex": "0x03070000",
+        "raw_int": 50790400
+      }
+    }
+  },
+  "dsp_execution_pipeline": {
+    "entry_symbol": "ALGO _run_toa_aoa_algo_r2",
+    "inputs": [
+      "ppcal_lbtf_ref (Reference loopback transfer function)",
+      "ppcal_rxtf_ref (Reference receive transfer function)",
+      "multirx_tof (Time-of-flight measured across 3 channels)",
+      "SNR Rx0, Rx1, Rx2 (Independent signal-to-noise ratios)"
+    ],
+    "outputs": [
+      "azi (Azimuth in centidegrees)",
+      "ele (Elevation in centidegrees)",
+      "pdoa (Raw phase difference in integer units)",
+      "aoa_unc (Angular uncertainty covariance matrix)"
+    ]
+  }
+}

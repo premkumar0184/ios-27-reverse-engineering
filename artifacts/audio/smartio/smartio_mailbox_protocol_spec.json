@@ -1,0 +1,195 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro (t8150) SmartIO (ASCv7) Mailbox Protocol & IPC Specification",
+  "subsystem": "SmartIO ASCv7 RTKit Microkernel Mailbox Architecture",
+  "soc": "t8150 (Apple Silicon A19 Pro)",
+  "build": "iOS 27.2 (24B119)",
+  "mailbox_table": {
+    "section": "__TEXT._rtk_mtab",
+    "base_va": "0x0001bbc0",
+    "size_bytes": 656,
+    "entry_count": 82,
+    "default_unhandled_handler": {
+      "symbol": "__rtk_dev_bad_method",
+      "va": "0x00015224",
+      "description": "Kernel trap handler executed whenever an unpopulated mailbox method slot is dispatched"
+    },
+    "partitions": [
+      {
+        "name": "_RTK_dev_kdebug_mbi_dispatch",
+        "symbol_va": "0x0001bbc0",
+        "start_index": 0,
+        "entry_count": 58,
+        "size_bytes": 464,
+        "description": "RTKit Mailbox Interface (MBI) and kernel debugging dispatch vtable"
+      },
+      {
+        "name": "_RTK_dev_ascwrap_v2_dispatch",
+        "symbol_va": "0x0001bd90",
+        "start_index": 58,
+        "entry_count": 24,
+        "size_bytes": 192,
+        "description": "Apple Storage/Serial Coprocessor (ASCwrap-v2) hardware mailbox engine dispatch vtable"
+      }
+    ]
+  },
+  "ascwrap_device_instances": {
+    "description": "Pointers defined in __DATA.__const that bind RTKit core devices to physical ASC mailbox engines and timebase",
+    "devices": [
+      {
+        "symbol": "_RTK_DEV_ASC",
+        "descriptor_va": "0x0001c448",
+        "target_va": "0x00113798",
+        "target_symbol": "_RTK_dev_asc",
+        "description": "Primary ASC coprocessor hardware controller instance"
+      },
+      {
+        "symbol": "_RTK_DEV_ASCWRAP",
+        "descriptor_va": "0x0001c440",
+        "target_va": "0x0001ce00",
+        "vtable_va": "0x0001bd90",
+        "vtable_symbol": "_RTK_dev_ascwrap_v2_dispatch",
+        "description": "ASC wrapper interface instance driving mailbox queues and interrupt arbitration"
+      },
+      {
+        "symbol": "_RTK_DEV_ASC_OUTBOX",
+        "descriptor_va": "0x0001c428",
+        "target_va": "0x0001d620",
+        "target_symbol": "_RTK_dev_asc_outbox",
+        "description": "Hardware ASC outbox FIFO transmit buffer engine"
+      },
+      {
+        "symbol": "_RTK_DEV_WRAPPER_INBOX",
+        "descriptor_va": "0x0001c420",
+        "target_va": "0x0001d518",
+        "description": "Wrapper inbox doorbell and receive FIFO interface"
+      },
+      {
+        "symbol": "_RTK_DEV_WRAPPER_OUTBOX",
+        "descriptor_va": "0x0001c430",
+        "target_va": "0x0001d620",
+        "description": "Wrapper outbox transmit doorbell and FIFO interface"
+      },
+      {
+        "symbol": "_RTK_DEV_WRAPPER_CONFIG",
+        "descriptor_va": "0x0001c438",
+        "target_va": "0x001137e8",
+        "target_symbol": "_RTK_dev_asc_config",
+        "description": "Hardware ASC wrapper configuration and power gating registers"
+      },
+      {
+        "symbol": "_RTK_DEV_TIMEBASE",
+        "descriptor_va": "0x0001c450",
+        "target_va": "0x0001d130",
+        "target_symbol": "_armv8_timebase",
+        "description": "ARMv8 24 MHz hardware timebase synchronization register"
+      }
+    ]
+  },
+  "mailbox_endpoints": {
+    "table_base_va": "0x0001cca0",
+    "entry_size_bytes": 24,
+    "endpoints": [
+      {
+        "endpoint_id": 1,
+        "name": "management",
+        "name_va": "0x1b518",
+        "table_va": "0x1cca0",
+        "flags_word": "0x0000000800000001",
+        "description": "Microkernel management, handshake negotiation, power state control, and sleep/nap signaling"
+      },
+      {
+        "endpoint_id": 2,
+        "name": "crashlog",
+        "name_va": "0x1b523",
+        "table_va": "0x1ccb8",
+        "flags_word": "0x0000010000000002",
+        "description": "Fatal exception panic logging, register dump serialization, and memory canary diagnostics"
+      },
+      {
+        "endpoint_id": 3,
+        "name": "syslog",
+        "name_va": "0x1b52c",
+        "table_va": "0x1ccd0",
+        "flags_word": "0x0000000800000003",
+        "description": "Real-time RTKit kernel string logging and debug trace output"
+      },
+      {
+        "endpoint_id": 4,
+        "name": "kdebug",
+        "name_va": "0x1b533",
+        "table_va": "0x1cce8",
+        "flags_word": "0x0000000800000004",
+        "description": "Kernel event tracing, interrupt latency measurements, and duty cycle profiling"
+      },
+      {
+        "endpoint_id": 32,
+        "endpoint_hex": "0x20",
+        "name": "ioreporting",
+        "name_va": "0x1b53a",
+        "table_va": "0x1cd00",
+        "flags_word": "0x0000004000000020",
+        "description": "Hardware IOReporting telemetry channel (Duty cycle, Sleep count, Wake count, Heap alloc, Used stack)"
+      },
+      {
+        "endpoint_id": 0,
+        "name": "smartio_msg",
+        "name_va": "0x1b546",
+        "table_va": "0x1cd18",
+        "flags_word": "0x0000000000000000",
+        "description": "SmartIO application protocol channel for audio stream control, buffer allocation, and SIO shims"
+      }
+    ]
+  },
+  "packet_encoding": {
+    "word_size_bits": 64,
+    "fields": [
+      {
+        "name": "Payload",
+        "bit_range": "[63:32]",
+        "bit_width": 32,
+        "description": "32-bit payload data, buffer offset, or parameter argument"
+      },
+      {
+        "name": "MsgType",
+        "bit_range": "[31:24]",
+        "bit_width": 8,
+        "description": "Message command / response type identifier"
+      },
+      {
+        "name": "MagicMarker",
+        "bit_range": "[23:16]",
+        "bit_width": 8,
+        "fixed_value": "0x66",
+        "description": "Protocol validation canary byte (0x66) emitted in packet headers"
+      },
+      {
+        "name": "TagFlags",
+        "bit_range": "[15:8]",
+        "bit_width": 8,
+        "description": "Sequence tag, transaction identifier, or error flag"
+      },
+      {
+        "name": "EndpointIndex",
+        "bit_range": "[7:0]",
+        "bit_width": 8,
+        "description": "Target or source endpoint identifier (0..32)"
+      }
+    ]
+  },
+  "aop_audio_integration": {
+    "architecture": "Always-On Processor 2 (AOP2) to SmartIO (ASCv7) Inter-Processor Communication Fabric",
+    "shared_channels": {
+      "leap": "AOP_LEAP0..AOP_LEAP12 TX & RX (13 dual-direction low-latency audio stream paths)",
+      "mca": "AOP_MCA0..AOP_MCA3 TX & RX (4 dual-direction multichannel audio bus bridges)",
+      "pdm": "AOP_PDM0_RX (1 always-on microphone acoustic stream path)",
+      "audio_shim": "AOP-AUDIO high-throughput shared DMA and mailbox synchronization shim",
+      "gp_shim": "AOP-GP general purpose doorbell and event synchronization shim"
+    },
+    "operating_mechanisms": {
+      "offload_pipeline": "SmartIO executes all physical real-time DMA transfers, FIFO servicing, and bus clocks while the AOP2 microkernel handles high-level acoustic intelligence (Hotword detection, VAD, ANC parameter calculation).",
+      "timestamping": "Audio samples acquired across MCA and PDM are tagged with the 64-bit ARMv8 timebase counter (_RTK_DEV_TIMEBASE at 0x1c450) to maintain sub-microsecond synchronization with AOP2 audio buffers.",
+      "power_coordination": "SmartIO implements microsecond-scale hardware nap modes (_RTK_power_set_nap_mode at 0x10efc, _RTK_power_prevent_nap at 0x10ea0) that allow the coprocessor core to sleep during audio packet intervals, waking up via ASCwrap mailbox doorbells."
+    }
+  }
+}

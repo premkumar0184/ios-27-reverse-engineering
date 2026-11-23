@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0.0",
+  "coprocessor": "Platform Management Processor (PMP)",
+  "firmware_binary": "t8150pmp.raw",
+  "binary_size_bytes": 643072,
+  "macho_format": "64-bit MH_PRELOAD ARM64 RTKit",
+  "memory_segments": {
+    "__TEXT": {
+      "vmaddr": "0x0000000001000000",
+      "vmsize": "0x00033000",
+      "protection": "r-x"
+    },
+    "__DATA": {
+      "vmaddr": "0x0000000001033000",
+      "vmsize": "0x0005E000",
+      "protection": "rw-"
+    },
+    "__ETEXT": {
+      "vmaddr": "0x00000000010A0000",
+      "vmsize": "0x0000B000",
+      "protection": "r-x"
+    }
+  },
+  "rtkit_stacks": {
+    "init_stack": {
+      "addr": "0x01038000",
+      "size": "0x1800"
+    },
+    "irq_stack": {
+      "addr": "0x01039800",
+      "size": "0x0800"
+    },
+    "exc_stack": {
+      "addr": "0x0103A000",
+      "size": "0x0800"
+    }
+  },
+  "fast_die_control_loop": {
+    "description": "High-frequency die thermal and voltage servo executed in dedicated microcode loop",
+    "telemetry_channels": [
+      "die0-fast-die-loop",
+      "pmptool-fast-die-lp-config",
+      "pmptool-fast-die-ce-map-config"
+    ],
+    "sampling_frequency_khz": 100,
+    "latency_us": 10
+  },
+  "lts_voltage_engine": {
+    "description": "Long-Term Reliability and Silicon Aging Voltage Tracking (LTS)",
+    "telemetry_channels": [
+      "lts-voltage",
+      "lts-clpc-voltage",
+      "lts-acsk-tddb-config",
+      "lts-ctrl-loop"
+    ],
+    "aging_compensation_mv_year": 12.5
+  }
+}

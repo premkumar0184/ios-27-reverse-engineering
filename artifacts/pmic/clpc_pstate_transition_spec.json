@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0.0",
+  "controller": "CPU Low Power Controller v3 (AppleT8150CLPC)",
+  "driver_bundle": "com.apple.driver.AppleT8150CLPC",
+  "compatible": "clpc,t8150",
+  "sampling_interval_ms": 4,
+  "thermal_interval_ms": 12,
+  "filter_time_constants": {
+    "cpu_perf_cnt_filter_tc_up": 10,
+    "cpu_perf_cnt_filter_tc_down": 10,
+    "cpu_power_zone_filter_tc_0": 120000,
+    "pkg_power_zone_filter_tc_0": 100000,
+    "pkg_sustainable_power_target": 235929,
+    "cpu_e_step_down_delay_us": 500
+  },
+  "operating_performance_points": {
+    "ECPU_opps": [
+      {
+        "pstate": 0,
+        "freq_mhz": 600,
+        "nominal_mv": 625,
+        "active_cores_max": 4
+      },
+      {
+        "pstate": 1,
+        "freq_mhz": 1000,
+        "nominal_mv": 680,
+        "active_cores_max": 4
+      },
+      {
+        "pstate": 2,
+        "freq_mhz": 1500,
+        "nominal_mv": 750,
+        "active_cores_max": 4
+      },
+      {
+        "pstate": 3,
+        "freq_mhz": 2000,
+        "nominal_mv": 840,
+        "active_cores_max": 4
+      },
+      {
+        "pstate": 4,
+        "freq_mhz": 2400,
+        "nominal_mv": 930,
+        "active_cores_max": 4
+      },
+      {
+        "pstate": 5,
+        "freq_mhz": 2700,
+        "nominal_mv": 1020,
+        "active_cores_max": 4
+      }
+    ],
+    "PCPU_opps": [
+      {
+        "pstate": 0,
+        "freq_mhz": 800,
+        "nominal_mv": 650,
+        "active_cores_max": 2
+      },
+      {
+        "pstate": 1,
+        "freq_mhz": 1400,
+        "nominal_mv": 720,
+        "active_cores_max": 2
+      },
+      {
+        "pstate": 2,
+        "freq_mhz": 2200,
+        "nominal_mv": 810,
+        "active_cores_max": 2
+      },
+      {
+        "pstate": 3,
+        "freq_mhz": 3000,
+        "nominal_mv": 930,
+        "active_cores_max": 2
+      },
+      {
+        "pstate": 4,
+        "freq_mhz": 3600,
+        "nominal_mv": 1080,
+        "active_cores_max": 2
+      },
+      {
+        "pstate": 5,
+        "freq_mhz": 4050,
+        "nominal_mv": 1220,
+        "active_cores_max": 2
+      }
+    ]
+  },
+  "features": {
+    "dynamic_core_rotation_mode": 2,
+    "dynamic_split_mode": 2,
+    "gpu_unified_budget_interface": true,
+    "ui_present_boost": true,
+    "lostperf_reporting": true
+  }
+}

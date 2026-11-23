@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple U2 / U3 Ultra-Wideband (UWB) Time-of-Flight (ToF) & Ranging Specification",
+  "target_soc": "Apple Rose 2 (r2p1 / hammerfest)",
+  "platform": "iOS 27.2 / Darwin 24.2.0 (Build 24B119)",
+  "device_model": "iPhone18,3 (v57ap)",
+  "tof_ranging_mechanics": {
+    "ranging_mode": "Double-Sided Two-Way Ranging (DS-TWR) & Round-Robin Ranging Mode (RRRM)",
+    "timing_resolution": "Picosecond resolution (1 ps = 0.299792 mm distance equivalent)",
+    "speed_of_light_mm_per_ps": 0.000299792458,
+    "fxta_timing_engine": {
+      "name": "Fixed Time of Arrival (FxTA)",
+      "integer_delay_step_ps": 2003.205128,
+      "fractional_delay_interpolator_bits": 8,
+      "fractional_delay_step_ps": 7.82502,
+      "formula": "start_time_ps = (id * 2003.205128) + (fd * 7.82502) - rxtf_calibration_delay_ps",
+      "firmware_log_anchor": "HMD FxTA computed (id, fd) = (%u, %u)"
+    },
+    "channel_impulse_response_processing": {
+      "cir_buffer_start_addr": "0x20010000",
+      "routine": "clib_mms32_capture_frag_cir_info()",
+      "sampling_rate_msps": 499.2,
+      "tap_resolution": "Complex 16-bit In-phase and Quadrature (I/Q) samples",
+      "first_path_search": {
+        "routine": "ALGO _run_toa_aoa_algo_r2",
+        "index_variable": "LE_1stpathidx",
+        "delay_variable": "le_delay",
+        "algorithm": "Leading Edge (LE) thresholding with dynamic noise floor estimation; distinguishes line-of-sight (LOS) direct path from delayed multipath wall reflections."
+      }
+    },
+    "two_way_ranging_exchange": {
+      "message_sequence": [
+        {"step": 1, "packet": "PPOLL", "description": "Pre-Poll synchronization frame establishing slot timing"},
+        {"step": 2, "packet": "POLL", "description": "Initiator transmits ranging poll with transmit timestamp T1"},
+        {"step": 3, "packet": "RESP", "description": "Responder receives at T2 and transmits response at T3"},
+        {"step": 4, "packet": "FDATA", "description": "Initiator receives at T4, transmits final data with T1, T4 timestamps"}
+      ],
+      "tof_calculation_formula_ds_twr": "ToF_ps = ((T_round1 * T_round2) - (T_reply1 * T_reply2)) / (T_round1 + T_round2 + T_reply1 + T_reply2)",
+      "distance_formula": "distance_meters = (ToF_ps * 0.000299792458) / 1000.0"
+    },
+    "figure_of_merit": {
+      "variable": "tof_fom",
+      "range": "0 to 255 (255 = highest confidence)",
+      "evaluation_criteria": [
+        "First-path to peak-path power ratio",
+        "Linear STS Signal-to-Noise Ratio (sts-snr-linear)",
+        "Carrier Frequency Offset residual (cfo_ppt)",
+        "Phase coherence across receive antenna pairs"
+      ]
+    }
+  },
+  "scrambled_timestamp_sequence_cryptography": {
+    "standard": "IEEE 802.15.4z Cryptographic STS",
+    "subsystem": "firacrypto",
+    "cipher": "AES-128 in Counter Mode (CTR) producing pseudo-random ternary sequence {-1, 0, +1}",
+    "key_hierarchy": {
+      "session_key": "128-bit ephemeral session key derived via ECDH",
+      "session_config": "FiRa ranging block / slot parameters and channel profile",
+      "session_config_digest": "SHA-256 digest of session parameters",
+      "data_protection_key": "Payload encryption key",
+      "auth_key": "STS pulse sequence seed key",
+      "auth_iv": "STS initialization vector (Stat STS IV|VID)"
+    },
+    "anti_spoofing_guarantee": "By embedding pseudo-random STS pulses into the physical preamble, an attacker cannot predict future pulse polarity or inject early pulses without corrupting the CIR correlation peak, eliminating distance reduction attacks."
+  }
+}

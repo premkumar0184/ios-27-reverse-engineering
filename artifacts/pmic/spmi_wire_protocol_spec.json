@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0.0",
+  "standard": "MIPI Alliance Specification for System Power Management Interface (SPMI) v2.0",
+  "clock_frequencies_mhz": [
+    19.2,
+    24.0,
+    26.0
+  ],
+  "arbitration_sequence": "Priority-driven bus arbitration. Masters and slaves arbitrate with 1..3 cycle request sequences.",
+  "command_opcodes": {
+    "0x00": {
+      "name": "REG_0_WR",
+      "mnemonic": "Zero Write",
+      "payload_bytes": 0,
+      "description": "Quick zero-write for low-overhead status clears"
+    },
+    "0x10": {
+      "name": "REG_WR",
+      "mnemonic": "Register Write",
+      "address_bits": 8,
+      "payload_bytes": 1,
+      "description": "Standard 8-bit register write"
+    },
+    "0x20": {
+      "name": "REG_RD",
+      "mnemonic": "Register Read",
+      "address_bits": 8,
+      "payload_bytes": 1,
+      "description": "Standard 8-bit register read"
+    },
+    "0x30": {
+      "name": "EXT_REG_WR",
+      "mnemonic": "Extended Register Write",
+      "address_bits": 16,
+      "payload_bytes": "1..16",
+      "description": "Extended 16-bit register write up to 16 bytes burst"
+    },
+    "0x38": {
+      "name": "EXT_REG_RD",
+      "mnemonic": "Extended Register Read",
+      "address_bits": 16,
+      "payload_bytes": "1..16",
+      "description": "Extended 16-bit register read up to 16 bytes burst"
+    },
+    "0x3A": {
+      "name": "EXT_REG_WRL",
+      "mnemonic": "Extended Register Write Long",
+      "address_bits": 16,
+      "payload_bytes": "1..32",
+      "description": "Extended long register write up to 32 bytes"
+    },
+    "0x3E": {
+      "name": "EXT_REG_RDL",
+      "mnemonic": "Extended Register Read Long",
+      "address_bits": 16,
+      "payload_bytes": "1..32",
+      "description": "Extended long register read up to 32 bytes"
+    }
+  },
+  "frame_structure": {
+    "ssc": "Sequence Start Condition: High-to-Low transition on SDATA while SCLK is High",
+    "slave_id": "4-bit Slave ID (0x0..0xF)",
+    "command_byte": "8-bit command payload containing opcode and byte count (BC)",
+    "address_bytes": "1 or 2 bytes address (8-bit or 16-bit)",
+    "data_bytes": "N bytes payload with odd parity per byte",
+    "parity": "1 bit odd parity per byte",
+    "ack_nack": "Slave acknowledgment response cycle (ACK=0, NACK=1)",
+    "bus_park": "1-cycle bus parking condition at end of frame"
+  },
+  "bus_protocol_errors": [
+    {
+      "code": "BusPr-CmdPrty-BOM",
+      "description": "Command parity error at Beginning-of-Message"
+    },
+    {
+      "code": "BusPr-CmdPrty-NoBOM",
+      "description": "Command parity error mid-transmission"
+    },
+    {
+      "code": "BusPr-AdrPrty",
+      "description": "Address field parity error"
+    },
+    {
+      "code": "BusPr-DatPrty",
+      "description": "Data payload parity error"
+    },
+    {
+      "code": "BusPr-CmdUnrecog",
+      "description": "Unrecognized SPMI command opcode"
+    },
+    {
+      "code": "BusPr-ExtColl",
+      "description": "External bus arbitration collision detected"
+    }
+  ]
+}

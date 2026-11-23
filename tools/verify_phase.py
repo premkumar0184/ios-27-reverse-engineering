@@ -2109,6 +2109,122 @@ PHASE_SPECS = {
              "tools/verify_silenus_all.py must pass 100% green"),
         ]
     },
+
+    "qemu_phase_5_virtualization_emulation": {
+        "required_artifacts": [
+            "artifacts/qemu/include/apple_a19_platform.h",
+            "artifacts/qemu/devices/apple_aic.h",
+            "artifacts/qemu/devices/apple_aic.c",
+            "artifacts/qemu/devices/apple_ascwrap.h",
+            "artifacts/qemu/devices/apple_ascwrap.c",
+            "artifacts/qemu/devices/apple_dart.h",
+            "artifacts/qemu/devices/apple_dart.c",
+            "artifacts/qemu/devices/apple_agx_direct.h",
+            "artifacts/qemu/devices/apple_agx_direct.c",
+            "artifacts/qemu/devices/apple_silenus_dma.h",
+            "artifacts/qemu/devices/apple_silenus_dma.c",
+            "artifacts/qemu/devices/apple_prores_hw.h",
+            "artifacts/qemu/devices/apple_prores_hw.c",
+            "artifacts/qemu/devices/apple_tightbeam_ipc.h",
+            "artifacts/qemu/devices/apple_tightbeam_ipc.c",
+            "artifacts/qemu/specs/platform_hardware_topology.json",
+            "artifacts/qemu/specs/accelerator_device_specs.json",
+            "artifacts/qemu/specs/rtkit_firmware_stub_spec.json",
+            "artifacts/qemu/firmware/stub_rtkit_boot.S",
+            "artifacts/qemu/firmware/stub_rtkit_core.h",
+            "artifacts/qemu/firmware/stub_rtkit_core.c",
+            "artifacts/qemu/firmware/stub_rtkit_linker.ld",
+            "artifacts/qemu/firmware/build_stubs.py",
+            "artifacts/qemu/firmware/stub_rtkit_aop2.elf",
+            "artifacts/qemu/firmware/stub_rtkit_aop2.bin",
+            "artifacts/qemu/firmware/stub_rtkit_silenus.elf",
+            "artifacts/qemu/firmware/stub_rtkit_silenus.bin",
+            "artifacts/qemu/firmware/stub_rtkit_rtbuddy.elf",
+            "artifacts/qemu/firmware/stub_rtkit_rtbuddy.bin",
+            "artifacts/qemu/machine/qemu_apple_a19_pro.c",
+            "artifacts/qemu/harness/apple_a19_emulation_runner.c",
+            "artifacts/qemu/harness/Makefile",
+            "artifacts/qemu/logs/emulation_trace.json",
+            "findings/qemu/05_QEMU_VIRTUALIZATION_LAYER.md",
+            "IOS_27_QEMU_VIRTUALIZATION_EMULATION_RE.md",
+            "tools/verify_qemu_emulation.py"
+        ],
+        "findings_docs": [
+            "findings/qemu/05_QEMU_VIRTUALIZATION_LAYER.md",
+            "IOS_27_QEMU_VIRTUALIZATION_EMULATION_RE.md"
+        ],
+        "min_findings_bytes": 18000,
+        "json_schemas": {
+            "artifacts/qemu/specs/platform_hardware_topology.json": ["platform", "physical_memory_map", "interrupt_controller", "mailbox_instances", "iommu_instances"],
+            "artifacts/qemu/specs/accelerator_device_specs.json": ["accelerators"],
+            "artifacts/qemu/specs/rtkit_firmware_stub_spec.json": ["architecture", "canary_watermark", "stubs"],
+            "artifacts/qemu/logs/emulation_trace.json": ["target_soc", "status", "workloads"]
+        },
+        "assertions": [
+            ("qemu_master_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "tools/verify_qemu_emulation.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "tools/verify_qemu_emulation.py must pass 100% green"),
+        ]
+    },
+
+    "pmic_phase_telemetry_fabric": {
+        "required_artifacts": [
+            "artifacts/pmic/pmic_workspace_baseline.json",
+            "artifacts/pmic/brooklands_pmic_register_spec.json",
+            "artifacts/pmic/pmic_fault_telemetry_spec.json",
+            "artifacts/pmic/pmic_off2wake_spec.json",
+            "artifacts/pmic/spmi_controller_topology_spec.json",
+            "artifacts/pmic/spmi_wire_protocol_spec.json",
+            "artifacts/pmic/spmi_command_queue_spec.json",
+            "artifacts/pmic/dvfs_voltage_rail_spec.json",
+            "artifacts/pmic/clpc_pstate_transition_spec.json",
+            "artifacts/pmic/pmp_coprocessor_spec.json",
+            "artifacts/pmic/adaptive_clock_controller_spec.json",
+            "artifacts/pmic/battery_btm_telemetry_spec.json",
+            "artifacts/pmic/battery_4rc_model_spec.json",
+            "artifacts/pmic/battery_impedance_ra_spec.json",
+            "artifacts/pmic/battery_shutdown_history_spec.json",
+            "artifacts/pmic/battery_beads_auth_spec.json",
+            "artifacts/pmic/include/apple_brooklands_pmic.h",
+            "artifacts/pmic/include/apple_spmi.h",
+            "artifacts/pmic/include/apple_battery_fuelgauge.h",
+            "artifacts/pmic/runtime/spmi_direct_submit.c",
+            "artifacts/pmic/runtime/pmic_telemetry_client.c",
+            "findings/pmic/01_BROOKLANDS_PMIC_REGISTER_MAP.md",
+            "findings/pmic/02_SPMI_CONTROLLER_AND_WIRE_PROTOCOL.md",
+            "findings/pmic/03_HARDWARE_FAULT_AND_WAKEUP_CHANNELS.md",
+            "findings/pmic/04_DVFS_VOLTAGE_RAILS_AND_CLPC_ENGINE.md",
+            "findings/pmic/05_ADAPTIVE_CLOCK_AND_POWER_SERVOS.md",
+            "findings/pmic/06_BATTERY_FUEL_GAUGE_AND_4RC_MODEL.md",
+            "findings/pmic/07_BATTERY_SECURITY_AND_CHARGER_SUBSYSTEM.md",
+            "IOS_27_APPLE_PMIC_SPMI_TELEMETRY_RE.md",
+            "tools/verify_pmic_spmi_constants.py",
+            "tools/audit_pmic_execution.py"
+        ],
+        "findings_docs": [
+            "IOS_27_APPLE_PMIC_SPMI_TELEMETRY_RE.md"
+        ],
+        "min_findings_bytes": 70000,
+        "json_schemas": {
+            "artifacts/pmic/pmic_workspace_baseline.json": ["schema_version", "subsystem", "target_soc", "firmware_assets"],
+            "artifacts/pmic/brooklands_pmic_register_spec.json": ["schema_version", "component", "ptmu_standard_regions", "ptmu_secure_regions"],
+            "artifacts/pmic/spmi_controller_topology_spec.json": ["schema_version", "protocol_version", "controller_count", "controllers"]
+        },
+        "assertions": [
+            ("pmic_constants_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "tools/verify_pmic_spmi_constants.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "tools/verify_pmic_spmi_constants.py must pass 100% green"),
+            ("pmic_execution_auditor_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "tools/audit_pmic_execution.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "tools/audit_pmic_execution.py must pass 100% green")
+        ]
+    },
 }
 import re
 

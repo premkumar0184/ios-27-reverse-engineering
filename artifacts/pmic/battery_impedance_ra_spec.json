@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Chemical Resistance (Ra) Tables & Coulomb Counting",
+  "driver": "AppleSmartBatteryManagerEmbedded",
+  "ra_table_size": 15,
+  "grid_points": [
+    {
+      "index": 0,
+      "dod_percent": 0.0,
+      "nominal_mohm": 18.2,
+      "description": "Fully charged state (100% SoC)"
+    },
+    {
+      "index": 1,
+      "dod_percent": 10.0,
+      "nominal_mohm": 18.5,
+      "description": "90% SoC"
+    },
+    {
+      "index": 2,
+      "dod_percent": 20.0,
+      "nominal_mohm": 18.9,
+      "description": "80% SoC"
+    },
+    {
+      "index": 3,
+      "dod_percent": 30.0,
+      "nominal_mohm": 19.4,
+      "description": "70% SoC"
+    },
+    {
+      "index": 4,
+      "dod_percent": 40.0,
+      "nominal_mohm": 20.1,
+      "description": "60% SoC"
+    },
+    {
+      "index": 5,
+      "dod_percent": 50.0,
+      "nominal_mohm": 21.0,
+      "description": "50% SoC plateau"
+    },
+    {
+      "index": 6,
+      "dod_percent": 60.0,
+      "nominal_mohm": 22.3,
+      "description": "40% SoC"
+    },
+    {
+      "index": 7,
+      "dod_percent": 70.0,
+      "nominal_mohm": 24.5,
+      "description": "30% SoC"
+    },
+    {
+      "index": 8,
+      "dod_percent": 80.0,
+      "nominal_mohm": 28.0,
+      "description": "20% SoC knee"
+    },
+    {
+      "index": 9,
+      "dod_percent": 85.0,
+      "nominal_mohm": 32.4,
+      "description": "15% SoC"
+    },
+    {
+      "index": 10,
+      "dod_percent": 90.0,
+      "nominal_mohm": 39.8,
+      "description": "10% SoC low-battery"
+    },
+    {
+      "index": 11,
+      "dod_percent": 93.0,
+      "nominal_mohm": 48.0,
+      "description": "7% SoC critical"
+    },
+    {
+      "index": 12,
+      "dod_percent": 95.0,
+      "nominal_mohm": 58.5,
+      "description": "5% SoC brownout boundary"
+    },
+    {
+      "index": 13,
+      "dod_percent": 97.0,
+      "nominal_mohm": 75.0,
+      "description": "3% SoC UPO shutdown imminent"
+    },
+    {
+      "index": 14,
+      "dod_percent": 100.0,
+      "nominal_mohm": 110.0,
+      "description": "Fully discharged cutoff"
+    }
+  ],
+  "qmax_telemetry": {
+    "nominal_capacity_mah": 3582,
+    "coulomb_counter_resolution_uah": 0.1,
+    "qmax_update_qualification_window_hours": 5.0,
+    "qmax_disqualification_reasons": [
+      "TEMPERATURE_OUT_OF_RANGE",
+      "CURRENT_NOT_RESTED",
+      "CHARGE_TIME_TOO_SHORT"
+    ]
+  }
+}

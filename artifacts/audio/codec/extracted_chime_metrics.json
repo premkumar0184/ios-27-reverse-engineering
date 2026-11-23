@@ -1,0 +1,130 @@
+{
+  "container": {
+    "file_path": "iPhone18,3_27.2_24B119_Restore/Firmware/embeddedaudioresources/image4/v57-boot-chime.im4p",
+    "file_size_bytes": 582555,
+    "magic": "IM4P",
+    "fourcc": "aubt",
+    "version": "1",
+    "payload_offset": 25,
+    "payload_size_bytes": 582530
+  },
+  "audio": {
+    "format_descriptor_hex": "0x00001001",
+    "format_descriptor": 4097,
+    "audio_byte_count": 582522,
+    "channels": 2,
+    "channel_names": [
+      "Left",
+      "Right"
+    ],
+    "bit_depth": 24,
+    "bytes_per_sample": 3,
+    "frame_size_bytes": 6,
+    "sample_rate_hz": 48000,
+    "total_frames": 97087,
+    "total_samples": 194174,
+    "duration_seconds": 2.022646,
+    "left_channel": {
+      "min_sample": -8388608,
+      "max_sample": 8388607,
+      "mean_sample": 20231.96,
+      "peak_amplitude": 8388608,
+      "peak_dbfs": 0.0,
+      "rms_amplitude": 4422973.16,
+      "rms_dbfs": -5.5595,
+      "dominant_peaks": [
+        {
+          "frequency_hz": 2370.12,
+          "magnitude": 2239503761.87
+        },
+        {
+          "frequency_hz": 1236.33,
+          "magnitude": 1858375953.11
+        },
+        {
+          "frequency_hz": 4993.65,
+          "magnitude": 1806534823.42
+        },
+        {
+          "frequency_hz": 3048.34,
+          "magnitude": 1798644339.68
+        },
+        {
+          "frequency_hz": 2371.58,
+          "magnitude": 1738742996.06
+        },
+        {
+          "frequency_hz": 1908.69,
+          "magnitude": 1714919003.66
+        },
+        {
+          "frequency_hz": 4995.12,
+          "magnitude": 1706930885.82
+        },
+        {
+          "frequency_hz": 4270.02,
+          "magnitude": 1698182877.57
+        }
+      ]
+    },
+    "right_channel": {
+      "min_sample": -6658648,
+      "max_sample": 6604373,
+      "mean_sample": 94.31,
+      "peak_amplitude": 6658648,
+      "peak_dbfs": -2.0061,
+      "rms_amplitude": 991065.34,
+      "rms_dbfs": -18.5518,
+      "dominant_peaks": [
+        {
+          "frequency_hz": 350.1,
+          "magnitude": 7560261553.11
+        },
+        {
+          "frequency_hz": 348.63,
+          "magnitude": 7453686779.82
+        },
+        {
+          "frequency_hz": 174.32,
+          "magnitude": 6389672543.46
+        },
+        {
+          "frequency_hz": 172.85,
+          "magnitude": 6119733001.21
+        },
+        {
+          "frequency_hz": 1396.0,
+          "magnitude": 5676424987.69
+        },
+        {
+          "frequency_hz": 1394.53,
+          "magnitude": 5486700110.15
+        },
+        {
+          "frequency_hz": 1397.46,
+          "magnitude": 5169347447.25
+        },
+        {
+          "frequency_hz": 175.78,
+          "magnitude": 5034370510.8
+        }
+      ]
+    },
+    "overall": {
+      "peak_amplitude": 8388608,
+      "peak_dbfs": 0.0,
+      "is_full_scale": true,
+      "musical_chord": "F-sharp / F Major Chord",
+      "chord_fundamentals_hz": [
+        174.3,
+        260.7,
+        349.4,
+        1396.0
+      ]
+    }
+  },
+  "exported_files": {
+    "raw_lpcm": "artifacts/audio/codec/boot_chime_pcm24_stereo_48k.raw",
+    "wav_stereo_24bit": "artifacts/audio/codec/boot_chime_48k_24bit.wav"
+  }
+}

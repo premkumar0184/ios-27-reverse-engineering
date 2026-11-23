@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Nearby Interaction (NI) & FiRa UWB Protocol Specification",
+  "target_soc": "Apple Rose 2 (r2p1 / hammerfest)",
+  "platform": "iOS 27.2 / Darwin 24.2.0 (Build 24B119)",
+  "device_model": "iPhone18,3 (v57ap)",
+  "protocol_stack": {
+    "framework": "NearbyInteraction.framework / nearbyd",
+    "baseband_interface": "/arm-io/aop-spmi1/uwb (hammerfest)",
+    "mac_layer": "FiRa 2.0 / IEEE 802.15.4z HRP-ERDEV MAC with Apple Extensions",
+    "roles": {
+      "initiator_master": {
+        "modes": ["GR3M", "GR4M", "P2PM", "TTM"],
+        "description": "Schedules ranging rounds, broadcasts PPOLL/POLL, and computes final ToF/AoA vector."
+      },
+      "responder_slave": {
+        "modes": ["GR3S", "GR4S", "P2PS", "TTS"],
+        "description": "Synchronizes to initiator clock, replies with RESP, and receives FDATA timestamp reports."
+      }
+    }
+  },
+  "packet_wire_formats": [
+    {
+      "packet_type": "PPOLL",
+      "opcode": "0x01",
+      "description": "Pre-Poll Frame: Announces impending ranging slot and arms STS sequence generators.",
+      "fields": [
+        {"name": "frame_control", "bits": 16, "value": "0x8841 (Data Frame, PAN ID Compression)"},
+        {"name": "sequence_number", "bits": 8},
+        {"name": "dest_pan_id", "bits": 16},
+        {"name": "dest_address", "bits": 64},
+        {"name": "src_address", "bits": 64},
+        {"name": "session_id", "bits": 32},
+        {"name": "block_index", "bits": 16},
+        {"name": "round_index", "bits": 8}
+      ]
+    },
+    {
+      "packet_type": "POLL",
+      "opcode": "0x02",
+      "description": "Ranging Poll Frame: Contains transmission timestamp T1 for initiator ToF baseline.",
+      "fields": [
+        {"name": "frame_control", "bits": 16},
+        {"name": "sequence_number", "bits": 8},
+        {"name": "session_id", "bits": 32},
+        {"name": "tx_timestamp_t1", "bits": 48}
+      ]
+    },
+    {
+      "packet_type": "RESP",
+      "opcode": "0x03",
+      "description": "Ranging Response Frame: Transmitted by responder with Rx timestamp T2 and Tx timestamp T3.",
+      "fields": [
+        {"name": "frame_control", "bits": 16},
+        {"name": "sequence_number", "bits": 8},
+        {"name": "session_id", "bits": 32},
+        {"name": "rx_timestamp_t2", "bits": 48},
+        {"name": "tx_timestamp_t3", "bits": 48}
+      ]
+    },
+    {
+      "packet_type": "FDATA",
+      "opcode": "0x04",
+      "description": "Final Data Frame: Carries all 4 timestamps (T1, T2, T3, T4) for double-sided ToF solve.",
+      "fields": [
+        {"name": "frame_control", "bits": 16},
+        {"name": "sequence_number", "bits": 8},
+        {"name": "session_id", "bits": 32},
+        {"name": "t1_t4_delta_ps", "bits": 48},
+        {"name": "t2_t3_delta_ps", "bits": 48},
+        {"name": "aoa_report", "bits": 32, "format": "azimuth_centideg (int16), elevation_centideg (int16)"}
+      ]
+    },
+    {
+      "packet_type": "RRRM",
+      "opcode": "0x05",
+      "description": "Round-Robin Ranging Mode Frame: Enables multi-peer spatial meshes (e.g. AirTags / SharePlay)."
+    }
+  ],
+  "session_lifecycle_fsm": {
+    "states": [
+      {
+        "name": "NI_SESSION_STATE_IDLE",
+        "id": 0,
+        "description": "Baseband in low-power sleep; radio off."
+      },
+      {
+        "name": "NI_SESSION_STATE_DISCOVERY",
+        "id": 1,
+        "description": "Bluetooth LE out-of-band handshake exchanging UWB channel, Session ID, and STS tokens."
+      },
+      {
+        "name": "NI_SESSION_STATE_RANGING_ACTIVE",
+        "id": 2,
+        "description": "Active DS-TWR ranging cadence (10Hz to 30Hz bursts); spatial vectors streamed to host."
+      },
+      {
+        "name": "NI_SESSION_STATE_SUSPENDED",
+        "id": 3,
+        "description": "Temporary pause during cellular high-power uplink blanking or display sleep."
+      },
+      {
+        "name": "NI_SESSION_STATE_TERMINATED",
+        "id": 4,
+        "description": "Session closed, crypto context wiped."
+      }
+    ]
+  },
+  "host_nearbyinteraction_payload": {
+    "target_class": "NINearbyObject",
+    "exported_properties": [
+      {"name": "distance", "type": "float (meters)", "accuracy": "+/- 5 cm line-of-sight"},
+      {"name": "direction", "type": "simd_float3 (unit vector)", "formula": "[cos(phi)*sin(theta), sin(phi), cos(phi)*cos(theta)]"},
+      {"name": "azimuth", "type": "float (radians)", "range": "-pi/2 to +pi/2"},
+      {"name": "elevation", "type": "float (radians)", "range": "-pi/2 to +pi/2"},
+      {"name": "horizontalAngle", "type": "float (radians)"},
+      {"name": "verticalDirectionEstimate", "type": "NIVerticalDirectionEstimate"}
+    ]
+  }
+}

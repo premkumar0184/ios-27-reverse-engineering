@@ -1,0 +1,240 @@
+{
+  "schema_version": "1.0.0",
+  "protocol_version": "MIPI SPMI v2.0",
+  "controller_count": 5,
+  "controllers": {
+    "nub-spmi0": {
+      "compatible": "aapl,spmi",
+      "generation": 4,
+      "power_domain": "Application Processor Core / Primary",
+      "apertures": [
+        {
+          "index": 0,
+          "base_address": "0xF8714000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 0: Command & Queue Management Registers"
+        },
+        {
+          "index": 1,
+          "base_address": "0xF8704000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 1: Bus Control, Arbitration & Timing Registers"
+        },
+        {
+          "index": 2,
+          "base_address": "0xF8700000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 2: Interrupt Event Service (IES) & Status Registers"
+        }
+      ],
+      "queue_depth": 256,
+      "interrupt_parent_phandle": "0x95",
+      "irq_vector": 256,
+      "fatal_interrupts": [
+        281
+      ],
+      "error_interrupts": [
+        260,
+        261,
+        264,
+        265,
+        266,
+        268,
+        269,
+        279,
+        280,
+        282,
+        283,
+        284,
+        285,
+        272,
+        273
+      ],
+      "other_interrupts": [
+        262,
+        263,
+        267
+      ],
+      "slaves": [
+        {
+          "name": "pmu-main",
+          "slave_id": "0x0E",
+          "role": "Primary System PMIC (Brooklands)"
+        },
+        {
+          "name": "btm",
+          "slave_id": "0x0E",
+          "role": "Battery & Thermal Monitor Sub-Module"
+        }
+      ]
+    },
+    "nub-spmi1": {
+      "compatible": "aapl,spmi",
+      "generation": 4,
+      "power_domain": "Application Processor Sub-PMIC",
+      "apertures": [
+        {
+          "index": 0,
+          "base_address": "0xF8614000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 0: Command & Queue Management Registers"
+        },
+        {
+          "index": 1,
+          "base_address": "0xF8604000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 1: Bus Control, Arbitration & Timing Registers"
+        },
+        {
+          "index": 2,
+          "base_address": "0xF8600000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 2: Interrupt Event Service (IES) & Status Registers"
+        }
+      ],
+      "queue_depth": 256,
+      "irq_vector": 256,
+      "slaves": [
+        {
+          "name": "shamisen",
+          "slave_id": "0x0C",
+          "role": "Companion RF/Cellular PMIC"
+        },
+        {
+          "name": "stonehenge",
+          "slave_id": "0x0F",
+          "role": "Companion Camera/Display PMIC"
+        }
+      ]
+    },
+    "aop-spmi0": {
+      "compatible": "aapl,spmi",
+      "generation": 4,
+      "power_domain": "Always-On Processor (AOP) Primary",
+      "apertures": [
+        {
+          "index": 0,
+          "base_address": "0x100914000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 0: AOP SPMI Command Queues"
+        },
+        {
+          "index": 1,
+          "base_address": "0x100904000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 1: AOP Bus Timing & Arbitration"
+        },
+        {
+          "index": 2,
+          "base_address": "0x100900000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 2: AOP Interrupt Service"
+        }
+      ],
+      "queue_depth": 256,
+      "slaves": [
+        {
+          "name": "stockholm-spmi",
+          "slave_id": "0x02",
+          "role": "NFC Secure Element Primary"
+        },
+        {
+          "name": "hammerfest-spmi",
+          "slave_id": "0x03",
+          "role": "NFC Secure Element Secondary"
+        },
+        {
+          "name": "wlan-heb",
+          "slave_id": "0x04",
+          "role": "WLAN Power Controller"
+        },
+        {
+          "name": "baseband-heb",
+          "slave_id": "0x05",
+          "role": "Baseband Power Controller"
+        },
+        {
+          "name": "uwb0",
+          "slave_id": "0x06",
+          "role": "Ultra-Wideband Power Transceiver"
+        }
+      ]
+    },
+    "aop-spmi1": {
+      "compatible": "aapl,spmi",
+      "generation": 4,
+      "power_domain": "Always-On Processor (AOP) Secondary",
+      "apertures": [
+        {
+          "index": 0,
+          "base_address": "0x100B14000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 0: AOP Secondary Command Queues"
+        },
+        {
+          "index": 1,
+          "base_address": "0x100B04000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 1: AOP Secondary Bus Timing"
+        },
+        {
+          "index": 2,
+          "base_address": "0x100B00000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 2: AOP Secondary Interrupt Service"
+        }
+      ],
+      "queue_depth": 256,
+      "slaves": [
+        {
+          "name": "uwb",
+          "slave_id": "0x07",
+          "role": "Secondary UWB Controller"
+        },
+        {
+          "name": "wlan-idc",
+          "slave_id": "0x08",
+          "role": "WLAN Coexistence Controller"
+        },
+        {
+          "name": "baseband-idc",
+          "slave_id": "0x09",
+          "role": "Baseband Coexistence Controller"
+        }
+      ]
+    },
+    "nub-spmi-a0": {
+      "compatible": "aapl,spmi",
+      "generation": 4,
+      "power_domain": "High Power Management / Type-C Subsystem",
+      "apertures": [
+        {
+          "index": 0,
+          "base_address": "0xF8908000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 0: Type-C SPMI Command Queues"
+        },
+        {
+          "index": 1,
+          "base_address": "0xF8904000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 1: Type-C Bus Timing & Physical Layer"
+        },
+        {
+          "index": 2,
+          "base_address": "0xF8900000",
+          "size_bytes": "0x4000",
+          "description": "Aperture 2: Type-C Interrupt Service"
+        }
+      ],
+      "queue_depth": 256,
+      "slaves": [
+        {
+          "name": "spmi-hpm0-tnt",
+          "slave_id": "0x0A",
+          "role": "USB-C CBTL1702 Power Delivery Controller"
+        }
+      ]
+    }
+  }
+}

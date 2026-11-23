@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0.0",
+  "queue_architecture": "Hardware Ring Buffer Command & Response Queues",
+  "slots_per_controller": 256,
+  "descriptor_size_bytes": 16,
+  "total_ring_size_bytes": 4096,
+  "descriptor_layout": {
+    "word_0": {
+      "bits_31_28": "Slave ID (4 bits, e.g. 0xE for Brooklands PMIC)",
+      "bits_27_24": "Command Opcode (4 bits: 0x3 for EXT_REG_WR/RD)",
+      "bits_23_20": "Byte Count minus 1 (BC: 0..15 for 1..16 bytes)",
+      "bits_19_16": "Request Priority (0=Low, 1=Medium, 2=High, 3=Critical)",
+      "bits_15_0": "Target Register Address (16 bits, 0x0000..0xFFFF)"
+    },
+    "word_1": {
+      "bits_31_0": "Payload Data Bytes 0..3 (Little Endian for writes)"
+    },
+    "word_2": {
+      "bits_31_0": "Payload Data Bytes 4..7 (Little Endian for writes)"
+    },
+    "word_3": {
+      "bits_31_16": "Hardware Status / Result Code (0x0000=SUCCESS, 0x0001=NACK, 0x0002=PARITY, 0x0004=TIMEOUT)",
+      "bits_15_8": "Completion Token / Sequence ID",
+      "bits_7_0": "Control Flags (Bit 0: Valid, Bit 1: Interrupt on Complete, Bit 2: Read/Write)"
+    }
+  },
+  "controller_mmio_registers": {
+    "0x0000": {
+      "name": "SPMI_CTRL",
+      "description": "Controller Enable, Reset, and Master Clock Config"
+    },
+    "0x0004": {
+      "name": "SPMI_CMD_RING_BASE_L",
+      "description": "Physical Base Address Low of Command Ring Buffer"
+    },
+    "0x0008": {
+      "name": "SPMI_CMD_RING_BASE_H",
+      "description": "Physical Base Address High of Command Ring Buffer"
+    },
+    "0x000C": {
+      "name": "SPMI_CMD_PROD_IDX",
+      "description": "Producer Head Index Register (0..255)"
+    },
+    "0x0010": {
+      "name": "SPMI_CMD_CONS_IDX",
+      "description": "Consumer Tail Index Register (0..255)"
+    },
+    "0x0014": {
+      "name": "SPMI_RSP_RING_BASE_L",
+      "description": "Physical Base Address Low of Response Ring Buffer"
+    },
+    "0x0018": {
+      "name": "SPMI_RSP_RING_BASE_H",
+      "description": "Physical Base Address High of Response Ring Buffer"
+    },
+    "0x001C": {
+      "name": "SPMI_RSP_PROD_IDX",
+      "description": "Response Producer Head Index (0..255)"
+    },
+    "0x0020": {
+      "name": "SPMI_RSP_CONS_IDX",
+      "description": "Response Consumer Tail Index (0..255)"
+    },
+    "0x0040": {
+      "name": "SPMI_IES_STATUS",
+      "description": "Interrupt Event Service Raw Status Flags"
+    },
+    "0x0044": {
+      "name": "SPMI_IES_MASK",
+      "description": "Interrupt Event Service Interrupt Mask Register"
+    },
+    "0x0048": {
+      "name": "SPMI_FAULT_IES_STATUS",
+      "description": "Hardware Fault IES Event Status Register"
+    }
+  }
+}

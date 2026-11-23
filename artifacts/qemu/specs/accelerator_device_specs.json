@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro (t8150) Clean-Room Accelerator Device Hardware Specifications",
+  "accelerators": {
+    "apple_agx_direct": {
+      "subsystem": "AGX G18 Pro GPU (AppleMetalDirect)",
+      "target_soc": "t8150",
+      "architecture": "G18P (PI_300) TBDR",
+      "mmio_regions": {
+        "gpu_base_hex": "0x0000000230000000",
+        "pmp_doorbell_base_hex": "0x000000023a000000",
+        "ascwrap_rtbuddy_core0_hex": "0x000000023b800000",
+        "ascwrap_rtbuddy_core1_hex": "0x000000023bc00000"
+      },
+      "interrupt_vectors": {
+        "inbox": 952,
+        "outbox": 953,
+        "doorbell": 954
+      },
+      "structures": {
+        "command_descriptor_bytes": 64,
+        "command_ring_entries": 1024,
+        "command_ring_size_bytes": 65536,
+        "status_page_size_bytes": 16384,
+        "doorbell_token_bytes": 8
+      },
+      "supported_opcodes": {
+        "0x01": "AGX_CMD_3D_RENDER_PASS",
+        "0x02": "AGX_CMD_COMPUTE_DISPATCH",
+        "0x03": "AGX_CMD_BLIT_2D",
+        "0x04": "AGX_CMD_RAY_TRACING_DISPATCH",
+        "0x05": "AGX_CMD_TILE_LOAD_STORE",
+        "0x06": "AGX_CMD_BLIT_COPY",
+        "0x07": "AGX_CMD_BARRIER_FENCE",
+        "0x08": "AGX_CMD_SHARED_EVENT_SIGNAL",
+        "0x09": "AGX_CMD_SHARED_EVENT_WAIT"
+      }
+    },
+    "apple_silenus_dma": {
+      "subsystem": "Silenus Camera ISP & Bayer Neural Interface (BNI)",
+      "target_soc": "t8150",
+      "mmio_regions": {
+        "dart_isp_base_hex": "0x00000001128c0000",
+        "dart_isp_size_bytes": 65536,
+        "sif_sensor_interface_hex": "0x00000000f0724000",
+        "isp_core_sram_hex": "0x0000000101000000"
+      },
+      "interrupt_vectors": {
+        "frame_done": 284,
+        "stats_ready": 285,
+        "dma_error": 286,
+        "cil_breaker": 287,
+        "mailbox_event": 297,
+        "dart_fault": 302
+      },
+      "dart_stream_ids": {
+        "0x00": "DART_ISP_SID_CONTROL",
+        "0x01": "DART_ISP_SID_RAW_STREAM",
+        "0x02": "DART_ISP_SID_BNI_PEARL",
+        "0x03": "DART_ISP_SID_YUV_PREVIEW",
+        "0x04": "DART_ISP_SID_EXCLAVE_EPIPE0",
+        "0x05": "DART_ISP_SID_EXCLAVE_EPIPE1",
+        "0x09": "DART_ISP_SID_EXCLAVE_PIODMA1",
+        "0x0c": "DART_ISP_SID_MPM"
+      },
+      "cisp_protocol": {
+        "magic_hex": "0x43495350",
+        "ring_version": "0x0002",
+        "command_packet_size_bytes": 64,
+        "header_size_bytes": 16,
+        "bni_target_dram_hex": "0x000000086a1b0000"
+      }
+    },
+    "apple_prores_hw": {
+      "subsystem": "AppleProResHW / AVE2 Video Accelerator",
+      "target_soc": "t8150",
+      "mmio_regions": {
+        "base_hex": "0x0000000077080000",
+        "size_bytes": 262144,
+        "core_m0_offset_hex": "0x00000000",
+        "core_a1_offset_hex": "0x00010000",
+        "core_a2_offset_hex": "0x00020000"
+      },
+      "interrupt_vectors": {
+        "encode_complete": 256
+      },
+      "encoding_topology": {
+        "cores": 2,
+        "core_a1_slices": "0..7 (Upper Frame)",
+        "core_a2_slices": "8..15 (Lower Frame)",
+        "total_slices": 16,
+        "raw_frame_header_bytes": 128
+      },
+      "supported_codecs": [
+        "APR_CODEC_PRORES_422_PROXY",
+        "APR_CODEC_PRORES_422_LT",
+        "APR_CODEC_PRORES_422_STANDARD",
+        "APR_CODEC_PRORES_422_HQ",
+        "APR_CODEC_PRORES_4444",
+        "APR_CODEC_PRORES_4444_XQ",
+        "APR_CODEC_PRORES_RAW",
+        "APR_CODEC_PRORES_RAW_HQ"
+      ]
+    },
+    "apple_tightbeam_ipc": {
+      "subsystem": "ExclaveOS cL4 Microkernel & Tightbeam IPC Bridge",
+      "target_soc": "t8150",
+      "abi_transport": "cL4 svc #0 Immediate Trap",
+      "mmio_regions": {
+        "aop2_proxy_base_hex": "0x000000035167c000",
+        "conclave_pool_hex": "0x0000000824000000"
+      },
+      "interrupt_vectors": {
+        "proxy_inbox": 361,
+        "proxy_outbox": 364
+      },
+      "wire_format": {
+        "header_c_type": "struct tb_message_s",
+        "header_size_bytes": 88,
+        "max_capabilities": 8,
+        "inline_payload_words": 4,
+        "ipc_buffer_size_bytes": 272
+      }
+    }
+  }
+}

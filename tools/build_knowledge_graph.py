@@ -1171,6 +1171,39 @@ class KnowledgeGraphBuilder:
             self.add_edge("xnu_kernelcache_release", "agx_driver_kernel", "loads_kext_driver",
                           source_file="artifacts/gpu/driver/agx_driver_dispatch_spec.json", _src="xnu_kernelcache_release", _tgt="agx_driver_kernel")
 
+        # 8. Apple Audio Subsystem & SmartIO Coprocessor
+        p_sio = ARTIFACTS_DIR / "audio/smartio/smartio_macho_manifest.json"
+        if p_sio.exists():
+            self.add_node("coproc_smartio_asc7", "Apple SmartIO Embedded Coprocessor (ASCv7 / siof)",
+                          "code", "artifacts/audio/smartio/smartio_macho_manifest.json", "siof Chinook ARM64", community=2)
+            self.add_node("smartio_rtkit_microkernel", "SmartIO ARM64 RTKit OS Chinook Microkernel (3514.40.18)",
+                          "code", "artifacts/audio/smartio/smartio_peripheral_shim_spec.json", "0x0000000000000000", community=2)
+            self.add_node("audio_admac_evolution", "AudioDMA Controller (ADMAC Evolution t8150 / 32 Channels)",
+                          "code", "artifacts/audio/dma/admac_channel_geometry_spec.json", "admac-evolution,t8150", community=2)
+            self.add_node("audio_cs42l84_codec", "Cirrus Logic CS42L84 / CS42L79 Mixed-Signal Audio Codec",
+                          "code", "artifacts/audio/codec/cs42l84_codec_register_map.json", "CS42L79_GLOBAL_BLOCK_EN1", community=2)
+            self.add_node("audio_boot_chime", "Audio Boot Chime Pre-Boot LPCM Resource (aubt / 24-bit stereo 48 kHz)",
+                          "code", "artifacts/audio/codec/boot_chime_aubt_container_spec.json", "aubt / v57-boot-chime", community=0)
+            self.add_node("audio_aop_voicetrigger", "Always-On Audio (AOPAudio2) & 3.0s VoiceTrigger Acoustic Buffer",
+                          "code", "artifacts/audio/privacy/aop_audio_acoustic_buffer_spec.json", "96 KB SRAM / AIC 357", community=2)
+            self.add_node("audio_exclave_privacy", "ExclaveOS Tightbeam Audio Stream Privacy & SIL Hardware Binding",
+                          "code", "artifacts/audio/privacy/exclave_audio_tightbeam_wire_spec.json", "Endpoint 0x53/0x61/0x62", community=5)
+
+            self.add_edge("coproc_smartio_asc7", "smartio_rtkit_microkernel", "executes_microkernel",
+                          source_file="artifacts/audio/smartio/smartio_macho_manifest.json", _src="coproc_smartio_asc7", _tgt="smartio_rtkit_microkernel")
+            self.add_edge("coproc_smartio_asc7", "audio_aop_voicetrigger", "exchanges_aop_audio_mailboxes",
+                          source_file="artifacts/audio/smartio/smartio_mailbox_protocol_spec.json", _src="coproc_smartio_asc7", _tgt="audio_aop_voicetrigger")
+            self.add_edge("audio_admac_evolution", "audio_cs42l84_codec", "streams_multichannel_audio",
+                          source_file="artifacts/audio/dma/mca_bus_topology_spec.json", _src="audio_admac_evolution", _tgt="audio_cs42l84_codec")
+            self.add_edge("audio_boot_chime", "audio_cs42l84_codec", "preboot_initialization_chime",
+                          source_file="artifacts/audio/codec/boot_chime_aubt_container_spec.json", _src="audio_boot_chime", _tgt="audio_cs42l84_codec")
+            self.add_edge("audio_aop_voicetrigger", "audio_exclave_privacy", "isolated_tightbeam_transport",
+                          source_file="artifacts/audio/privacy/exclave_audio_tightbeam_wire_spec.json", _src="audio_aop_voicetrigger", _tgt="audio_exclave_privacy")
+            self.add_edge("xnu_kernelcache_release", "audio_admac_evolution", "manages_audio_dma",
+                          source_file="artifacts/audio/dma/admac_channel_geometry_spec.json", _src="xnu_kernelcache_release", _tgt="audio_admac_evolution")
+            self.add_edge("xnu_kernelcache_release", "audio_exclave_privacy", "enforces_mic_privacy_proxy",
+                          source_file="artifacts/audio/privacy/exclave_audio_tightbeam_wire_spec.json", _src="xnu_kernelcache_release", _tgt="audio_exclave_privacy")
+
     def ingest_rootfs(self):
         print("[*] Ingesting core OS runtime & IPC artifacts (Community 3)...")
         # 1. daemon_catalog.json

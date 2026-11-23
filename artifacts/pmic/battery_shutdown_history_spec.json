@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Battery Shutdown History & Blackbox Telemetry",
+  "driver": "AppleSmartBatteryManagerEmbedded",
+  "storage_medium": "PMIC Persistent Scratchpad & Non-Volatile Fuel Gauge Registers",
+  "telemetry_registers": {
+    "ShutDownVoltage": {
+      "unit": "mV",
+      "description": "Terminal battery voltage captured at shutdown instant"
+    },
+    "ShutDownPrevVoltage": {
+      "unit": "mV",
+      "description": "Terminal battery voltage prior to final discharge plunge"
+    },
+    "ShutDownAverageCurrent": {
+      "unit": "mA",
+      "description": "Rolling average discharge current leading to shutdown"
+    },
+    "ShutDownFilteredCurrent": {
+      "unit": "mA",
+      "description": "Low-pass filtered instantaneous current"
+    },
+    "ShutDownMaxDischargeCurrent": {
+      "unit": "mA",
+      "description": "Peak current pulse observed during the last 60 seconds"
+    },
+    "ShutDownNominalChargeCapacity": {
+      "unit": "mAh",
+      "description": "Estimated remaining capacity at shutdown"
+    },
+    "ShutDownPrevNominalChargeCapacity": {
+      "unit": "mAh",
+      "description": "Capacity snapshot at previous milestone"
+    },
+    "ShutDownRemainingCapacity": {
+      "unit": "mAh",
+      "description": "Reported remaining capacity to user space"
+    },
+    "ShutDownPassedCharge": {
+      "unit": "mAh",
+      "description": "Total Coulomb charge transferred since last full charge"
+    },
+    "ShutDownFullChargeCapacity": {
+      "unit": "mAh",
+      "description": "Learned battery full charge capacity (FCC)"
+    },
+    "ShutDownDOD0": {
+      "unit": "%",
+      "description": "Depth of Discharge at resting state before discharge"
+    },
+    "ShutDownPresentDOD": {
+      "unit": "%",
+      "description": "Instantaneous Depth of Discharge at shutdown"
+    },
+    "ShutDownTemperature": {
+      "unit": "0.1C",
+      "description": "Battery pack temperature at shutdown"
+    },
+    "ShutDownTimestamp": {
+      "unit": "seconds",
+      "description": "Epoch timestamp when PMIC commanded power down"
+    },
+    "ShutDownUISoc": {
+      "unit": "%",
+      "description": "User-facing state of charge displayed (0%..100%)"
+    },
+    "ShutDownUpoReboot": {
+      "unit": "boolean",
+      "description": "Flag indicating shutdown was triggered by Under-Power-Out (UPO)"
+    },
+    "ShutDownDynSdSoc": {
+      "unit": "%",
+      "description": "Dynamically adjusted shutdown SoC threshold"
+    },
+    "ShutDownDynSdVoltage": {
+      "unit": "mV",
+      "description": "Dynamically computed cutoff voltage"
+    },
+    "ShutDownDynamicSOCVcut": {
+      "unit": "mV",
+      "description": "Dynamic cutoff voltage accounting for battery internal resistance Ri"
+    },
+    "ShutDownRaTableRaw": {
+      "unit": "hex",
+      "description": "Snapshot of Ra impedance table at shutdown time"
+    },
+    "ShutDownResScale": {
+      "unit": "scalar",
+      "description": "Global resistance scaling factor applied"
+    },
+    "ShutDownLPEMMode": {
+      "unit": "integer",
+      "description": "Low Power Efficiency Mode active status"
+    }
+  }
+}

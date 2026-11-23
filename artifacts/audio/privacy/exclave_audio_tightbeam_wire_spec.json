@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExclaveOS Tightbeam Audio Stream Wire Specification",
+  "description": "Clean-room specification of ExclaveOS Tightbeam IPC protocol, isolated audio stream drivers, and hardware Secure Indicator Light (SIL) binding on Apple Silicon A19 Pro (t8150)",
+  "target_platform": {
+    "soc": "t8150",
+    "processor_family": "Apple A19 Pro",
+    "operating_system": "iOS 27.2",
+    "darwin_build": "24.2.0 (Build 24B119)",
+    "kernelcache_target": "artifacts/kernel/kernelcache.release.raw"
+  },
+  "isolated_drivers": {
+    "kext_bundles": [
+      {
+        "bundle_id": "com.apple.driver.ExclavesAudioKext",
+        "bundle_path": "/System/Library/Extensions/ExclavesAudioKext.kext",
+        "executable_size_bytes": 128806,
+        "classes": [
+          "ExclavesAudioProxyInputStreamDriverTightbeam",
+          "ExclavesAudioProxyOutputStreamDriverTightbeam",
+          "ExclavesAudioProxyInputStreamDriverInterface",
+          "ExclavesAudioProxyOutputStreamDriverInterface"
+        ]
+      },
+      {
+        "bundle_id": "com.apple.driver.IISAudioIsolatedStreamECProxy",
+        "bundle_path": "/System/Library/Extensions/IISAudioIsolatedStreamECProxy.kext",
+        "executable_size_bytes": 16056,
+        "personalities": [
+          {
+            "name": "IISAudioIsolatedStreamECProxy",
+            "io_class": "IISAudioIsolatedStreamECProxy",
+            "io_provider_class": "IOService",
+            "io_name_match": ["iisaudio,isolated-stream-proxy"],
+            "io_exclave_proxy": true,
+            "probe_score": 10000
+          },
+          {
+            "name": "IISAudioIsolatedOutputStreamECProxy",
+            "io_class": "IISAudioIsolatedOutputStreamECProxy",
+            "io_provider_class": "IOService",
+            "io_name_match": ["iisaudio,isolated-output-stream-proxy"],
+            "io_exclave_proxy": true,
+            "probe_score": 10000
+          }
+        ]
+      },
+      {
+        "bundle_id": "com.apple.driver.IOPAudioVoiceTriggerDevice",
+        "bundle_path": "/System/Library/Extensions/IOPAudioVoiceTriggerDevice.kext",
+        "executable_size_bytes": 82281,
+        "personalities": [
+          {
+            "name": "IOPAudioIsolatedVoiceTriggerDevice",
+            "io_class": "IOPAudioIsolatedVoiceTriggerDevice",
+            "io_provider_class": "IOPAudioNode",
+            "io_name_match": ["iop-audio,isolated-vt-device"],
+            "io_exclave_proxy": true,
+            "user_client_class": "IOPAudioVoiceTriggerDeviceUserClient"
+          }
+        ]
+      }
+    ]
+  },
+  "tightbeam_endpoints": {
+    "0x53": {
+      "endpoint_id": "0x0053",
+      "service_name": "sharedmem_xcoproc_AOP2_EP53_in",
+      "role": "AOP2 to ExclaveOS Audio Route / Cross-Enclave Bridge",
+      "dart_stream_id": "0x11 (mapper-exclave-aop2)"
+    },
+    "0x61": {
+      "endpoint_id": "0x0061",
+      "service_name": "com.apple.exclaves.audio.isolated_input",
+      "role": "Isolated Microphone Stream EC Proxy Input Endpoint",
+      "dart_stream_id": "0x11"
+    },
+    "0x62": {
+      "endpoint_id": "0x0062",
+      "service_name": "com.apple.exclaves.audio.isolated_output",
+      "role": "Isolated Speaker / Earpiece Stream EC Proxy Output Endpoint",
+      "dart_stream_id": "0x11"
+    }
+  },
+  "tightbeam_services": {
+    "exclavesaudiodrivers_audiodriver": {
+      "direction": "Host -> Exclave (Input Stream Control)",
+      "methods": [
+        {
+          "selector": "0x0001",
+          "name": "init",
+          "signature": "tb_error_t exclavesaudiodrivers_audiodriver__init(client_t* client, tb_endpoint_t endpoint)"
+        },
+        {
+          "selector": "0x0002",
+          "name": "setupio",
+          "signature": "tb_error_t exclavesaudiodrivers_audiodriver_setupio(device_t* dev, completion_block_t)"
+        },
+        {
+          "selector": "0x0003",
+          "name": "teardownio",
+          "signature": "tb_error_t exclavesaudiodrivers_audiodriver_teardownio(device_t* dev, completion_block_t)"
+        },
+        {
+          "selector": "0x0004",
+          "name": "setupclientio",
+          "signature": "tb_error_t exclavesaudiodrivers_audiodriver_setupclientio(device_t* dev, client_id_t id, completion_block_t)"
+        },
+        {
+          "selector": "0x0005",
+          "name": "teardownclientio",
+          "signature": "tb_error_t exclavesaudiodrivers_audiodriver_teardownclientio(device_t* dev, client_id_t id, completion_block_t)"
+        },
+        {
+          "selector": "0x0006",
+          "name": "readinput",
+          "signature": "tb_error_t exclavesaudiodrivers_audiodriver_readinput(device_t* dev, client_id_t id, uint64_t sample_time, uint32_t frames, completion_block_t)"
+        },
+        {
+          "selector": "0x000A",
+          "name": "mapdmabuffer",
+          "signature": "tb_error_t exclavesaudiodrivers_audiodriver_mapdmabuffer(device_t* dev, completion_block_t)"
+        },
+        {
+          "selector": "0x000D",
+          "name": "sleep",
+          "signature": "tb_error_t exclavesaudiodrivers_audiodriver_sleep(device_t* dev, completion_block_t)"
+        },
+        {
+          "selector": "0x000E",
+          "name": "wake",
+          "signature": "tb_error_t exclavesaudiodrivers_audiodriver_wake(device_t* dev, completion_block_t)"
+        }
+      ]
+    },
+    "audiostreamdriver_audiostreamdriver": {
+      "direction": "Host -> Exclave (Output Stream Control)",
+      "methods": [
+        {
+          "selector": "0x0001",
+          "name": "init",
+          "signature": "tb_error_t audiostreamdriver_audiostreamdriver__init(client_t* client, tb_endpoint_t endpoint)"
+        },
+        {
+          "selector": "0x0008",
+          "name": "selectphysicalstreamdescription",
+          "signature": "tb_error_t audiostreamdriver_audiostreamdriver_selectphysicalstreamdescription(device_t* dev, selector_t* sel, completion_block_t)"
+        },
+        {
+          "selector": "0x0009",
+          "name": "getstreamdescription",
+          "signature": "tb_error_t audiostreamdriver_audiostreamdriver_getstreamdescription(device_t* dev, completion_block_t)"
+        },
+        {
+          "selector": "0x000A",
+          "name": "mapdmabuffer",
+          "signature": "tb_error_t audiostreamdriver_audiostreamdriver_mapdmabuffer(device_t* dev, completion_block_t)"
+        },
+        {
+          "selector": "0x0007",
+          "name": "writemixoutput",
+          "signature": "tb_error_t audiostreamdriver_audiooutputstreamdriver_writemixoutput(device_t* dev, uint64_t sample_time, uint32_t frames, completion_block_t)"
+        }
+      ]
+    },
+    "voicetriggernonsecure_voicetriggernonsecure": {
+      "direction": "Host -> Exclave (Non-Secure VoiceTrigger Context)",
+      "methods": [
+        {
+          "selector": "0x0020",
+          "name": "getnonsecuredata",
+          "signature": "tb_error_t voicetriggernonsecure_voicetriggernonsecure_getnonsecuredata(client_t* client, completion_block_t)",
+          "payload_struct": "voicetriggernonsecure_voicetriggernonsecuredatatb_s",
+          "payload_size_bytes": 16
+        },
+        {
+          "selector": "0x0021",
+          "name": "configuretriggernotification",
+          "signature": "tb_error_t voicetriggernonsecure_voicetriggernonsecure_configuretriggernotification(client_t* client, uint64_t async_id, completion_block_t)"
+        }
+      ]
+    },
+    "voicetriggerdebug_voicetriggerdebug": {
+      "direction": "Host -> Exclave (Secure VoiceTrigger Telemetry)",
+      "methods": [
+        {
+          "selector": "0x0022",
+          "name": "debuggetsecuredata",
+          "signature": "tb_error_t voicetriggerdebug_voicetriggerdebug_debuggetsecuredata(client_t* client, completion_block_t)",
+          "payload_struct": "voicetriggercommon_voicetriggersecuredatatb_s",
+          "payload_size_bytes": 156
+        },
+        {
+          "selector": "0x0023",
+          "name": "debugsirilanguagemodel",
+          "signature": "tb_error_t voicetriggerdebug_voicetriggerdebug_debugsirilanguagemodel(client_t* client, model_config_t* cfg, completion_block_t)"
+        }
+      ]
+    }
+  },
+  "wire_struct_geometries": {
+    "exad_stream_description_t": {
+      "c_type": "struct __attribute__((packed)) exad_stream_description",
+      "wire_encoding": "{IIISCC}",
+      "size_bytes": 16,
+      "fields": [
+        { "name": "sample_rate", "type": "uint32_t", "offset": 0, "size": 4 },
+        { "name": "channels", "type": "uint32_t", "offset": 4, "size": 4 },
+        { "name": "bytes_per_frame", "type": "uint32_t", "offset": 8, "size": 4 },
+        { "name": "format_flags", "type": "uint16_t", "offset": 12, "size": 2 },
+        { "name": "bit_depth", "type": "uint8_t", "offset": 14, "size": 1 },
+        { "name": "endianness", "type": "uint8_t", "offset": 15, "size": 1 }
+      ]
+    },
+    "voicetriggernonsecure_data_t": {
+      "c_type": "struct __attribute__((packed)) voicetrigger_nonsecure_data",
+      "wire_encoding": "{QQ}",
+      "size_bytes": 16,
+      "fields": [
+        { "name": "timestamp", "type": "uint64_t", "offset": 0, "size": 8 },
+        { "name": "sample_frame_time", "type": "uint64_t", "offset": 8, "size": 8 }
+      ]
+    },
+    "voicetrigger_secure_data_t": {
+      "c_type": "struct __attribute__((packed)) voicetrigger_secure_data",
+      "wire_encoding": "{QQQI[128C]}",
+      "size_bytes": 156,
+      "fields": [
+        { "name": "timestamp", "type": "uint64_t", "offset": 0, "size": 8 },
+        { "name": "sample_frame_time", "type": "uint64_t", "offset": 8, "size": 8 },
+        { "name": "trigger_length_frames", "type": "uint64_t", "offset": 16, "size": 8 },
+        { "name": "secure_payload_length", "type": "uint32_t", "offset": 24, "size": 4 },
+        { "name": "secure_trigger_payload", "type": "uint8_t[128]", "offset": 28, "size": 128 }
+      ]
+    },
+    "exclavesaudiodrivers_exadresult_t": {
+      "c_type": "struct __attribute__((packed)) exclavesaudiodrivers_exadresult",
+      "wire_encoding": "{Q}",
+      "size_bytes": 8,
+      "fields": [
+        { "name": "status", "type": "uint64_t", "offset": 0, "size": 8 }
+      ]
+    },
+    "exclavesaudiodrivers_audiodmabufferspec_t": {
+      "c_type": "struct __attribute__((packed)) exclavesaudiodrivers_audiodmabufferspec",
+      "wire_encoding": "{QQ}",
+      "size_bytes": 16,
+      "fields": [
+        { "name": "dma_base_iova", "type": "uint64_t", "offset": 0, "size": 8 },
+        { "name": "buffer_size_bytes", "type": "uint64_t", "offset": 8, "size": 8 }
+      ]
+    },
+    "tb_message_header_t": {
+      "c_type": "struct __attribute__((packed)) tb_message_header",
+      "wire_encoding": "{ICQQQQ[4Q]Q^{tb_transport_s}QQ}",
+      "size_bytes": 37,
+      "fields": [
+        { "name": "message_flags", "type": "uint32_t", "offset": 0, "size": 4 },
+        { "name": "disposition", "type": "uint8_t", "offset": 4, "size": 1 },
+        { "name": "client_identifier", "type": "uint64_t", "offset": 5, "size": 8 },
+        { "name": "selector", "type": "uint64_t", "offset": 13, "size": 8 },
+        { "name": "sequence_num", "type": "uint64_t", "offset": 21, "size": 8 },
+        { "name": "payload_size", "type": "uint64_t", "offset": 29, "size": 8 }
+      ]
+    }
+  },
+  "privacy_and_sil_enforcement": {
+    "secure_indicator_light": {
+      "hardware_controller_service": "com.apple.service.ExclaveIndicatorController",
+      "sensor_copy_request_service": "com.apple.service.ExclaveIndicatorController.SensorCopyRequest",
+      "iomfb_property": "IOMFBSecureIndicatorFactor",
+      "brightness_cap_property": "IOMFBIndicatorBrightnessNits",
+      "nominal_luminance_nits": 80,
+      "hardware_pwm_line": "Physical dedicated trace from Exclave secure enclave to display controller / amber LED",
+      "enforcement_policy": [
+        "Hardware interlock: Microphone PDM clock generation requires active PWM assertion from ExclaveIndicatorController.",
+        "XNU kernel is read-only with respect to SIL state; cannot suppress, extinguish, or spoof indicator.",
+        "Untrusted access attempt immediately triggers SIL_STATE_UNTRUSTED_ATTEMPT and terminates DMA stream.",
+        "Exclave memory domain firewall (DART SID 0x11) denies AP Everest cores direct read access to microphone DMA pages."
+      ]
+    }
+  }
+}

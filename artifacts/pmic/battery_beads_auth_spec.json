@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Cryptographic Battery Authentication (Beads)",
+  "driver": "AppleGasGaugeBeadsUpdate / AppleSmartBatteryManagerEmbedded",
+  "coprocessor": "Beads Cryptographic Security Engine on Battery Pack PCM",
+  "cryptographic_primitives": {
+    "algorithm": "ECDSA P-256 / SHA-256 with Hardware Sealed Private Key",
+    "challenge_size_bytes": 32,
+    "response_signature_size_bytes": 64,
+    "certificate_chain_size_bytes": 512
+  },
+  "protocol_flow": [
+    {
+      "step": 1,
+      "name": "AUTH_INIT",
+      "direction": "Host -> Beads",
+      "description": "Host sends random 32-byte non-repeating cryptographic nonce"
+    },
+    {
+      "step": 2,
+      "name": "CHALLENGE_PROCESS",
+      "direction": "Internal Beads",
+      "description": "Beads signs nonce concatenated with battery serial and calibration digest"
+    },
+    {
+      "step": 3,
+      "name": "RESPONSE_DISPATCH",
+      "direction": "Beads -> Host",
+      "description": "Beads returns 64-byte (r, s) ECDSA signature and certificate"
+    },
+    {
+      "step": 4,
+      "name": "VERIFY_CERTIFICATE",
+      "direction": "Host SEP",
+      "description": "Secure Enclave verifies certificate against Apple Battery Root CA"
+    },
+    {
+      "step": 5,
+      "name": "VERIFY_SIGNATURE",
+      "direction": "Host SEP",
+      "description": "Secure Enclave validates signature; unlocks authentic battery health telemetry"
+    }
+  ],
+  "error_codes": {
+    "0x00": "AUTH_SUCCESS",
+    "0x01": "INVALID_CHALLENGE_LENGTH",
+    "0x02": "SIGNATURE_VERIFICATION_FAILED",
+    "0x03": "CERTIFICATE_REVOKED_OR_EXPIRED",
+    "0x04": "COMMUNICATION_TIMEOUT",
+    "0x05": "BEADS_COPROCESSOR_FAULT"
+  }
+}

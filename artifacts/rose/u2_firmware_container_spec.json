@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple U2 / U3 Ultra-Wideband (UWB) Firmware Container & Memory Specification",
+  "target_soc": "Apple Rose 2 (r2p1 / hammerfest)",
+  "platform": "iOS 27.2 / Darwin 24.2.0 (Build 24B119)",
+  "device_model": "iPhone18,3 (v57ap)",
+  "silicon_identification": {
+    "marketing_name": "Apple U2 / U3 Ultra-Wideband Spatial Positioning Chip",
+    "chip_id": "r2p1",
+    "chip_revision": "chip_revision_b0",
+    "build_version": "241.3431042001000000.146|24.1.0.0|date:2026 10 13|chip_revision_b0",
+    "firmware_release_date": "2026-10-13",
+    "core_architecture": "32-bit ARM Cortex-M (ARMv7E-M / ARMv8-M with Thumb-2)",
+    "dsp_coprocessor": "MMS32 Baseband Vector DSP Co-processor"
+  },
+  "container_metadata": {
+    "container_file": "Firmware/Rose/r2p1/ftab.bin",
+    "container_format": "rkosftab (Apple RTKitOS Flash Table)",
+    "container_magic": "0x726b6f7366746162",
+    "container_magic_ascii": "rkosftab",
+    "header_offset_hex": "0x20",
+    "total_file_size_bytes": 1069300,
+    "total_partitions_count": 5
+  },
+  "partitions": [
+    {
+      "index": 0,
+      "tag": "rkos",
+      "tag_hex": "0x726b6f73",
+      "offset_hex": "0x00000080",
+      "size_bytes": 617408,
+      "size_human": "602.94 KB",
+      "sha256": "247252035d8df7b1d32ffc5fb23a18338127ea3a6a504fc75112dc5f44689ae4",
+      "role": "RTKitOS 32-bit ARM Cortex-M Microkernel & MAC Layer Protocol Engine",
+      "memory_mapping": {
+        "load_address": "0x00400000",
+        "entry_point": "0x00400221",
+        "reset_vector": "0x00400220 (Thumb-2)",
+        "sram_region": "Internal Instruction / Data TCM"
+      }
+    },
+    {
+      "index": 1,
+      "tag": "sbd1",
+      "tag_hex": "0x73626431",
+      "offset_hex": "0x00096c40",
+      "size_bytes": 403840,
+      "size_human": "394.38 KB",
+      "sha256": "8722fb5feb75ee4e4c8ef69f7b2dbc4f996b54b603cd6739c020e19b112d6283",
+      "role": "MMS32 Sub-Band 1 Baseband PHY & CIR Vector Signal Processing Microcode",
+      "memory_mapping": {
+        "load_address": "0x00800000",
+        "cir_buffer_start_addr": "0x20010000"
+      }
+    },
+    {
+      "index": 2,
+      "tag": "icnf",
+      "tag_hex": "0x69636e66",
+      "offset_hex": "0x000f95c0",
+      "size_bytes": 2944,
+      "size_human": "2.88 KB",
+      "sha256": "f3559a159ca25733d9e493a52cddfcc5440bc263a08fae6ba0d0c380f63bef24",
+      "role": "rkosioss I/O Subsystem Configuration, Segment Tables & Hardware Buffer Maps",
+      "memory_mapping": {
+        "table_magic": "rkosioss (0x726b6f73696f7373)"
+      }
+    },
+    {
+      "index": 3,
+      "tag": "bver",
+      "tag_hex": "0x62766572",
+      "offset_hex": "0x000fa140",
+      "size_bytes": 67,
+      "size_human": "67 bytes",
+      "sha256": "81f9add5f21a89ab2158bb83d5e8fb6fe591594939a0f3428ab35203f93710a5",
+      "role": "Build Version Banner & Chip Stepping String",
+      "banner_text": "241.3431042001000000.146|24.1.0.0|date:2026 10 13|chip_revision_b0\n"
+    },
+    {
+      "index": 4,
+      "tag": "_osl",
+      "tag_hex": "0x5f6f736c",
+      "offset_hex": "0x000fa184",
+      "size_bytes": 44912,
+      "size_human": "43.86 KB",
+      "sha256": "ab34793916b10a859a8f318dc50b91edf5c806476f37c26ca52b35da1bb7664b",
+      "role": "RTKit OS_log Diagnostic Symbol Table & Debug Formatting Strings",
+      "total_extracted_strings": 1052
+    }
+  ],
+  "cortex_m_vector_table": {
+    "base_address": "0x00400000",
+    "initial_sp": "0x00000000 (Staged via Boot ROM)",
+    "reset_handler": "0x00400220",
+    "nmi_handler": "0x00400158",
+    "hardfault_handler": "0x00400108",
+    "svcall_handler": "0x004001ec",
+    "pendsv_handler": "0x004001ec",
+    "systick_handler": "0x0040975c",
+    "peripheral_irq_dispatcher": "0x0040975c"
+  },
+  "host_interconnect": {
+    "devicetree_path": "/arm-io/aop-spmi1/uwb",
+    "bus_protocol": "SPMI (System Power Management Interface, aapl,spmi)",
+    "coexistence_protocol": "wlan,idc (In-Device Coexistence with Centauri Wi-Fi/BT)",
+    "power_management_gpio": "/arm-io/rose (function-rose_pwr, function-rose_reset, function-rose_coredump)",
+    "dma_buffer_interface": "Shared SPMI AR (Auto-Read) Buffer Windows"
+  }
+}

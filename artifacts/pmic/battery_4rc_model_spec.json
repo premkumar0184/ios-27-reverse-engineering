@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "model_name": "ApplePPMBatteryModel4RC",
+  "description": "4-Stage Resistor-Capacitor (4-RC) Equivalent Circuit Electrochemical Model",
+  "governing_equations": {
+    "terminal_voltage": "V_term(t) = OCV(DOD, T) - I(t) * R0 - sum_{k=1}^4 V_{RC,k}(t)",
+    "rc_differential": "dV_{RC,k}/dt = -V_{RC,k} / (R_k * C_k) + I(t) / C_k",
+    "v_droop": "V_{droop}(t) = I_{step} * (R0 + sum_{k=1}^4 R_k * (1 - exp(-Delta t / (R_k * C_k))))"
+  },
+  "circuit_elements": {
+    "R0": {
+      "description": "Ohmic electrolyte & contact internal resistance",
+      "nominal_mohm": 18.5,
+      "temp_coeff": -0.015
+    },
+    "RC_branch_1": {
+      "R1_mohm": 8.2,
+      "C1_farads": 120.0,
+      "time_constant_tau_s": 0.984,
+      "phenomenon": "Charge transfer & Double-layer capacitance"
+    },
+    "RC_branch_2": {
+      "R2_mohm": 12.4,
+      "C2_farads": 850.0,
+      "time_constant_tau_s": 10.54,
+      "phenomenon": "Solid Electrolyte Interphase (SEI) diffusion"
+    },
+    "RC_branch_3": {
+      "R3_mohm": 16.1,
+      "C3_farads": 3200.0,
+      "time_constant_tau_s": 51.52,
+      "phenomenon": "Solid-state chemical diffusion (intercalation)"
+    },
+    "RC_branch_4": {
+      "R4_mohm": 22.8,
+      "C4_farads": 15000.0,
+      "time_constant_tau_s": 342.0,
+      "phenomenon": "Long-term thermal & electrochemical relaxation"
+    }
+  },
+  "temperature_scaling": {
+    "arrhenius_activation_energy_ev": 0.32,
+    "reference_temp_k": 298.15
+  }
+}

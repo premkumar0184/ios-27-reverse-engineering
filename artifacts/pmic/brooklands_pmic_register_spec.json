@@ -1,0 +1,328 @@
+{
+  "schema_version": "1.0.0",
+  "component": "Apple/Dialog Custom PMIC (Brooklands)",
+  "silicon_name": "brooklands",
+  "compatible": [
+    "pmu,spmi",
+    "pmu,brooklands"
+  ],
+  "slave_id": "0x0E",
+  "primary_pmu": true,
+  "spmi_controller": "nub-spmi0",
+  "spmi_slave_address": 14,
+  "address_space_size_bytes": 65536,
+  "architecture_summary": "Unified 16-bit physical register aperture addressed via SPMI Extended Register Read/Write commands. Divided into Identification, Fault/Telemetry, RTC/Alarms, Mailboxes, PTMU standard domains (0..15), PTMU secure domains (0..4), and Scratchpad/SOCD storage.",
+  "id_registers": {
+    "base_address": "0x0000",
+    "size_bytes": 10,
+    "registers": {
+      "0x0000": {
+        "name": "DEV_ID_0",
+        "description": "Vendor Identification (Apple/Dialog 0x44/0x41)"
+      },
+      "0x0001": {
+        "name": "DEV_ID_1",
+        "description": "Silicon Family ID (Brooklands PMU 0x58)"
+      },
+      "0x0002": {
+        "name": "REV_ID_MAJOR",
+        "description": "Silicon Major Stepping (A0=0x01, B0=0x02)"
+      },
+      "0x0003": {
+        "name": "REV_ID_MINOR",
+        "description": "Silicon Minor Stepping (0x00..0x0F)"
+      },
+      "0x0004": {
+        "name": "DIE_ID_0",
+        "description": "Wafer Lot ID byte 0"
+      },
+      "0x0005": {
+        "name": "DIE_ID_1",
+        "description": "Wafer Lot ID byte 1"
+      },
+      "0x0006": {
+        "name": "WAFER_X",
+        "description": "Die X Coordinate on Wafer"
+      },
+      "0x0007": {
+        "name": "WAFER_Y",
+        "description": "Die Y Coordinate on Wafer"
+      },
+      "0x0008": {
+        "name": "FUSE_REV",
+        "description": "OTP Fuse Map Revision"
+      },
+      "0x0009": {
+        "name": "SEC_STATE",
+        "description": "Production Security Lock State"
+      }
+    }
+  },
+  "fault_log_aperture": {
+    "base_address": "0x0010",
+    "size_bytes": 9,
+    "registers": {
+      "0x0010": {
+        "name": "FAULT_STATUS_0",
+        "description": "Fault Bank 0: UVLO / OVLO / POR / System Reset"
+      },
+      "0x0011": {
+        "name": "FAULT_STATUS_1",
+        "description": "Fault Bank 1: Over-temperature and Voltage Flags"
+      },
+      "0x0012": {
+        "name": "FAULT_STATUS_2",
+        "description": "Fault Bank 2: Button resets and hardware watchdogs"
+      },
+      "0x0013": {
+        "name": "FAULT_STATUS_3",
+        "description": "Fault Bank 3: SPMI fault, NTC shutdown, DFU triggers"
+      },
+      "0x0014": {
+        "name": "FAULT_STATUS_4",
+        "description": "Fault Bank 4: OTP CRC, SGPIO, XTAL watchdog"
+      },
+      "0x0015": {
+        "name": "FAULT_STATUS_5",
+        "description": "Fault Bank 5: Hypervisor crash and target off states"
+      },
+      "0x0016": {
+        "name": "FAULT_STATUS_6",
+        "description": "Fault Bank 6: Die over-temperature indices 0..4"
+      },
+      "0x0017": {
+        "name": "FAULT_STATUS_7",
+        "description": "Fault Bank 7: CP charge pump UVLO/OVLO and watchdog"
+      },
+      "0x0018": {
+        "name": "FAULT_STATUS_8",
+        "description": "Fault Bank 8: LDO9 / LDO9b rail UV/OV status"
+      }
+    }
+  },
+  "rtc_alarm_aperture": {
+    "base_address": "0x2000",
+    "size_bytes": 16,
+    "registers": {
+      "0x2000": {
+        "name": "RTC_ALARM_CTRL",
+        "bitfields": {
+          "EN": "Bit 6 (0x40)"
+        }
+      },
+      "0x2002": {
+        "name": "RTC_COUNTER_BASE",
+        "size": 6,
+        "description": "48-bit 32.768 kHz monotonic RTC counter"
+      },
+      "0x2008": {
+        "name": "RTC_ALARM_OFFSET",
+        "size": 6,
+        "description": "48-bit alarm match target comparator"
+      },
+      "0x200E": {
+        "name": "RTC_IRQ_MASK",
+        "bitfields": {
+          "ALARM_MASK": "Bit 0 (0x01)",
+          "EVENT_MASK": "Bit 1 (0x02)"
+        }
+      }
+    }
+  },
+  "clock_scrpad_aperture": {
+    "base_address": "0x2100",
+    "size_bytes": 6,
+    "description": "Clock calibration and RTC scratchpad retention storage"
+  },
+  "off2wake_source_aperture": {
+    "base_address": "0x2813",
+    "size_bytes": 2,
+    "description": "16-bit bitfield recording cold-boot / off-to-wake trigger event"
+  },
+  "firmware_mailbox_apertures": {
+    "host_irq_address": "0x2B08",
+    "mcom_address": "0x2B60",
+    "mcom_int_index": 1,
+    "description": "Firmware micro-communications (MCOM) mailbox and host interrupt dispatch"
+  },
+  "ptmu_standard_regions": [
+    {
+      "region": 0,
+      "start": "0x6000",
+      "size": "0x0040",
+      "end": "0x6040",
+      "domain": "Core Power Rails Buck0..Buck3"
+    },
+    {
+      "region": 1,
+      "start": "0x6040",
+      "size": "0x0040",
+      "end": "0x6080",
+      "domain": "Core Power Rails Buck4..Buck7"
+    },
+    {
+      "region": 2,
+      "start": "0x6080",
+      "size": "0x0040",
+      "end": "0x60C0",
+      "domain": "SRAM / Cache Power Rails"
+    },
+    {
+      "region": 3,
+      "start": "0x60C0",
+      "size": "0x0040",
+      "end": "0x6100",
+      "domain": "Analog & PLL Regulators"
+    },
+    {
+      "region": 4,
+      "start": "0x6100",
+      "size": "0x0040",
+      "end": "0x6140",
+      "domain": "LDO1..LDO4 Regulators"
+    },
+    {
+      "region": 5,
+      "start": "0x6140",
+      "size": "0x0040",
+      "end": "0x6180",
+      "domain": "LDO5..LDO8 Regulators"
+    },
+    {
+      "region": 6,
+      "start": "0x6180",
+      "size": "0x0040",
+      "end": "0x61C0",
+      "domain": "LDO9..LDO12 Regulators"
+    },
+    {
+      "region": 7,
+      "start": "0x61C0",
+      "size": "0x0040",
+      "end": "0x6200",
+      "domain": "LDO13..LDO16 Regulators"
+    },
+    {
+      "region": 8,
+      "start": "0x6200",
+      "size": "0x0080",
+      "end": "0x6280",
+      "domain": "Buck Dynamic Voltage Scaling (DVS) Look-Up Table"
+    },
+    {
+      "region": 9,
+      "start": "0x6280",
+      "size": "0x0080",
+      "end": "0x6300",
+      "domain": "ADC Voltage / Current Channel Sequencer"
+    },
+    {
+      "region": 10,
+      "start": "0x6300",
+      "size": "0x0080",
+      "end": "0x6380",
+      "domain": "Thermal Sensor Matrix & Alarm Comparators"
+    },
+    {
+      "region": 11,
+      "start": "0x6380",
+      "size": "0x0080",
+      "end": "0x6400",
+      "domain": "Charge Pump & Boost Converter Control"
+    },
+    {
+      "region": 12,
+      "start": "0x6400",
+      "size": "0x0200",
+      "end": "0x6600",
+      "domain": "General Power Management Configuration (512B)"
+    },
+    {
+      "region": 13,
+      "start": "0x6600",
+      "size": "0x0200",
+      "end": "0x6800",
+      "domain": "Power-On Sequence & State Engine (512B)"
+    },
+    {
+      "region": 14,
+      "start": "0x6800",
+      "size": "0x0400",
+      "end": "0x6C00",
+      "domain": "General Config & Trims Space (1024B)"
+    },
+    {
+      "region": 15,
+      "start": "0x6C00",
+      "size": "0x0400",
+      "end": "0x7000",
+      "domain": "Non-Secure Telemetry & Diagnostic Buffers (1024B)"
+    }
+  ],
+  "ptmu_secure_regions": [
+    {
+      "region": 0,
+      "start": "0x7000",
+      "size": "0x0400",
+      "end": "0x7400",
+      "domain": "Secure Enclave (SEP) Power Domain Controls"
+    },
+    {
+      "region": 1,
+      "start": "0x7400",
+      "size": "0x0400",
+      "end": "0x7800",
+      "domain": "Secure Hardware Cryptographic Key Storage Power"
+    },
+    {
+      "region": 2,
+      "start": "0x7800",
+      "size": "0x0400",
+      "end": "0x7C00",
+      "domain": "Anti-Rollback Counters & Secure Monotonic Timers"
+    },
+    {
+      "region": 3,
+      "start": "0x7C00",
+      "size": "0x0200",
+      "end": "0x7E00",
+      "domain": "Secure Tamper Detection & Mesh Sensors"
+    },
+    {
+      "region": 4,
+      "start": "0x7E00",
+      "size": "0x0200",
+      "end": "0x8000",
+      "domain": "Secure Production Fusing & Lockout Registers"
+    }
+  ],
+  "scratchpad_storage": {
+    "general_scratchpad": {
+      "start": "0x8000",
+      "size_bytes": "0x2800",
+      "capacity_bytes": 10240,
+      "description": "Persistent boot and system state across sleep cycles"
+    },
+    "socd_scratchpad": {
+      "start": "0x8B00",
+      "size_bytes": "0x1800",
+      "capacity_bytes": 6144,
+      "description": "System-on-Chip Diagnostics (SOCD) panic and crash dump ring buffer"
+    },
+    "lpm_log_scratchpad": {
+      "start": "0xA780",
+      "size_bytes": "0x005C",
+      "description": "Low Power Mode (LPM) log buffer"
+    },
+    "lpm_ctrl_scratchpad": {
+      "start": "0xA7DC",
+      "size_bytes": "0x0004",
+      "description": "Low Power Mode (LPM) control register"
+    },
+    "legacy_scratchpad": {
+      "start": "0xF800",
+      "size_bytes": "0x0800",
+      "description": "Legacy bootloader and iBoot handshake registers"
+    }
+  }
+}

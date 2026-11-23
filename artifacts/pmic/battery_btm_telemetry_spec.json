@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "Battery & Thermal Monitor (AppleBTM)",
+  "compatible": "btm,phone",
+  "spmi_slave_id": "0x0E",
+  "pmu_type": 15,
+  "battery_data_collection": true,
+  "duty_cycle_data_read": true,
+  "worst_case_data_read": true,
+  "auto_rate_change": true,
+  "telemetry_functions": {
+    "ptd_read_mult": {
+      "opcode": "0x524D7470",
+      "mnemonic": "RMtp",
+      "description": "High-throughput multi-word PTD telemetry read"
+    },
+    "btm_start": {
+      "opcode": "0x54534D42",
+      "mnemonic": "TSMB",
+      "description": "Start periodic BTM sampling stream"
+    },
+    "btm_stop": {
+      "opcode": "0x50534D42",
+      "mnemonic": "PSMB",
+      "description": "Stop periodic BTM sampling stream"
+    },
+    "btm_config": {
+      "opcode": "0x4F434D42",
+      "mnemonic": "OCMB",
+      "description": "Configure ADC sampling intervals and thresholds"
+    },
+    "btm_vthr": {
+      "opcode": "0x54564D42",
+      "mnemonic": "TVMB",
+      "description": "Set brownout threshold voltage trigger"
+    }
+  },
+  "adc_channels": {
+    "0": {
+      "name": "VBAT",
+      "unit": "mV",
+      "resolution": 0.5
+    },
+    "1": {
+      "name": "IBAT",
+      "unit": "mA",
+      "resolution": 1.0
+    },
+    "2": {
+      "name": "TBAT",
+      "unit": "0.1C",
+      "resolution": 0.1
+    },
+    "3": {
+      "name": "VBUS",
+      "unit": "mV",
+      "resolution": 1.0
+    },
+    "4": {
+      "name": "IBUS",
+      "unit": "mA",
+      "resolution": 1.0
+    },
+    "5": {
+      "name": "TSYS",
+      "unit": "0.1C",
+      "resolution": 0.1
+    }
+  }
+}

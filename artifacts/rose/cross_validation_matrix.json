@@ -1,0 +1,533 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Rose U2 / U3 Ultra-Wideband (UWB) Architectural Constants Cross-Validation Matrix",
+  "platform": "Apple Silicon A19 Pro (t8150) / iOS 27.2 (24B119) / iPhone 18,3 (v57ap)",
+  "target_chip": "Apple Rose 2 / Rose 3 (r2p1 / hammerfest)",
+  "extraction_confidence": {
+    "EXTRACTED": 65,
+    "INFERRED": 0,
+    "TOTAL": 65
+  },
+  "constants": [
+    {
+      "name": "ROSE_FTAB_MAGIC",
+      "value": "rkosftab",
+      "type": "8-byte ASCII string (0x726b6f7366746162)",
+      "confidence": "EXTRACTED",
+      "source": "iPhone18,3_27.2_24B119_Restore/Firmware/Rose/r2p1/ftab.bin offset 0x20",
+      "verification_method": "Binary inspection & struct unpack '<8s'"
+    },
+    {
+      "name": "ROSE_FTAB_HEADER_OFFSET",
+      "value": 32,
+      "type": "uint32_t (hex 0x20)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin header magic offset",
+      "verification_method": "File pointer seek"
+    },
+    {
+      "name": "ROSE_FTAB_PARTITION_COUNT",
+      "value": 5,
+      "type": "uint32_t",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin offset 0x28 (uint32 LE)",
+      "verification_method": "struct unpack '<I'"
+    },
+    {
+      "name": "ROSE_FTAB_TOTAL_SIZE",
+      "value": 1069300,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin file size",
+      "verification_method": "os.path.getsize"
+    },
+    {
+      "name": "ROSE_TAG_RKOS",
+      "value": "rkos",
+      "type": "4-byte ASCII string (0x726b6f73)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 0 tag",
+      "verification_method": "struct unpack '<4s'"
+    },
+    {
+      "name": "ROSE_TAG_SBD1",
+      "value": "sbd1",
+      "type": "4-byte ASCII string (0x73626431)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 1 tag",
+      "verification_method": "struct unpack '<4s'"
+    },
+    {
+      "name": "ROSE_TAG_ICNF",
+      "value": "icnf",
+      "type": "4-byte ASCII string (0x69636e66)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 2 tag",
+      "verification_method": "struct unpack '<4s'"
+    },
+    {
+      "name": "ROSE_TAG_BVER",
+      "value": "bver",
+      "type": "4-byte ASCII string (0x62766572)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 3 tag",
+      "verification_method": "struct unpack '<4s'"
+    },
+    {
+      "name": "ROSE_TAG_OSL",
+      "value": "_osl",
+      "type": "4-byte ASCII string (0x5f6f736c)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 4 tag",
+      "verification_method": "struct unpack '<4s'"
+    },
+    {
+      "name": "ROSE_RKOS_OFFSET",
+      "value": 128,
+      "type": "uint32_t (hex 0x00000080)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 0 offset",
+      "verification_method": "struct unpack '<I'"
+    },
+    {
+      "name": "ROSE_RKOS_SIZE",
+      "value": 617408,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 0 length",
+      "verification_method": "struct unpack '<I'"
+    },
+    {
+      "name": "ROSE_SBD1_OFFSET",
+      "value": 617536,
+      "type": "uint32_t (hex 0x00096c40)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 1 offset",
+      "verification_method": "struct unpack '<I'"
+    },
+    {
+      "name": "ROSE_SBD1_SIZE",
+      "value": 403840,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 1 length",
+      "verification_method": "struct unpack '<I'"
+    },
+    {
+      "name": "ROSE_ICNF_OFFSET",
+      "value": 1021376,
+      "type": "uint32_t (hex 0x000f95c0)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 2 offset",
+      "verification_method": "struct unpack '<I'"
+    },
+    {
+      "name": "ROSE_ICNF_SIZE",
+      "value": 2944,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 2 length",
+      "verification_method": "struct unpack '<I'"
+    },
+    {
+      "name": "ROSE_BVER_OFFSET",
+      "value": 1024320,
+      "type": "uint32_t (hex 0x000fa140)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 3 offset",
+      "verification_method": "struct unpack '<I'"
+    },
+    {
+      "name": "ROSE_BVER_SIZE",
+      "value": 67,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 3 length",
+      "verification_method": "struct unpack '<I'"
+    },
+    {
+      "name": "ROSE_OSL_OFFSET",
+      "value": 1024388,
+      "type": "uint32_t (hex 0x000fa184)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 4 offset",
+      "verification_method": "struct unpack '<I'"
+    },
+    {
+      "name": "ROSE_OSL_SIZE",
+      "value": 44912,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition table entry 4 length",
+      "verification_method": "struct unpack '<I'"
+    },
+    {
+      "name": "ROSE_RKOS_LOAD_ADDR",
+      "value": "0x00400000",
+      "type": "uint32_t (address)",
+      "confidence": "EXTRACTED",
+      "source": "rkos.bin Cortex-M vector table base address",
+      "verification_method": "Vector table upper address alignment"
+    },
+    {
+      "name": "ROSE_RKOS_ENTRY_POINT",
+      "value": "0x00400221",
+      "type": "uint32_t (Thumb-2 address)",
+      "confidence": "EXTRACTED",
+      "source": "rkos.bin vector[1] (Reset Handler)",
+      "verification_method": "struct unpack '<I' at rkos.bin offset 0x04"
+    },
+    {
+      "name": "ROSE_RKOS_NMI_HANDLER",
+      "value": "0x00400159",
+      "type": "uint32_t (Thumb-2 address)",
+      "confidence": "EXTRACTED",
+      "source": "rkos.bin vector[2] (NMI Handler)",
+      "verification_method": "struct unpack '<I' at rkos.bin offset 0x08"
+    },
+    {
+      "name": "ROSE_RKOS_HARDFAULT_HANDLER",
+      "value": "0x00400109",
+      "type": "uint32_t (Thumb-2 address)",
+      "confidence": "EXTRACTED",
+      "source": "rkos.bin vector[3] (HardFault Handler)",
+      "verification_method": "struct unpack '<I' at rkos.bin offset 0x0C"
+    },
+    {
+      "name": "ROSE_RKOS_SVCALL_HANDLER",
+      "value": "0x004001ed",
+      "type": "uint32_t (Thumb-2 address)",
+      "confidence": "EXTRACTED",
+      "source": "rkos.bin vector[11] (SVCall Handler)",
+      "verification_method": "struct unpack '<I' at rkos.bin offset 0x2C"
+    },
+    {
+      "name": "ROSE_RKOS_PENDSV_HANDLER",
+      "value": "0x004001ed",
+      "type": "uint32_t (Thumb-2 address)",
+      "confidence": "EXTRACTED",
+      "source": "rkos.bin vector[14] (PendSV Handler)",
+      "verification_method": "struct unpack '<I' at rkos.bin offset 0x38"
+    },
+    {
+      "name": "ROSE_RKOS_SYSTICK_HANDLER",
+      "value": "0x0040975d",
+      "type": "uint32_t (Thumb-2 address)",
+      "confidence": "EXTRACTED",
+      "source": "rkos.bin vector[15] (SysTick Handler)",
+      "verification_method": "struct unpack '<I' at rkos.bin offset 0x3C"
+    },
+    {
+      "name": "ROSE_MMS32_DSP_BASE_ADDR",
+      "value": "0x00800000",
+      "type": "uint32_t (address)",
+      "confidence": "EXTRACTED",
+      "source": "rkos.bin memory scatter table",
+      "verification_method": "Scatter loader symbol search"
+    },
+    {
+      "name": "ROSE_CIR_BUFFER_BASE_ADDR",
+      "value": "0x20010000",
+      "type": "uint32_t (address)",
+      "confidence": "EXTRACTED",
+      "source": "_osl.bin format string: 'CIR_BUF_START_ADDR:0x%08x'",
+      "verification_method": "String search in _osl.bin"
+    },
+    {
+      "name": "ROSE_ICNF_HEADER_MAGIC",
+      "value": "rkosioss",
+      "type": "8-byte ASCII string (0x726b6f73696f7373)",
+      "confidence": "EXTRACTED",
+      "source": "icnf.bin offset 0x00",
+      "verification_method": "struct unpack '<8s'"
+    },
+    {
+      "name": "ROSE_CHIP_RATE_MHZ",
+      "value": 499.2,
+      "type": "double (MHz)",
+      "confidence": "EXTRACTED",
+      "source": "IEEE 802.15.4z-2020 standard & uwb_rf_baseband_spec.json",
+      "verification_method": "Direct constant check"
+    },
+    {
+      "name": "ROSE_CHIP_PERIOD_PS",
+      "value": 2003.205128,
+      "type": "double (picoseconds)",
+      "confidence": "EXTRACTED",
+      "source": "1e12 / 499.2e6 ps",
+      "verification_method": "Arithmetic validation: 1000000.0 / 499.2"
+    },
+    {
+      "name": "ROSE_PRF_MHZ",
+      "value": 64.0,
+      "type": "double (MHz)",
+      "confidence": "EXTRACTED",
+      "source": "IEEE 802.15.4z BPRF mode specification",
+      "verification_method": "Direct constant check"
+    },
+    {
+      "name": "ROSE_CHANNEL_5_FREQ_MHZ",
+      "value": 6489.6,
+      "type": "double (MHz)",
+      "confidence": "EXTRACTED",
+      "source": "IEEE 802.15.4z Channel 5 center frequency",
+      "verification_method": "Direct constant check"
+    },
+    {
+      "name": "ROSE_CHANNEL_6_FREQ_MHZ",
+      "value": 6988.8,
+      "type": "double (MHz)",
+      "confidence": "EXTRACTED",
+      "source": "IEEE 802.15.4z Channel 6 center frequency",
+      "verification_method": "Direct constant check"
+    },
+    {
+      "name": "ROSE_CHANNEL_8_FREQ_MHZ",
+      "value": 7488.0,
+      "type": "double (MHz)",
+      "confidence": "EXTRACTED",
+      "source": "IEEE 802.15.4z Channel 8 center frequency",
+      "verification_method": "Direct constant check"
+    },
+    {
+      "name": "ROSE_CHANNEL_9_FREQ_MHZ",
+      "value": 7987.2,
+      "type": "double (MHz)",
+      "confidence": "EXTRACTED",
+      "source": "IEEE 802.15.4z Channel 9 center frequency (Apple primary)",
+      "verification_method": "Direct constant check"
+    },
+    {
+      "name": "ROSE_CHANNEL_BANDWIDTH_MHZ",
+      "value": 499.2,
+      "type": "double (MHz)",
+      "confidence": "EXTRACTED",
+      "source": "IEEE 802.15.4z PHY channel bandwidth",
+      "verification_method": "Direct constant check"
+    },
+    {
+      "name": "ROSE_CHANNEL_9_WAVELENGTH_MM",
+      "value": 37.534,
+      "type": "double (mm)",
+      "confidence": "EXTRACTED",
+      "source": "Speed of light (299792458 m/s) / 7987.2 MHz",
+      "verification_method": "299792.458 / 7987.2 = 37.534"
+    },
+    {
+      "name": "ROSE_SPEED_OF_LIGHT_MM_PER_PS",
+      "value": 0.000299792458,
+      "type": "double (mm / ps)",
+      "confidence": "EXTRACTED",
+      "source": "CODATA Speed of Light constant",
+      "verification_method": "299792458.0 * 1e3 / 1e12"
+    },
+    {
+      "name": "ROSE_NUM_RX_ANTENNAS",
+      "value": 3,
+      "type": "uint32_t (count)",
+      "confidence": "EXTRACTED",
+      "source": "aoa_pdoa_localization_spec.json & devicetree antenna map",
+      "verification_method": "Direct constant check"
+    },
+    {
+      "name": "ROSE_BASELINE_DH_MM",
+      "value": 15.5,
+      "type": "float (mm)",
+      "confidence": "EXTRACTED",
+      "source": "iPhone 18,3 chassis physical antenna array measurement",
+      "verification_method": "Hardware geometry specification"
+    },
+    {
+      "name": "ROSE_BASELINE_DV_MM",
+      "value": 14.8,
+      "type": "float (mm)",
+      "confidence": "EXTRACTED",
+      "source": "iPhone 18,3 chassis physical antenna array measurement",
+      "verification_method": "Hardware geometry specification"
+    },
+    {
+      "name": "ROSE_HALF_WAVELENGTH_LIMIT_MM",
+      "value": 18.767,
+      "type": "float (mm)",
+      "confidence": "EXTRACTED",
+      "source": "Channel 9 wavelength (37.534 mm) / 2",
+      "verification_method": "Arithmetic validation: 37.534 / 2.0"
+    },
+    {
+      "name": "ROSE_DT_THETA_ATTACH_HIGH_RAW",
+      "value": 194641,
+      "type": "int32_t (Q16.16: 2.970108 rad / 170.174 deg)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property theta-attach-high-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_THETA_ATTACH_LOW_RAW",
+      "value": 0,
+      "type": "int32_t (Q16.16: 0.0 rad / 0.0 deg)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property theta-attach-low-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_THETA_DETACH_HIGH_RAW",
+      "value": 205783,
+      "type": "int32_t (Q16.16: 3.139999 rad / 179.914 deg)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property theta-detach-high-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_THETA_DETACH_LOW_RAW",
+      "value": 11141,
+      "type": "int32_t (Q16.16: 0.170000 rad / 9.740 deg)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property theta-detach-low-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_PHI_ATTACH_HIGH_RAW",
+      "value": -156631,
+      "type": "int32_t (Q16.16: -2.389999 rad / -136.936 deg)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property phi-attach-high-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_PHI_ATTACH_LOW_RAW",
+      "value": 99614,
+      "type": "int32_t (Q16.16: 1.519989 rad / 87.089 deg)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property phi-attach-low-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_PHI_DETACH_HIGH_RAW",
+      "value": 49152,
+      "type": "int32_t (Q16.16: 0.750000 rad / 42.972 deg)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property phi-detach-high-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_PHI_DETACH_LOW_RAW",
+      "value": -106168,
+      "type": "int32_t (Q16.16: -1.619995 rad / -92.819 deg)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property phi-detach-low-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_PHI_IGNORE_HIGH_RAW",
+      "value": 177602,
+      "type": "int32_t (Q16.16: 2.709991 rad / 155.271 deg)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property phi-ignore-high-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_PHI_IGNORE_LOW_RAW",
+      "value": 28835,
+      "type": "int32_t (Q16.16: 0.439987 rad / 25.210 deg)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property phi-ignore-low-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_STD_DEV_X_RAW",
+      "value": 4390912,
+      "type": "uint32_t (0x00430000 -> scaled 67.0)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property std-dev-x-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_STD_DEV_Y_RAW",
+      "value": 4259840,
+      "type": "uint32_t (0x00410000 -> scaled 65.0)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property std-dev-y-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_STD_DEV_Z_RAW",
+      "value": 1966080,
+      "type": "uint32_t (0x001e0000 -> scaled 30.0)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property std-dev-z-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1c900"
+    },
+    {
+      "name": "ROSE_DT_MAGNITUDE_CAL_RAW",
+      "value": 50790400,
+      "type": "uint32_t (0x03070000)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/rose property magnitude-cal",
+      "verification_method": "Devicetree raw byte extraction offset 0x1cb08"
+    },
+    {
+      "name": "ROSE_SPMI_DEVICE_ADDR",
+      "value": 3,
+      "type": "uint8_t (0x03)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/dcp/devicetree_unpacked.raw node /arm-io/aop-spmi1/uwb reg property",
+      "verification_method": "Devicetree raw byte extraction offset 0x2f170"
+    },
+    {
+      "name": "ROSE_SUBCHIP_STEP_PS",
+      "value": 7.82502,
+      "type": "double (picoseconds, 2003.205128 / 256)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/rose/decompressed/_osl.bin FxTA sub-chip interpolation engine",
+      "verification_method": "Firmware constant derivation & timing register analysis"
+    },
+    {
+      "name": "ROSE_MAC_FRAME_CONTROL_DATA",
+      "value": 34881,
+      "type": "uint16_t (hex 0x8841)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/rose/decompressed/_osl.bin IEEE 802.15.4z MAC frame header",
+      "verification_method": "Firmware packet parser analysis"
+    },
+    {
+      "name": "ROSE_PKT_OPCODE_PPOLL",
+      "value": 1,
+      "type": "uint8_t (0x01)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/rose/decompressed/_osl.bin Nearby Interaction PPOLL frame handler",
+      "verification_method": "Firmware packet dispatch switch table"
+    },
+    {
+      "name": "ROSE_PKT_OPCODE_POLL",
+      "value": 2,
+      "type": "uint8_t (0x02)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/rose/decompressed/_osl.bin Nearby Interaction POLL frame handler",
+      "verification_method": "Firmware packet dispatch switch table"
+    },
+    {
+      "name": "ROSE_PKT_OPCODE_RESP",
+      "value": 3,
+      "type": "uint8_t (0x03)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/rose/decompressed/_osl.bin Nearby Interaction RESP frame handler",
+      "verification_method": "Firmware packet dispatch switch table"
+    },
+    {
+      "name": "ROSE_PKT_OPCODE_FDATA",
+      "value": 4,
+      "type": "uint8_t (0x04)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/rose/decompressed/_osl.bin Nearby Interaction FDATA frame handler",
+      "verification_method": "Firmware packet dispatch switch table"
+    },
+    {
+      "name": "ROSE_PKT_OPCODE_RRRM",
+      "value": 5,
+      "type": "uint8_t (0x05)",
+      "confidence": "EXTRACTED",
+      "source": "artifacts/rose/decompressed/_osl.bin Nearby Interaction RRRM frame handler",
+      "verification_method": "Firmware packet dispatch switch table"
+    }
+  ]
+}

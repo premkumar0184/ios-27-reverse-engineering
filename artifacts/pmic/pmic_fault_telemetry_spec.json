@@ -1,0 +1,370 @@
+{
+  "schema_version": "1.0.0",
+  "total_channels": 72,
+  "active_named_channels": 39,
+  "reserved_channels": 33,
+  "register_aperture_base": "0x0010",
+  "register_aperture_size_bytes": 9,
+  "channels": {
+    "0": {
+      "name": "rsvd_0",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 0"
+    },
+    "1": {
+      "name": "rsvd_1",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 1"
+    },
+    "2": {
+      "name": "rsvd_2",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 2"
+    },
+    "3": {
+      "name": "uv,vddmain_uvlo",
+      "category": "VOLTAGE",
+      "description": "VDD_MAIN under-voltage lockout (< 3.0V)"
+    },
+    "4": {
+      "name": "rsvd_4",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 4"
+    },
+    "5": {
+      "name": "uv,vdd_boost_uvlo",
+      "category": "VOLTAGE",
+      "description": "VDD_BOOST under-voltage lockout"
+    },
+    "6": {
+      "name": "ov,vdd_boost_ovlo",
+      "category": "VOLTAGE",
+      "description": "VDD_BOOST over-voltage lockout (> 5.5V)"
+    },
+    "7": {
+      "name": "rsvd_7",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 7"
+    },
+    "8": {
+      "name": "por",
+      "category": "RESET",
+      "description": "Power-on reset cold boot trigger"
+    },
+    "9": {
+      "name": "rst",
+      "category": "RESET",
+      "description": "Hardware reset pin de-assertion"
+    },
+    "10": {
+      "name": "ot,overtemp",
+      "category": "THERMAL",
+      "description": "Global PMIC die over-temperature threshold exceeded (> 125C)"
+    },
+    "11": {
+      "name": "ov,vddmain_ovlo",
+      "category": "VOLTAGE",
+      "description": "VDD_MAIN over-voltage lockout (> 4.8V)"
+    },
+    "12": {
+      "name": "rsvd_12",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 12"
+    },
+    "13": {
+      "name": "rsvd_13",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 13"
+    },
+    "14": {
+      "name": "rsvd_14",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 14"
+    },
+    "15": {
+      "name": "rsvd_15",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 15"
+    },
+    "16": {
+      "name": "btn_rst,two_finger_rst",
+      "category": "USER_INPUT",
+      "description": "Hardware two-finger button force reboot combination"
+    },
+    "17": {
+      "name": "crash,crash0_in",
+      "category": "SYSTEM_CRASH",
+      "description": "Application Processor Crash0 input signal asserted"
+    },
+    "18": {
+      "name": "btn_rst,btn_seq_reset",
+      "category": "USER_INPUT",
+      "description": "Button sequence reset trigger"
+    },
+    "19": {
+      "name": "btn_rst,sec_btn_seq",
+      "category": "USER_INPUT",
+      "description": "Secondary button sequence reset trigger"
+    },
+    "20": {
+      "name": "wdog,reset_in_1",
+      "category": "WATCHDOG",
+      "description": "Hardware watchdog Reset-In 1 timeout"
+    },
+    "21": {
+      "name": "dbg_rst,reset_in_2",
+      "category": "DEBUG",
+      "description": "Debug probe reset Reset-In 2 triggered"
+    },
+    "22": {
+      "name": "sochot,reset_in_3",
+      "category": "THERMAL",
+      "description": "SoCHot emergency shutdown Reset-In 3 asserted by thermal sensors"
+    },
+    "23": {
+      "name": "rst_in,reset_in_1_deassert",
+      "category": "RESET",
+      "description": "Reset-In 1 de-assertion edge detection"
+    },
+    "24": {
+      "name": "spmi,spmi_fault",
+      "category": "COMMUNICATION",
+      "description": "SPMI bus protocol parity, collision, or framing fault"
+    },
+    "25": {
+      "name": "ntc_shdn",
+      "category": "THERMAL",
+      "description": "External negative temperature coefficient (NTC) resistor thermal shutdown"
+    },
+    "26": {
+      "name": "timeout,dblclick_timeout",
+      "category": "USER_INPUT",
+      "description": "Side-button double-click timing window expiry"
+    },
+    "27": {
+      "name": "rsvd_27",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 27"
+    },
+    "28": {
+      "name": "timeout,watchdog_timeout",
+      "category": "WATCHDOG",
+      "description": "PMIC internal safety watchdog counter expiry"
+    },
+    "29": {
+      "name": "sstate,button_dfu_recover",
+      "category": "RECOVERY",
+      "description": "System state button DFU recovery invocation"
+    },
+    "30": {
+      "name": "sstate,dfu_btn_seq_reset",
+      "category": "RECOVERY",
+      "description": "DFU button sequence reset / Crash1 input trigger"
+    },
+    "31": {
+      "name": "rsvd_31",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 31"
+    },
+    "32": {
+      "name": "rsvd_32",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 32"
+    },
+    "33": {
+      "name": "rsvd_33",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 33"
+    },
+    "34": {
+      "name": "rsvd_34",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 34"
+    },
+    "35": {
+      "name": "otp_crc",
+      "category": "SECURITY",
+      "description": "One-Time Programmable (OTP) fuse CRC checksum verification failure"
+    },
+    "36": {
+      "name": "sgpio",
+      "category": "GPIO",
+      "description": "Serial GPIO bus fault or emergency interrupt"
+    },
+    "37": {
+      "name": "btn_shdn",
+      "category": "USER_INPUT",
+      "description": "Long-press power button hardware shutdown"
+    },
+    "38": {
+      "name": "xtal_wdog_expiry",
+      "category": "CLOCK",
+      "description": "32.768 kHz quartz crystal oscillator failure watchdog"
+    },
+    "39": {
+      "name": "mfsm_sgpio",
+      "category": "GPIO",
+      "description": "Master Finite State Machine SGPIO command handshake error"
+    },
+    "40": {
+      "name": "crash,hyp_fw_crash",
+      "category": "FIRMWARE",
+      "description": "Hypervisor / Secure Monitor firmware crash signal"
+    },
+    "41": {
+      "name": "crash,hyp_hw_crash",
+      "category": "HARDWARE",
+      "description": "Hypervisor hardware protection fault"
+    },
+    "42": {
+      "name": "timeout,target_st_wdog_timeout",
+      "category": "WATCHDOG",
+      "description": "Target power state transition timeout watchdog"
+    },
+    "43": {
+      "name": "timeout,wdog_fw_timeout",
+      "category": "FIRMWARE",
+      "description": "Platform firmware heartbeat watchdog timeout"
+    },
+    "44": {
+      "name": "emerg_shdn",
+      "category": "CRITICAL",
+      "description": "Emergency hardware shutdown sequence executed"
+    },
+    "45": {
+      "name": "rsvd_45",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 45"
+    },
+    "46": {
+      "name": "rsvd_46",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 46"
+    },
+    "47": {
+      "name": "rsvd_47",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 47"
+    },
+    "48": {
+      "name": "rsvd_48",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 48"
+    },
+    "49": {
+      "name": "rsvd_49",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 49"
+    },
+    "50": {
+      "name": "target_off_restart",
+      "category": "STATE_MACHINE",
+      "description": "Target power-off state machine restart event"
+    },
+    "51": {
+      "name": "target_off_shutdown",
+      "category": "STATE_MACHINE",
+      "description": "Target power-off graceful system shutdown"
+    },
+    "52": {
+      "name": "target_off_conflict",
+      "category": "STATE_MACHINE",
+      "description": "Conflicting simultaneous power state change requests"
+    },
+    "53": {
+      "name": "rsvd_53",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 53"
+    },
+    "54": {
+      "name": "rsvd_54",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 54"
+    },
+    "55": {
+      "name": "rsvd_55",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 55"
+    },
+    "56": {
+      "name": "ot,tdie_overtemp_idx0",
+      "category": "THERMAL",
+      "description": "Die temperature sensor Zone 0 overtemp (> 105C)"
+    },
+    "57": {
+      "name": "ot,tdie_overtemp_idx1",
+      "category": "THERMAL",
+      "description": "Die temperature sensor Zone 1 overtemp (> 110C)"
+    },
+    "58": {
+      "name": "ot,tdie_overtemp_idx2",
+      "category": "THERMAL",
+      "description": "Die temperature sensor Zone 2 overtemp (> 115C)"
+    },
+    "59": {
+      "name": "ot,tdie_overtemp_idx3",
+      "category": "THERMAL",
+      "description": "Die temperature sensor Zone 3 overtemp (> 120C)"
+    },
+    "60": {
+      "name": "ot,tdie_overtemp_idx4",
+      "category": "THERMAL",
+      "description": "Die temperature sensor Zone 4 overtemp (> 125C)"
+    },
+    "61": {
+      "name": "ot,tdie_overtemp",
+      "category": "THERMAL",
+      "description": "Aggregate die thermal trip emergency cut-off"
+    },
+    "62": {
+      "name": "rsvd_62",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 62"
+    },
+    "63": {
+      "name": "rsvd_63",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 63"
+    },
+    "64": {
+      "name": "uv,cp_uvlo",
+      "category": "VOLTAGE",
+      "description": "Charge Pump (CP) under-voltage lockout"
+    },
+    "65": {
+      "name": "ov,cp_ovlo",
+      "category": "VOLTAGE",
+      "description": "Charge Pump (CP) over-voltage lockout"
+    },
+    "66": {
+      "name": "cp_wdog_expiry",
+      "category": "WATCHDOG",
+      "description": "Charge Pump (CP) regulation watchdog expiry"
+    },
+    "67": {
+      "name": "rsvd_67",
+      "category": "RESERVED",
+      "description": "Reserved fault channel 67"
+    },
+    "68": {
+      "name": "uv,ldo9_uv",
+      "category": "VOLTAGE",
+      "description": "LDO9 regulator under-voltage"
+    },
+    "69": {
+      "name": "ov,ldo9_ov",
+      "category": "VOLTAGE",
+      "description": "LDO9 regulator over-voltage"
+    },
+    "70": {
+      "name": "uv,ldo9b_uv",
+      "category": "VOLTAGE",
+      "description": "LDO9b secondary regulator under-voltage"
+    },
+    "71": {
+      "name": "ov,ldo9b_ov",
+      "category": "VOLTAGE",
+      "description": "LDO9b secondary regulator over-voltage"
+    }
+  }
+}

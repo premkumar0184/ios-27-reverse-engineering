@@ -1,0 +1,694 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ADMAC Evolution DMA Channel Geometry Specification",
+  "description": "Comprehensive hardware register apertures, channel allocations, and memory controller geometries for Apple Silicon A19 Pro (t8150 / iOS 27.2) ADMAC Evolution instances.",
+  "soc": "t8150",
+  "target_os": "iOS 27.2",
+  "architecture": "Apple Silicon ARM64e",
+  "dma_subsystem": "AudioDMAController_T8150_iOS (ADMAC Evolution v4p0)",
+  "global_timebase_synchronization": {
+    "aon_pmgr_register": "0x00000000f82a8000",
+    "register_size_bytes": 8,
+    "clock_scaler_min": 1,
+    "timebase_sources": [
+      {
+        "name": "LTB",
+        "description": "Local Time Base derived from ADMAC internal counter",
+        "bits": 64
+      },
+      {
+        "name": "GTB",
+        "description": "Global Time Base derived from Always-On (AON) PMGR counter",
+        "bits": 64
+      },
+      {
+        "name": "MCT",
+        "description": "Match Count Timer for scheduled audio events",
+        "bits": 64
+      },
+      {
+        "name": "MAT",
+        "description": "Match Action Timer for latency alignment and trigger timestamps",
+        "bits": 64
+      }
+    ],
+    "calibration_routine": "_calibrateTimeOffsets",
+    "telemetry_histograms": [
+      "Timebase Offset (Positive)",
+      "Timebase Offset (Negative)",
+      "Outstanding AXI Read",
+      "Outstanding AXI Write",
+      "Interrupt Counter"
+    ]
+  },
+  "global_register_block_geometry": {
+    "aperture_name": "adma_global_regs",
+    "size_bytes": 16384,
+    "registers": {
+      "GLB_CTL": {
+        "offset": "0x0000",
+        "width_bits": 32,
+        "description": "Global ADMAC Evolution Control and Reset",
+        "bitfields": {
+          "enable": {"bits": "0:0", "description": "Global controller enable"},
+          "soft_reset": {"bits": "1:1", "description": "Global software reset"},
+          "legacy_contract_mode": {"bits": "4:4", "description": "Legacy contract compatibility mode (0=v4p0 new contract, 1=legacy)"},
+          "burst_arbitration_mode": {"bits": "8:9", "description": "AXI burst arbitration priority weighting"}
+        }
+      },
+      "GLB_REV": {
+        "offset": "0x0004",
+        "width_bits": 32,
+        "description": "Hardware Revision and Capability Identifier",
+        "bitfields": {
+          "minor_rev": {"bits": "7:0", "description": "Minor silicon revision"},
+          "major_rev": {"bits": "15:8", "description": "Major silicon revision (0x04 for v4p0)"},
+          "evolution_flag": {"bits": "16:16", "description": "ADMAC Evolution enhanced descriptor support flag"},
+          "cllt_supported": {"bits": "17:17", "description": "Critical Low-Latency Transfer hardware escalation support"}
+        }
+      },
+      "GLB_IRQ_STAT": {
+        "offset": "0x0010",
+        "width_bits": 32,
+        "description": "Global Interrupt Status Register (glbirqstat)",
+        "bitfields": {
+          "tx_irq_pending": {"bits": "0:0", "description": "Aggregate TX channel interrupt pending"},
+          "rx_irq_pending": {"bits": "1:1", "description": "Aggregate RX channel interrupt pending"},
+          "err_irq_pending": {"bits": "2:2", "description": "Global bus/DART fault interrupt pending"},
+          "timebase_irq_pending": {"bits": "3:3", "description": "Timebase counter match interrupt pending"}
+        }
+      },
+      "GLB_IRQ_EN": {
+        "offset": "0x0014",
+        "width_bits": 32,
+        "description": "Global Interrupt Enable Mask",
+        "bitfields": {
+          "tx_irq_en": {"bits": "0:0", "description": "Enable aggregate TX interrupt dispatch"},
+          "rx_irq_en": {"bits": "1:1", "description": "Enable aggregate RX interrupt dispatch"},
+          "err_irq_en": {"bits": "2:2", "description": "Enable bus error interrupt dispatch"},
+          "timebase_irq_en": {"bits": "3:3", "description": "Enable timebase match interrupt dispatch"}
+        }
+      },
+      "TXCH_IRQ_STAT": {
+        "offset": "0x0020",
+        "width_bits": 32,
+        "description": "TX Channel Interrupt Status Bitmap (txchirqstat)",
+        "bitfields": {
+          "channel_bitmap": {"bits": "31:0", "description": "Bit [i] indicates pending interrupt on TX channel i"}
+        }
+      },
+      "TXCH_IRQ_EN": {
+        "offset": "0x0024",
+        "width_bits": 32,
+        "description": "TX Channel Interrupt Enable Bitmap",
+        "bitfields": {
+          "channel_bitmap": {"bits": "31:0", "description": "Bit [i] enables interrupt on TX channel i"}
+        }
+      },
+      "RXCH_IRQ_STAT": {
+        "offset": "0x0030",
+        "width_bits": 32,
+        "description": "RX Channel Interrupt Status Bitmap (rxchirqstat)",
+        "bitfields": {
+          "channel_bitmap": {"bits": "31:0", "description": "Bit [i] indicates pending interrupt on RX channel i"}
+        }
+      },
+      "RXCH_IRQ_EN": {
+        "offset": "0x0034",
+        "width_bits": 32,
+        "description": "RX Channel Interrupt Enable Bitmap",
+        "bitfields": {
+          "channel_bitmap": {"bits": "31:0", "description": "Bit [i] enables interrupt on RX channel i"}
+        }
+      },
+      "TIMEBASE1_VAL": {
+        "offset": "0x0040",
+        "width_bits": 32,
+        "description": "Timebase1 Counter Value Low 32 bits"
+      },
+      "TIMEBASE1_VAL_HI": {
+        "offset": "0x0044",
+        "width_bits": 32,
+        "description": "Timebase1 Counter Value High 32 bits"
+      },
+      "TIMEBASE1_CTL": {
+        "offset": "0x0048",
+        "width_bits": 32,
+        "description": "Timebase1 Control and Clock Scaler",
+        "bitfields": {
+          "scaler": {"bits": "15:0", "description": "Clock prescaler divisor ratio (_clockScaler >= 1)"},
+          "valid": {"bits": "31:31", "description": "Timebase counter valid latch (timebase1.valid == 1)"}
+        }
+      }
+    }
+  },
+  "channel_block_geometry": {
+    "description": "Per-channel operational register structures (_adma_base_ns_txch_blk_v3 and _adma_base_ns_rxch_blk_v3)",
+    "tx_aperture_stride_bytes": 16384,
+    "rx_aperture_stride_bytes": 16384,
+    "registers": {
+      "CH_CTL": {
+        "offset": "0x0000",
+        "width_bits": 32,
+        "description": "Channel Execution Control",
+        "bitfields": {
+          "enable": {"bits": "0:0", "description": "Enable channel execution"},
+          "soft_reset": {"bits": "1:1", "description": "Reset channel FIFO pointers and state"},
+          "pause": {"bits": "2:2", "description": "Pause channel AXI read/write fetches"},
+          "direction": {"bits": "3:3", "description": "Transfer direction (0=RX, 1=TX)"},
+          "is_m2m": {"bits": "4:4", "description": "Memory-to-Memory transfer mode flag"}
+        }
+      },
+      "CH_STAT": {
+        "offset": "0x0004",
+        "width_bits": 32,
+        "description": "Channel Runtime Status",
+        "bitfields": {
+          "idle": {"bits": "0:0", "description": "Channel is quiescent with no pending bursts"},
+          "running": {"bits": "1:1", "description": "Channel is actively servicing transfers"},
+          "paused": {"bits": "2:2", "description": "Channel execution paused by software"},
+          "error": {"bits": "3:3", "description": "Hardware descriptor or FIFO error detected"}
+        }
+      },
+      "CH_CFG": {
+        "offset": "0x0008",
+        "width_bits": 32,
+        "description": "Channel Format and Stream Configuration",
+        "bitfields": {
+          "stream_type": {"bits": "1:0", "description": "Stream type (0=ISOC isochronous, 1=BULK)"},
+          "byte_size": {"bits": "3:2", "description": "Programmed sample word byte width (0=2B/16-bit, 1=4B/32-bit)"},
+          "channel_count": {"bits": "7:4", "description": "Active audio channels encoded (0=1ch, 1=2ch, 3=4ch, 7=8ch, 11=12ch)"},
+          "sample_rate_code": {"bits": "11:8", "description": "Audio sample rate classification (e.g. 16kHz, 48kHz, 96kHz)"}
+        }
+      },
+      "AXICTL": {
+        "offset": "0x000C",
+        "width_bits": 32,
+        "description": "AXI Bus Transfer and Cache Hints Control",
+        "bitfields": {
+          "arcache": {"bits": "3:0", "description": "AXI Read Cache allocation hint (asserted == 0x2 in _startTransfer)"},
+          "awcache": {"bits": "7:4", "description": "AXI Write Cache allocation hint (asserted == 0x2 in _startTransfer)"},
+          "burst_size": {"bits": "11:8", "description": "Programmed AXI burst beats (0=16B, 1=32B, 2=64B, 3=128B)"},
+          "outstanding_max": {"bits": "15:12", "description": "Maximum allowed outstanding AXI requests"}
+        }
+      },
+      "FIFO_SIZE": {
+        "offset": "0x0010",
+        "width_bits": 32,
+        "description": "Channel Internal FIFO Depth in 16-byte units (channelBufferSize)"
+      },
+      "FIFO_START_TRIGGER": {
+        "offset": "0x0014",
+        "width_bits": 32,
+        "description": "FIFO Start Watermark Trigger (initial-trigger-bytes / fifo_start_trigger)"
+      },
+      "FIFO_STOP_TRIGGER": {
+        "offset": "0x0018",
+        "width_bits": 32,
+        "description": "FIFO Stop Watermark Limit (programmedTransferEndLimitsBytes / fifo_stop_trigger)"
+      },
+      "FIFO_THRESHOLDS": {
+        "offset": "0x001C",
+        "width_bits": 32,
+        "description": "FIFO Multi-level Threshold Management",
+        "bitfields": {
+          "almost_empty_threshold": {"bits": "9:0", "description": "Almost empty threshold bytes"},
+          "transfer_threshold": {"bits": "19:10", "description": "Burst trigger transfer threshold bytes"},
+          "almost_full_threshold": {"bits": "29:20", "description": "Almost full backpressure threshold bytes"}
+        }
+      },
+      "CSFIFO_STAT": {
+        "offset": "0x0020",
+        "width_bits": 32,
+        "description": "Command Status FIFO Status (csfifostat)",
+        "bitfields": {
+          "empty": {"bits": "0:0", "description": "CS FIFO is empty (asserted == 0 when completions pending)"},
+          "full": {"bits": "1:1", "description": "CS FIFO is full (triggers CS FIFO is full panic/error)"},
+          "entry_count": {"bits": "11:4", "description": "Number of completed descriptor records ready to pop"}
+        }
+      },
+      "PCTFIFO_STAT": {
+        "offset": "0x0024",
+        "width_bits": 32,
+        "description": "Pre-Calculated Timestamp FIFO Status (pctfifostat)",
+        "bitfields": {
+          "empty": {"bits": "0:0", "description": "PCT FIFO is empty (asserted == 0 when timestamps ready)"},
+          "full": {"bits": "1:1", "description": "PCT FIFO is full"},
+          "entry_count": {"bits": "11:4", "description": "Number of hardware timestamp records ready to pop"}
+        }
+      },
+      "DMA_TIMEOUT": {
+        "offset": "0x0028",
+        "width_bits": 32,
+        "description": "DMA Burst AXI Transfer Watchdog Timeout (dma_timeout)"
+      },
+      "CH_IRQ_STAT": {
+        "offset": "0x0030",
+        "width_bits": 32,
+        "description": "Channel Specific Interrupt Status (irqState.raw)",
+        "bitfields": {
+          "desc_complete": {"bits": "0:0", "description": "Transfer descriptor completed interrupt"},
+          "fifo_error": {"bits": "1:1", "description": "TDCS FIFO underflow or overflow error"},
+          "timeout_error": {"bits": "2:2", "description": "Bus transaction timeout error"},
+          "cllt_violation": {"bits": "3:3", "description": "Critical low latency transfer deadline missed"}
+        }
+      },
+      "CH_IRQ_EN": {
+        "offset": "0x0034",
+        "width_bits": 32,
+        "description": "Channel Specific Interrupt Enable Mask"
+      }
+    }
+  },
+  "controllers": [
+    {
+      "node_name": "admac-base-ns",
+      "compatible": "admac-evolution,t8150",
+      "device_type": "admac",
+      "role": "BANS",
+      "role_code_hex": "0x42414e53",
+      "security_domain": "Non-Secure",
+      "bus_target": "Base Audio Subsystem (Speakers, Microphones, Loopbacks)",
+      "base_address": "0x313900000",
+      "arm_io_mapped_address": "0x103900000",
+      "aperture_size_bytes": 737280,
+      "aon_timebase_reg": "0x00000000f82a8000",
+      "interrupt_number": 408,
+      "interrupt_hex": "0x0198",
+      "irq_destination_index": 0,
+      "irq_destinations": " CIAUPCA NTGDSNU",
+      "iommu_parent": "mapper-admac-base-ns",
+      "dart_phandle": 77,
+      "dart_sid": 8,
+      "ced_ssw_service": "AudioDMACLLTEscalationDetectorADMAC-A",
+      "crit_llt_mode_function": "vote_crit_llt_mode",
+      "channel_buffer_sram_allocation": {
+        "tx_size_bytes": 147456,
+        "rx_size_bytes": 98304,
+        "tx_base": 0,
+        "rx_base": 0
+      },
+      "channels_tx_count": 13,
+      "channels_rx_count": 13,
+      "channels": [
+        {
+          "name": "base-ns-adma-tx-1",
+          "index": 1,
+          "direction": "tx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "BANS",
+          "stream_type": "ISOC",
+          "max_channel_count": 2,
+          "max_bit_depth": 16,
+          "max_sample_rate_hz": 48000,
+          "apertures": {
+            "control": {"base": "0x313944000", "size": 16384, "description": "TX Channel 1 Control Block (_adma_base_ns_txch_blk_v3)"},
+            "td_fifo": {"base": "0x313910004", "size": 4, "description": "TX Channel 1 Transfer Descriptor FIFO Push Aperture"},
+            "cs_fifo": {"base": "0x313910104", "size": 4, "description": "TX Channel 1 Command Status FIFO Pop Aperture"},
+            "pct_fifo": {"base": "0x313910204", "size": 4, "description": "TX Channel 1 Pre-Calculated Timestamp FIFO Pop Aperture"}
+          },
+          "endpoint_mapping": "audio-mca-loopback (TX monitor)"
+        },
+        {
+          "name": "base-ns-adma-rx-1",
+          "index": 1,
+          "direction": "rx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "BANS",
+          "stream_type": "ISOC",
+          "max_channel_count": 2,
+          "max_bit_depth": 16,
+          "max_sample_rate_hz": 48000,
+          "apertures": {
+            "control": {"base": "0x313984000", "size": 16384, "description": "RX Channel 1 Control Block (_adma_base_ns_rxch_blk_v3)"},
+            "td_fifo": {"base": "0x313914004", "size": 4, "description": "RX Channel 1 Transfer Descriptor FIFO Push Aperture"},
+            "cs_fifo": {"base": "0x313914104", "size": 4, "description": "RX Channel 1 Command Status FIFO Pop Aperture"},
+            "pct_fifo": {"base": "0x313914204", "size": 4, "description": "RX Channel 1 Pre-Calculated Timestamp FIFO Pop Aperture"}
+          },
+          "endpoint_mapping": "audio-mca-loopback (RX capture)"
+        },
+        {
+          "name": "base-ns-adma-rx-3",
+          "index": 3,
+          "direction": "rx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "BANS",
+          "stream_type": "ISOC",
+          "max_channel_count": 12,
+          "max_bit_depth": 16,
+          "max_sample_rate_hz": 48000,
+          "apertures": {
+            "control": {"base": "0x31398c000", "size": 16384, "description": "RX Channel 3 Control Block"},
+            "td_fifo": {"base": "0x31391400c", "size": 4, "description": "RX Channel 3 TD FIFO"},
+            "cs_fifo": {"base": "0x31391410c", "size": 4, "description": "RX Channel 3 CS FIFO"},
+            "pct_fifo": {"base": "0x31391420c", "size": 4, "description": "RX Channel 3 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-speaker-mca (Multi-channel speaker current/voltage sense return)"
+        },
+        {
+          "name": "base-ns-adma-rx-4",
+          "index": 4,
+          "direction": "rx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "BANS",
+          "stream_type": "ISOC",
+          "max_channel_count": 2,
+          "max_bit_depth": 16,
+          "max_sample_rate_hz": 48000,
+          "apertures": {
+            "control": {"base": "0x313990000", "size": 16384, "description": "RX Channel 4 Control Block"},
+            "td_fifo": {"base": "0x313914010", "size": 4, "description": "RX Channel 4 TD FIFO"},
+            "cs_fifo": {"base": "0x313914110", "size": 4, "description": "RX Channel 4 CS FIFO"},
+            "pct_fifo": {"base": "0x313914210", "size": 4, "description": "RX Channel 4 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-speaker-tap (Speaker audio stream tap/protection monitor)"
+        },
+        {
+          "name": "base-ns-adma-rx-5",
+          "index": 5,
+          "direction": "rx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "BANS",
+          "stream_type": "ISOC",
+          "max_channel_count": 4,
+          "max_bit_depth": 32,
+          "max_sample_rate_hz": 48000,
+          "apertures": {
+            "control": {"base": "0x313994000", "size": 16384, "description": "RX Channel 5 Control Block"},
+            "td_fifo": {"base": "0x313914014", "size": 4, "description": "RX Channel 5 TD FIFO"},
+            "cs_fifo": {"base": "0x313914114", "size": 4, "description": "RX Channel 5 CS FIFO"},
+            "pct_fifo": {"base": "0x313914214", "size": 4, "description": "RX Channel 5 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-hp (Headphone high-resolution analog input)"
+        },
+        {
+          "name": "base-ns-adma-rx-6",
+          "index": 6,
+          "direction": "rx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "BANS",
+          "stream_type": "ISOC",
+          "max_channel_count": 2,
+          "max_bit_depth": 16,
+          "max_sample_rate_hz": 48000,
+          "apertures": {
+            "control": {"base": "0x313998000", "size": 16384, "description": "RX Channel 6 Control Block"},
+            "td_fifo": {"base": "0x313914018", "size": 4, "description": "RX Channel 6 TD FIFO"},
+            "cs_fifo": {"base": "0x313914118", "size": 4, "description": "RX Channel 6 CS FIFO"},
+            "pct_fifo": {"base": "0x313914218", "size": 4, "description": "RX Channel 6 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-flicker (Display refresh flicker compensation audio sensor)"
+        },
+        {
+          "name": "base-ns-adma-tx-8",
+          "index": 8,
+          "direction": "tx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "BANS",
+          "stream_type": "ISOC",
+          "max_channel_count": 4,
+          "max_bit_depth": 16,
+          "max_sample_rate_hz": 16000,
+          "apertures": {
+            "control": {"base": "0x313960000", "size": 16384, "description": "TX Channel 8 Control Block"},
+            "td_fifo": {"base": "0x313910020", "size": 4, "description": "TX Channel 8 TD FIFO"},
+            "cs_fifo": {"base": "0x313910120", "size": 4, "description": "TX Channel 8 CS FIFO"},
+            "pct_fifo": {"base": "0x313910220", "size": 4, "description": "TX Channel 8 PCT FIFO"}
+          },
+          "endpoint_mapping": "lp-mic-injection-device (Low power mic test and acoustic injection)"
+        }
+      ]
+    },
+    {
+      "node_name": "admac-base-s",
+      "compatible": "admac-evolution,t8150",
+      "device_type": "admac",
+      "role": "BASS",
+      "role_code_hex": "0x42415353",
+      "security_domain": "Secure (Exclave/TrustZone isolated)",
+      "bus_target": "Base Audio Subsystem Secure (Encrypted Output to Speakers, Receivers, Microphones)",
+      "base_address": "0x313700000",
+      "arm_io_mapped_address": "0x103700000",
+      "aperture_size_bytes": 753664,
+      "aon_timebase_reg": "0x00000000f82a8000",
+      "interrupt_number": 407,
+      "interrupt_hex": "0x0197",
+      "irq_destination_index": 0,
+      "irq_destinations": " CIAUPCA NTGDSNU",
+      "iommu_parent": "mapper-admac-base-s",
+      "dart_phandle": 79,
+      "dart_sid": 9,
+      "ced_ssw_service": "AudioDMACLLTEscalationDetectorADMAC-A",
+      "crit_llt_mode_function": "vote_crit_llt_mode",
+      "channel_buffer_sram_allocation": {
+        "tx_size_bytes": 98304,
+        "rx_size_bytes": 16384,
+        "tx_base": 0,
+        "rx_base": 0
+      },
+      "channels_tx_count": 5,
+      "channels_rx_count": 14,
+      "channels": [
+        {
+          "name": "base-s-adma-tx-3",
+          "index": 3,
+          "direction": "tx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "BASS",
+          "stream_type": "ISOC",
+          "max_channel_count": 2,
+          "max_bit_depth": 16,
+          "max_sample_rate_hz": 48000,
+          "max_fifo_depth_bytes": 160,
+          "initial_trigger_bytes": 96,
+          "service_exclave_proxy": "DMAChannelProxy@admac-speaker-tx-ec-proxy",
+          "exclave_service": "com.apple.service.SpeakerOutputStreamDMA",
+          "apertures": {
+            "control": {"base": "0x31374c000", "size": 16384, "description": "TX Channel 3 Control Block"},
+            "td_fifo": {"base": "0x31371000c", "size": 4, "description": "TX Channel 3 TD FIFO"},
+            "cs_fifo": {"base": "0x31371010c", "size": 4, "description": "TX Channel 3 CS FIFO"},
+            "pct_fifo": {"base": "0x31371020c", "size": 4, "description": "TX Channel 3 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-speaker-mca (Secure primary stereo speaker audio output stream)"
+        },
+        {
+          "name": "base-s-adma-tx-4",
+          "index": 4,
+          "direction": "tx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "BASS",
+          "stream_type": "ISOC",
+          "max_channel_count": 1,
+          "max_bit_depth": 32,
+          "max_sample_rate_hz": 48000,
+          "max_fifo_depth_bytes": 160,
+          "initial_trigger_bytes": 96,
+          "service_exclave_proxy": "DMAChannelProxy@admac-receiver-tx-ec-proxy",
+          "exclave_service": "com.apple.service.ReceiverOutputStreamDMA",
+          "apertures": {
+            "control": {"base": "0x313750000", "size": 16384, "description": "TX Channel 4 Control Block"},
+            "td_fifo": {"base": "0x313710010", "size": 4, "description": "TX Channel 4 TD FIFO"},
+            "cs_fifo": {"base": "0x313710110", "size": 4, "description": "TX Channel 4 CS FIFO"},
+            "pct_fifo": {"base": "0x313710210", "size": 4, "description": "TX Channel 4 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-receiver (Secure earpiece receiver audio output stream)"
+        },
+        {
+          "name": "base-s-adma-rx-5",
+          "index": 5,
+          "direction": "rx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "BASS",
+          "stream_type": "ISOC",
+          "max_channel_count": 4,
+          "max_bit_depth": 32,
+          "max_sample_rate_hz": 48000,
+          "service_exclave_proxy": "DMAChannelProxy@admac-base-s-rx-5-proxy",
+          "exclave_service": "com.apple.service.AudioDriver",
+          "apertures": {
+            "control": {"base": "0x313794000", "size": 16384, "description": "RX Channel 5 Control Block"},
+            "td_fifo": {"base": "0x313714014", "size": 4, "description": "RX Channel 5 TD FIFO"},
+            "cs_fifo": {"base": "0x313714114", "size": 4, "description": "RX Channel 5 CS FIFO"},
+            "pct_fifo": {"base": "0x313714214", "size": 4, "description": "RX Channel 5 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-hp (Secure microphone input stream)"
+        }
+      ]
+    },
+    {
+      "node_name": "admac-leap-ns",
+      "compatible": "admac-evolution,t8150",
+      "device_type": "admac",
+      "role": "LENS",
+      "role_code_hex": "0x4c454e53",
+      "security_domain": "Non-Secure",
+      "bus_target": "LEAP (Low-latency Embedded Audio Processor / Haptics Subsystem)",
+      "base_address": "0x313300000",
+      "arm_io_mapped_address": "0x103300000",
+      "aperture_size_bytes": 671744,
+      "aon_timebase_reg": "0x00000000f82a8000",
+      "interrupt_number": 411,
+      "interrupt_hex": "0x019b",
+      "irq_destination_index": 0,
+      "irq_destinations": " CIAUPCA NTGDSNU",
+      "iommu_parent": "mapper-admac-leap-ns",
+      "dart_phandle": 78,
+      "dart_sid": 10,
+      "ced_ssw_service": "AudioDMACLLTEscalationDetectorADMAC-A",
+      "crit_llt_mode_function": "vote_crit_llt_mode",
+      "channel_buffer_sram_allocation": {
+        "tx_size_bytes": 57344,
+        "rx_size_bytes": 69632,
+        "tx_base": 0,
+        "rx_base": 0
+      },
+      "channels_tx_count": 9,
+      "channels_rx_count": 9,
+      "channels": [
+        {
+          "name": "leap-ns-adma-tx-3",
+          "index": 3,
+          "direction": "tx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "LENS",
+          "stream_type": "ISOC",
+          "max_channel_count": 1,
+          "max_bit_depth": 32,
+          "max_sample_rate_hz": 48000,
+          "apertures": {
+            "control": {"base": "0x31334c000", "size": 16384, "description": "TX Channel 3 Control Block"},
+            "td_fifo": {"base": "0x31331000c", "size": 4, "description": "TX Channel 3 TD FIFO"},
+            "cs_fifo": {"base": "0x31331010c", "size": 4, "description": "TX Channel 3 CS FIFO"},
+            "pct_fifo": {"base": "0x31331020c", "size": 4, "description": "TX Channel 3 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-haptic-transport (Haptic waveform actuator drive stream)"
+        },
+        {
+          "name": "leap-ns-adma-rx-3",
+          "index": 3,
+          "direction": "rx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "LENS",
+          "stream_type": "ISOC",
+          "max_channel_count": 8,
+          "max_bit_depth": 32,
+          "max_sample_rate_hz": 48000,
+          "apertures": {
+            "control": {"base": "0x31338c000", "size": 16384, "description": "RX Channel 3 Control Block"},
+            "td_fifo": {"base": "0x31331400c", "size": 4, "description": "RX Channel 3 TD FIFO"},
+            "cs_fifo": {"base": "0x31331410c", "size": 4, "description": "RX Channel 3 CS FIFO"},
+            "pct_fifo": {"base": "0x31331420c", "size": 4, "description": "RX Channel 3 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-hpdbg-transport (Haptic debug and acceleration sensor telemetry)"
+        },
+        {
+          "name": "leap-ns-adma-tx-4",
+          "index": 4,
+          "direction": "tx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "LENS",
+          "stream_type": "ISOC",
+          "max_channel_count": 2,
+          "max_bit_depth": 32,
+          "max_sample_rate_hz": 48000,
+          "apertures": {
+            "control": {"base": "0x313350000", "size": 16384, "description": "TX Channel 4 Control Block"},
+            "td_fifo": {"base": "0x313310010", "size": 4, "description": "TX Channel 4 TD FIFO"},
+            "cs_fifo": {"base": "0x313310110", "size": 4, "description": "TX Channel 4 CS FIFO"},
+            "pct_fifo": {"base": "0x313310210", "size": 4, "description": "TX Channel 4 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-s-leap-internal-loopback (LEAP internal loopback TX side)"
+        },
+        {
+          "name": "leap-ns-adma-tx-5",
+          "index": 5,
+          "direction": "tx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "LENS",
+          "stream_type": "ISOC",
+          "max_channel_count": 2,
+          "max_bit_depth": 32,
+          "max_sample_rate_hz": 48000,
+          "apertures": {
+            "control": {"base": "0x313354000", "size": 16384, "description": "TX Channel 5 Control Block"},
+            "td_fifo": {"base": "0x313310014", "size": 4, "description": "TX Channel 5 TD FIFO"},
+            "cs_fifo": {"base": "0x313310114", "size": 4, "description": "TX Channel 5 CS FIFO"},
+            "pct_fifo": {"base": "0x313310214", "size": 4, "description": "TX Channel 5 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-leap-internal-loopback (Non-secure LEAP loopback TX side)"
+        },
+        {
+          "name": "leap-ns-adma-rx-5",
+          "index": 5,
+          "direction": "rx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "LENS",
+          "stream_type": "ISOC",
+          "max_channel_count": 2,
+          "max_bit_depth": 32,
+          "max_sample_rate_hz": 48000,
+          "apertures": {
+            "control": {"base": "0x313394000", "size": 16384, "description": "RX Channel 5 Control Block"},
+            "td_fifo": {"base": "0x313314014", "size": 4, "description": "RX Channel 5 TD FIFO"},
+            "cs_fifo": {"base": "0x313314114", "size": 4, "description": "RX Channel 5 CS FIFO"},
+            "pct_fifo": {"base": "0x313314214", "size": 4, "description": "RX Channel 5 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-leap-internal-loopback (Non-secure LEAP loopback RX side)"
+        }
+      ]
+    },
+    {
+      "node_name": "admac-leap-s",
+      "compatible": "admac-evolution,t8150",
+      "device_type": "admac",
+      "role": "LESS",
+      "role_code_hex": "0x4c455353",
+      "security_domain": "Secure (Exclave/TrustZone isolated)",
+      "bus_target": "LEAP Secure Haptics & Feedback Subsystem",
+      "base_address": "0x313100000",
+      "arm_io_mapped_address": "0x103100000",
+      "aperture_size_bytes": 671744,
+      "aon_timebase_reg": "0x00000000f82a8000",
+      "interrupt_number": 410,
+      "interrupt_hex": "0x019a",
+      "irq_destination_index": 0,
+      "irq_destinations": " CIAUPCA NTGDSNU",
+      "iommu_parent": "mapper-admac-leap-s",
+      "dart_phandle": 80,
+      "dart_sid": 11,
+      "ced_ssw_service": "AudioDMACLLTEscalationDetectorADMAC-A",
+      "crit_llt_mode_function": "vote_crit_llt_mode",
+      "channel_buffer_sram_allocation": {
+        "tx_size_bytes": 65536,
+        "rx_size_bytes": 61184,
+        "tx_base": 0,
+        "rx_base": 0
+      },
+      "channels_tx_count": 4,
+      "channels_rx_count": 9,
+      "channels": [
+        {
+          "name": "leap-s-adma-rx-4",
+          "index": 4,
+          "direction": "rx",
+          "compatible": "audio-dma-channel,v4p0",
+          "role": "LESS",
+          "stream_type": "ISOC",
+          "max_channel_count": 2,
+          "max_bit_depth": 32,
+          "max_sample_rate_hz": 48000,
+          "channel_is_development_only": true,
+          "service_exclave_proxy": "DMAChannelProxy@admac-leap-s-rx-4-proxy",
+          "exclave_service": "com.apple.service.SecureLEAPLoopbackDMA",
+          "apertures": {
+            "control": {"base": "0x313190000", "size": 16384, "description": "RX Channel 4 Control Block"},
+            "td_fifo": {"base": "0x313114010", "size": 4, "description": "RX Channel 4 TD FIFO"},
+            "cs_fifo": {"base": "0x313114110", "size": 4, "description": "RX Channel 4 CS FIFO"},
+            "pct_fifo": {"base": "0x313114210", "size": 4, "description": "RX Channel 4 PCT FIFO"}
+          },
+          "endpoint_mapping": "audio-s-leap-internal-loopback (Secure LEAP Loopback RX capture)"
+        }
+      ]
+    }
+  ]
+}

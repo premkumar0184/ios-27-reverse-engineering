@@ -1,0 +1,267 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro (t8150) Platform Hardware Topology & Emulation Specification",
+  "platform": {
+    "soc": "t8150",
+    "device_class": "v57ap",
+    "marketing_name": "Apple A19 Pro",
+    "target_device": "iPhone18,3",
+    "os_version": "iOS 27.2",
+    "build": "24B119",
+    "darwin_version": "Darwin Kernel Version 24.2.0",
+    "cpu_architecture": "arm64e",
+    "cpu_cores": {
+      "total": 8,
+      "performance_cores": 2,
+      "efficiency_cores": 6,
+      "isa_profile": "ARMv9.4-A with Apple FEAT_PAUTH2 / FEAT_BTI"
+    },
+    "pa_bits": 36,
+    "page_size_bytes": 16384
+  },
+  "physical_memory_map": {
+    "dram": {
+      "base_hex": "0x0000000800000000",
+      "size_bytes": 34359738368,
+      "size_gb": 32,
+      "limit_hex": "0x0000000fffffffff"
+    },
+    "carveouts": [
+      {
+        "id": "SPTM_RESERVED",
+        "description": "Secure Page Table Monitor runtime reservation",
+        "base_hex": "0x0000000800000000",
+        "size_bytes": 536870912,
+        "size_mb": 512,
+        "security_domain": "SPTM / EL2 / CTRR"
+      },
+      {
+        "id": "TXM_RESERVED",
+        "description": "Trusted Execution Monitor runtime carveout",
+        "base_hex": "0x0000000820000000",
+        "size_bytes": 67108864,
+        "size_mb": 64,
+        "security_domain": "TXM / EL2"
+      },
+      {
+        "id": "EXCLAVE_POOL",
+        "description": "ExclaveOS cL4 Microkernel & Conclave dynamic memory pool",
+        "base_hex": "0x0000000824000000",
+        "size_bytes": 1073741824,
+        "size_mb": 1024,
+        "security_domain": "cL4 Conclaves"
+      },
+      {
+        "id": "SEP_TZ0S",
+        "description": "Secure Enclave static firmware & crypto engine DRAM buffer",
+        "base_hex": "0x0000000864000000",
+        "size_bytes": 102432768,
+        "size_mb": 97.6875,
+        "security_domain": "sepOS TZ0S"
+      },
+      {
+        "id": "SEP_TZ1S",
+        "description": "Secure Enclave dynamic buffer / FaceID Pearl NIR ingest",
+        "base_hex": "0x000000086a1b0000",
+        "size_bytes": 84279296,
+        "size_mb": 80.375,
+        "security_domain": "sepOS TZ1S"
+      },
+      {
+        "id": "DARWIN_HOST",
+        "description": "Darwin XNU host physical memory pool",
+        "base_hex": "0x000000086f210000",
+        "size_bytes": 32495247360,
+        "size_gb": 30.2636,
+        "security_domain": "Host OS / Userland"
+      }
+    ],
+    "sram_regions": [
+      {
+        "id": "SEP_RETENTION_SRAM",
+        "base_hex": "0x0000000070000000",
+        "size_bytes": 524288,
+        "size_kb": 512,
+        "owner": "SEP"
+      },
+      {
+        "id": "AOP2_RETENTION_SRAM",
+        "base_hex": "0x0000000100000000",
+        "size_bytes": 5603328,
+        "size_mb": 5.344,
+        "owner": "AOP2"
+      },
+      {
+        "id": "AGX_TILE_SRAM",
+        "base_hex": "0x0000000230000000",
+        "size_bytes": 16777216,
+        "size_mb": 16,
+        "owner": "AGX G18P"
+      },
+      {
+        "id": "ANE_TENSOR_SRAM",
+        "base_hex": "0x0000000270000000",
+        "size_bytes": 33554432,
+        "size_mb": 32,
+        "owner": "ANE Gen5"
+      }
+    ]
+  },
+  "interrupt_controller": {
+    "model": "Apple Interrupt Controller (AIC v3/v4)",
+    "base_hex": "0x00000000f3c00000",
+    "size_bytes": 65536,
+    "vector_capacity": 1024,
+    "key_vectors": {
+      "AIC_IRQ_PRORES_COMPLETE": { "vector": 256, "hex": "0x0100", "source": "AppleProResHW Slice Done" },
+      "AIC_IRQ_ISP_FRAME_DONE": { "vector": 284, "hex": "0x011c", "source": "Silenus CISP Frame Complete" },
+      "AIC_IRQ_ISP_STATS_READY": { "vector": 285, "hex": "0x011d", "source": "Silenus 3A Statistics Ready" },
+      "AIC_IRQ_ISP_DMA_ERROR": { "vector": 286, "hex": "0x011e", "source": "Silenus Camera DMA Bus Error" },
+      "AIC_IRQ_ISP_CIL_BREAKER": { "vector": 287, "hex": "0x011f", "source": "Silenus MIPI CIL Trip" },
+      "AIC_IRQ_ISP_MAILBOX_EVENT": { "vector": 297, "hex": "0x0129", "source": "Silenus ISP Mailbox Event" },
+      "AIC_IRQ_DART_ISP_FAULT": { "vector": 302, "hex": "0x012e", "source": "DART-ISP Fault Event" },
+      "AIC_IRQ_SEP_INBOX": { "vector": 304, "hex": "0x0130", "source": "SEP Mailbox Inbox" },
+      "AIC_IRQ_SEP_OUTBOX": { "vector": 305, "hex": "0x0131", "source": "SEP Mailbox Outbox" },
+      "AIC_IRQ_SEP_DOORBELL": { "vector": 306, "hex": "0x0132", "source": "SEP Doorbell" },
+      "AIC_IRQ_AOP1_INBOX": { "vector": 349, "hex": "0x015d", "source": "AOP1 Mailbox Inbox" },
+      "AIC_IRQ_AOP1_OUTBOX": { "vector": 350, "hex": "0x015e", "source": "AOP1 Mailbox Outbox" },
+      "AIC_IRQ_AOP1_DOORBELL": { "vector": 351, "hex": "0x015f", "source": "AOP1 Doorbell" },
+      "AIC_IRQ_AOP2_INBOX": { "vector": 357, "hex": "0x0165", "source": "AOP2 Mailbox Inbox" },
+      "AIC_IRQ_AOP2_OUTBOX": { "vector": 358, "hex": "0x0166", "source": "AOP2 Mailbox Outbox" },
+      "AIC_IRQ_AOP2_DOORBELL": { "vector": 359, "hex": "0x0167", "source": "AOP2 Doorbell" },
+      "AIC_IRQ_EXCLAVE_AOP2_INBOX": { "vector": 361, "hex": "0x0169", "source": "Exclave AOP2 Proxy Inbox" },
+      "AIC_IRQ_EXCLAVE_AOP2_OUTBOX": { "vector": 364, "hex": "0x016c", "source": "Exclave AOP2 Proxy Outbox" },
+      "AIC_IRQ_DCP_INBOX": { "vector": 632, "hex": "0x0278", "source": "DCP Mailbox Inbox" },
+      "AIC_IRQ_DCP_OUTBOX": { "vector": 633, "hex": "0x0279", "source": "DCP Mailbox Outbox" },
+      "AIC_IRQ_DCP_DOORBELL": { "vector": 634, "hex": "0x027a", "source": "DCP Doorbell" },
+      "AIC_IRQ_PMP_INBOX": { "vector": 776, "hex": "0x0308", "source": "PMP Mailbox Inbox" },
+      "AIC_IRQ_PMP_OUTBOX": { "vector": 777, "hex": "0x0309", "source": "PMP Mailbox Outbox" },
+      "AIC_IRQ_PMP_DOORBELL": { "vector": 778, "hex": "0x030a", "source": "PMP Doorbell" },
+      "AIC_IRQ_AGX_CORE0_INBOX": { "vector": 952, "hex": "0x03b8", "source": "AGX RTBuddy Core 0 Inbox" },
+      "AIC_IRQ_AGX_CORE0_OUTBOX": { "vector": 953, "hex": "0x03b9", "source": "AGX RTBuddy Core 0 Outbox" },
+      "AIC_IRQ_AGX_CORE0_DOORBELL": { "vector": 954, "hex": "0x03ba", "source": "AGX RTBuddy Core 0 Doorbell" },
+      "AIC_IRQ_AGX_CORE1_INBOX": { "vector": 956, "hex": "0x03bc", "source": "AGX RTBuddy Core 1 Inbox" },
+      "AIC_IRQ_AGX_CORE1_OUTBOX": { "vector": 957, "hex": "0x03bd", "source": "AGX RTBuddy Core 1 Outbox" },
+      "AIC_IRQ_AGX_CORE1_DOORBELL": { "vector": 958, "hex": "0x03be", "source": "AGX RTBuddy Core 1 Doorbell" }
+    }
+  },
+  "mailbox_instances": [
+    {
+      "name": "SEP_ASCWRAP",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base_hex": "0x0000000072600000",
+      "doorbell_base_hex": "0x000000007262c000",
+      "irq_inbox": 304,
+      "irq_outbox": 305,
+      "irq_doorbell": 306,
+      "peer": "Secure Enclave sepOS"
+    },
+    {
+      "name": "AOP1_ASCWRAP",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base_hex": "0x0000000100600000",
+      "doorbell_base_hex": "0x000000010062c000",
+      "irq_inbox": 349,
+      "irq_outbox": 350,
+      "irq_doorbell": 351,
+      "peer": "Always-On Processor 1"
+    },
+    {
+      "name": "AOP2_ASCWRAP",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base_hex": "0x0000000101600000",
+      "doorbell_base_hex": "0x000000010162c000",
+      "irq_inbox": 357,
+      "irq_outbox": 358,
+      "irq_doorbell": 359,
+      "peer": "Always-On Processor 2 RTKit"
+    },
+    {
+      "name": "DCP_ASCWRAP",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base_hex": "0x00000001fa000000",
+      "doorbell_base_hex": "0x00000001fa02c000",
+      "irq_inbox": 632,
+      "irq_outbox": 633,
+      "irq_doorbell": 634,
+      "peer": "Display Coprocessor DCP"
+    },
+    {
+      "name": "PMP_ASCWRAP",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base_hex": "0x00000000f0300000",
+      "doorbell_base_hex": "0x00000000f032c000",
+      "irq_inbox": 776,
+      "irq_outbox": 777,
+      "irq_doorbell": 778,
+      "peer": "Power Management Processor"
+    },
+    {
+      "name": "AGX_CORE0_ASCWRAP",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base_hex": "0x000000023b800000",
+      "doorbell_base_hex": "0x000000023a000000",
+      "irq_inbox": 952,
+      "irq_outbox": 953,
+      "irq_doorbell": 954,
+      "peer": "AGX RTBuddy Core 0"
+    },
+    {
+      "name": "AGX_CORE1_ASCWRAP",
+      "compatible": "iop,ascwrap-v6",
+      "mailbox_base_hex": "0x000000023bc00000",
+      "doorbell_base_hex": "0x000000023a004000",
+      "irq_inbox": 956,
+      "irq_outbox": 957,
+      "irq_doorbell": 958,
+      "peer": "AGX RTBuddy Core 1"
+    }
+  ],
+  "iommu_instances": [
+    {
+      "name": "DART_SEP",
+      "base_hex": "0x0000000070c80000",
+      "size_bytes": 65536,
+      "irq_fault": 302,
+      "max_streams": 16
+    },
+    {
+      "name": "DART_AVE",
+      "base_hex": "0x0000000077020000",
+      "size_bytes": 65536,
+      "irq_fault": 256,
+      "max_streams": 16
+    },
+    {
+      "name": "DART_ISP",
+      "base_hex": "0x00000001128c0000",
+      "size_bytes": 65536,
+      "irq_fault": 302,
+      "max_streams": 16,
+      "stream_ids": {
+        "0x00": "DART_ISP_SID_CONTROL",
+        "0x01": "DART_ISP_SID_RAW_STREAM",
+        "0x02": "DART_ISP_SID_BNI_PEARL",
+        "0x03": "DART_ISP_SID_YUV_PREVIEW",
+        "0x04": "DART_ISP_SID_EXCLAVE_EPIPE0",
+        "0x05": "DART_ISP_SID_EXCLAVE_EPIPE1",
+        "0x09": "DART_ISP_SID_EXCLAVE_PIODMA1",
+        "0x0c": "DART_ISP_SID_MPM"
+      }
+    },
+    {
+      "name": "DART_DCP",
+      "base_hex": "0x00000001fa340000",
+      "size_bytes": 65536,
+      "irq_fault": 632,
+      "max_streams": 16
+    },
+    {
+      "name": "DART_ANE",
+      "base_hex": "0x0000000271800000",
+      "size_bytes": 65536,
+      "irq_fault": 800,
+      "max_streams": 16
+    }
+  ]
+}

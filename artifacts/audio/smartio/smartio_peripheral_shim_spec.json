@@ -1,0 +1,277 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro (t8150) SmartIO (ASCv7) Hardware Peripheral & Shim Specification",
+  "subsystem": "SmartIO ASCv7 RTKit OS Chinook Microkernel",
+  "soc": "t8150 (Apple Silicon A19 Pro)",
+  "build": "iOS 27.2 (24B119)",
+  "firmware_image": "iPhone18,3_27.2_24B119_Restore/Firmware/SmartIOFirmware_ASCv7.im4p",
+  "mach_o_binary": "artifacts/audio/smartio/smartio_ascv7.macho",
+  "peripheral_subsystems": {
+    "total_slots": 230,
+    "slot_table_base_va": "0x0001c458",
+    "slot_table_size_bytes": 1840,
+    "slot_entry_size_bytes": 8,
+    "named_controllers_count": 97,
+    "categories": [
+      {
+        "category_id": 0,
+        "name": "SPI",
+        "description": "Serial Peripheral Interface controllers for audio codecs, smart power ICs, and sensor bridges",
+        "controller_instances": [
+          {"id": 0, "tx": "SPI0_TX", "rx": "SPI0_RX", "tx_slot": 20, "rx_slot": 21, "tx_va": "0x1c4f8", "rx_va": "0x1c500"},
+          {"id": 1, "tx": "SPI1_TX", "rx": "SPI1_RX", "tx_slot": 22, "rx_slot": 23, "tx_va": "0x1c508", "rx_va": "0x1c510"},
+          {"id": 2, "tx": "SPI2_TX", "rx": "SPI2_RX", "tx_slot": 24, "rx_slot": 25, "tx_va": "0x1c518", "rx_va": "0x1c520"},
+          {"id": 3, "tx": "SPI3_TX", "rx": "SPI3_RX", "tx_slot": 26, "rx_slot": 27, "tx_va": "0x1c528", "rx_va": "0x1c530"},
+          {"id": 4, "tx": "SPI4_TX", "rx": "SPI4_RX", "tx_slot": 28, "rx_slot": 29, "tx_va": "0x1c538", "rx_va": "0x1c540"},
+          {"id": 5, "tx": "SPI5_TX", "rx": "SPI5_RX", "tx_slot": 30, "rx_slot": 31, "tx_va": "0x1c548", "rx_va": "0x1c550"}
+        ]
+      },
+      {
+        "category_id": 1,
+        "name": "UART",
+        "description": "Universal Asynchronous Receiver-Transmitter shims for debug, Bluetooth audio, and accessory coprocessors",
+        "controller_instances": [
+          {"id": 0, "tx": "UART0_TX", "rx": "UART0_RX", "tx_slot": 60, "rx_slot": 61, "tx_va": "0x1c638", "rx_va": "0x1c640"},
+          {"id": 1, "tx": "UART1_TX", "rx": "UART1_RX", "tx_slot": 62, "rx_slot": 63, "tx_va": "0x1c648", "rx_va": "0x1c650"},
+          {"id": 2, "tx": "UART2_TX", "rx": "UART2_RX", "tx_slot": 64, "rx_slot": 65, "tx_va": "0x1c658", "rx_va": "0x1c660"},
+          {"id": 3, "tx": "UART3_TX", "rx": "UART3_RX", "tx_slot": 66, "rx_slot": 67, "tx_va": "0x1c668", "rx_va": "0x1c670"},
+          {"id": 4, "tx": "UART4_TX", "rx": "UART4_RX", "tx_slot": 68, "rx_slot": 69, "tx_va": "0x1c678", "rx_va": "0x1c680"},
+          {"id": 5, "tx": "UART5_TX", "rx": "UART5_RX", "tx_slot": 70, "rx_slot": 71, "tx_va": "0x1c688", "rx_va": "0x1c690"},
+          {"id": 6, "tx": "UART6_TX", "rx": "UART6_RX", "tx_slot": 72, "rx_slot": 73, "tx_va": "0x1c698", "rx_va": "0x1c6a0"},
+          {"id": 7, "tx": "UART7_TX", "rx": "UART7_RX", "tx_slot": 74, "rx_slot": 75, "tx_va": "0x1c6a8", "rx_va": "0x1c6b0"},
+          {"id": 8, "tx": "UART8_TX", "rx": "UART8_RX", "tx_slot": 76, "rx_slot": 77, "tx_va": "0x1c6b8", "rx_va": "0x1c6c0"}
+        ]
+      },
+      {
+        "category_id": 2,
+        "name": "MCA",
+        "description": "Multi-Channel Audio (TDM / I2S / SoundWire) hardware interfaces for speaker amplifiers, earpiece, and external DACs",
+        "controller_instances": [
+          {"id": 0, "tx": "MCA0_TX", "rx": "MCA0_RX", "tx_slot": 40, "rx_slot": 41, "tx_va": "0x1c598", "rx_va": "0x1c5a0"},
+          {"id": 1, "tx": "MCA1_TX", "rx": "MCA1_RX", "tx_slot": 42, "rx_slot": 43, "tx_va": "0x1c5a8", "rx_va": "0x1c5b0"},
+          {"id": 2, "tx": "MCA2_TX", "rx": "MCA2_RX", "tx_slot": 44, "rx_slot": 45, "tx_va": "0x1c5b8", "rx_va": "0x1c5c0"},
+          {"id": 3, "tx": "MCA3_TX", "rx": "MCA3_RX", "tx_slot": 46, "rx_slot": 47, "tx_va": "0x1c5c8", "rx_va": "0x1c5d0"},
+          {"id": 4, "tx": "MCA4_TX", "rx": "MCA4_RX", "tx_slot": 48, "rx_slot": 49, "tx_va": "0x1c5d8", "rx_va": "0x1c5e0"},
+          {"id": 5, "tx": "MCA5_TX", "rx": "MCA5_RX", "tx_slot": 50, "rx_slot": 51, "tx_va": "0x1c5e8", "rx_va": "0x1c5f0"},
+          {"id": 6, "tx": "MCA6_TX", "rx": "MCA6_RX", "tx_slot": 52, "rx_slot": 53, "tx_va": "0x1c5f8", "rx_va": "0x1c600"},
+          {"id": 7, "tx": "MCA7_TX", "rx": "MCA7_RX", "tx_slot": 54, "rx_slot": 55, "tx_va": "0x1c608", "rx_va": "0x1c610"},
+          {"id": 8, "tx": "MCA8_TX", "rx": "MCA8_RX", "tx_slot": 56, "rx_slot": 57, "tx_va": "0x1c618", "rx_va": "0x1c620"},
+          {"id": 9, "tx": "MCA9_TX", "rx": "MCA9_RX", "tx_slot": 58, "rx_slot": 59, "tx_va": "0x1c628", "rx_va": "0x1c630"},
+          {"id": 10, "tx": "MCA10_TX", "rx": "MCA10_RX", "tx_slot": 120, "rx_slot": 121, "tx_va": "0x1c818", "rx_va": "0x1c820"},
+          {"id": 11, "tx": "MCA11_TX", "rx": "MCA11_RX", "tx_slot": 122, "rx_slot": 123, "tx_va": "0x1c828", "rx_va": "0x1c830"}
+        ]
+      },
+      {
+        "category_id": 3,
+        "name": "DPA",
+        "description": "Digital Power Amplifier transmit channels for direct haptic driver and acoustic transducer PWM modulators",
+        "controller_instances": [
+          {"id": 0, "tx": "DPA0_TX", "tx_slot": 100, "tx_va": "0x1c778"},
+          {"id": 1, "tx": "DPA1_TX", "tx_slot": 102, "tx_va": "0x1c788"},
+          {"id": 2, "tx": "DPA2_TX", "tx_slot": 104, "tx_va": "0x1c798"},
+          {"id": 3, "tx": "DPA3_TX", "tx_slot": 106, "tx_va": "0x1c7a8"},
+          {"id": 4, "tx": "DPA4_TX", "tx_slot": 108, "tx_va": "0x1c7b8"}
+        ]
+      },
+      {
+        "category_id": 4,
+        "name": "PDM",
+        "description": "Pulse Density Modulation digital microphone acquisition channel",
+        "controller_instances": [
+          {"id": 0, "rx": "PDM0_RX", "rx_slot": 91, "rx_va": "0x1c730"}
+        ]
+      },
+      {
+        "category_id": 5,
+        "name": "AOP-LEAP",
+        "description": "Always-On Processor Low-latency Enhanced Audio Protocol shared channels (0..12) for voice trigger, spatial audio head-tracking, and ANC feedback",
+        "controller_instances": [
+          {"id": 0, "tx": "AOP_LEAP0_TX", "rx": "AOP_LEAP0_RX", "tx_slot": 140, "rx_slot": 141, "tx_va": "0x1c8b8", "rx_va": "0x1c8c0"},
+          {"id": 1, "tx": "AOP_LEAP1_TX", "rx": "AOP_LEAP1_RX", "tx_slot": 142, "rx_slot": 143, "tx_va": "0x1c8c8", "rx_va": "0x1c8d0"},
+          {"id": 2, "tx": "AOP_LEAP2_TX", "rx": "AOP_LEAP2_RX", "tx_slot": 144, "rx_slot": 145, "tx_va": "0x1c8d8", "rx_va": "0x1c8e0"},
+          {"id": 3, "tx": "AOP_LEAP3_TX", "rx": "AOP_LEAP3_RX", "tx_slot": 146, "rx_slot": 147, "tx_va": "0x1c8e8", "rx_va": "0x1c8f0"},
+          {"id": 4, "tx": "AOP_LEAP4_TX", "rx": "AOP_LEAP4_RX", "tx_slot": 148, "rx_slot": 149, "tx_va": "0x1c8f8", "rx_va": "0x1c900"},
+          {"id": 5, "tx": "AOP_LEAP5_TX", "rx": "AOP_LEAP5_RX", "tx_slot": 150, "rx_slot": 151, "tx_va": "0x1c908", "rx_va": "0x1c910"},
+          {"id": 6, "tx": "AOP_LEAP6_TX", "rx": "AOP_LEAP6_RX", "tx_slot": 152, "rx_slot": 153, "tx_va": "0x1c918", "rx_va": "0x1c920"},
+          {"id": 7, "tx": "AOP_LEAP7_TX", "rx": "AOP_LEAP7_RX", "tx_slot": 154, "rx_slot": 155, "tx_va": "0x1c928", "rx_va": "0x1c930"},
+          {"id": 8, "tx": "AOP_LEAP8_TX", "rx": "AOP_LEAP8_RX", "tx_slot": 156, "rx_slot": 157, "tx_va": "0x1c938", "rx_va": "0x1c940"},
+          {"id": 9, "tx": "AOP_LEAP9_TX", "rx": "AOP_LEAP9_RX", "tx_slot": 158, "rx_slot": 159, "tx_va": "0x1c948", "rx_va": "0x1c950"},
+          {"id": 10, "tx": "AOP_LEAP10_TX", "rx": "AOP_LEAP10_RX", "tx_slot": 160, "rx_slot": 161, "tx_va": "0x1c958", "rx_va": "0x1c960"},
+          {"id": 11, "tx": "AOP_LEAP11_TX", "rx": "AOP_LEAP11_RX", "tx_slot": 162, "rx_slot": 163, "tx_va": "0x1c968", "rx_va": "0x1c970"},
+          {"id": 12, "tx": "AOP_LEAP12_TX", "rx": "AOP_LEAP12_RX", "tx_slot": 164, "rx_slot": 165, "tx_va": "0x1c978", "rx_va": "0x1c980"}
+        ]
+      },
+      {
+        "category_id": 6,
+        "name": "AOP-MCA",
+        "description": "Always-On Processor Multichannel Audio bridges (0..3) for low-power voice buffering and wake-on-voice",
+        "controller_instances": [
+          {"id": 0, "tx": "AOP_MCA0_TX", "rx": "AOP_MCA0_RX", "tx_slot": 6, "rx_slot": 7, "tx_va": "0x1c488", "rx_va": "0x1c490"},
+          {"id": 1, "tx": "AOP_MCA1_TX", "rx": "AOP_MCA1_RX", "tx_slot": 8, "rx_slot": 9, "tx_va": "0x1c498", "rx_va": "0x1c4a0"},
+          {"id": 2, "tx": "AOP_MCA2_TX", "rx": "AOP_MCA2_RX", "tx_slot": 10, "rx_slot": 11, "tx_va": "0x1c4a8", "rx_va": "0x1c4b0"},
+          {"id": 3, "tx": "AOP_MCA3_TX", "rx": "AOP_MCA3_RX", "tx_slot": 12, "rx_slot": 13, "tx_va": "0x1c4b8", "rx_va": "0x1c4c0"}
+        ]
+      },
+      {
+        "category_id": 7,
+        "name": "AOP-PDM",
+        "description": "Always-On Processor Pulse Density Modulation direct mic stream",
+        "controller_instances": [
+          {"id": 0, "rx": "AOP_PDM0_RX", "rx_slot": 211, "rx_va": "0x1caf0"}
+        ]
+      },
+      {
+        "category_id": 8,
+        "name": "System",
+        "description": "SmartIO core system control, arbitration, and performance profiling channels",
+        "controller_instances": [
+          {"id": 0, "name": "Control", "slot": 0, "va": "0x1c458", "string_va": "0x1aa68"},
+          {"id": 1, "name": "Perf", "slot": 3, "va": "0x1c470", "string_va": "0x1aa78"}
+        ]
+      }
+    ],
+    "subsystem_classification_table": {
+      "base_va": "0x0001c270",
+      "entry_count": 6,
+      "subsystems": [
+        {"id": 0, "name": "SPI", "name_va": "0x1b3d4"},
+        {"id": 1, "name": "UART", "name_va": "0x1b3d8"},
+        {"id": 2, "name": "AUDIO", "name_va": "0x1b3dd"},
+        {"id": 3, "name": "QSPI", "name_va": "0x1b3e3"},
+        {"id": 4, "name": "AOP-GP", "name_va": "0x1b3e8"},
+        {"id": 5, "name": "AOP-AUDIO", "name_va": "0x1b3ef"}
+      ]
+    },
+    "category_lookup_table": {
+      "base_va": "0x0001c2a0",
+      "entry_count": 9,
+      "format_string_va": "0x1b239",
+      "format_string": " %s-%d",
+      "categories": [
+        {"id": 0, "name": "SPI", "name_va": "0x1b3d4"},
+        {"id": 1, "name": "UART", "name_va": "0x1b3d8"},
+        {"id": 2, "name": "MCA", "name_va": "0x1b3f9"},
+        {"id": 3, "name": "DPA", "name_va": "0x1b3fd"},
+        {"id": 4, "name": "PDM", "name_va": "0x1b401"},
+        {"id": 5, "name": "AOP-LEAP", "name_va": "0x1b405"},
+        {"id": 6, "name": "AOP-MCA", "name_va": "0x1b40e"},
+        {"id": 7, "name": "AOP-PDM", "name_va": "0x1b416"},
+        {"id": 8, "name": "QSPI", "name_va": "0x1b3e3"}
+      ]
+    }
+  },
+  "sio_register_shims": {
+    "validation_rules": {
+      "minimum_buffer_size": 12,
+      "alignment_modulo": 12,
+      "max_block_types": 4,
+      "max_reg_types": 2,
+      "abort_strings": {
+        "zero_size": "Zero SIO registers passed for setup\\n",
+        "invalid_size": "Invalid SIO register buffer size: %lu\\n",
+        "invalid_block": "SIO register block type %u invalid\\n",
+        "invalid_type": "SIO register type %u invalid\\n",
+        "invalid_offset": "Invalid SIO register offset\\n"
+      }
+    },
+    "entry_tuple_layout": {
+      "size_bytes": 12,
+      "fields": [
+        {"name": "block_type", "type": "uint32_t", "offset": 0, "valid_values": [0, 1, 2, 3], "description": "SIO peripheral block identifier (0..3)"},
+        {"name": "reg_type", "type": "uint32_t", "offset": 4, "valid_values": [0, 1], "description": "SIO register classification (0: Control/Base, 1: Status/Trigger)"},
+        {"name": "reg_offset", "type": "uint32_t", "offset": 8, "valid_values": "valid MMIO offset (!= 0xffffffff)", "description": "Target MMIO register byte offset within the peripheral aperture"}
+      ]
+    },
+    "storage_table": {
+      "base_va": "0x00045bc4",
+      "total_entries": 8,
+      "addressing_formula": "table_entry_va = 0x45bc4 + (block_type * 8) + (reg_type * 4)",
+      "layout": [
+        {"block": 0, "reg": 0, "va": "0x45bc4"},
+        {"block": 0, "reg": 1, "va": "0x45bc8"},
+        {"block": 1, "reg": 0, "va": "0x45bcc"},
+        {"block": 1, "reg": 1, "va": "0x45bd0"},
+        {"block": 2, "reg": 0, "va": "0x45bd4"},
+        {"block": 2, "reg": 1, "va": "0x45bd8"},
+        {"block": 3, "reg": 0, "va": "0x45bdc"},
+        {"block": 3, "reg": 1, "va": "0x45be0"}
+      ]
+    }
+  },
+  "dma_buffer_segment_list": {
+    "endpoint_pipeline_architecture": {
+      "description": "SmartIO Endpoint object coordinates a 4-stage pipeline across 4 independent hardware FIFO rings (Pending Buffers, Segmenting Buffers, Completed Buffers, Completed Pages)",
+      "rings": {
+        "pending_buffers": {
+          "ring_capacity": 32,
+          "wrap_mask": "0x1f",
+          "completed_index_offset": "0x8c8",
+          "current_index_offset": "0x8cc",
+          "array_base_offset": "0x8d0",
+          "active_segment_ptr_offset": "0xc00",
+          "active_label": "Segmenting Buffer",
+          "log_string": "Pending Buffers: %d\\n"
+        },
+        "segmenting_buffers": {
+          "ring_capacity": 32,
+          "wrap_mask": "0x1f",
+          "completed_index_offset": "0x9d8",
+          "current_index_offset": "0x9dc",
+          "array_base_offset": "0x9e0",
+          "active_segment_ptr_offset": "0xc58",
+          "active_label": "Retiring Buffer",
+          "log_string": "Segmenting Buffers: %d\\n"
+        },
+        "completed_buffers": {
+          "ring_capacity": 32,
+          "wrap_mask": "0x1f",
+          "completed_index_offset": "0xae8",
+          "current_index_offset": "0xaec",
+          "array_base_offset": "0xaf0",
+          "log_string": "Completed Buffers: %d\\n"
+        },
+        "completed_pages": {
+          "ring_capacity": 16,
+          "wrap_mask": "0x0f",
+          "completed_index_offset": "0x1160",
+          "current_index_offset": "0x1164",
+          "array_base_offset": "0x1168",
+          "log_string": "Completed Pages: %d\\n"
+        }
+      }
+    },
+    "buffer_descriptor_schema": {
+      "base_alignment": "16 bytes",
+      "disassembly_source": "0x00003f8c..0x00004044",
+      "fields": [
+        {"name": "Owner", "type": "uint64_t", "offset": "0x00", "description": "Process ID or client endpoint handle owning buffer transaction"},
+        {"name": "Style", "type": "uint32_t", "offset": "0x08", "description": "Buffer transfer style / framing mode flags"},
+        {"name": "Data VA", "type": "uint64_t", "offset": "0x10", "description": "Virtual address of DMA buffer in coprocessor address space"},
+        {"name": "Data PA", "type": "uint64_t", "offset": "0x18", "description": "Physical address of DMA buffer for bus mastering DMA"},
+        {"name": "Length", "type": "uint32_t", "offset": "0x24", "description": "Total length of audio sample packet buffer in bytes"},
+        {"name": "CompTime", "type": "uint64_t", "offset": "0x28", "description": "64-bit hardware timebase timestamp of DMA completion"}
+      ]
+    },
+    "segment_entry_schema": {
+      "disassembly_source": "0x00003ee8..0x00003f88",
+      "fields": [
+        {"name": "SegmentLoc", "type": "uint64_t", "offset": "0x00", "description": "Base location (PA or VA) of DMA memory segment"},
+        {"name": "Completed", "type": "uint32_t", "offset": "0x14", "description": "Number of bytes transferred or completion status"},
+        {"name": "Length", "type": "uint32_t", "offset": "0x18", "description": "Length of current segment chunk in bytes"},
+        {"name": "CompTime", "type": "uint64_t", "offset": "0x28", "description": "64-bit hardware timestamp upon segment completion"},
+        {"name": "Tag", "type": "uint8_t", "offset": "0x30", "description": "Client endpoint tag identifying stream channel"}
+      ]
+    },
+    "endpoint_lifecycle_states": {
+      "state_offset_in_endpoint": "0xb4",
+      "state_string_table_va": "0x0001c070",
+      "states": [
+        {"state_id": 0, "name": "kStateUninitialized", "string_va": "0x1af77", "description": "Endpoint structure allocated but not yet configured or mapped"},
+        {"state_id": 1, "name": "kStateException", "string_va": "0x1af8b", "description": "Fatal error or unrecoverable bus fault encountered; DMA halted"},
+        {"state_id": 2, "name": "kStateInactive", "string_va": "0x1af9b", "description": "Endpoint configured but idle; clocks may be gated"},
+        {"state_id": 3, "name": "kStateActive", "string_va": "0x1afaa", "description": "Endpoint actively streaming audio DMA packets; interrupts enabled"},
+        {"state_id": 4, "name": "kStatePaused", "string_va": "0x1afb7", "description": "Endpoint paused on host request; queues preserved across sleep/nap"}
+      ]
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "PMIC & SPMI Telemetry Fabric",
+  "target_soc": "t8150",
+  "marketing_name": "Apple A19 Pro",
+  "generation": "Apple H18 Generation",
+  "os_version": "iOS 27.2",
+  "darwin_version": "Darwin 24.2.0",
+  "build": "24B119",
+  "firmware_assets": {
+    "pmp_im4p": {
+      "path": "/home/prem/Projects/iOS 27/iPhone18,3_27.2_24B119_Restore/Firmware/pmp/t8150pmp.im4p",
+      "size_bytes": 643097,
+      "sha256": "d6d14aa72564ebee3eaee23310ae8e6f6eb2cc25f8ba87e2d104d7757b87c64d"
+    },
+    "pmp_raw": {
+      "path": "/home/prem/Projects/iOS 27/artifacts/pmic/extracted/t8150pmp.raw",
+      "size_bytes": 643072,
+      "sha256": "e7079229c37af16e9f69cbf82b8598507544dfd7aeb9f2b5940f5b7e7969276d",
+      "format": "Mach-O 64-bit MH_PRELOAD ARM64 RTKit"
+    },
+    "devicetree": {
+      "path": "/home/prem/Projects/iOS 27/artifacts/sptm/extracted/DeviceTree.v57ap.raw",
+      "size_bytes": 365632,
+      "sha256": "ffd8ef07a4a8d5f90865077005a8f78cfdc1d142f8e897acd4b040232fd971f9"
+    },
+    "kernelcache": {
+      "path": "/home/prem/Projects/iOS 27/artifacts/kernel/kernelcache.release.raw",
+      "size_bytes": 78987264,
+      "sha256": "0046b5a3fd54e79640a5afdce942e16530f5883b8d11399dbac5c27fb4ed5ac9"
+    }
+  },
+  "target_kext_catalog": {
+    "com.apple.driver.AppleSPMI": {
+      "vmaddr": "0xfffffe0007771440",
+      "size": 71435
+    },
+    "com.apple.driver.AppleSPMIPMU": {
+      "vmaddr": "0xfffffe0007774730",
+      "size": 74998
+    },
+    "com.apple.driver.AppleDialogPMU": {
+      "vmaddr": "0xfffffe00073d39d0",
+      "size": 20218
+    },
+    "com.apple.driver.ApplePMUFirmwareDriver": {
+      "vmaddr": "0xfffffe0007690c90",
+      "size": 18844
+    },
+    "com.apple.driver.ApplePMGR": {
+      "vmaddr": "0xfffffe000767dc10",
+      "size": 539136
+    },
+    "com.apple.driver.AppleT8150PMGR": {
+      "vmaddr": "0xfffffe00077cc390",
+      "size": 115775
+    },
+    "com.apple.driver.AppleT8150CLPC": {
+      "vmaddr": "0xfffffe00077ba6a0",
+      "size": 570572
+    },
+    "com.apple.driver.AppleSmartBatteryManagerEmbedded": {
+      "vmaddr": "0xfffffe0007791840",
+      "size": 318943
+    }
+  },
+  "devicetree_nodes_audited": [
+    "/device-tree/arm-io/pmgr",
+    "/device-tree/arm-io/pmgr/clpc",
+    "/device-tree/arm-io/pmgr/ppm",
+    "/device-tree/arm-io/nub-spmi0",
+    "/device-tree/arm-io/nub-spmi0/pmu-main",
+    "/device-tree/arm-io/nub-spmi0/btm",
+    "/device-tree/arm-io/nub-spmi1",
+    "/device-tree/arm-io/nub-spmi1/shamisen",
+    "/device-tree/arm-io/nub-spmi1/stonehenge",
+    "/device-tree/arm-io/aop-spmi0",
+    "/device-tree/arm-io/aop-spmi1",
+    "/device-tree/arm-io/nub-spmi-a0"
+  ]
+}

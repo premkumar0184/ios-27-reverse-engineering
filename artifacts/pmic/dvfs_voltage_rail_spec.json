@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.0.0",
+  "subsystem": "PMGR & CLPC Dynamic Voltage and Frequency Scaling (DVFS)",
+  "rail_count": 8,
+  "rails": {
+    "ECPU": {
+      "rail_name": "kVoltageRailECPU",
+      "pmgr_domain": 1,
+      "nominal_range_mv": [
+        600,
+        1150
+      ],
+      "step_size_mv": 6.25,
+      "step_down_delay_us": 500,
+      "regulator_type": "Multi-Phase Buck Converter (PMIC Buck0/1)",
+      "control_interface": "Direct PMGR MMIO + SPMI DVS LUT"
+    },
+    "PCPU": {
+      "rail_name": "kVoltageRailPCPU",
+      "pmgr_domain": 3,
+      "nominal_range_mv": [
+        625,
+        1280
+      ],
+      "step_size_mv": 6.25,
+      "step_down_delay_us": 500,
+      "regulator_type": "Multi-Phase Buck Converter (PMIC Buck2/3)",
+      "control_interface": "Direct PMGR MMIO + Adaptive Clock Controller (PACC0)"
+    },
+    "SOC": {
+      "rail_name": "kVoltageRailSOC",
+      "pmgr_domain": 0,
+      "nominal_range_mv": [
+        650,
+        950
+      ],
+      "step_size_mv": 12.5,
+      "step_down_delay_us": 250,
+      "regulator_type": "Single-Phase Buck Converter (PMIC Buck4)",
+      "control_interface": "PMGR Aperture 0x00F0700000"
+    },
+    "DCS": {
+      "rail_name": "kVoltageRailDCS",
+      "pmgr_domain": 2,
+      "nominal_range_mv": [
+        600,
+        900
+      ],
+      "step_size_mv": 12.5,
+      "step_down_delay_us": 250,
+      "regulator_type": "Single-Phase Buck Converter (PMIC Buck5)",
+      "control_interface": "DCS TVM Voltage Arbiter"
+    },
+    "ANE": {
+      "rail_name": "kVoltageRailANE",
+      "pmgr_domain": 4,
+      "nominal_range_mv": [
+        650,
+        1100
+      ],
+      "step_size_mv": 6.25,
+      "step_down_delay_us": 350,
+      "regulator_type": "Buck Converter (PMIC Buck6)",
+      "control_interface": "CLPC ANE Power Budget Client"
+    },
+    "AVE": {
+      "rail_name": "kVoltageRailAVE",
+      "pmgr_domain": 5,
+      "nominal_range_mv": [
+        650,
+        1050
+      ],
+      "step_size_mv": 12.5,
+      "step_down_delay_us": 300,
+      "regulator_type": "Buck Converter (PMIC Buck7)",
+      "control_interface": "PMP Coprocessor Domain 13 (PMP-AVE)"
+    },
+    "DISP": {
+      "rail_name": "kVoltageRailDISP",
+      "pmgr_domain": 6,
+      "nominal_range_mv": [
+        700,
+        1000
+      ],
+      "step_size_mv": 12.5,
+      "step_down_delay_us": 200,
+      "regulator_type": "Buck Converter (PMIC Buck8)",
+      "control_interface": "Display Pipe DVFS Arbiter"
+    },
+    "AGX": {
+      "rail_name": "kVoltageRailAGX",
+      "pmgr_domain": 8,
+      "nominal_range_mv": [
+        600,
+        1200
+      ],
+      "step_size_mv": 6.25,
+      "step_down_delay_us": 400,
+      "regulator_type": "Multi-Phase Buck Converter",
+      "control_interface": "GPU Unified Budget Interface (UBI)"
+    }
+  }
+}

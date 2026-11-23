@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LEAP Haptic Engine Audio Transient Synchronization Specification",
+  "description": "Clean-room architectural specification for Apple Silicon A19 Pro (t8150) LEAP haptic motor co-scheduling and wave table synchronization",
+  "target_platform": {
+    "soc": "t8150",
+    "processor_family": "Apple A19 Pro",
+    "operating_system": "iOS 27.2",
+    "darwin_build": "24.2.0 (Build 24B119)",
+    "kernelcache_target": "artifacts/kernel/kernelcache.release.raw"
+  },
+  "driver_components": [
+    {
+      "driver_class": "AppleAOPAudioHapticLEAP",
+      "bundle_id": "com.apple.driver.AppleAOPAudio",
+      "provider_class": "AppleAOPAudioDeviceNode",
+      "ioname_match": [
+        "audio-aop-haptic-leap",
+        "audio-haptic-leap"
+      ],
+      "role": "LEAP Haptic Engine co-scheduler and audio timeline arbiter"
+    },
+    {
+      "driver_class": "AppleAOPAudioButtonHapticDevice",
+      "bundle_id": "com.apple.driver.AppleAOPAudio",
+      "provider_class": "AppleAOPAudioDeviceNode",
+      "ioname_match": [
+        "audio-aop-bhap",
+        "audio-bhap"
+      ],
+      "user_client_class": "AppleAOPButtonHapticsServiceUserClient",
+      "user_client_entitlement": "com.apple.private.aea.haptics.user-access",
+      "role": "Button Haptics Asset Manager & SSHB Waveform Dispatcher"
+    },
+    {
+      "driver_class": "AppleHapticsSupportLEAP",
+      "bundle_id": "com.apple.driver.AppleHapticsSupportLEAP",
+      "executable_size_bytes": 328099,
+      "provider_class": "AppleARMIODevice",
+      "ioname_match": [
+        "haptics-support,leap"
+      ],
+      "user_client_class": "AppleHapticsSupportUserClient",
+      "role": "Host AP Haptic Subsystem Bridge and CoreHaptics HAL Target"
+    }
+  ],
+  "hardware_actuator_parameters": {
+    "motor_type": "Linear Resonant Actuator (LRA) / High-Force Driver (HFD)",
+    "nominal_resonant_frequency_hz": 175.0,
+    "dac_sampling_rate_hz": 48000,
+    "pdm_hfd_clock_mhz": 3.072,
+    "audio_to_haptic_phase_latency_max_us": 100,
+    "audio_to_haptic_phase_latency_typical_us": 45,
+    "max_assets": 16,
+    "power_rail": "AOP2 Dedicated Haptic Boost Supply (3.8V - 5.2V dynamic)"
+  },
+  "waveform_asset_geometry": {
+    "struct_name": "leap_waveform_asset_t",
+    "wire_descriptor": "AppleAOPButtonHapticsAssetInternalProp",
+    "size_bytes": 30,
+    "fields": [
+      { "name": "asset_id", "type": "uint16_t", "offset": 0, "size": 2, "description": "Asset identification token" },
+      { "name": "duration_samples", "type": "uint16_t", "offset": 2, "size": 2, "description": "Waveform length in 48kHz samples" },
+      { "name": "frequency_hz", "type": "uint16_t", "offset": 4, "size": 2, "description": "Actuator driving frequency" },
+      { "name": "amplitude_q15", "type": "uint16_t", "offset": 6, "size": 2, "description": "Q15 fixed-point scaling factor" },
+      { "name": "audio_sync_delay_us", "type": "uint32_t", "offset": 8, "size": 4, "description": "Target phase offset relative to audio edge" },
+      { "name": "coefficient_count", "type": "uint16_t", "offset": 12, "size": 2, "description": "Active shaping filter tap count" },
+      { "name": "coefficients", "type": "int16_t[8]", "offset": 14, "size": 16, "description": "PDM2 shaping filter coefficients for HFD" }
+    ]
+  },
+  "wave_table_catalog": {
+    "0x0001": {
+      "asset_name": "SSHB_CLICK_DOWN",
+      "description": "Solid State Home Button / Camera Control click depression impulse",
+      "duration_ms": 10.0,
+      "frequency_hz": 175,
+      "target_audio_sync_delay_us": 30
+    },
+    "0x0002": {
+      "asset_name": "SSHB_CLICK_UP",
+      "description": "Tactile click release spring-back sensation",
+      "duration_ms": 8.5,
+      "frequency_hz": 190,
+      "target_audio_sync_delay_us": 25
+    },
+    "0x0005": {
+      "asset_name": "SHUTTER_AUDIO_SYNC",
+      "description": "Camera mechanical shutter transient synchronized with speaker acoustic click",
+      "duration_ms": 12.0,
+      "frequency_hz": 165,
+      "target_audio_sync_delay_us": 45
+    },
+    "0x0008": {
+      "asset_name": "CROWN_DETENT",
+      "description": "Rotational virtual detent step transient",
+      "duration_ms": 5.0,
+      "frequency_hz": 210,
+      "target_audio_sync_delay_us": 15
+    }
+  },
+  "motor_parking_and_calibration": {
+    "property_name": "LEAPParkingProperties::kParkingInfo",
+    "struct_name": "leap_parking_info_t",
+    "size_bytes": 16,
+    "fields": [
+      { "name": "resonant_freq_measured_hz", "type": "uint32_t", "offset": 0, "size": 4, "description": "Real-time resonant frequency tracking" },
+      { "name": "back_emf_voltage_mv", "type": "uint32_t", "offset": 4, "size": 4, "description": "Back-EMF feedback sensory voltage" },
+      { "name": "damping_factor_q8", "type": "uint16_t", "offset": 8, "size": 2, "description": "Active braking critical damping coefficient" },
+      { "name": "state_error_count", "type": "uint16_t", "offset": 10, "size": 2, "description": "Accumulated tracking error counter" },
+      { "name": "parking_time_us", "type": "uint32_t", "offset": 12, "size": 4, "description": "Active brake settling time in microseconds" }
+    ],
+    "active_braking_algorithm": "Reverse-phase pulse injection computed from back-EMF zero-crossing detection to bring mass to rest within 1.5 cycles."
+  }
+}

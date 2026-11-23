@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0.0",
+  "total_sources": 15,
+  "register_address": "0x2813",
+  "register_size_bytes": 2,
+  "sources": {
+    "0": {
+      "name": "fw_nonsec_off_wakeup_csr",
+      "source_type": "FIRMWARE",
+      "description": "Firmware non-secure off-wake control/status register write"
+    },
+    "1": {
+      "name": "gcb_off_wakeup",
+      "source_type": "BUTTON",
+      "description": "General Control Button (GCB) off-to-wake assertion"
+    },
+    "2": {
+      "name": "gcb_wakeup",
+      "source_type": "BUTTON",
+      "description": "General Control Button power-on key depression"
+    },
+    "3": {
+      "name": "rtc_alarm_wakeup",
+      "source_type": "TIMER",
+      "description": "Monotonic RTC programmed alarm match trigger"
+    },
+    "4": {
+      "name": "auto_wakeup",
+      "source_type": "POWER",
+      "description": "Automatic wake upon external VBUS/charger attachment"
+    },
+    "5": {
+      "name": "gcb_crash_wakeup",
+      "source_type": "CRASH",
+      "description": "GCB wake initiated after panic reboot"
+    },
+    "6": {
+      "name": "hw_wdog_wakeup",
+      "source_type": "WATCHDOG",
+      "description": "Hardware watchdog recovery reboot wake"
+    },
+    "7": {
+      "name": "fw_wdog_wakeup",
+      "source_type": "WATCHDOG",
+      "description": "Platform firmware watchdog reboot wake"
+    },
+    "8": {
+      "name": "dft_ctrl2_wakeup",
+      "source_type": "MANUFACTURING",
+      "description": "Design For Test (DFT) control wake"
+    },
+    "9": {
+      "name": "rsvd_9",
+      "source_type": "RESERVED",
+      "description": "Reserved wake source 9"
+    },
+    "10": {
+      "name": "target_state_wdog_timeout",
+      "source_type": "WATCHDOG",
+      "description": "Power state transition watchdog wake recovery"
+    },
+    "11": {
+      "name": "rsvd_11",
+      "source_type": "RESERVED",
+      "description": "Reserved wake source 11"
+    },
+    "12": {
+      "name": "rsvd_12",
+      "source_type": "RESERVED",
+      "description": "Reserved wake source 12"
+    },
+    "13": {
+      "name": "fw_nonsec_off_wakeup_wdog",
+      "source_type": "WATCHDOG",
+      "description": "Firmware non-secure off-wake watchdog trigger"
+    },
+    "14": {
+      "name": "fw_req_auto_wakeup",
+      "source_type": "FIRMWARE",
+      "description": "Firmware-requested automatic wake event"
+    }
+  }
+}

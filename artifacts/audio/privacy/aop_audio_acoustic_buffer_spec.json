@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AOP2 Always-On Audio Acoustic Buffer Specification",
+  "description": "Exhaustive hardware geometry, memory mapping, and ring buffer parameters for Apple Silicon A19 Pro (t8150) AOPAudio2 subsystem",
+  "target_platform": {
+    "soc": "t8150",
+    "processor_family": "Apple A19 Pro",
+    "operating_system": "iOS 27.2",
+    "darwin_build": "24.2.0 (Build 24B119)",
+    "board_id": "iPhone18,3 (v57ap)",
+    "coprocessor": "AOP2 (Always-On Processor v2)",
+    "firmware_image": "iPhone18,3_27.2_24B119_Restore/Firmware/AOP2/aop2fw-v57aop2.RELEASE.im4p",
+    "kernelcache_target": "artifacts/kernel/kernelcache.release.raw"
+  },
+  "firmware_sub_binary": {
+    "index": 3,
+    "filename": "03_audio_hotword_app.macho",
+    "file_offset_bytes": 434201,
+    "size_bytes": 753976,
+    "sha256": "374437d522a0b9c7f907b3d2e063b707a9812253b6c32e28eb22037b28f6841c",
+    "uuid": "46699d8af0e633b595d262b5cce92e9c",
+    "cputype": "0x100000c",
+    "cpusubtype": "0x80000002",
+    "role": "Autonomous Voice Activity Detection (VAD) & Keyword Spotting (KWS)"
+  },
+  "memory_architecture": {
+    "sram_aperture": {
+      "base_physical_address": "0x0000000101000000",
+      "size_bytes": 5599232,
+      "size_mb": 5.34,
+      "size_hex": "0x00557000",
+      "technology": "Low-leakage retention SRAM with independent power rail",
+      "retention_state": "Powered in Deep AP Sleep (S2R / Idle Standby)"
+    },
+    "sram_carveout_layout": {
+      "ring_status_header_offset": "0x0007f000",
+      "ring_status_header_size_bytes": 64,
+      "acoustic_circular_fifo_offset": "0x00080000",
+      "acoustic_circular_fifo_size_bytes": 96000,
+      "hotword_neural_state_offset": "0x00098000",
+      "hotword_neural_state_size_bytes": 32768
+    }
+  },
+  "acoustic_parameters": {
+    "sampling_rate_hz": 16000,
+    "bit_depth": 16,
+    "bytes_per_sample": 2,
+    "channel_count": 1,
+    "channel_layout": "Mono Linear PCM",
+    "endianness": "Little-Endian",
+    "encoding": "Signed Linear PCM (LPCM)",
+    "bytes_per_frame": 2,
+    "data_rate_bytes_per_sec": 32000,
+    "data_rate_kbps": 256.0,
+    "buffer_duration_seconds": 3.0,
+    "buffer_duration_ms": 3000,
+    "total_buffer_frames": 48000,
+    "total_buffer_bytes": 96000,
+    "power_consumption_mw": 1.85
+  },
+  "hardware_pdm_interface": {
+    "driver_class": "AppleAOPAudioPDM2Device",
+    "match_names": [
+      "audio-aop-pdm2",
+      "audio-pdm2"
+    ],
+    "provider_class": "AppleAOPAudioDeviceNode",
+    "decimation_filter": {
+      "type": "Cascaded Integrator-Comb (CIC) + Half-Band FIR",
+      "oversampling_ratio": 64,
+      "pdm_clock_mhz": 1.024,
+      "hardware_pipeline_latency_frames": 32,
+      "hardware_pipeline_latency_ms": 2.0
+    },
+    "channel_control_properties": {
+      "kAppleAOPLPMicSupportedChannels": {
+        "value": 1,
+        "mask": "0x00000001",
+        "description": "Channel 0: LPMic0 Primary Digital PDM Microphone"
+      },
+      "kAppleAOPLPMicEnabledChannels": {
+        "value": 1,
+        "mask": "0x00000001",
+        "description": "Channel 0 active in always-listening capture state"
+      },
+      "kAppleAOPLPMicVoiceTriggerChannels": {
+        "value": 1,
+        "mask": "0x00000001",
+        "description": "Channel 0 routed to on-chip KWS neural feature pipeline"
+      },
+      "kAppleAOPLPMicHistoryChannels": {
+        "value": 1,
+        "mask": "0x00000001",
+        "description": "Channel 0 buffered continuously in 3.0s SRAM ring buffer"
+      }
+    }
+  },
+  "ring_buffer_implementation": {
+    "driver_class": "AppleAOPAudioRingBufferImpl",
+    "buffer_topology": "Lock-Free Single-Producer Single-Consumer (SPSC) Circular DMA Ring",
+    "struct_geometry": {
+      "name": "aop_audio_ring_status_t",
+      "size_bytes": 64,
+      "alignment_bytes": 64,
+      "fields": [
+        { "name": "head_frame_index", "type": "uint64_t", "offset": 0, "size": 8, "description": "Producer write pointer" },
+        { "name": "tail_frame_index", "type": "uint64_t", "offset": 8, "size": 8, "description": "Consumer read pointer" },
+        { "name": "zero_timestamp_aop", "type": "uint64_t", "offset": 16, "size": 8, "description": "AOP continuous timebase origin" },
+        { "name": "host_timestamp_ap", "type": "uint64_t", "offset": 24, "size": 8, "description": "AP Everest host continuous timebase origin" },
+        { "name": "clock_drift_ns", "type": "int64_t", "offset": 32, "size": 8, "description": "Measured clock drift in nanoseconds" },
+        { "name": "zero_ts_wrap_frames", "type": "uint32_t", "offset": 40, "size": 4, "description": "Phase rollover threshold (0x80000000)" },
+        { "name": "buffer_size_bytes", "type": "uint32_t", "offset": 44, "size": 4, "description": "Ring buffer size (96000)" },
+        { "name": "frame_size_bytes", "type": "uint16_t", "offset": 48, "size": 2, "description": "Bytes per frame (2)" },
+        { "name": "channels_per_frame", "type": "uint16_t", "offset": 50, "size": 2, "description": "Channel count (1)" },
+        { "name": "frames_per_packet", "type": "uint16_t", "offset": 52, "size": 2, "description": "DMA packet size (160 frames / 10ms)" },
+        { "name": "safety_offset_frames", "type": "uint16_t", "offset": 54, "size": 2, "description": "Driver safety margin (64 frames / 4ms)" },
+        { "name": "input_latency_frames", "type": "uint32_t", "offset": 56, "size": 4, "description": "Hardware latency (32 frames / 2ms)" },
+        { "name": "status_flags", "type": "uint32_t", "offset": 60, "size": 4, "description": "State flags bitmask" }
+      ]
+    },
+    "status_flags": {
+      "AOP_RING_FLAG_RUNNING": "0x00000001",
+      "AOP_RING_FLAG_PREWARMED": "0x00000002",
+      "AOP_RING_FLAG_OVERFLOW": "0x00000004",
+      "AOP_RING_FLAG_HISTORIC_VALID": "0x00000008",
+      "AOP_RING_FLAG_WAKE_PENDING": "0x00000010",
+      "AOP_RING_FLAG_EXCLAVE_ISOLATED": "0x00000020"
+    }
+  },
+  "wake_trigger_mechanics": {
+    "interrupt_vector": 357,
+    "aic_vector_hex": "0x0165",
+    "device_tree_path": "/device-tree/arm-io/aop2",
+    "interrupt_name": "AOP2 Primary Mailbox Inbox Message Pending",
+    "target_core_cluster": "Everest P-cores (Application Processor)",
+    "wake_latency_typical_ms": 18.45,
+    "wake_latency_max_ms": 25.0,
+    "wake_sequence": [
+      "1. LPMic PDM hardware streams 16kHz audio continuously into 96,000-byte SRAM circular buffer.",
+      "2. 03_audio_hotword_app.macho runs 40-channel log-mel filterbank feature extraction every 10 ms.",
+      "3. Acoustic neural template scores phonemes for Siri trigger phrase ('Hey Siri' / 'Siri').",
+      "4. Stage 2 acoustic score crosses threshold; AOP asserts doorbell in ASCwrap mailbox at 0x101600000.",
+      "5. AIC IRQ vector 357 is asserted; Everest P-cores wake from low-power WFI state.",
+      "6. Host driver IOPAudioVoiceTriggerDevice handles vector 357, logs trigger telemetry, and retrieves 96,000 bytes historical context for CoreSpeech / assistantd."
+    ]
+  }
+}

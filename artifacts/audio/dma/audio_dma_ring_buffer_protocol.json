@@ -1,0 +1,346 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AudioDMA Evolution Ring Buffer Protocol & State Machine Specification",
+  "description": "Exhaustive specification of the circular ring buffer protocols, hardware descriptor queues, channel state machine, and DART translation on Apple Silicon A19 Pro (t8150 / iOS 27.2).",
+  "soc": "t8150",
+  "target_os": "iOS 27.2",
+  "architecture": "Apple Silicon ARM64e",
+  "channel_state_machine": {
+    "class_name": "AudioDMAChannelStateMachine",
+    "states_count": 11,
+    "states": {
+      "0": {"name": "Uninitialized", "description": "Channel object allocated but apertures and role not yet assigned"},
+      "1": {"name": "Ready", "description": "Apertures mapped and role/direction assigned; awaiting hardware initialization"},
+      "2": {"name": "Initializing", "description": "Hardware registers being programmed with default watermarks and interrupts"},
+      "3": {"name": "Idle", "description": "Channel hardware quiesced and ready to accept stream configuration or transfers"},
+      "4": {"name": "Configure", "description": "Stream format, bit width, channel count, and FIFO depths being committed"},
+      "5": {"name": "Introspect", "description": "Channel querying hardware capabilities, latency, or FIFO status"},
+      "6": {"name": "FirstTransfer", "description": "Initial transfer command enqueued to prime the hardware FIFO pipeline"},
+      "7": {"name": "Transferring", "description": "Continuous circular ring buffer streaming with active AXI bus burst transfers"},
+      "8": {"name": "Stopping", "description": "Channel receiving stop command, draining in-flight AXI bursts, quiescing"},
+      "9": {"name": "Complete", "description": "All submitted transfer descriptors consumed and CS FIFO completions reaped"},
+      "10": {"name": "Sleeping", "description": "Channel gated into low-power suspended state (kAudioDMAChannelPowerStateSuspended)"}
+    },
+    "operations_count": 14,
+    "operations": {
+      "0": {"name": "ADMACOPER_SetRoleDirection", "string": "SetRoleDirection", "description": "Assign TX or RX direction and subsystem role string"},
+      "1": {"name": "ADMACOPER_SetApertures", "string": "SetApertures", "description": "Assign physical memory mapped I/O apertures (control, TD, CS, PCT FIFOs)"},
+      "2": {"name": "ADMACOPER_Initialize", "string": "Initialize", "description": "Execute hardware channel reset and default configuration setup"},
+      "3": {"name": "ADMACOPER_Transfer", "string": "Transfer", "description": "Submit initial transfer request or trigger DMA execution start"},
+      "4": {"name": "ADMACOPER_Error", "string": "Error", "description": "Signal hardware FIFO error, bus timeout, or DMA descriptor fault"},
+      "5": {"name": "ADMACOPER_ProcessMoreTransfers", "string": "ProcessMoreDescriptors", "description": "Refill ring buffer with subsequent descriptors while channel is running"},
+      "6": {"name": "ADMACOPER_Finish", "string": "FinishDescriptors", "description": "Commit terminal descriptor in stream to initiate graceful drainage"},
+      "7": {"name": "ADMACOPER_Stop", "string": "Stop", "description": "Immediate transfer cancellation and abort request"},
+      "8": {"name": "ADMACOPER_ProcessDone", "string": "Stopped", "description": "Process completion status from CS FIFO and acknowledge quiescence"},
+      "9": {"name": "ADMACOPER_Sleep", "string": "Sleep", "description": "Gate channel into suspended power state"},
+      "10": {"name": "ADMACOPER_Wake", "string": "Wake", "description": "Restore channel from suspended state to available state"},
+      "11": {"name": "ADMACOPER_Atomic", "string": "Atomic", "description": "Execute atomic register read/modify/write transaction"},
+      "12": {"name": "ADMACOPER_Reset", "string": "Reset", "description": "Hardware channel pipeline purge and pointer zeroing"},
+      "13": {"name": "ADMACOPER_ClearIRQ", "string": "ClearIRQ", "description": "Acknowledge and clear pending channel interrupt state"}
+    },
+    "valid_transitions": [
+      {"from": "Uninitialized", "to": "Ready", "trigger": "ADMACOPER_SetApertures"},
+      {"from": "Uninitialized", "to": "Uninitialized", "trigger": "ADMACOPER_SetRoleDirection"},
+      {"from": "Ready", "to": "Initializing", "trigger": "ADMACOPER_Initialize"},
+      {"from": "Ready", "to": "Ready", "trigger": "ADMACOPER_Reset"},
+      {"from": "Initializing", "to": "Idle", "trigger": "Automatic hardware completion"},
+      {"from": "Initializing", "to": "Initializing", "trigger": "Self loop"},
+      {"from": "Idle", "to": "Configure", "trigger": "SetConfig / setAudioStreamDescription"},
+      {"from": "Idle", "to": "Introspect", "trigger": "GetConfig / ValidConfig / ValidFIFODepth / GetFIFODepth"},
+      {"from": "Idle", "to": "FirstTransfer", "trigger": "ADMACOPER_Transfer (first buffer prime)"},
+      {"from": "Idle", "to": "Idle", "trigger": "Error / Stop-before-deactivate"},
+      {"from": "Idle", "to": "Sleeping", "trigger": "ADMACOPER_Sleep"},
+      {"from": "Configure", "to": "Idle", "trigger": "Implied on configuration commit"},
+      {"from": "Introspect", "to": "Idle", "trigger": "Implied on status read"},
+      {"from": "Introspect", "to": "FirstTransfer", "trigger": "Implied if transfer pending"},
+      {"from": "Introspect", "to": "Transferring", "trigger": "Implied if already running"},
+      {"from": "FirstTransfer", "to": "Transferring", "trigger": "Hardware starts burst processing"},
+      {"from": "FirstTransfer", "to": "Complete", "trigger": "Single buffer transfer completes"},
+      {"from": "FirstTransfer", "to": "Stopping", "trigger": "ADMACOPER_Stop"},
+      {"from": "FirstTransfer", "to": "Introspect", "trigger": "Query depth during startup"},
+      {"from": "Transferring", "to": "Transferring", "trigger": "ADMACOPER_ProcessMoreTransfers (continuous ring refill)"},
+      {"from": "Transferring", "to": "Complete", "trigger": "All descriptors processed (CS FIFO empty)"},
+      {"from": "Transferring", "to": "Stopping", "trigger": "ADMACOPER_Stop or ADMACOPER_Finish"},
+      {"from": "Transferring", "to": "Introspect", "trigger": "Telemetry status poll"},
+      {"from": "Stopping", "to": "Stopping", "trigger": "Waiting for in-flight AXI burst drain"},
+      {"from": "Stopping", "to": "Idle", "trigger": "Hardware confirmed idle (ch_stat.idle == 1)"},
+      {"from": "Complete", "to": "Transferring", "trigger": "ADMACOPER_ProcessMoreTransfers"},
+      {"from": "Complete", "to": "Idle", "trigger": "Stream deactivation"},
+      {"from": "Complete", "to": "Stopping", "trigger": "ADMACOPER_Stop"},
+      {"from": "Sleeping", "to": "Initializing", "trigger": "ADMACOPER_Wake"},
+      {"from": "Sleeping", "to": "Introspect", "trigger": "Query configuration while sleeping"},
+      {"from": "Sleeping", "to": "Sleeping", "trigger": "Power retention loop"}
+    ]
+  },
+  "power_management": {
+    "channel_power_states": {
+      "kAudioDMAChannelPowerStateSuspended": {
+        "ordinal": 0,
+        "description": "Channel clock gated, SRAM retain mode, AXI bus interface asleep"
+      },
+      "kAudioDMAChannelPowerStateAvailable": {
+        "ordinal": 1,
+        "description": "Channel clock active, operational apertures powered, ready for DMA execution"
+      }
+    },
+    "controller_power_states": {
+      "kAudioDMAControllerPowerStateSuspended": {
+        "ordinal": 0,
+        "description": "Entire ADMAC block clock gated, timebase retention active"
+      },
+      "kAudioDMAControllerPowerStateAvailable": {
+        "ordinal": 1,
+        "description": "ADMAC global registers active, interrupt dispatch functional"
+      },
+      "kAudioDMAControllerPowerStateInvalid": {
+        "ordinal": 2,
+        "description": "Guard power boundary value"
+      }
+    },
+    "gated_transition_semantics": {
+      "soft_transition": "Preserves channel configurations, watermarks, and pending DART mappings",
+      "hard_transition": "Forces full channel reset, purges internal SRAM FIFOs, reloads EDT properties"
+    }
+  },
+  "hardware_descriptor_geometry": {
+    "descriptor_size_bytes": 16,
+    "descriptor_size_bits": 128,
+    "alignment_bytes": 16,
+    "fields": {
+      "AddressLow": {
+        "byte_offset": 0,
+        "size_bytes": 4,
+        "type": "uint32_t",
+        "bits": "31:0",
+        "description": "Lower 32 bits of the DART-translated Device Virtual Address (DVA) for the buffer segment"
+      },
+      "AddressHigh": {
+        "byte_offset": 4,
+        "size_bytes": 4,
+        "type": "uint32_t",
+        "bits": "31:0",
+        "description": "Upper 32 bits of the DART-translated Device Virtual Address (DVA) for the buffer segment"
+      },
+      "Length": {
+        "byte_offset": 8,
+        "size_bytes": 4,
+        "type": "uint32_t",
+        "bits": "31:0",
+        "description": "Segment payload byte count (must be multiple of programmedAXIBurstSize)"
+      },
+      "Misc": {
+        "byte_offset": 12,
+        "size_bytes": 4,
+        "type": "uint32_t",
+        "bits": "31:0",
+        "description": "Transfer descriptor control, ID tag, and flags word",
+        "subfields": {
+          "TDID": {
+            "byte_offset": 12,
+            "bits": "7:0",
+            "type": "uint8_t",
+            "description": "Transfer Descriptor ID (0x00 - 0xFF) assigned by software to correlate completions"
+          },
+          "Flags": {
+            "byte_offset": 13,
+            "bits": "15:8",
+            "type": "uint8_t",
+            "description": "Channel specific control flags (e.g. Timestamp request, Cache bypass)"
+          },
+          "Attr": {
+            "byte_offset": 14,
+            "bits": "23:16",
+            "type": "uint8_t",
+            "description": "Descriptor Attributes",
+            "attribute_bits": {
+              "IOC": {"bit": 0, "description": "Interrupt On Complete: trigger interrupt upon completion of this descriptor"},
+              "EOT": {"bit": 1, "description": "End Of Transfer: marks terminal descriptor in a discrete burst sequence"},
+              "WRAP": {"bit": 2, "description": "Ring Buffer Wrap: instructs hardware pointer to return to ring base"},
+              "PCT_EN": {"bit": 3, "description": "Enable Pre-Calculated Timestamp generation into PCT FIFO"}
+            }
+          },
+          "Status": {
+            "byte_offset": 15,
+            "bits": "31:24",
+            "type": "uint8_t",
+            "description": "Reserved / Hardware status latch"
+          }
+        }
+      }
+    }
+  },
+  "command_status_record_geometry": {
+    "record_size_bytes": 8,
+    "description": "Completion record popped from CS FIFO (reg[2]) upon descriptor completion",
+    "fields": {
+      "TransDescID": {
+        "byte_offset": 0,
+        "size_bytes": 1,
+        "type": "uint8_t",
+        "description": "Matches TDID from submitted descriptor"
+      },
+      "Flags": {
+        "byte_offset": 1,
+        "size_bytes": 1,
+        "type": "uint8_t",
+        "description": "Completion flags (Error, Overrun, Underrun)"
+      },
+      "ResidualBytes": {
+        "byte_offset": 2,
+        "size_bytes": 2,
+        "type": "uint16_t",
+        "description": "Remaining un-transferred bytes (0 on successful full transfer)"
+      },
+      "HardwareTimestampLow": {
+        "byte_offset": 4,
+        "size_bytes": 4,
+        "type": "uint32_t",
+        "description": "Hardware LTB timer timestamp at descriptor finish boundary"
+      }
+    }
+  },
+  "pct_timestamp_record_geometry": {
+    "record_size_bytes": 8,
+    "description": "Timestamp record popped from PCT FIFO (reg[3]) for sub-sample synchronization",
+    "fields": {
+      "TransDescID": {
+        "byte_offset": 0,
+        "size_bytes": 1,
+        "type": "uint8_t",
+        "description": "Matches TDID from submitted descriptor"
+      },
+      "Reserved": {
+        "byte_offset": 1,
+        "size_bytes": 3,
+        "description": "Alignment padding"
+      },
+      "PreCalculatedTimestamp": {
+        "byte_offset": 4,
+        "size_bytes": 4,
+        "type": "uint32_t",
+        "description": "Sample-accurate hardware timestamp synchronized to AON GTB"
+      }
+    }
+  },
+  "circular_ring_buffer_protocol": {
+    "producer_consumer_model": {
+      "software_producer": {
+        "action": "Enqueues AudioDMATransferCommand structures into activeTransferCommands queue",
+        "hardware_interface": "Pushes 16-byte descriptors directly into channel TD FIFO register (reg[1])",
+        "capacity_check": "Verified via channelBufferSize and TD FIFO not full condition"
+      },
+      "hardware_consumer": {
+        "action": "ADMAC DMA execution engine fetches descriptors from TD FIFO, executes AXI bursts",
+        "cache_control": "AXI Read arcache == 0x2, AXI Write awcache == 0x2 (coherent, non-allocating)",
+        "burst_transfer": "Paces data between AXI system memory and channel internal SRAM carveout"
+      },
+      "hardware_status_producer": {
+        "action": "Upon completing descriptor length, hardware pushes completion token to CS FIFO (reg[2])",
+        "timestamp_action": "If Attr.PCT_EN is asserted, pushes 64-bit timestamp record to PCT FIFO (reg[3])",
+        "interrupt_generation": "If Attr.IOC is asserted, asserts channel IRQ bit in CH_IRQ_STAT and TXCH/RXCH_IRQ_STAT"
+      },
+      "software_status_consumer": {
+        "action": "In _admaInterruptAction or _handleCompletionNewContract, checks ReadChannelBlockRegisterBits(isTx, csfifostat.empty) == 0",
+        "drain_loop": "Pops CS FIFO records, matches TransDescID against active commands, invokes client completion blocks",
+        "timestamp_drain": "If PCT FIFO active, pops matching timestamp from PCT FIFO to compute jitter histograms"
+      }
+    },
+    "watermark_threshold_invariants": {
+      "fifo_rule_1": "almost_empty_threshold < transfer_threshold",
+      "fifo_rule_2": "transfer_threshold < almost_full_threshold",
+      "fifo_rule_3": "almost_full_threshold <= channelBufferSize",
+      "fifo_rule_4": "transfer_threshold > 0",
+      "axi_burst_rule": "transfer_threshold >= programmedAXIBurstSize"
+    },
+    "buffer_sizing_rules": {
+      "axi_burst_sizes": [16, 32, 64, 128],
+      "default_burst_size_bytes": 64,
+      "min_transfer_duration_ms": 1,
+      "sample_rates_supported": [8000, 11025, 16000, 22050, 32000, 44100, 48000, 96000, 192000],
+      "bit_depths_supported": [16, 24, 32]
+    }
+  },
+  "dart_iommu_and_security_architecture": {
+    "dart_controllers": [
+      {
+        "controller": "dart-aop",
+        "compatible": "dart,t8110",
+        "page_size_bytes": 16384,
+        "sid_count": 18,
+        "protection_granularity_bytes": 128,
+        "mappers": [
+          {
+            "name": "mapper-admac-base-ns",
+            "phandle": 77,
+            "reg_sid": 8,
+            "security": "Non-Secure",
+            "allow_subpage_mapping": true,
+            "description": "Supports fine-grained 128-byte subpage translation for flexible non-secure audio ring buffers"
+          },
+          {
+            "name": "mapper-admac-base-s",
+            "phandle": 79,
+            "reg_sid": 9,
+            "security": "Secure",
+            "allow_subpage_mapping": false,
+            "description": "Strict 16KB page-aligned DART protection for secure speaker and microphone audio streams"
+          },
+          {
+            "name": "mapper-admac-leap-ns",
+            "phandle": 78,
+            "reg_sid": 10,
+            "security": "Non-Secure",
+            "allow_subpage_mapping": true,
+            "description": "Low-latency subpage mapping for LEAP non-secure haptic drive ring buffers"
+          },
+          {
+            "name": "mapper-admac-leap-s",
+            "phandle": 80,
+            "reg_sid": 11,
+            "security": "Secure",
+            "allow_subpage_mapping": false,
+            "description": "Strict page-aligned DART protection for secure LEAP haptic excursion monitors"
+          }
+        ]
+      }
+    ],
+    "exclave_tightbeam_ipc": {
+      "proxy_driver": "AudioSharedDARTMapperProxy",
+      "exclave_service": "com.apple.service.AudioSharedDARTMapper",
+      "tightbeam_interface": "SharedDARTMapperService_C.c",
+      "methods": {
+        "setupUseCase": {
+          "selector_id": 1,
+          "arg_struct": "exclavesaudiodrivers_audiodmabufferspectb_s",
+          "result_struct": "shareddartmapperservice_shareddartmapperservice_setupusecase__result_s",
+          "description": "Establishes DVA device virtual address mappings in Exclave secure memory space"
+        },
+        "suspend": {
+          "selector_id": 2,
+          "result_struct": "shareddartmapperservice_shareddartmapperservice_suspend__result_s",
+          "description": "Quiesces and revokes active secure DART mapping tables"
+        },
+        "resume": {
+          "selector_id": 3,
+          "result_struct": "shareddartmapperservice_shareddartmapperservice_resume__result_s",
+          "description": "Re-validates and restores secure DART page table descriptors"
+        }
+      }
+    },
+    "cllt_escalation_detector": {
+      "service_name": "AudioDMACLLTEscalationDetector_T8150_iOS",
+      "hardware_hook": "function-vote_crit_llt_mode",
+      "ced_tunables": {
+        "ced_disable": 0,
+        "telemetry_mode": 1,
+        "abs_ltr": "0x00000040",
+        "escalation_duration": "0x00000100",
+        "panic_on_sps0_actives": 1,
+        "override_tunables_aggressive": 0
+      },
+      "operational_modes": ["Telemetry", "Panic"],
+      "panic_trigger_condition": "Critical Low Latency Transfer deadline missed while in Panic mode or active channel at sPS(0)",
+      "panic_string_format": "%s CLLT Escalated.\\n  CED section\\n    SSW name: %s\\n    Rx channels: %02u %02u %02u %02u\\n    Tx channels: %02u %02u %02u %02u\\n    SSW data: "
+    }
+  }
+}
