@@ -1064,6 +1064,43 @@ class KnowledgeGraphBuilder:
             self.add_edge("coproc_baseband_mav25", "baseband_satellite_ntn_stack", "runs_satellite_stack",
                           source_file="artifacts/coprocessors/baseband_inventory.json", _src="coproc_baseband_mav25", _tgt="baseband_satellite_ntn_stack")
 
+        # 5. Centauri Wireless SoC artifacts (ftab_manifest.json, driverkit, wifi, bluetooth)
+        p_centauri_ftab = ARTIFACTS_DIR / "centauri/firmware/ftab_manifest.json"
+        if p_centauri_ftab.exists():
+            self.add_node("coproc_centauri_wireless", "Apple Centauri In-House Wireless Silicon (t2026phoneG1 / Proxima)",
+                          "code", "artifacts/centauri/firmware/ftab_manifest.json", "Firmware/t2026phoneG1/Release/ftab.bin", community=2)
+            self.add_node("centauri_rtkit_core", "Centauri RTKitOS Microkernel Core (Chinook ARMv8 PAC)",
+                          "code", "artifacts/centauri/firmware/ftab_manifest.json", "Partition rkos (0x510)", community=2)
+            self.add_node("centauri_wifi7_subsystem", "Centauri Wi-Fi 7 (802.11be) Dual-Band Engine",
+                          "code", "artifacts/centauri/wifi/wifi7_feature_matrix.json", "Partitions aciw/w2pp/w5pp", community=2)
+            self.add_node("centauri_bluetooth_subsystem", "Centauri Bluetooth 5.4/6.0 & Coexistence Engine",
+                          "code", "artifacts/centauri/bluetooth/coexistence_priority_matrix.json", "Partitions acib/bt5m/lpbt", community=2)
+            self.add_node("centauri_driverkit_alpha", "AppleCentauriAlpha.dext (Wi-Fi 7 Data Plane)",
+                          "code", "artifacts/centauri/driverkit/driverkit_class_hierarchy.json", "AppleCentauriAlpha", community=1)
+            self.add_node("centauri_driverkit_beta", "AppleCentauriBeta.dext (Bluetooth / Thread Data Plane)",
+                          "code", "artifacts/centauri/driverkit/driverkit_class_hierarchy.json", "AppleCentauriBeta", community=1)
+            self.add_node("centauri_driverkit_control", "AppleCentauriControl.dext (PCIe Host Management)",
+                          "code", "artifacts/centauri/driverkit/driverkit_class_hierarchy.json", "AppleCentauriControl", community=1)
+            self.add_node("centauri_daemon_centaurid", "Daemon: centaurid (com.apple.centaurid)",
+                          "code", "artifacts/rootfs/launch_daemons/com.apple.centaurid.plist", "/usr/libexec/centaurid", community=3)
+
+            self.add_edge("coproc_centauri_wireless", "centauri_rtkit_core", "executes_microkernel",
+                          source_file="artifacts/centauri/firmware/ftab_manifest.json", _src="coproc_centauri_wireless", _tgt="centauri_rtkit_core")
+            self.add_edge("coproc_centauri_wireless", "centauri_wifi7_subsystem", "operates_wifi_radio",
+                          source_file="artifacts/centauri/wifi/wifi7_feature_matrix.json", _src="coproc_centauri_wireless", _tgt="centauri_wifi7_subsystem")
+            self.add_edge("coproc_centauri_wireless", "centauri_bluetooth_subsystem", "operates_bluetooth_radio",
+                          source_file="artifacts/centauri/bluetooth/coexistence_priority_matrix.json", _src="coproc_centauri_wireless", _tgt="centauri_bluetooth_subsystem")
+            self.add_edge("centauri_driverkit_control", "coproc_centauri_wireless", "manages_pcie_endpoint",
+                          source_file="artifacts/centauri/driverkit/centauri_host_interface.h", _src="centauri_driverkit_control", _tgt="coproc_centauri_wireless")
+            self.add_edge("centauri_driverkit_alpha", "centauri_wifi7_subsystem", "dispatches_wifi_frames",
+                          source_file="artifacts/centauri/driverkit/driverkit_class_hierarchy.json", _src="centauri_driverkit_alpha", _tgt="centauri_wifi7_subsystem")
+            self.add_edge("centauri_driverkit_beta", "centauri_bluetooth_subsystem", "dispatches_bluetooth_packets",
+                          source_file="artifacts/centauri/driverkit/driverkit_class_hierarchy.json", _src="centauri_driverkit_beta", _tgt="centauri_bluetooth_subsystem")
+            self.add_edge("centauri_daemon_centaurid", "centauri_driverkit_control", "orchestrates_driver_lifecycle",
+                          source_file="artifacts/rootfs/launch_daemons/com.apple.centaurid.plist", _src="centauri_daemon_centaurid", _tgt="centauri_driverkit_control")
+            self.add_edge("xnu_kernelcache_release", "centauri_driverkit_control", "binds_driverkit_service",
+                          source_file="artifacts/centauri/driverkit/centauri_host_interface.h", _src="xnu_kernelcache_release", _tgt="centauri_driverkit_control")
+
     def ingest_rootfs(self):
         print("[*] Ingesting core OS runtime & IPC artifacts (Community 3)...")
         # 1. daemon_catalog.json

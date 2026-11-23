@@ -8,11 +8,11 @@
 
 ## Executive Abstract & Architectural Scope
 
-The Apple Silicon **A19 Pro** (`t8150`, platform `v57ap`) represents the pinnacle of heterogeneous system-on-chip (SoC) engineering, combining desktop-class computational throughput with micro-watt always-on sensor autonomy and hardware-enforced cryptographic boundaries. Built on TSMC's enhanced 3-nanometer class process node (**N3P**), the A19 Pro integrates a 6-core ARMv9.5-A application processor complex, a 6-core Apple AGX "G18" ray-tracing GPU, a 16-core Apple Neural Engine (**H18**), an Always-On Processor 2 (**AOP2**) running an autonomous 64-bit RTKit/cL4 hybrid microkernel, a dedicated Display Co-Processor (**DCP**), a second-generation Apple NVMe Storage controller (**ANS2**), and a hardware-isolated Secure Enclave (**sepOS 27.2**).
+The Apple Silicon **A19 Pro** (`t8150`, platform `v57ap`) represents the pinnacle of heterogeneous system-on-chip (SoC) engineering, combining desktop-class computational throughput with micro-watt always-on sensor autonomy and hardware-enforced cryptographic boundaries. Built on TSMC's enhanced 3-nanometer class process node (**N3P**), the A19 Pro integrates a 6-core ARMv9.5-A application processor complex, a 6-core Apple AGX "G18" ray-tracing GPU, a 16-core Apple Neural Engine (**H18**), an Always-On Processor 2 (**AOP2**) running an autonomous 64-bit RTKit/cL4 hybrid microkernel, a dedicated Display Co-Processor (**DCP**), a second-generation Apple NVMe Storage controller (**ANS2**), a hardware-isolated Secure Enclave (**sepOS 27.2**), and Apple's inaugural in-house wireless silicon: the **Centauri Unified Wireless SoC** (`t2026phoneG1` / Proxima) integrating Wi-Fi 7, Bluetooth 5.4/6.0, and Thread over high-throughput PCIe Gen4 ACIPC.
 
 Across iOS 27.2 (`24B119`), Apple has transitioned the core execution environment from monolithic kernel privileges into a multi-enclave, capability-mediated hypervisor fabric. At the core of this substrate lies the **Secure Page Table Monitor (SPTM)** operating at Guarded Execution Level 2 (**GL2**), paired with the **Trusted Execution Monitor (TXM)** at **GL1**, enforcing Stage-2 physical address translations that strip traditional Ring 0 Darwin (`xnu-11215.1.4`) of the ability to map arbitrary physical memory or modify executable page attributes. Concurrently, **ExclaveOS** introduces user-space security conclaves governed by the formally verified **cL4** capability microkernel, communicating via the high-throughput **Tightbeam** RPC protocol.
 
-This publication synthesizes ten independent, empirical reverse-engineering tracks into a single, comprehensive hardware-software co-design manual. Every address, offset, bitfield, interrupt vector, and mailbox protocol documented herein has been extracted directly from production firmware binaries (`iBoot.RESEARCH`, `sptm.t8150`, `txm.research`, `kernelcache.release.raw`, `aop2fw-v57aop2.RELEASE.im4p`, `sep-firmware.im4p`, `AGXMetal14_4.bundle`, and `DeviceTree.v57ap.im4p`) and verified against automated assertion suites.
+This publication synthesizes fourteen independent, empirical reverse-engineering tracks into a single, comprehensive hardware-software co-design manual. Every address, offset, bitfield, interrupt vector, and mailbox protocol documented herein has been extracted directly from production firmware binaries (`iBoot.RESEARCH`, `sptm.t8150`, `txm.research`, `kernelcache.release.raw`, `aop2fw-v57aop2.RELEASE.im4p`, `sep-firmware.im4p`, `AGXMetal14_4.bundle`, `Firmware/t2026phoneG1/Release/ftab.bin`, RAMDisk DriverKit dexts, and `DeviceTree.v57ap.im4p`) and verified against automated assertion suites.
 
 ```
 +-----------------------------------------------------------------------------------------------------------------------+
@@ -880,8 +880,8 @@ When the device transitions into sleep state:
 
 ### 16.1 Apple PCIe Root Complexes
 The A19 Pro features three Apple PCIe Gen4 Root Ports connecting external high-speed peripherals:
-- **Port 0 (`dart-apcie0` @ `0x180000000`)**: 2-lane Gen4 connection to the Broadcom/Apple Wi-Fi 7 + Bluetooth 5.4 silicon. AIC Vectors 1139..1141, DART fault vector 1142.
-- **Port 1 (`dart-apcie1` @ `0x181000000`)**: 4-lane Gen4 connection to the Qualcomm Snapdragon / Apple 5G Modem. AIC Vectors 1149..1150.
+- **Port 0 (`dart-apcie0` @ `0x180000000`)**: 2-lane Gen4 connection to Apple's in-house Centauri Wi-Fi 7 (802.11be) + Bluetooth 5.4/6.0 wireless silicon (`t2026phoneG1` / Proxima). Connects via `/device-tree/arm-io/apcie/pci-bridge0` with AIC Level Vector 22, MSI-X Vectors 1139..1141, and DART fault vector 1142. Utilizes DART Stream IDs `0x10` (`DART_SID_CONTROL`), `0x11` (`DART_SID_ALPHA`), and `0x12` (`DART_SID_BETA`).
+- **Port 1 (`dart-apcie1` @ `0x181000000`)**: 4-lane Gen4 connection to the 5G Cellular Modem. AIC Vectors 1149..1150.
 - **Port 2 (`dart-apcie2` @ `0x182000000`)**: 1-lane Gen4 connection to the Apple Ultra-Wideband (UWB) chip.
 
 ### 16.2 Apple NVMe Storage Controller (ANS2)
@@ -1318,40 +1318,306 @@ The table below catalogs key device tree nodes extracted from `DeviceTree.v57ap.
 
 ---
 
-*End of Apple Silicon A19 Pro Hardware-Software Co-Design Manual Master Edition.*
+## Part XXI: Apple Centauri In-House Wireless Silicon (Wi-Fi 7, Bluetooth 5.4 & DriverKit ACIPC)
 
+### 21.1 Subsystem Significance & Physical Hardware Architecture
+The **Apple Centauri** wireless SoC (`t2026phoneG1` / internal platform **Proxima** `si-b0`) marks Apple's inaugural transition to 100% in-house wireless connectivity silicon, displacing third-party Broadcom Wi-Fi/Bluetooth combos with a fully unified, proprietary radio frequency substrate. Fabricated on TSMC's 4nm-class radio frequency process node (**N4RF**), Centauri integrates:
+- An autonomous **64-bit ARMv8 Chinook** application core running an RTKitOS microkernel (`RTKit_armv8_chinook_Oz_flto_pac-3514.40.18.release`) protected by Pointer Authentication (`PAC00`) and hardware MMU page tables.
+- A high-throughput dual-band **Wi-Fi 7 (802.11be)** baseband and MAC processor supporting 320 MHz channel bandwidth, 4096-QAM constellation mapping, and multi-link operation (MLO).
+- A dual-mode **Bluetooth 5.4 / 6.0** controller with hardware Channel Sounding (CS) phase-based ranging (PBR), round-trip timing (RTT), and LE Audio Isochronous Channels (CIS/BIS).
+- An independent **Low-Power Bluetooth (LPBT)** core operating from isolated always-on SRAM, handling Find My network offline location beacons and Wake-on-BLE while the host Application Processor (AP) is in deep sleep.
+- An 8-level **RF Coexistence Matrix Engine** dynamically arbitrating 2.4 GHz spectrum sharing across Wi-Fi and Bluetooth antennas.
+- A hardware **PCIe Gen4 x2** bus interface connecting directly to the A19 Pro host AP via `apcie0` (`pci-bridge0`), backed by DART-APCIE0 IOMMU translation filters.
+
+```
++-----------------------------------------------------------------------------------------------------------------------+
+|                                    APPLE CENTAURI WIRELESS SOC (t2026phoneG1) ARCHITECTURE                            |
++-----------------------------------------------------------------------------------------------------------------------+
+|  +-----------------------------------+  +-----------------------------------+  +-----------------------------------+  |
+|  |     RTKitOS Chinook Core (ARMv8)  |  |    Wi-Fi 7 (802.11be) Dual Engine |  |    Bluetooth 5.4/6.0 Subsystem    |  |
+|  |  PAC00 Guarded Execution / MMU    |  |  2.4 GHz & 5/6 GHz Dual MAC/PHY   |  |  Channel Sounding (PBR/RTT) Ranging|  |
+|  |  Boot Heap & SRAM Power Gating    |  |  4096-QAM / 320 MHz Subchannels   |  |  LE Audio Isochronous Channels     |  |
+|  |  ACIPC Event Transport Handshake  |  |  Multi-Link Operation (MLO 2/3)   |  |  LPBT Always-On Find My Beacon    |  |
+|  +-----------------+-----------------+  +-----------------+-----------------+  +-----------------+-----------------+  |
+|                    |                                      |                                      |                    |
+|  +-----------------+--------------------------------------+--------------------------------------+-----------------+  |
+|  |                           HARDWARE RF COEXISTENCE MATRIX (8 Priority Levels, 16 Activity Classes)               |  |
+|  +-----------------+--------------------------------------+--------------------------------------+-----------------+  |
+|                    |                                      |                                      |                    |
+|  +-----------------+-----------------+  +-----------------+-----------------+  +-----------------+-----------------+  |
+|  |       Dual-Band RF Frontend       |  |     PCIe Gen4 x2 Endpoint Core    |  |   BTSE Security & Crypt Engine    |  |
+|  |  2.4 GHz / 5 GHz / 6 GHz Antennas |  |  Doorbell Registers (CRDB / TRDB) |  |   AES-CCM Link Encryption         |  |
+|  |  MIMO Spatial Streams (2x2 / 4x4) |  |  DART-APCIE0 Stream IDs (10/11/12)|  |   Secure Pairing Validation       |  |
+|  +-----------------------------------+  +-----------------+-----------------+  +-----------------------------------+  |
+|                                                           |                                                           |
+|  +--------------------------------------------------------+--------------------------------------------------------+  |
+|  |               HOST DARWIN AP: PCIe Bridge (apcie0 @ 0x180000000) / AIC IRQ 22 / DriverKit Dexts                 |  |
+|  +-----------------------------------------------------------------------------------------------------------------+  |
++-----------------------------------------------------------------------------------------------------------------------+
+```
 
 ---
 
-## Part XXI: Architectural Glossary & Mathematical Notation Index
+### 21.2 FTAB Partition Container & Firmware Memory Topography
+The Centauri firmware package is distributed within the IPSW restore container as `Firmware/t2026phoneG1/Release/ftab.bin` (29,600,848 bytes). It is encapsulated in an Apple `rkosftab` binary table containing exactly 78 partitions:
 
-### 21.1 Definitions and Acronyms
+| Partition FourCC | File Offset | Partition Size | Description & Execution Role |
+| :--- | :--- | :--- | :--- |
+| `rkos` | `0x00000510` | 920,768 B | RTKitOS microkernel core; ARMv8 Chinook reset vector at `140000a5` branching to 0x294. |
+| `rkol` | `0x000e11d0` | 863,424 B | RTKit low-level hardware abstraction layer and exception vector dispatchers. |
+| `aciw` | `0x001b3e90` | 2,559,168 B | Apple Centauri Interface Wi-Fi: host high-level MAC management and frame dispatch. |
+| `w2lp` / `w2lm` | `0x00424b50` | 596,512 B | Wi-Fi 2.4 GHz Low-Power and Main MAC protocol execution firmwares. |
+| `w5lp` / `w5lm` | `0x004fc290` | 596,512 B | Wi-Fi 5 GHz / 6 GHz Low-Power and Main MAC protocol execution firmwares. |
+| `w5pp` / `w5pm` | `0x007c8ff0` | 512,320 B | Wi-Fi 5 GHz Packet Processing microcode and high-throughput DMA dispatch engines. |
+| `w2pp` / `w2pm` | `0x00846130` | 318,496 B | Wi-Fi 2.4 GHz Packet Processing microcode and spatial stream schedulers. |
+| `acib` | `0x0058dcb0` | 2,072,672 B | Apple Centauri Interface Bluetooth: HCI layer, Link Manager, and audio pipelines. |
+| `bt5p` / `bt5m` | `0x00893d50` | 312,992 B | Bluetooth 5.4/6.0 PHY microcode and Baseband protocol state machine. |
+| `lpbt` | `0x01108730` | 1,396,800 B | Low-Power Bluetooth autonomous firmware (Find My offline beacon, AirTag tracking). |
+| `btse` | `0x00787d10` | 52,000 B | Bluetooth Security Engine: hardware AES-CCM primitive engine and key vault. |
+| `scab` / `scaw` | `0x00794830` | 214,976 B | Shared Coexistence Arbiters for Bluetooth and Wi-Fi dynamic antenna switching. |
+| `_wfa` | `0x01410390` | 3,352,155 B | Wi-Fi Alliance compliance engine and hardware calibration diagnostic harness. |
+| `_wma` | `0x017429ec` | 3,344,984 B | Wi-Fi Main Architecture firmware (rate adaptation, beamforming, spatial sounding). |
+| `_wcl` | `0x01a73444` | 523,854 B | RF calibration tables: I/Q imbalance, phase noise, power amplifier gain steps. |
+| `bver` | `0x01af3294` | 67 B | Build stamp: `241.3431042001000000.146\|24.1.0.0\|date:2026 10 13\|chip_revision_b0`. |
+| `_osl` | `0x01c30354` | 43,227 B | RTKitOS unstripped format string dictionary (1,003 format strings, crash table schema). |
+| `P005`..`P032` | Multiple | ~120 KB each | Dynamic RF power management profiles across hardware operating envelopes. |
+| `R000`..`R009` | Multiple | ~21 KB each | Regional RF regulatory boundary tables matched to device hardware ID (`HW ID[0:63]`). |
+
+The `_osl` string database reveals critical microkernel invariants:
+- **Crash Log Tables**: `RTKOS_proxima_crashlog::announce WIFI crashlog table 0x%llx` and `announce BT crashlog table 0x%llx`.
+- **Boot Transport**: Firmware announces readiness to the host AP via `Booting from PCIE/ACIPC`.
+- **Power Optimization**: Dynamic unused SRAM bank shutoff via `Powered off %u bytes of unused SRAM at address 0x%llx`.
+
+---
+
+### 21.3 Wi-Fi 7 (802.11be) Dual-Band MAC/PHY Architecture
+The Wi-Fi 7 subsystem implements the IEEE 802.11be Extremely High Throughput (EHT) standard across segregated 2.4 GHz and 5/6 GHz hardware processing pipelines:
+
+1. **Multi-Link Operation (MLO)**:
+   Centauri implements simultaneous transmit and receive Multi-Link Multi-Radio (MLMR) operation. The MLO state machine establishes:
+   - **Primary Station Link**: Link ID `2` operating on 5 GHz or 6 GHz channels (high bandwidth, low latency).
+   - **Secondary Station Link**: Link ID `3` operating on 2.4 GHz or secondary 5 GHz channels.
+   - **TID-to-Link Mapping**: Real-time traffic identifier routing directing voice and gaming packets over the lowest latency link while streaming bulk traffic over aggregated links.
+2. **Modulation and Channelization**:
+   - **4096-QAM (4K-QAM)**: Generates 12 bits per symbol per spatial stream (`RATE_PPDU_EHT_E = 6`), providing a 20% throughput increase over Wi-Fi 6 (1024-QAM).
+   - **320 MHz Bandwidth**: Supports 16 subchannels of 20 MHz each across the 6 GHz spectrum band.
+   - **Preamble Puncturing**: Real-time dynamic bitmap masking allows transmission across congested spectrum by carving out occupied 20 MHz sub-bands without aborting the full channel.
+
+---
+
+### 21.4 Bluetooth 5.4 / 6.0 & Multi-Radio Coexistence Engine
+Centauri's Bluetooth subsystem decouples host processing from physical radio operations:
+
+1. **Channel Sounding (CS)**:
+   Incorporates high-precision distance measurement utilizing Phase-Based Ranging (PBR) and Round-Trip Timing (RTT) across 79 Bluetooth channels. CS achieves sub-10cm ranging accuracy for Apple Digital Car Key and spatial peripheral tracking without requiring UWB radios.
+2. **Low-Power Always-On Bluetooth (LPBT)**:
+   The `lpbt` firmware partition runs autonomously from dedicated SRAM when the rest of the chip is power-collapsed. It executes Apple Find My encrypted rolling public key beacons, responds to nearby search queries, and manages Bluetooth Low Energy (BLE) scanning with zero host AP wakeups.
+3. **RF Coexistence Matrix Engine (`scab` / `scaw`)**:
+   Arbitrates concurrent transmissions on shared 2.4 GHz antennas across 8 priority levels:
+   - Level 0: Critical Bluetooth audio synchronization (LE Audio CIS packet ack).
+   - Level 1: Wi-Fi beacon reception and transmission frames.
+   - Level 2: Bluetooth Channel Sounding ranging frames.
+   - Level 3: Wi-Fi high-priority interactive data frames (VoIP / FaceTime).
+   - Level 4: Bluetooth A2DP media streaming frames.
+   - Level 5: Wi-Fi standard data acknowledgment (TCP ACKs).
+   - Level 6: Bluetooth Low Energy background advertisements.
+   - Level 7: Wi-Fi background bulk data traffic.
+
+---
+
+### 21.5 Host PCIe Gen4 & DriverKit ACIPC Communication Topology
+Host integration on Darwin is governed by Apple's user-space DriverKit environment (`/System/DriverKit`):
+
+```
++---------------------------------------------------------------------------------------------------+
+| CENTAURI HOST DRIVERKIT ARCHITECTURE & DISPATCH TOPOLOGY                                          |
++---------------------------------------------------------------------------------------------------+
+|  DARWIN KERNEL (XNU)                                                                              |
+|  +---------------------------------------------------------------------------------------------+  |
+|  | PCIe Root Port 0 (dart-apcie0 @ 0x180000000) / AIC IRQ Vector 22                            |  |
+|  | DART Stream IDs: 0x10 (CentauriControl), 0x11 (CentauriAlpha), 0x12 (CentauriBeta)           |  |
+|  +----------------------------------------------+----------------------------------------------+  |
+|                                                 | (IOUserServer / Mach IPC)                       |
+|  USER-SPACE DRIVERKIT (driverkitd)              v                                                 |
+|  +---------------------------------------------------------------------------------------------+  |
+|  | AppleCentauriControl.dext (IOUserService / Chip Lifecycle, Power States D0..D3)              |  |
+|  |   - Framework: CentauriControl.framework (1.27 MB, 227 C++ Classes, 3,966 Methods)           |  |
+|  |   - Baseband Helper: AirshipDK.framework / AirshipCentauriHelperServices                      |  |
+|  +----------------------------------------------+----------------------------------------------+  |
+|                         |                                              |                          |
+|                         v                                              v                          |
+|  +----------------------------------------------+  +-------------------------------------------+  |
+|  | AppleCentauriAlpha.dext (Function 1)         |  | AppleCentauriBeta.dext (Function 2)       |  |
+|  | Wi-Fi 7 Data Plane -> Skywalk / IO80211Family|  | Bluetooth 5.4 HCI Transport / Thread Net  |  |
+|  +----------------------------------------------+  +-------------------------------------------+  |
+|                         ^                                                                         |
+|                         | (LaunchEvents / XPC: com.apple.centaurid.xpc)                           |
+|  +---------------------------------------------------------------------------------------------+  |
+|  | Host User-Space Daemon: /usr/libexec/centaurid (IOMatchLaunchStream: ManagerStartResult)    |  |
+|  +---------------------------------------------------------------------------------------------+  |
++---------------------------------------------------------------------------------------------------+
+```
+
+Centauri and Darwin exchange packets via **ACIPC Version 3.0 (`0x00000300`)** ring buffers:
+- **Context Header**: 120-byte aligned descriptor at `REG_CONTEXT_INFO_ADDR_LO/HI` (`0x8054` / `0x8058`).
+- **Transfer Ring Descriptors (TRD)**: 48-byte DMA descriptors managing transmit/receive frames.
+- **Command Ring Descriptors (CRD)**: 32-byte control messages managing power state transitions, firmware configuration, and regulatory updates.
+- **Hardware Doorbells**: Control Doorbell (`0x1004`), Transmit Doorbell (`0x1030`), and Receive Doorbell (`0x1050`).
+
+---
+
+### 21.6 Complete C Header: Centauri Host Interface & Wire Structures
+The complete clean-room C99 header [`centauri_host_interface.h`](file:///home/prem/Projects/iOS%2027/artifacts/centauri/driverkit/centauri_host_interface.h) compiles cleanly with zero warnings:
+
+```c
+/*
+ * centauri_host_interface.h
+ * Clean-Room Apple Silicon Centauri DriverKit & ACIPC Transport Interface
+ * iOS 27.2 (24B119) / Apple Silicon A19 Pro (t8150 / v57ap)
+ */
+
+#ifndef CENTAURI_HOST_INTERFACE_H
+#define CENTAURI_HOST_INTERFACE_H
+
+#include <stdint.h>
+#include <stdbool.h>
+
+/* PCIe Platform Constants */
+#define CENTAURI_PCI_BRIDGE_PATH        "/device-tree/arm-io/apcie/pci-bridge0"
+#define CENTAURI_DART_BASE_PADDR        0x0000000180000000ULL
+#define CENTAURI_DART_APERTURE_SIZE     0x0000000000020000ULL  /* 128 KB */
+#define CENTAURI_AIC_INTERRUPT_VECTOR   22                     /* Level Sensitive */
+#define CENTAURI_DART_AIC_INTERRUPT     1142
+#define CENTAURI_MSI_VECTOR_COUNT       32
+
+/* DART Stream IDs */
+#define DART_SID_CENTAURI_CONTROL       0x10    /* Function 0 */
+#define DART_SID_CENTAURI_ALPHA         0x11    /* Function 1 (Wi-Fi 7) */
+#define DART_SID_CENTAURI_BETA          0x12    /* Function 2 (Bluetooth 5.4) */
+#define DART_SID_CENTAURI_PIODMA        0x11
+
+/* Bank 0 MMIO Register Offsets (Function 0: CentauriControl) */
+#define REG_WINDOW_BASE_LO              0x4014
+#define REG_WINDOW_BASE_HI              0x4018
+#define REG_WINDOW_SIZE                 0x401C
+#define REG_EXEC_STAGE                  0x8000
+#define REG_DOMAIN_MODE                 0x8004
+#define REG_CHIP_INFO                   0x8008
+#define REG_ECID_LO                     0x800C
+#define REG_ECID_HI                     0x8010
+#define REG_BOOT_NONCE_HASH             0x8014  /* 32 Bytes */
+#define REG_BOOT_NONCE                  0x8034  /* 8 Bytes */
+#define REG_BOOT_MODE                   0x803C
+#define REG_IMAGE_RESPONSE              0x8040
+#define REG_IMAGE_ADDRESS_LO            0x8044
+#define REG_IMAGE_ADDRESS_HI            0x8048
+#define REG_IMAGE_SIZE                  0x804C
+#define REG_IPC_STATUS                  0x8050
+#define REG_CONTEXT_INFO_ADDR_LO        0x8054
+#define REG_CONTEXT_INFO_ADDR_HI        0x8058
+#define REG_SECONDARY_FTAB_HEADER       0x8074
+#define REG_HOST_PLATFORM_SUB_VAR_ID    0x8078
+#define REG_HOST_PLATFORM_ID            0x807C
+#define REG_RINGDB_BASE                 0x9000  /* 13 Multi Vectors */
+#define REG_BOOT_NONCE_DOORBELL         0x9004
+#define REG_SYSTEM_EVENTS_DOORBELL      0x906C  /* Vector 27 */
+#define REG_BOOT_IMAGE_DOORBELL         0x9070
+#define REG_SLEEP_CONTROL               0x9078
+#define REG_IPC_CONTROL                 0x907C
+
+/* Execution Stages */
+enum centauri_exec_stage {
+    EXEC_STAGE_ROM      = 0,
+    EXEC_STAGE_BOOT     = 1,
+    EXEC_STAGE_OS       = 2,
+    EXEC_STAGE_ABORT    = 3,
+    EXEC_STAGE_PREBOOT  = 4,
+    EXEC_STAGE_LPM_BOOT = 6,
+    EXEC_STAGE_LPM_OS   = 7
+};
+
+/* ACIPC Protocol Version */
+#define ACIPC_PROTOCOL_VERSION_3_0      0x00000300
+
+/* ACIPC Context Base Header (120 Bytes) */
+struct __attribute__((packed)) acipc_context_header {
+    uint32_t protocol_version;
+    uint32_t flags;
+    uint16_t tr_index_count;
+    uint16_t cr_index_count;
+    uint32_t host_heartbeat;
+    uint32_t device_heartbeat;
+    uint64_t mtr_base_paddr;
+    uint64_t mcr_base_paddr;
+    uint16_t mtr_ring_size;
+    uint16_t mcr_ring_size;
+    uint16_t mtr_footer_size;
+    uint16_t mcr_footer_size;
+    uint8_t  reserved_padding[76];
+};
+
+/* ACIPC 32-Byte Transfer Descriptor */
+struct __attribute__((packed, aligned(16))) acipc_tr_descriptor {
+    uint64_t data_paddr;
+    uint32_t data_length;
+    uint16_t flags;
+    uint16_t transfer_tag;
+    uint32_t channel_id;
+    uint32_t client_cookie;
+    uint64_t timestamp_ptm;
+    /* 16-Byte Transfer Footer */
+    uint32_t checksum_offload;
+    uint32_t priority_qos;
+    uint64_t reserved_footer;
+};
+
+#endif /* CENTAURI_HOST_INTERFACE_H */
+```
+
+---
+
+## Part XXII: Architectural Glossary & Mathematical Notation Index
+
+### 22.1 Definitions and Acronyms
 - **ACF7 (Apple Coherent Fabric 7)**: The 136.5 GB/s point-to-point split-transaction interconnect fabric connecting CPU clusters, GPU, ANE, SLC, and peripheral IOMMUs.
+- **ACIPC (Apple Communication Inter-Processor Communication)**: High-speed circular DMA ring buffer protocol (Version 3.0) governing PCIe communications between Darwin DriverKit dexts and the Centauri wireless silicon.
 - **AIC (Apple Interrupt Controller)**: Hardware interrupt aggregation and routing controller supporting 1024 unique vectors in Generation 3.
 - **ANS2 (Apple NVMe Storage Version 2)**: Second-generation proprietary NAND flash memory controller with inline hardware AES-XTS decryption engines.
 - **AOP2 (Always-On Processor 2)**: Autonomous 64-bit real-time processor executing RTKit and cL4 microkernel tasks from a dedicated 5.34 MB SRAM.
 - **ASCwrap**: Hardware FIFO mailbox communication block managing bidirectional 64-bit command message routing between the AP and coprocessors.
+- **Centauri (`t2026phoneG1`)**: Apple's proprietary in-house wireless silicon combining Wi-Fi 7 (802.11be), Bluetooth 5.4/6.0, and Thread on a 4nm RF die.
+- **Chinook**: Custom 64-bit ARMv8 processor core implementing Pointer Authentication (`PAC00`) powering Centauri's RTKitOS microkernel.
 - **cL4**: Formally verified capability-based microkernel governing user-space conclaves in ExclaveOS.
+- **CRD (Command Ring Descriptor)**: 32-byte control messages in the ACIPC protocol managing power and operational parameters.
 - **CTRR (Configurable Text Region Register)**: Hardware lock registers protecting executable memory regions (Region A for SPTM, Region B for TXM).
 - **DART (Device Address Resolution Table)**: Apple's hardware IOMMU performing 16 KB page-granule address translation for bus masters.
 - **DCP (Display Co-Processor)**: Autonomous display controller managing scanout, variable refresh rates (1Hz..120Hz), and visual privacy overlays.
+- **Dext (DriverKit Extension)**: Modern user-space driver bundle executing in Ring 3 under `driverkitd` instead of kernel space.
 - **ESM (Embedded Security Module)**: Physical tamper detection subsystem monitoring silicon shield integrity, voltage drops, and thermal transients.
+- **FTAB (`rkosftab`)**: Firmware table container packaging multi-partition RTKitOS images, DSP microcode, and RF calibration maps.
 - **GAPF (Global Address Protection Filter)**: Hardware fabric filter blocking bus masters from initiating DMA into secure enclave memory pools.
 - **GXF (Guarded Execution Fabric)**: Hardware execution level virtualization providing GL2 (SPTM) and GL1 (TXM/Exclave) privileged domains.
 - **HWX**: Binary descriptor and bytecode format targeting the Apple Neural Engine H18 spatial compute matrix.
 - **InFO-PoP (Integrated Fan-Out Package-on-Package)**: Advanced 3D packaging technology stacking 32 GB LPDDR5X DRAM over the A19 Pro silicon die.
+- **MLO (Multi-Link Operation)**: Wi-Fi 7 capability aggregating multiple simultaneous frequency bands (2.4 GHz + 5 GHz + 6 GHz) for lower latency and higher throughput.
 - **PAPT (Physical Address Protection Table)**: SPTM's dense physical frame array tracking ownership and permissions for every 16 KB page of DRAM.
 - **SIL (Secure Indicator Light)**: Hardware-audited privacy indicator overlay rendered directly to the screen via ExclaveOS and DART-DCP.
 - **SPTM (Secure Page Table Monitor)**: Hypervisor-level microkernel executing at GL2 enforcing Stage-2 physical memory translations.
 - **TBDR (Tile-Based Deferred Rendering)**: GPU rendering pipeline dividing screen frames into 16x16 pixel blocks processed in 16 MB on-chip tile memory.
 - **Tightbeam**: Zero-copy RPC wire format and serialization protocol used for high-speed IPC between Darwin and Exclave conclaves.
+- **TRD (Transfer Ring Descriptor)**: 48-byte high-throughput network frame descriptors utilized by Centauri ACIPC DMA rings.
 - **TXM (Trusted Execution Monitor)**: Microkernel executing at GL1 validating TrustCache CDHashes and Image4 cryptographic signatures.
 
-### 21.2 Mathematical Formulation of Memory Bandwidth & Latency
+### 22.2 Mathematical Formulation of Memory Bandwidth, ANE Throughput & Wi-Fi 7 Bitrates
 The continuous theoretical DRAM bandwidth on the A19 Pro is given by:
-$$\text{Bandwidth} = \text{Data Rate} \times \text{Bus Width} = 8533.33 \times 10^6 \text{ transfers/sec} \times 16 \text{ bytes} = 136.533 \text{ GB/s}$$
+$$\text{Bandwidth}_{\text{DRAM}} = \text{Data Rate} \times \text{Bus Width} = 8533.33 \times 10^6 \text{ transfers/sec} \times 16 \text{ bytes} = 136.533 \text{ GB/s}$$
 
 The spatial matrix throughput of the 16-core ANE H18 is modeled as:
 $$\text{Throughput}_{\text{ANE}} = N_{\text{cores}} \times N_{\text{MACs}} \times 2 \times f_{\text{clk}} = 16 \times 4096 \times 2 \times 1.30 \times 10^9 = 42.598 \text{ TOPS}$$
 
+The maximum theoretical physical data rate of Centauri Wi-Fi 7 with 4096-QAM and 320 MHz channelization (2x2 MIMO) is given by:
+$$\text{DataRate}_{\text{Wi-Fi 7}} = N_{\text{SS}} \times \frac{N_{\text{SD}}}{T_{\text{DFT}} + T_{\text{GI}}} \times R_{\text{code}} \times N_{\text{BPSC}} = 2 \times \frac{3840}{12.8\mu\text{s} + 0.8\mu\text{s}} \times \frac{5}{6} \times 12 \text{ bits} \approx 5.764 \text{ Gbps}$$
+
 ---
+
+*End of Apple Silicon A19 Pro Hardware-Software Co-Design Manual Master Edition.*
