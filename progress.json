@@ -2314,7 +2314,7 @@
     {
       "id": "silenus_phase_1_rtkit_smp_microkernel",
       "number": "S1",
-      "title": "Silenus Camera ISP — RTKit SMP Microkernel, MMU & Memory Layout",
+      "title": "Silenus Camera ISP \u2014 RTKit SMP Microkernel, MMU & Memory Layout",
       "status": "completed",
       "prerequisites": [],
       "assigned_agent_prompt": "agent_prompts/silenus_01_rtkit_smp_microkernel.md",
@@ -2343,7 +2343,7 @@
     {
       "id": "silenus_phase_2_photonic_engine",
       "number": "S2",
-      "title": "Silenus Camera ISP — Photonic Engine, VISPIPE Descriptors & Statistics Pipeline",
+      "title": "Silenus Camera ISP \u2014 Photonic Engine, VISPIPE Descriptors & Statistics Pipeline",
       "status": "completed",
       "prerequisites": [
         "silenus_phase_1_rtkit_smp_microkernel"
@@ -2371,7 +2371,7 @@
     {
       "id": "silenus_phase_3_bni",
       "number": "S3",
-      "title": "Silenus Camera ISP — Bayer Neural Interface (BNI), DMA Matrix & Deep Fusion MSTF",
+      "title": "Silenus Camera ISP \u2014 Bayer Neural Interface (BNI), DMA Matrix & Deep Fusion MSTF",
       "status": "completed",
       "prerequisites": [
         "silenus_phase_2_photonic_engine"
@@ -2399,7 +2399,7 @@
     {
       "id": "silenus_phase_4_darwin_driver_camera_topology",
       "number": "S4",
-      "title": "Silenus Camera ISP — Darwin Host Driver Boundary & Camera Hardware Topography",
+      "title": "Silenus Camera ISP \u2014 Darwin Host Driver Boundary & Camera Hardware Topography",
       "status": "completed",
       "prerequisites": [],
       "assigned_agent_prompt": "Agent 4: Darwin Host Driver Boundary & Camera Hardware Topography",
@@ -2426,7 +2426,7 @@
     {
       "id": "silenus_phase_5_master_synthesis",
       "number": "S5",
-      "title": "Silenus Camera ISP & Bayer Neural Interface (BNI) — Master Synthesis & Clean-Room Repository",
+      "title": "Silenus Camera ISP & Bayer Neural Interface (BNI) \u2014 Master Synthesis & Clean-Room Repository",
       "status": "completed",
       "prerequisites": [
         "silenus_phase_1_rtkit_smp_microkernel",
@@ -2516,6 +2516,65 @@
         "Passed automated verification gate: python3 tools/verify_phase.py qemu_phase_5_virtualization_emulation"
       ],
       "completed_at": "2026-11-23T20:30:00+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "pmic_phase_telemetry_fabric",
+      "number": "PM1",
+      "title": "Power Management & SPMI Telemetry Fabric (Brooklands PMIC)",
+      "status": "completed",
+      "prerequisites": [],
+      "assigned_agent_prompt": "Agent: Power Management & SPMI Telemetry",
+      "required_disk_artifacts": [
+        "artifacts/pmic/pmic_workspace_baseline.json",
+        "artifacts/pmic/brooklands_pmic_register_spec.json",
+        "artifacts/pmic/pmic_fault_telemetry_spec.json",
+        "artifacts/pmic/pmic_off2wake_spec.json",
+        "artifacts/pmic/runtime/pmic_telemetry_client.c"
+      ],
+      "findings_document": "IOS_27_APPLE_PMIC_SPMI_TELEMETRY_RE.md",
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py pmic_phase_telemetry_fabric"
+      ],
+      "completed_at": "2026-11-23T20:42:00+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "audio_phase_master_synthesis",
+      "number": "AU1",
+      "title": "Apple Audio Subsystem & SmartIO (ASCv7)",
+      "status": "completed",
+      "prerequisites": [],
+      "assigned_agent_prompt": "Agent: Apple Audio Subsystem & SmartIO",
+      "required_disk_artifacts": [
+        "artifacts/audio/runtime/audio_host_interface.h",
+        "artifacts/audio/runtime/audio_direct_submit.c",
+        "artifacts/audio/smartio/smartio_ascv7.macho"
+      ],
+      "findings_document": "IOS_27_APPLE_AUDIO_SUBSYSTEM_RE.md",
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py audio_phase_master_synthesis"
+      ],
+      "completed_at": "2026-11-23T20:47:00+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "rose_phase_master_extraction",
+      "number": "RO1",
+      "title": "Apple Rose U2 / U3 Ultra-Wideband (UWB) Subsystem",
+      "status": "completed",
+      "prerequisites": [],
+      "assigned_agent_prompt": "Agent: Apple Rose UWB Subsystem",
+      "required_disk_artifacts": [
+        "artifacts/rose/u2_firmware_container_spec.json",
+        "artifacts/rose/uwb_rf_baseband_spec.json",
+        "artifacts/rose/tof_ranging_algorithm_spec.json"
+      ],
+      "findings_document": "findings/rose/00_MASTER_UWB_EXTRACTION_DOSSIER.md",
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py rose_phase_master_extraction"
+      ],
+      "completed_at": "2026-11-23T20:48:00+05:30",
       "verified_by": "tools/verify_phase.py"
     }
   ],
@@ -2867,7 +2926,25 @@
       "verified_at": "2026-11-23T20:40:00+05:30",
       "status": "passed",
       "command": "python3 tools/verify_phase.py qemu_phase_5_virtualization_emulation"
+    },
+    {
+      "phase_id": "pmic_phase_telemetry_fabric",
+      "verified_at": "2026-11-23T20:42:00+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py pmic_phase_telemetry_fabric"
+    },
+    {
+      "phase_id": "audio_phase_master_synthesis",
+      "verified_at": "2026-11-23T20:47:00+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py audio_phase_master_synthesis"
+    },
+    {
+      "phase_id": "rose_phase_master_extraction",
+      "verified_at": "2026-11-23T20:48:00+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py rose_phase_master_extraction"
     }
   ],
-  "last_updated": "2026-11-23T20:40:00+05:30"
+  "last_updated": "2026-11-24T00:50:00+05:30"
 }

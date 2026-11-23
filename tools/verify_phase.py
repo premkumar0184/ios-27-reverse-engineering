@@ -2225,6 +2225,93 @@ PHASE_SPECS = {
              "tools/audit_pmic_execution.py must pass 100% green")
         ]
     },
+
+    # ── Apple Audio Subsystem & SmartIO (ASCv7) ───────────────────────────
+    "audio_phase_master_synthesis": {
+        "required_artifacts": [
+            "artifacts/audio/runtime/audio_host_interface.h",
+            "artifacts/audio/runtime/audio_direct_submit.c",
+            "artifacts/audio/smartio/smartio_ascv7.macho",
+            "artifacts/audio/smartio/smartio_macho_manifest.json",
+            "artifacts/audio/smartio/smartio_mailbox_protocol_spec.json",
+            "artifacts/audio/smartio/smartio_peripheral_shim_spec.json",
+            "artifacts/audio/dma/admac_channel_geometry_spec.json",
+            "artifacts/audio/dma/mca_bus_topology_spec.json",
+            "artifacts/audio/dma/audio_dma_ring_buffer_protocol.json",
+            "artifacts/audio/codec/cs42l84_codec_register_map.json",
+            "artifacts/audio/codec/boot_chime_aubt_container_spec.json",
+            "artifacts/audio/codec/speaker_amp_protection_spec.json",
+            "artifacts/audio/privacy/aop_audio_acoustic_buffer_spec.json",
+            "artifacts/audio/privacy/exclave_audio_tightbeam_wire_spec.json",
+            "artifacts/audio/privacy/leap_haptic_audio_sync_spec.json",
+            "findings/audio/00_MASTER_AUDIO_SUBSYSTEM_SYNTHESIS.md",
+            "findings/audio/01_SMARTIO_ASC7_RTKIT_MICROKERNEL.md",
+            "findings/audio/02_ADMAC_EVOLUTION_AUDIO_DMA_ARCHITECTURE.md",
+            "findings/audio/03_CIRRUS_LOGIC_CODECS_AND_BOOT_CHIME.md",
+            "findings/audio/04_AOP_AUDIO_VOICETRIGGER_AND_EXCLAVE_PRIVACY.md",
+            "IOS_27_APPLE_AUDIO_SUBSYSTEM_RE.md",
+            "tools/verify_audio_all.py"
+        ],
+        "findings_docs": [
+            "findings/audio/00_MASTER_AUDIO_SUBSYSTEM_SYNTHESIS.md",
+            "IOS_27_APPLE_AUDIO_SUBSYSTEM_RE.md"
+        ],
+        "min_findings_bytes": 100000,
+        "json_schemas": {
+            "artifacts/audio/smartio/smartio_macho_manifest.json": ["macho_binary"],
+            "artifacts/audio/dma/admac_channel_geometry_spec.json": ["controllers"]
+        },
+        "assertions": [
+            ("audio_all_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "tools/verify_audio_all.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "tools/verify_audio_all.py must pass 100% green"),
+        ]
+    },
+
+    # ── Apple Rose U2 / U3 Ultra-Wideband (UWB) Subsystem ──────────────────
+    "rose_phase_master_extraction": {
+        "required_artifacts": [
+            "artifacts/rose/u2_firmware_container_spec.json",
+            "artifacts/rose/uwb_rf_baseband_spec.json",
+            "artifacts/rose/tof_ranging_algorithm_spec.json",
+            "artifacts/rose/aoa_pdoa_localization_spec.json",
+            "artifacts/rose/nearby_interaction_protocol_spec.json",
+            "artifacts/rose/cross_validation_matrix.json",
+            "artifacts/rose/pseudocode/rose_rkos_ftab.h",
+            "artifacts/rose/pseudocode/rose_tof_algorithm.h",
+            "artifacts/rose/pseudocode/rose_aoa_pdoa.h",
+            "artifacts/rose/pseudocode/rose_nearby_protocol.h",
+            "artifacts/rose/decompressed/rkos.bin",
+            "artifacts/rose/decompressed/sbd1.bin",
+            "artifacts/rose/decompressed/icnf.bin",
+            "artifacts/rose/decompressed/_osl.bin",
+            "artifacts/rose/decompressed/bver.txt",
+            "findings/rose/00_MASTER_UWB_EXTRACTION_DOSSIER.md",
+            "findings/rose/01_UWB_CHIP_ARCHITECTURE.md",
+            "findings/rose/02_UWB_BASEBAND_AND_RF.md",
+            "findings/rose/03_TOF_RANGING_AND_STS.md",
+            "findings/rose/04_AOA_PDOA_LOCALIZATION.md",
+            "findings/rose/05_NEARBY_INTERACTION_AND_FINDMY.md",
+            "artifacts/rose/verify_rose_uwb_extraction.py"
+        ],
+        "findings_docs": [
+            "findings/rose/00_MASTER_UWB_EXTRACTION_DOSSIER.md"
+        ],
+        "min_findings_bytes": 50000,
+        "json_schemas": {
+            "artifacts/rose/u2_firmware_container_spec.json": ["container_metadata", "partitions"],
+            "artifacts/rose/uwb_rf_baseband_spec.json": ["rf_phy_architecture", "front_end_module_control"]
+        },
+        "assertions": [
+            ("rose_uwb_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "artifacts/rose/verify_rose_uwb_extraction.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "artifacts/rose/verify_rose_uwb_extraction.py must pass 100% green"),
+        ]
+    },
 }
 import re
 
