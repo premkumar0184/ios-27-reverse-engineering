@@ -1,0 +1,533 @@
+{
+  "subsystem": "Apple Silenus H18ISP Visual Pipeline (VISPIPE) Architecture",
+  "chip_generation": "A19 Pro (Device Class v57ap / H18ISP)",
+  "descriptor_stride_bytes": 544,
+  "pipeline_endpoints": [
+    {
+      "index": 0,
+      "name": "TYPE_VCPIPE",
+      "descriptor_file_offset": "0x00ba74e8",
+      "descriptor_vmaddr": "0x00ba34e8",
+      "endpoint_id": 0,
+      "mmio_base": "0x0000000321830000",
+      "flags": [
+        "0x00000003",
+        "0x00000000",
+        "0x00000000",
+        "0x0000000a"
+      ]
+    },
+    {
+      "index": 1,
+      "name": "TYPE_FEP",
+      "descriptor_file_offset": "0x00ba7708",
+      "descriptor_vmaddr": "0x00ba3708",
+      "endpoint_id": 1,
+      "mmio_base": "0x0000000321950000",
+      "flags": [
+        "0x00000003",
+        "0x00000000",
+        "0x00000000",
+        "0x00000004"
+      ]
+    },
+    {
+      "index": 2,
+      "name": "TYPE_STATSFE",
+      "descriptor_file_offset": "0x00ba7928",
+      "descriptor_vmaddr": "0x00ba3928",
+      "endpoint_id": 2,
+      "mmio_base": "0x00000003219b0000",
+      "flags": [
+        "0x00000003",
+        "0x00000005",
+        "0x00000000",
+        "0x00000002"
+      ]
+    },
+    {
+      "index": 3,
+      "name": "TYPE_STATSBE",
+      "descriptor_file_offset": "0x00ba7b48",
+      "descriptor_vmaddr": "0x00ba3b48",
+      "endpoint_id": 3,
+      "mmio_base": "0x00000003219d0000",
+      "flags": [
+        "0x00000006",
+        "0x00000004",
+        "0x00000000",
+        "0x00000002"
+      ]
+    },
+    {
+      "index": 4,
+      "name": "TYPE_AFEPROC",
+      "descriptor_file_offset": "0x00ba7d68",
+      "descriptor_vmaddr": "0x00ba3d68",
+      "endpoint_id": 4,
+      "mmio_base": "0x00000003219f0000",
+      "flags": [
+        "0x00000002",
+        "0x00000004",
+        "0x00000000",
+        "0x00000003"
+      ]
+    },
+    {
+      "index": 6,
+      "name": "TYPE_VISPIPE",
+      "descriptor_file_offset": "0x00ba81a8",
+      "descriptor_vmaddr": "0x00ba41a8",
+      "endpoint_id": 6,
+      "mmio_base": "0x0000000321b00000",
+      "flags": [
+        "0x00000002",
+        "0x00000003",
+        "0x00000000",
+        "0x00000002"
+      ]
+    },
+    {
+      "index": 7,
+      "name": "DMA_SIDEBANDDMA",
+      "descriptor_file_offset": "0x00ba83c8",
+      "descriptor_vmaddr": "0x00ba43c8",
+      "endpoint_id": 7,
+      "mmio_base": "0x0000000321c104bc",
+      "flags": [
+        "0x00000002",
+        "0x00000000",
+        "0x00000000",
+        "0x00000008"
+      ]
+    },
+    {
+      "index": 9,
+      "name": "SIF_SRC",
+      "descriptor_file_offset": "0x00ba8808",
+      "descriptor_vmaddr": "0x00ba4808",
+      "endpoint_id": 9,
+      "mmio_base": "0x0000000321c000c0",
+      "flags": [
+        "0x00000001",
+        "0x00000000",
+        "0x00000000",
+        "0x00000005"
+      ]
+    },
+    {
+      "index": 10,
+      "name": "SIF_DST",
+      "descriptor_file_offset": "0x00ba8a28",
+      "descriptor_vmaddr": "0x00ba4a28",
+      "endpoint_id": 10,
+      "mmio_base": "0x0000000321c102a0",
+      "flags": [
+        "0x00000002",
+        "0x00000000",
+        "0x00000000",
+        "0x00000005"
+      ]
+    },
+    {
+      "index": 11,
+      "name": "DMA_FEP",
+      "descriptor_file_offset": "0x00ba8c48",
+      "descriptor_vmaddr": "0x00ba4c48",
+      "endpoint_id": 11,
+      "mmio_base": "0x0000000321c10000",
+      "flags": [
+        "0x00000001",
+        "0x00000000",
+        "0x00000000",
+        "0x00000004"
+      ]
+    },
+    {
+      "index": 12,
+      "name": "AFEPROC_DST",
+      "descriptor_file_offset": "0x00ba8e68",
+      "descriptor_vmaddr": "0x00ba4e68",
+      "endpoint_id": 12,
+      "mmio_base": "0x0000000321c10d2c",
+      "flags": [
+        "0x00000004",
+        "0x00000000",
+        "0x00000000",
+        "0x00000003"
+      ]
+    },
+    {
+      "index": 13,
+      "name": "VISPIPE_SRC",
+      "descriptor_file_offset": "0x00ba9088",
+      "descriptor_vmaddr": "0x00ba5088",
+      "endpoint_id": 13,
+      "mmio_base": "0x0000000321c004a8",
+      "flags": [
+        "0x00000002",
+        "0x00000000",
+        "0x00000000",
+        "0x00000002"
+      ]
+    },
+    {
+      "index": 14,
+      "name": "FESTAT_SRC",
+      "descriptor_file_offset": "0x00ba92a8",
+      "descriptor_vmaddr": "0x00ba52a8",
+      "endpoint_id": 14,
+      "mmio_base": "0x0000000321c002dc",
+      "flags": [
+        "0x00000004",
+        "0x00000000",
+        "0x00000000",
+        "0x00000002"
+      ]
+    },
+    {
+      "index": 15,
+      "name": "FESTAT_DST",
+      "descriptor_file_offset": "0x00ba94c8",
+      "descriptor_vmaddr": "0x00ba54c8",
+      "endpoint_id": 15,
+      "mmio_base": "0x0000000321c1083c",
+      "flags": [
+        "0x00000002",
+        "0x00000000",
+        "0x00000000",
+        "0x00000002"
+      ]
+    },
+    {
+      "index": 16,
+      "name": "BESTAT_SRC",
+      "descriptor_file_offset": "0x00ba96e8",
+      "descriptor_vmaddr": "0x00ba56e8",
+      "endpoint_id": 16,
+      "mmio_base": "0x0000000321c00344",
+      "flags": [
+        "0x00000001",
+        "0x00000000",
+        "0x00000000",
+        "0x00000002"
+      ]
+    },
+    {
+      "index": 17,
+      "name": "BESTAT_DST",
+      "descriptor_file_offset": "0x00ba9908",
+      "descriptor_vmaddr": "0x00ba5908",
+      "endpoint_id": 17,
+      "mmio_base": "0x0000000321c1093c",
+      "flags": [
+        "0x00000009",
+        "0x00000000",
+        "0x00000000",
+        "0x00000002"
+      ]
+    },
+    {
+      "index": 19,
+      "name": "VISPIPE_DST",
+      "descriptor_file_offset": "0x00ba9d48",
+      "descriptor_vmaddr": "0x00ba5d48",
+      "endpoint_id": 19,
+      "mmio_base": "0x0000000321c10f2c",
+      "flags": [
+        "0x00000003",
+        "0x00000000",
+        "0x00000000",
+        "0x00000002"
+      ]
+    }
+  ],
+  "dma_channels": {
+    "source_read_dma_base": "0x0000000321c00000",
+    "destination_write_dma_base": "0x0000000321c10000"
+  },
+  "pixel_formats": [
+    {
+      "format_id": 0,
+      "name": "RAW8",
+      "string_vmaddr": "0x013ebb0a",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 1,
+      "name": "RAW10",
+      "string_vmaddr": "0x013f9904",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 2,
+      "name": "RAW12",
+      "string_vmaddr": "0x013f990a",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 3,
+      "name": "RAW14",
+      "string_vmaddr": "0x013ebb0f",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 4,
+      "name": "RAW16",
+      "string_vmaddr": "0x013ebb15",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 5,
+      "name": "YIP_8",
+      "string_vmaddr": "0x013ebb1b",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 6,
+      "name": "YIP_10",
+      "string_vmaddr": "0x013ebb21",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 7,
+      "name": "UNKNOWN",
+      "string_vmaddr": "0x01422575",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 8,
+      "name": "ARGB565",
+      "string_vmaddr": "0x013ebb28",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 9,
+      "name": "ARGB8888",
+      "string_vmaddr": "0x013ebb30",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 10,
+      "name": "ARGB16",
+      "string_vmaddr": "0x013ebb39",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 11,
+      "name": "ARGB_2101010",
+      "string_vmaddr": "0x013ebb40",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 12,
+      "name": "UNKNOWN",
+      "string_vmaddr": "0x01422575",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 13,
+      "name": "UNKNOWN",
+      "string_vmaddr": "0x01422575",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 14,
+      "name": "UNKNOWN",
+      "string_vmaddr": "0x01422575",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 15,
+      "name": "UNKNOWN",
+      "string_vmaddr": "0x01422575",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 16,
+      "name": "YCC4228_1Plane",
+      "string_vmaddr": "0x013ebb4d",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 17,
+      "name": "YCC42210_1Plane",
+      "string_vmaddr": "0x013ebb5c",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 18,
+      "name": "YCC4228_2Plane",
+      "string_vmaddr": "0x013ebb6c",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 19,
+      "name": "YCC42210_2Plane",
+      "string_vmaddr": "0x013ebb7b",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 20,
+      "name": "YCC4208_2Plane",
+      "string_vmaddr": "0x013ebb8b",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 21,
+      "name": "YCC42010_2Plane",
+      "string_vmaddr": "0x013ebb9a",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 22,
+      "name": "YCC444_8_2Plane",
+      "string_vmaddr": "0x013ebbaa",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 23,
+      "name": "YCC444_10_2Plane",
+      "string_vmaddr": "0x013ebbba",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 24,
+      "name": "YCC444_16_1Plane",
+      "string_vmaddr": "0x013ebbcb",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 25,
+      "name": "YCC444_10_1Plane",
+      "string_vmaddr": "0x013ebbdc",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 26,
+      "name": "YCC42216_1Plane",
+      "string_vmaddr": "0x013ebbed",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 27,
+      "name": "YCC444_8_1Plane",
+      "string_vmaddr": "0x013ebbfd",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 28,
+      "name": "UNKNOWN",
+      "string_vmaddr": "0x01422575",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 29,
+      "name": "UNKNOWN",
+      "string_vmaddr": "0x01422575",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 30,
+      "name": "UNKNOWN",
+      "string_vmaddr": "0x01422575",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 31,
+      "name": "UNKNOWN",
+      "string_vmaddr": "0x01422575",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 32,
+      "name": "Stats_RGB",
+      "string_vmaddr": "0x013ebc0d",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 33,
+      "name": "Stats_sRGBlinear",
+      "string_vmaddr": "0x013ebc17",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 34,
+      "name": "Stats_sRGB",
+      "string_vmaddr": "0x013ebc28",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 35,
+      "name": "Stats_YCC",
+      "string_vmaddr": "0x013ebc33",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 36,
+      "name": "Stats_camYCC",
+      "string_vmaddr": "0x013ebc3d",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 37,
+      "name": "Stats_AFBayerYF0",
+      "string_vmaddr": "0x013ebc4a",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 38,
+      "name": "Stats_AFBayerYF1",
+      "string_vmaddr": "0x013ebc5b",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 39,
+      "name": "Stats_AFCamYF0",
+      "string_vmaddr": "0x013ebc6c",
+      "flags": "0x00100000"
+    },
+    {
+      "format_id": 40,
+      "name": "Stats_AFCamYF1",
+      "string_vmaddr": "0x013ebc7b",
+      "flags": "0x00100000"
+    }
+  ],
+  "bayer_quad_and_binning": {
+    "quad_bayer_destinations": [
+      "BayerProcDmaDstPlaEvenQuad",
+      "BayerProcDmaDstPlaOddQuad"
+    ],
+    "planar_destinations": [
+      "BayerProcDmaDstPlaEven",
+      "BayerProcDmaDstPlaOdd"
+    ],
+    "dma_sources": [
+      "BayerProcLSCDmaSrc",
+      "BayerProcHRDmaSrc"
+    ],
+    "binning_modes": [
+      {
+        "mode_id": "bin2_10b_raw10",
+        "sensor_geometry": "2112x1512 / 2112x1188",
+        "fps": [
+          120,
+          240
+        ],
+        "bit_depth": "10-bit Raw Bayer",
+        "firmware_profile": "Springfield_TN_ar_mode4_24m_2112x1512_120_bin2_10b_raw10_1x_1ms_3l_8g_b0111_fw"
+      },
+      {
+        "mode_id": "sifrff_10b_raw10",
+        "sensor_geometry": "4224x3024 / 4224x2384",
+        "fps": [
+          60,
+          120
+        ],
+        "bit_depth": "10-bit Full Frame SIFR Bayer",
+        "firmware_profile": "Springfield_TN_ar_mode5_24m_4224x3024_60_sifrff_10b_raw10_1x_1ms_3l_8g_b0111_fw"
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "section": "__DATA._rtk_tunables",
+  "virtual_address": "0x015944d0",
+  "file_offset": "0x015984d0",
+  "size_bytes": 5136,
+  "partition_count": 2,
+  "partition_size_bytes": 2568,
+  "partitions": [
+    {
+      "core_id": 0,
+      "name": "Core 0 Tunables Partition",
+      "virtual_address": "0x015944d0",
+      "file_offset": "0x015984d0",
+      "size_bytes": 2568,
+      "header_magic": "0xffffffff00800301",
+      "channel_id": "0x301",
+      "flags": "0x80",
+      "sentinel": "0xffffffff"
+    },
+    {
+      "core_id": 1,
+      "name": "Core 1 Tunables Partition",
+      "virtual_address": "0x01594ed8",
+      "file_offset": "0x01598ed8",
+      "size_bytes": 2568,
+      "header_magic": "0xffffffff00800303",
+      "channel_id": "0x303",
+      "flags": "0x80",
+      "sentinel": "0xffffffff"
+    }
+  ]
+}

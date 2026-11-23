@@ -1,0 +1,166 @@
+{
+  "section_info": {
+    "section_name": "__TEXT.__const",
+    "vmaddr_start": "0x00ae2080",
+    "file_offset_start": "0x00ae6080",
+    "total_size_bytes": 9122568,
+    "size_megabytes": 9.122568
+  },
+  "color_space_conversion_matrices": {
+    "csca_forward_matrix": {
+      "vmaddr": "0x00b3eb68",
+      "file_offset": "0x00b42b68",
+      "purpose": "Camera Native CFA Bayer RGB to Linear sRGB / Display P3 Wide Color Gamut",
+      "matrix_3x3": [
+        [
+          1.1892000436782837,
+          -0.17499999701976776,
+          -0.033900000154972076
+        ],
+        [
+          -0.08030000329017639,
+          1.4809999465942383,
+          -0.4779999852180481
+        ],
+        [
+          -0.10890000313520432,
+          -0.3059000074863434,
+          1.5119999647140503
+        ]
+      ],
+      "row_sums": [
+        0.9803000465035439,
+        0.9226999580860138,
+        1.0971999540925026
+      ],
+      "determinant": 2.4524001357347442
+    },
+    "cscb_reverse_matrix": {
+      "vmaddr": "0x00b3eb8c",
+      "file_offset": "0x00b42b8c",
+      "purpose": "Display P3 / Linear sRGB to Camera Native CFA Bayer RGB (CSCA Transpose-Inverse)",
+      "matrix_3x3": [
+        [
+          0.8535000085830688,
+          0.07079999893903732,
+          0.07569999992847443
+        ],
+        [
+          0.11209999769926071,
+          0.7317000031471252,
+          0.15600000321865082
+        ],
+        [
+          0.05469999834895134,
+          0.2328999936580658,
+          0.7124000191688538
+        ]
+      ],
+      "row_sums": [
+        1.0000000074505806,
+        0.9998000040650368,
+        1.000000011175871
+      ],
+      "determinant": 0.40778497974825967
+    },
+    "csc_mathematical_validation": {
+      "property": "CSCB equals Transpose Inverse of CSCA (M_CSCB = (M_CSCA^-1)^T)",
+      "frobenius_norm_difference": 0.00019604141353369014,
+      "orthogonal_balance": "Verified"
+    },
+    "luminance_chrominance_matrix": {
+      "vmaddr": "0x00b42c08",
+      "file_offset": "0x00b46c08",
+      "matrix_3x3": [
+        [
+          0.367900013923645,
+          0.5759000182151794,
+          0.05590000003576279
+        ],
+        [
+          0.1679999977350235,
+          0.7759000062942505,
+          0.05590000003576279
+        ],
+        [
+          0.1679999977350235,
+          0.5759000182151794,
+          0.25609999895095825
+        ]
+      ],
+      "row_sums": [
+        0.9997000321745872,
+        0.9998000040650368,
+        1.0000000149011612
+      ]
+    }
+  },
+  "tone_reproduction_curves": {
+    "srgb_gamma_curve": {
+      "vmaddr": "0x00b2c080",
+      "file_offset": "0x00b30080",
+      "format": "uint16 fixed point [0, 65535]",
+      "total_nodes": 257,
+      "start_value": 0,
+      "mid_value": 48310,
+      "end_value": 65535,
+      "normalized_midpoint": 0.7371633478294042,
+      "theoretical_srgb_midpoint": 0.7353569830524495,
+      "nodes_sampled_16": [
+        0,
+        18227,
+        25535,
+        30897,
+        35289,
+        39078,
+        42446,
+        45500,
+        48310,
+        50921,
+        53368,
+        55676,
+        57865,
+        59948,
+        61941,
+        63849,
+        65535
+      ]
+    },
+    "linear_q16_curve": {
+      "vmaddr": "0x00b2c282",
+      "file_offset": "0x00b30282",
+      "format": "uint32 Q16 fixed point (step 0x1000 = 4096 = 1/16)",
+      "total_nodes": 17,
+      "nodes": [
+        "0x00000000",
+        "0x00001000",
+        "0x00002000",
+        "0x00003000",
+        "0x00004000",
+        "0x00005000",
+        "0x00006000",
+        "0x00007000",
+        "0x00008000",
+        "0x00009000",
+        "0x0000a000",
+        "0x0000b000",
+        "0x0000c000",
+        "0x0000d000",
+        "0x0000e000",
+        "0x0000f000",
+        "0x0000ffff"
+      ]
+    }
+  },
+  "lens_shading_correction_model": {
+    "formula": "G(r) = c_0 + c_2 * r^2 + c_4 * r^4 + c_6 * r^6 + c_8 * r^8",
+    "radial_coordinate": "r^2 = ((x - x0) / R_norm)^2 + ((y - y0) / R_norm)^2",
+    "channels": [
+      "R",
+      "Gr",
+      "Gb",
+      "B"
+    ],
+    "profiles": "Dynamic Scene Lux & Color Temperature Adaptive ALSC (Auto Lens Shading Correction)"
+  }
+}

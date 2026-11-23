@@ -1,0 +1,83 @@
+{
+  "subsystem": "Apple Silenus H18ISP Frame State Synchronization (FrmState) & Time Machine Engine",
+  "architecture": "Zero-Shutter-Lag (ZSL) Circular Frame Descriptor Ring Buffer with Multi-Exposure Bracket Fusion",
+  "caller_function": {
+    "pc_address": "0x0052aa00",
+    "file_offset": "0x0052ea00",
+    "format_string": "TM Capture: ch:0x%zu send ch:0x%lx num:%u retain:%u fstype:%u ts:%llu mode:%u bktag:0x%x rqtype:%u"
+  },
+  "descriptor_fields": [
+    {
+      "name": "ch",
+      "type": "size_t",
+      "description": "Camera Sensor Channel ID (0: Wide, 1: Ultra-Wide, 2: Telephoto)"
+    },
+    {
+      "name": "send_ch",
+      "type": "uint64_t",
+      "description": "Destination channel routing mask for ISP hardware interconnect"
+    },
+    {
+      "name": "num",
+      "type": "uint32_t",
+      "description": "Total number of exposure frames in the Smart HDR bracket burst"
+    },
+    {
+      "name": "retain",
+      "type": "uint32_t",
+      "description": "Circular ring buffer retention depth for temporal/spatial fusion"
+    },
+    {
+      "name": "fstype",
+      "type": "uint32_t",
+      "description": "Frame State configuration type ID binding to aisp_IspStatsPipe*_FrmState"
+    },
+    {
+      "name": "ts",
+      "type": "uint64_t",
+      "description": "Hardware Start-of-Frame (SOF) nanosecond timestamp from MIPI CSI-2 receiver"
+    },
+    {
+      "name": "mode",
+      "type": "uint32_t",
+      "description": "Computational capture mode (0: Preview, 1: Smart HDR, 2: Deep Fusion, 3: Night Mode)"
+    },
+    {
+      "name": "bktag",
+      "type": "uint32_t",
+      "description": "Exposure bracket tag bitmask (0x1: EV0 Nominal, 0x2: EV- SIFR Highlight, 0x4: EV+ Shadow, 0x8: Strobe, 0x10: Synthetic High-Speed)"
+    },
+    {
+      "name": "rqtype",
+      "type": "uint32_t",
+      "description": "Capture request type (0: Live Preview Streaming, 1: Still ZSL Time Machine Capture)"
+    }
+  ],
+  "time_machine_raw_buffer_pools": [
+    {
+      "pool_name": "RAW_POOL_COMMON_DUAL_PRIME",
+      "purpose": "Dual-Camera Primary Sensor ZSL Rolling Ring Buffer"
+    },
+    {
+      "pool_name": "RAW_POOL_COMMON_SLAVE_SHARE",
+      "purpose": "Secondary/Telephoto Shared Rolling Frame Buffer"
+    },
+    {
+      "pool_name": "RAW_POOL_COMMON_DUAL_PRIME_STILL",
+      "purpose": "High-Resolution Still Raw Bracket Retention"
+    },
+    {
+      "pool_name": "RAW_POOL_COMMON_FEP",
+      "purpose": "Front-End Processor (FEP) Intermediate Raw Thumbnail & Feature Buffer"
+    }
+  ],
+  "bracket_state_machine_stages": [
+    "AE_BRACKETING_IDLE",
+    "AE_BRACKETING_STAGE_METADATA_ACCUMULATE",
+    "AE_BRACKETING_STAGE_SIFR_RECOVERY",
+    "AE_BRACKETING_STAGE_ALIGNMENT_AND_WARPING",
+    "AE_BRACKETING_STAGE_TEMPORAL_NOISE_REDUCTION",
+    "AE_BRACKETING_STAGE_LOCAL_TONE_MAPPING",
+    "AE_BRACKETING_STAGE_FINAL_RENDER"
+  ]
+}

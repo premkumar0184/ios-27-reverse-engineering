@@ -1101,6 +1101,43 @@ class KnowledgeGraphBuilder:
             self.add_edge("xnu_kernelcache_release", "centauri_driverkit_control", "binds_driverkit_service",
                           source_file="artifacts/centauri/driverkit/centauri_host_interface.h", _src="xnu_kernelcache_release", _tgt="centauri_driverkit_control")
 
+        # 6. Silenus ISP & Bayer Neural Interface (BNI) artifacts
+        p_silenus = ARTIFACTS_DIR / "silenus/firmware/silenus_macho_manifest.json"
+        if p_silenus.exists():
+            self.add_node("coproc_silenus_isp", "Apple Silenus Image Signal Processor (H18ISP / Silenus v57)",
+                          "code", "artifacts/silenus/firmware/silenus_macho_manifest.json", "Firmware/isp_bni/adc-silenus-v57.im4p", community=2)
+            self.add_node("silenus_rtkit_smp", "Silenus Dual-Core ARM64e RTKit SMP Microkernel (PAC00)",
+                          "code", "artifacts/silenus/firmware/silenus_rtkit_mmu_map.json", "0x00000000 - 0x015a4000", community=2)
+            self.add_node("silenus_vispipe_engine", "Silenus VISPIPE Streaming Fabric (17 Endpoints / 22 Stats Engines)",
+                          "code", "artifacts/silenus/photonic/vispipe_architecture.json", "0x321830000 - 0x321c10f2c", community=2)
+            self.add_node("silenus_bni_dma_matrix", "Bayer Neural Interface (BNI 249-Channel DMA Fabric & MSTF)",
+                          "code", "artifacts/silenus/bni/bni_dma_architecture_spec.json", "CISPLogicalDMAManagerH18", community=2)
+            self.add_node("silenus_dart_isp_iommu", "DART-ISP Hardware IOMMU Controller (0x1128c0000 / AIC 302)",
+                          "code", "artifacts/silenus/driver/camera_hardware_topography.json", "dart-isp", community=1)
+            self.add_node("silenus_volchok_actuator", "Volchok X3357 Camera Actuator Processor (VCM AF & Sensor-Shift OIS)",
+                          "code", "artifacts/silenus/driver/volchok_actuator_spec.json", "Volchok X3357", community=2)
+            self.add_node("silenus_driver_appleh16cam", "AppleH16CameraInterface.kext (Darwin Host Camera Driver)",
+                          "code", "artifacts/silenus/driver/driver_dispatch_spec.json", "com.apple.driver.AppleH16CameraInterface", community=1)
+
+            self.add_edge("coproc_silenus_isp", "silenus_rtkit_smp", "executes_microkernel",
+                          source_file="artifacts/silenus/firmware/silenus_macho_manifest.json", _src="coproc_silenus_isp", _tgt="silenus_rtkit_smp")
+            self.add_edge("coproc_silenus_isp", "silenus_vispipe_engine", "operates_vispipe",
+                          source_file="artifacts/silenus/photonic/vispipe_architecture.json", _src="coproc_silenus_isp", _tgt="silenus_vispipe_engine")
+            self.add_edge("coproc_silenus_isp", "silenus_bni_dma_matrix", "operates_neural_bni",
+                          source_file="artifacts/silenus/bni/bni_dma_architecture_spec.json", _src="coproc_silenus_isp", _tgt="silenus_bni_dma_matrix")
+            self.add_edge("silenus_driver_appleh16cam", "silenus_dart_isp_iommu", "configures_iommu_mappings",
+                          source_file="artifacts/silenus/driver/camera_hardware_topography.json", _src="silenus_driver_appleh16cam", _tgt="silenus_dart_isp_iommu")
+            self.add_edge("silenus_dart_isp_iommu", "coproc_silenus_isp", "filters_peripheral_dma",
+                          source_file="artifacts/silenus/driver/camera_hardware_topography.json", _src="silenus_dart_isp_iommu", _tgt="coproc_silenus_isp")
+            self.add_edge("silenus_driver_appleh16cam", "coproc_silenus_isp", "controls_isp_lifecycle",
+                          source_file="artifacts/silenus/driver/silenus_host_interface.h", _src="silenus_driver_appleh16cam", _tgt="coproc_silenus_isp")
+            self.add_edge("coproc_silenus_isp", "silenus_volchok_actuator", "commands_lens_actuator",
+                          source_file="artifacts/silenus/driver/volchok_actuator_spec.json", _src="coproc_silenus_isp", _tgt="silenus_volchok_actuator")
+            self.add_edge("coproc_aop_firmware", "silenus_volchok_actuator", "provides_gyro_telemetry_10khz",
+                          source_file="artifacts/silenus/driver/volchok_actuator_spec.json", _src="coproc_aop_firmware", _tgt="silenus_volchok_actuator")
+            self.add_edge("xnu_kernelcache_release", "silenus_driver_appleh16cam", "binds_kernel_extension",
+                          source_file="artifacts/silenus/driver/silenus_host_interface.h", _src="xnu_kernelcache_release", _tgt="silenus_driver_appleh16cam")
+
     def ingest_rootfs(self):
         print("[*] Ingesting core OS runtime & IPC artifacts (Community 3)...")
         # 1. daemon_catalog.json

@@ -15,6 +15,7 @@ iPhone18,3_27.2_24B119_Restore/
 *.bin
 *.im4p
 *.car
+*.macho
 
 # Raw extracted filesystems and crypto dumps
 artifacts/crypto/

@@ -1,0 +1,180 @@
+{
+  "subsystem": "Zero-Shutter-Lag (ZSL) Circular Ring Buffer Topography & Replay DMA",
+  "target_hardware": {
+    "soc": "Apple A18 / A18 Pro (H18)",
+    "isp_core": "Silenus (Revision v57)",
+    "firmware_context": "./ffw64_rtxc/ffw/CIOPRingBuffer.cpp",
+    "interconnect": "Apple Coherent Fabric 7 (ACF7)"
+  },
+  "zsl_ring_buffer_architecture": {
+    "description": "Continuous zero-latency circular frame caching architecture in system DRAM allowing real-time capture of past uncompressed Bayer raw frames upon instant shutter button actuation.",
+    "ring_buffer_core_class": "CIOPRingBuffer",
+    "source_file": "./ffw64_rtxc/ffw/CIOPRingBuffer.cpp",
+    "versions_supported": [
+      {
+        "version_macro": "IOP_RINGBUFFER_VERSION",
+        "hex_id": "0x00010000",
+        "description": "Legacy 32-bit IOP header"
+      },
+      {
+        "version_macro": "IOP_RINGBUFFER_VERSION_V2",
+        "hex_id": "0x00020000",
+        "description": "Extended 64-bit coherent IOP header with 64-byte cache alignment"
+      }
+    ],
+    "in_memory_structures": {
+      "sIOPRingBufferHeader_t": {
+        "size_bytes": 64,
+        "cache_line_aligned": true,
+        "fields": [
+          {
+            "offset": "0x00",
+            "name": "_version",
+            "type": "uint32_t",
+            "description": "Protocol version (checked via _version >> 16)"
+          },
+          {
+            "offset": "0x04",
+            "name": "_flags",
+            "type": "uint32_t",
+            "description": "Buffer allocation flags (cacheability, coherency, locked state)"
+          },
+          {
+            "offset": "0x08",
+            "name": "_wrptr",
+            "type": "uint32_t",
+            "description": "Current write pointer byte offset within data buffer"
+          },
+          {
+            "offset": "0x0C",
+            "name": "_rdptr",
+            "type": "uint32_t",
+            "description": "Current read pointer byte offset within data buffer"
+          },
+          {
+            "offset": "0x10",
+            "name": "_size",
+            "type": "uint32_t",
+            "description": "Total allocated data buffer capacity in bytes (dataBufSize)"
+          },
+          {
+            "offset": "0x14",
+            "name": "_watermark",
+            "type": "uint32_t",
+            "description": "Low watermark threshold for triggering ring wrap notifications"
+          },
+          {
+            "offset": "0x18",
+            "name": "_head_seq",
+            "type": "uint64_t",
+            "description": "Monotonically increasing sequence number of newest frame"
+          },
+          {
+            "offset": "0x20",
+            "name": "_tail_seq",
+            "type": "uint64_t",
+            "description": "Sequence number of oldest valid frame currently in buffer"
+          },
+          {
+            "offset": "0x28",
+            "name": "_dram_phys_base",
+            "type": "uint64_t",
+            "description": "64-bit physical address of DRAM ring buffer space"
+          },
+          {
+            "offset": "0x30",
+            "name": "_reserved",
+            "type": "uint8_t[16]",
+            "description": "Zero padding to align to 64-byte cache line boundary"
+          }
+        ]
+      },
+      "sIOPRingBufferMsgHeaderV2_t": {
+        "size_bytes": 32,
+        "fields": [
+          {
+            "offset": "0x00",
+            "name": "magic",
+            "type": "uint32_t",
+            "description": "Magic signature (0x52494E47 - 'RING')"
+          },
+          {
+            "offset": "0x04",
+            "name": "payloadSize",
+            "type": "uint32_t",
+            "description": "Length of payload frame data in bytes"
+          },
+          {
+            "offset": "0x08",
+            "name": "frameTimestampNs",
+            "type": "uint64_t",
+            "description": "64-bit hardware timestamp from sensor SoC timer"
+          },
+          {
+            "offset": "0x10",
+            "name": "frameIndex",
+            "type": "uint32_t",
+            "description": "Sequential exposure frame index"
+          },
+          {
+            "offset": "0x14",
+            "name": "exposureType",
+            "type": "uint32_t",
+            "description": "Exposure bracket type (0: EV0, 1: EV-, 2: EV+, 3: Flash)"
+          },
+          {
+            "offset": "0x18",
+            "name": "crc32",
+            "type": "uint32_t",
+            "description": "Hardware CRC32 payload checksum"
+          },
+          {
+            "offset": "0x1C",
+            "name": "flags",
+            "type": "uint32_t",
+            "description": "Frame status flags (DropEligible, HDRBracket, DeepFusionCandidate)"
+          }
+        ]
+      }
+    },
+    "circular_buffer_control": {
+      "property_string": "ISP_PROPERTY_CTF_CIRCULAR_BUFFER_ENABLE",
+      "boolean_flag": "bCTFCircularEn",
+      "command_declaration": "CmdStartMSTF: ch=%d,numOfScales=%d,bLumaOnly=%d,bComp=%d,bCTFCircularEn=%d,bScale0en=%d,bMSTFScale0En=%d,delayCnt=%d",
+      "validation_assert": "((pBuf->_header._wrptr < dataBufSize) && (pBuf->_header._rdptr < dataBufSize)) && (pBuf->_header._size == dataBufSize)"
+    },
+    "replay_dma_architecture": {
+      "command_name": "CISP_CMD_CH_REPLAY_SIFDMA_ENABLE",
+      "hardware_mechanism": "Direct SIFDMA (Sensor Interface DMA) multiplexer rerouting",
+      "channels_involved": [
+        "IspPipeSIfDmaSrc0 (Channel 16)",
+        "IspPipeSIfDmaSrc1 (Channel 17)",
+        "IspPipeSIfDmaSrc2 (Channel 18)",
+        "IspPipeSIfDmaSrc3 (Channel 19)",
+        "IspPipeSIfDmaSrc4 (Channel 20)",
+        "IspPipeSIfDmaSrcPlaEven (Channel 21)",
+        "IspPipeSIfDmaSrcPlaOdd (Channel 22)",
+        "IspPipeSIfDmaSrcPlaEvenQuad (Channel 23)",
+        "IspPipeSIfDmaSrcPlaOddQuad (Channel 24)"
+      ],
+      "zero_shutter_lag_capture_sequence": [
+        "1. User taps shutter button on iOS Camera UI.",
+        "2. Host driver issues IOP message freezing write pointer update on current active ring buffer.",
+        "3. Driver evaluates metadata headers (sIOPRingBufferMsgHeaderV2_t) to select optimal multi-exposure bracket (typically 1 short, 3 EV0, 1 long frame).",
+        "4. Host driver dispatches CISP_CMD_CH_REPLAY_SIFDMA_ENABLE with targeted frame DRAM physical addresses.",
+        "5. Silenus SIFDMA switches input multiplexer from live MIPI CSI-2 receivers to DRAM ring buffer replay descriptors.",
+        "6. Replayed frames stream into BayerProc and EDemProc as if arriving directly from the sensor in real time.",
+        "7. Deep Fusion MSTF pipeline completes multi-frame alignment and neural synthesis with 0ms mechanical shutter lag."
+      ]
+    },
+    "buffer_dimensioning_and_bandwidth": {
+      "frame_format": "48MP Quad-Bayer RAW14 packed",
+      "frame_bytes": 84934656,
+      "allocated_ring_frames": 8,
+      "total_ring_buffer_bytes": 679477248,
+      "total_ring_buffer_mb": 648.0,
+      "streaming_bandwidth_gbps": 5.096,
+      "acf7_coherent_traffic_overhead_pct": 2.4
+    }
+  }
+}

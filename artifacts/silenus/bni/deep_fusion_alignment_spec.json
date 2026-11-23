@@ -1,0 +1,158 @@
+{
+  "subsystem": "Deep Fusion Multi-Frame Alignment & Multi-Scale Temporal Fusion (MSTF)",
+  "target_hardware": {
+    "soc": "Apple A18 / A18 Pro (H18)",
+    "isp_core": "Silenus (Revision v57)",
+    "pipeline_engine": "Multi-Scale Temporal Fusion (MSTF) Engine",
+    "coprocessors": [
+      "PatchWarper",
+      "NccProc",
+      "MsFeProc",
+      "PyrOutProc",
+      "MsBeProc"
+    ]
+  },
+  "mstf_pipeline_architecture": {
+    "description": "Multi-frame neural alignment and fusion pipeline combining uncompressed multi-exposure short, medium, and long frames into a single synthetic high-dynamic-range, low-noise image.",
+    "frame_registration_flow": [
+      "1. Pyramid Decomposition: Input frames are recursively downsampled into a 6-level octave pyramid (Scales A through F) via PyrOutProc.",
+      "2. Coarse Global Alignment: Coarse scale F (1/32) computes affine/homography global motion transform using feature matching.",
+      "3. Multi-Scale Hierarchical Flow: Optical flow estimation proceeds top-down from Scale E (1/16) down to Scale A (1/1).",
+      "4. Sub-Pixel Patch Warping: PatchWarper applies coordinate displacement vectors to candidate frames with Q12.4 bicubic interpolation.",
+      "5. NCC Matching Verification: NccProc validates warp alignment using Normalized Cross-Correlation, generating confidence maps.",
+      "6. Dense Mesh Smoothing: MsFeProc generates continuous displacement vector mesh (MsFeProcMeshDmaSrc).",
+      "7. Neural Temporal Blending: MsBeProc fuses Co-Aligned Frames (MsBeProcCAFDmaSrcA..F) using per-pixel neural SNR weighting."
+    ],
+    "pyramid_scale_hierarchy": {
+      "total_scales": 6,
+      "scales": [
+        {
+          "level": "Scale A (Scale 0)",
+          "resolution_factor": 1.0,
+          "dma_channels": [
+            "PyrOutProcDmaDstA0",
+            "PyrOutProcDmaDstA1",
+            "MsFeProcDmaSrcA",
+            "MsFeProcWarpDmaSrcA",
+            "MsBeProcCAFDmaSrcA"
+          ],
+          "buffer_pool": "VFLOWH18_BUFFER_POOL_PYROUTPROC1_SCALE0",
+          "purpose": "Full-resolution high-frequency edge restoration and fine detail synthesis",
+          "chroma_format": "MIPI RAW / Bayer quad-plane or 4:2:2"
+        },
+        {
+          "level": "Scale B (Scale 1)",
+          "resolution_factor": 0.5,
+          "dma_channels": [
+            "PyrOutProcDmaDstB0",
+            "PyrOutProcDmaDstChromaB0",
+            "PyrOutProcDmaDstB1",
+            "PyrOutProcDmaDstChromaB1",
+            "MsFeProcDmaSrcB",
+            "MsFeProcWarpDmaSrcB",
+            "MsBeProcCAFDmaSrcB"
+          ],
+          "buffer_pool": "VFLOWH18_BUFFER_POOL_PYROUTPROC1_SCALE1",
+          "purpose": "Mid-frequency structural alignment and luma/chroma de-noising",
+          "chroma_format": "Separate Luma and Chroma (B0 / ChromaB0)"
+        },
+        {
+          "level": "Scale C (Scale 2)",
+          "resolution_factor": 0.25,
+          "dma_channels": [
+            "PyrOutProcDmaDstC0",
+            "PyrOutProcDmaDstC1",
+            "MsFeProcDmaSrcC",
+            "MsFeProcWarpDmaSrcC",
+            "MsBeProcCAFDmaSrcC"
+          ],
+          "buffer_pool": "VFLOWH18_BUFFER_POOL_PYROUTPROC1_SCALE2TO5",
+          "purpose": "Intermediate flow vector propagation and spatial texture matching"
+        },
+        {
+          "level": "Scale D (Scale 3)",
+          "resolution_factor": 0.125,
+          "dma_channels": [
+            "PyrOutProcDmaDstD0",
+            "PyrOutProcDmaDstD1",
+            "MsFeProcDmaSrcD",
+            "MsFeProcWarpDmaSrcD",
+            "MsBeProcCAFDmaSrcD"
+          ],
+          "buffer_pool": "VFLOWH18_BUFFER_POOL_PYROUTPROC1_SCALE2TO5",
+          "purpose": "Large-displacement optical flow field tracking"
+        },
+        {
+          "level": "Scale E (Scale 4)",
+          "resolution_factor": 0.0625,
+          "dma_channels": [
+            "PyrOutProcDmaDstE0",
+            "PyrOutProcDmaDstE1",
+            "MsFeProcDmaSrcE",
+            "MsFeProcWarpDmaSrcE",
+            "MsBeProcCAFDmaSrcE"
+          ],
+          "buffer_pool": "VFLOWH18_BUFFER_POOL_PYROUTPROC1_SCALE2TO5",
+          "purpose": "Gross camera shake and rapid object translation compensation"
+        },
+        {
+          "level": "Scale F (Scale 5)",
+          "resolution_factor": 0.03125,
+          "dma_channels": [
+            "PyrOutProcDmaDstF0",
+            "PyrOutProcDmaDstF1",
+            "MsFeProcDmaSrcF",
+            "MsFeProcWarpDmaSrcF",
+            "MsBeProcCAFDmaSrcF"
+          ],
+          "buffer_pool": "VFLOWH18_BUFFER_POOL_PYROUTPROC1_SCALE2TO5",
+          "purpose": "Global affine transformation seed and scene motion boundary detection"
+        }
+      ]
+    },
+    "patch_warper_engine": {
+      "channels": {
+        "source_image": "PatchWarperDmaSrc (Channel 10)",
+        "coordinate_input": "PatchWarperCoordDmaSrc (Channel 11)",
+        "warped_output": "PatchWarperDmaDst (Channel 50)"
+      },
+      "subpixel_precision": "Q12.4 fixed point (1/16th pixel precision)",
+      "interpolation_kernel": "4-tap bicubic Catmull-Rom or bilinear filter",
+      "patch_block_size": "16x16 pixels with 2-pixel apron / halo boundary (20x20 footprint)",
+      "boundary_handling": "Clamp-to-edge / mirror coordinate reflection"
+    },
+    "ncc_block_matching_engine": {
+      "channels": {
+        "search_window": "NCCDmaSrc (Channel 12)",
+        "template_feature": "NCCFeatureDmaSrc (Channel 13)",
+        "max_location": "NCCMaxLocDmaDst (Channel 51)",
+        "correlation_map": "NCCOutMapDmaDst (Channel 52)"
+      },
+      "template_size": "8x8 and 16x16 pixel feature patches",
+      "search_radius": "+/- 32 pixels at each pyramid level",
+      "output_metrics": {
+        "max_loc": "Packed 32-bit (X: 16-bit signed, Y: 16-bit signed) displacement vector",
+        "out_map": "8-bit normalized correlation coefficient [0..255] representing match confidence"
+      },
+      "occlusion_rejection": "Matches with NCC < 0.65 are tagged as occluded and blended using fallback temporal prior"
+    },
+    "msbe_neural_fusion": {
+      "caf_inputs": [
+        "MsBeProcCAFDmaSrcA (Channel 185)",
+        "MsBeProcCAFDmaSrcB (Channel 186)",
+        "MsBeProcCAFDmaSrcC (Channel 187)",
+        "MsBeProcCAFDmaSrcD (Channel 188)",
+        "MsBeProcCAFDmaSrcE (Channel 189)",
+        "MsBeProcCAFDmaSrcF (Channel 190)"
+      ],
+      "outputs": {
+        "luma": "MsBeProcDmaDstLuma (Channel 245)",
+        "chroma": "MsBeProcDmaDstChroma (Channel 246)",
+        "fused_aligned_ref_a": "MsBeProcFARDmaDstA (Channel 247)",
+        "fused_aligned_ref_b": "MsBeProcFARDmaDstB (Channel 248)"
+      },
+      "neural_weighting_algorithm": "Per-pixel alpha blending where alpha = f(SNR_sensor, NCC_confidence, motion_gradient, luma_variance)",
+      "ghosting_mitigation": "Dual-reference FAR (Fused Aligned Reference) maintains temporal consistency without ghost artifacts"
+    }
+  }
+}

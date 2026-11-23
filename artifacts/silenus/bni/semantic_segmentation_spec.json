@@ -1,0 +1,232 @@
+{
+  "subsystem": "Real-Time Semantic Segmentation Mask Pipeline (SMV / ANE_Semantic_Video)",
+  "target_hardware": {
+    "soc": "Apple A18 / A18 Pro (H18)",
+    "isp_core": "Silenus (Revision v57)",
+    "neural_accelerator": "Apple Neural Engine (ANE H18 Gen 5)",
+    "interconnect": "Apple Coherent Fabric 7 (ACF7)",
+    "firmware_context": "./h10isp/filters/Algorithm/3A/CAWBSemanticProcess.cpp"
+  },
+  "realtime_viewfinder_pipeline": {
+    "frame_rate_target": 60,
+    "max_frame_latency_ms": 16.67,
+    "ane_inference_engine": "ANE_Semantic_Video / ANE_Semantic_Video_CVPipe0",
+    "controller": "hAICamProc (AICam Process Controller)",
+    "input_pyramid_streams": [
+      {
+        "stream": "AICam-Scale0",
+        "resolution": "Full Frame (Native Preview)",
+        "format": "Luma Plane"
+      },
+      {
+        "stream": "AICam-Y-B",
+        "resolution": "1/2 Scale",
+        "format": "Luma Y"
+      },
+      {
+        "stream": "AICam-UV-B",
+        "resolution": "1/2 Scale",
+        "format": "Chroma UV"
+      },
+      {
+        "stream": "AICam-Y-C",
+        "resolution": "1/4 Scale",
+        "format": "Luma Y"
+      },
+      {
+        "stream": "AICam-UV-C",
+        "resolution": "1/4 Scale",
+        "format": "Chroma UV"
+      },
+      {
+        "stream": "AICam-Y-D",
+        "resolution": "1/8 Scale",
+        "format": "Luma Y"
+      },
+      {
+        "stream": "AICam-UV-D",
+        "resolution": "1/8 Scale",
+        "format": "Chroma UV"
+      },
+      {
+        "stream": "AICam-Y-E",
+        "resolution": "1/16 Scale",
+        "format": "Luma Y"
+      },
+      {
+        "stream": "AICam-UV-E",
+        "resolution": "1/16 Scale",
+        "format": "Chroma UV"
+      }
+    ],
+    "drop_oldest_recovery_mechanism": {
+      "trigger_condition": "ANE execution exceeds 16.6ms frame budget, queue backpressure detected",
+      "log_event": "AICam can not keep up, drop semantic video and pyramid output ch=%ld,frame=%d",
+      "recovery_action": "AICam drop-oldest recovery: drained=%d repost_rc=%d",
+      "behavior": "Drops stale semantic mask inference results to prioritize real-time sensor stream presentation without display tearing or frame skipping"
+    }
+  },
+  "eight_distinct_semantic_masks": [
+    {
+      "mask_id": 0,
+      "name": "Skin (Dermis / Cutaneous Tissue)",
+      "symbols": [
+        "BPskinSMV",
+        "oskin",
+        "face_skintone"
+      ],
+      "buffer_pool": "Skin Semantic Mask Buffer",
+      "resolution": "512x384 (Quarter Preview Grid)",
+      "precision": "8-bit grayscale confidence [0..255]",
+      "downstream_isp_targets": [
+        "CAWBSemanticProcess (Illuminant Estimation)",
+        "ClrProcLTMDmaSrc (Skin Tone Protection)",
+        "ClrProcMThDmaDst"
+      ]
+    },
+    {
+      "mask_id": 1,
+      "name": "Hair (Cranial & Facial Strands)",
+      "symbols": [
+        "BPhairSMV",
+        "outhair"
+      ],
+      "buffer_pool": "Hair Semantic Mask Buffer",
+      "resolution": "512x384 (Quarter Preview Grid)",
+      "precision": "8-bit grayscale confidence [0..255]",
+      "downstream_isp_targets": [
+        "Portrait Depth Matting",
+        "Local Contrast Preservation",
+        "Luma Sharpness Equalizer"
+      ]
+    },
+    {
+      "mask_id": 2,
+      "name": "Eyes (Sclera, Iris, Pupil)",
+      "symbols": [
+        "keypoints",
+        "face_skintone",
+        "salient_head"
+      ],
+      "buffer_pool": "People Semantic Mask Buffer (Sub-Region)",
+      "resolution": "256x256 RoI Focused",
+      "precision": "8-bit confidence + landmark vectors",
+      "downstream_isp_targets": [
+        "Catchlight Enhancement",
+        "Red-Eye Removal",
+        "Specular Reflection Glare Reduction"
+      ]
+    },
+    {
+      "mask_id": 3,
+      "name": "Teeth (Oral Dentition)",
+      "symbols": [
+        "face_skintone",
+        "salient_head"
+      ],
+      "buffer_pool": "People Semantic Mask Buffer (Sub-Region)",
+      "resolution": "256x256 RoI Focused",
+      "precision": "8-bit confidence",
+      "downstream_isp_targets": [
+        "Local Teeth Whitening",
+        "Yellow Tint Desaturation in AWB",
+        "Micro-Contrast Sharpness"
+      ]
+    },
+    {
+      "mask_id": 4,
+      "name": "Clothes (Garments & Fabrics)",
+      "symbols": [
+        "salient_person",
+        "outputperson"
+      ],
+      "buffer_pool": "People Semantic Mask Buffer",
+      "resolution": "512x384",
+      "precision": "8-bit confidence",
+      "downstream_isp_targets": [
+        "Texture Detail Preservation",
+        "Color Bleed Prevention",
+        "Dynamic Range Expansion"
+      ]
+    },
+    {
+      "mask_id": 5,
+      "name": "Sky (Celestial Hemispheres & Clouds)",
+      "symbols": [
+        "BPskySMV",
+        "outsky"
+      ],
+      "buffer_pool": "Sky Semantic Mask Buffer",
+      "resolution": "512x384",
+      "precision": "8-bit grayscale confidence",
+      "downstream_isp_targets": [
+        "CAWBSemanticProcess (Blue Hour / Daylight Bias)",
+        "HueMapDmaSrcA (Graduated Tint Compensation)",
+        "LTM High-Key Compression"
+      ]
+    },
+    {
+      "mask_id": 6,
+      "name": "Foliage (Vegetation, Flora, Canopy)",
+      "symbols": [
+        "outpviseg",
+        "viseg"
+      ],
+      "buffer_pool": "Foliage / Landscape Mask Buffer",
+      "resolution": "512x384",
+      "precision": "8-bit confidence",
+      "downstream_isp_targets": [
+        "Chlorophyll Green Hue Tuning",
+        "Chromatic Aberration Mitigation",
+        "Texture Detail Enhancement"
+      ]
+    },
+    {
+      "mask_id": 7,
+      "name": "Background / Depth (Environmental Saliency)",
+      "symbols": [
+        "depth",
+        "saliency",
+        "id_map"
+      ],
+      "buffer_pool": "Dense Depth & Saliency Map Buffer",
+      "resolution": "512x384 16-bit Float / Q8.8 Fixed",
+      "precision": "16-bit metric depth estimation",
+      "downstream_isp_targets": [
+        "Synthetic Depth of Field (DoF)",
+        "Bokeh Kernel Convolution",
+        "Subject Isolation Relighting"
+      ]
+    }
+  ],
+  "downstream_integration_matrix": {
+    "auto_white_balance_awb": {
+      "source_file": "./h10isp/filters/Algorithm/3A/CAWBSemanticProcess.cpp",
+      "properties": [
+        "AWBFeature enableSemanticAWBControl",
+        "AWBSemanticConfidenceMap2AWB",
+        "AWBSemanticHires2Algo",
+        "AWBSemantic2DColorHist2Algo"
+      ],
+      "algorithm": "Weights gray-world chromaticity integration inversely against synthetic skin/sky masks to eliminate color cast shifts caused by dominant colored clothing or backdrops."
+    },
+    "semantic_mask_generation_pipe_smg": {
+      "hardware_unit": "SMGPipe",
+      "dma_channels": [
+        "SMGPipeInputDmaSrc (Channel 165)",
+        "SMGPipeTargetDmaSrc (Channel 166)",
+        "SMGPipeWSegDmaSrc (Channel 167)",
+        "SMGPipeDmaDst (Channel 224)"
+      ],
+      "purpose": "Hardware rasterizer combining raw neural probabilities into smooth 8-bit alpha blending masks with edge-directed bilateral filtering."
+    },
+    "color_processing_tseg": {
+      "hardware_unit": "ClrProc",
+      "dma_channels": [
+        "ClrProcTSegDmaDstThumb (Channel 199)",
+        "ClrProcTSegDmaDstWSeg (Channel 200)"
+      ],
+      "purpose": "Emits thumbnail preview mask and weighted segmentation surface directly into system DRAM for video encoder and compositor consumption."
+    }
+  }
+}
