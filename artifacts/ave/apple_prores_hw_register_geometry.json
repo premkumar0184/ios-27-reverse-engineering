@@ -1,0 +1,201 @@
+{
+  "subsystem": "AppleProResHW Hardware Register Geometry & MMIO Architecture",
+  "soc": "Apple Silicon A19 Pro (t8150)",
+  "mmio_regions": {
+    "base_address": "0x77080000",
+    "total_size_bytes": "0x40000 (256 KB)",
+    "cores": [
+      {
+        "core_id": 0,
+        "name": "apr,m0",
+        "role": "Master Command & Queue Arbiter",
+        "offset": "0x00000000",
+        "size": "0x00010000 (64 KB)",
+        "registers": {
+          "APR_M0_CMD_QUEUE_HEAD": {
+            "offset": "0x0000",
+            "description": "Command ring buffer head pointer"
+          },
+          "APR_M0_CMD_QUEUE_TAIL": {
+            "offset": "0x0004",
+            "description": "Command ring buffer tail pointer"
+          },
+          "APR_M0_CMD_QUEUE_CTRL": {
+            "offset": "0x0008",
+            "description": "Command queue enable and priority control"
+          },
+          "APR_M0_CORE_STATUS": {
+            "offset": "0x0010",
+            "description": "Core power and execution status (st0, st1, st2)"
+          },
+          "APR_M0_RESET_CTRL": {
+            "offset": "0x0014",
+            "description": "Hardware core soft/hard reset trigger"
+          },
+          "APR_M0_INT_STATUS": {
+            "offset": "0x0020",
+            "description": "Aggregated interrupt status across slice cores"
+          },
+          "APR_M0_INT_ENABLE": {
+            "offset": "0x0024",
+            "description": "Interrupt mask enable"
+          },
+          "APR_M0_DART_FAULT_STATUS": {
+            "offset": "0x0030",
+            "description": "DART IOMMU translation fault register"
+          },
+          "APR_M0_PERF_FLOOR": {
+            "offset": "0x0040",
+            "description": "Performance state floor frequency selector"
+          }
+        }
+      },
+      {
+        "core_id": 1,
+        "name": "apr,a1",
+        "role": "Slice Processing Engine 0 (Slices 0..7)",
+        "offset": "0x00010000",
+        "size": "0x00010000 (64 KB)",
+        "registers": {
+          "APR_A1_SLICE_CTRL": {
+            "offset": "0x0000",
+            "description": "Slice encoder execution start and mode control"
+          },
+          "APR_A1_FRAME_HEADER_ADDR_LOW": {
+            "offset": "0x0008",
+            "description": "Frame header metadata DMA address (low 32 bits)"
+          },
+          "APR_A1_FRAME_HEADER_ADDR_HIGH": {
+            "offset": "0x000C",
+            "description": "Frame header metadata DMA address (high 32 bits)"
+          },
+          "APR_A1_INPUT_Y_ADDR_LOW": {
+            "offset": "0x0010",
+            "description": "Input Luma / RAW-R plane address (low 32 bits)"
+          },
+          "APR_A1_INPUT_Y_ADDR_HIGH": {
+            "offset": "0x0014",
+            "description": "Input Luma / RAW-R plane address (high 32 bits)"
+          },
+          "APR_A1_INPUT_C_ADDR_LOW": {
+            "offset": "0x0018",
+            "description": "Input Chroma / RAW-Gr plane address (low 32 bits)"
+          },
+          "APR_A1_INPUT_C_ADDR_HIGH": {
+            "offset": "0x001C",
+            "description": "Input Chroma / RAW-Gr plane address (high 32 bits)"
+          },
+          "APR_A1_OUTPUT_BITSTREAM_LOW": {
+            "offset": "0x0030",
+            "description": "Bitstream output buffer DMA address (low 32 bits)"
+          },
+          "APR_A1_OUTPUT_BITSTREAM_HIGH": {
+            "offset": "0x0034",
+            "description": "Bitstream output buffer DMA address (high 32 bits)"
+          },
+          "APR_A1_QUANT_MATRIX_CFG": {
+            "offset": "0x0040",
+            "description": "Quantization scaling and matrix index selector"
+          },
+          "APR_A1_RATE_CONTROL_CFG": {
+            "offset": "0x0048",
+            "description": "Target size and maximum slice size configuration"
+          },
+          "APR_A1_STATS_BITCOUNT": {
+            "offset": "0x0050",
+            "description": "Hardware generated slice bitcount output"
+          }
+        }
+      },
+      {
+        "core_id": 2,
+        "name": "apr,a2",
+        "role": "Slice Processing Engine 1 (Slices 8..15)",
+        "offset": "0x00020000",
+        "size": "0x00010000 (64 KB)",
+        "registers": {
+          "APR_A2_SLICE_CTRL": {
+            "offset": "0x0000",
+            "description": "Slice encoder execution start and mode control"
+          },
+          "APR_A2_FRAME_HEADER_ADDR_LOW": {
+            "offset": "0x0008",
+            "description": "Frame header metadata DMA address (low 32 bits)"
+          },
+          "APR_A2_FRAME_HEADER_ADDR_HIGH": {
+            "offset": "0x000C",
+            "description": "Frame header metadata DMA address (high 32 bits)"
+          },
+          "APR_A2_INPUT_Y_ADDR_LOW": {
+            "offset": "0x0010",
+            "description": "Input Luma / RAW-Gb plane address (low 32 bits)"
+          },
+          "APR_A2_INPUT_Y_ADDR_HIGH": {
+            "offset": "0x0014",
+            "description": "Input Luma / RAW-Gb plane address (high 32 bits)"
+          },
+          "APR_A2_INPUT_C_ADDR_LOW": {
+            "offset": "0x0018",
+            "description": "Input Chroma / RAW-B plane address (low 32 bits)"
+          },
+          "APR_A2_INPUT_C_ADDR_HIGH": {
+            "offset": "0x001C",
+            "description": "Input Chroma / RAW-B plane address (high 32 bits)"
+          },
+          "APR_A2_OUTPUT_BITSTREAM_LOW": {
+            "offset": "0x0030",
+            "description": "Bitstream output buffer DMA address (low 32 bits)"
+          },
+          "APR_A2_OUTPUT_BITSTREAM_HIGH": {
+            "offset": "0x0034",
+            "description": "Bitstream output buffer DMA address (high 32 bits)"
+          },
+          "APR_A2_QUANT_MATRIX_CFG": {
+            "offset": "0x0040",
+            "description": "Quantization scaling and matrix index selector"
+          },
+          "APR_A2_RATE_CONTROL_CFG": {
+            "offset": "0x0048",
+            "description": "Target size and maximum slice size configuration"
+          },
+          "APR_A2_STATS_BITCOUNT": {
+            "offset": "0x0050",
+            "description": "Hardware generated slice bitcount output"
+          }
+        }
+      }
+    ]
+  },
+  "dart_iommu_configuration": {
+    "device_name": "dart-apr",
+    "translation_bypass": 0,
+    "page_size_bytes": 16384,
+    "stream_ids": [
+      {
+        "sid": 0,
+        "name": "SID_APR_M0_CMD",
+        "description": "Master command queue DMA stream"
+      },
+      {
+        "sid": 1,
+        "name": "SID_APR_A1_PIX_RD",
+        "description": "Core 1 pixel and metadata read stream"
+      },
+      {
+        "sid": 2,
+        "name": "SID_APR_A1_BS_WR",
+        "description": "Core 1 bitstream write stream"
+      },
+      {
+        "sid": 3,
+        "name": "SID_APR_A2_PIX_RD",
+        "description": "Core 2 pixel and metadata read stream"
+      },
+      {
+        "sid": 4,
+        "name": "SID_APR_A2_BS_WR",
+        "description": "Core 2 bitstream write stream"
+      }
+    ]
+  }
+}

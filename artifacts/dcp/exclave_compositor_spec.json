@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Display Coprocessor (DCP) DART-DCP Stream ID & Exclave Secure Compositor Specification",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "platform": "iOS 27.2 / Darwin 24.2.0 (Build 24B119)",
+  "device_model": "iPhone18,3 (v57ap)",
+  "exclave_display_architecture": {
+    "subsystem": "ExDisplayPipe & DART-DCP Secure Stream Demultiplexing",
+    "iommu_configuration": {
+      "dart_dcp": {
+        "node_name": "mapper-dcp-exclave",
+        "compatible": "dart-mapper",
+        "device_type": "iommu-mapper",
+        "mmio_base": "0x00000001fa340000",
+        "mmio_size": "0x00004000",
+        "page_size_bytes": 16384,
+        "virtual_address_bits": 36,
+        "physical_address_bits": 40
+      },
+      "dart_disp0": {
+        "node_name": "mapper-disp0",
+        "compatible": "dart-mapper",
+        "device_type": "iommu-mapper",
+        "mmio_base": "0x00000001fa300000",
+        "mmio_size": "0x00004000",
+        "page_size_bytes": 16384,
+        "virtual_address_bits": 36,
+        "physical_address_bits": 40
+      }
+    },
+    "stream_id_allocations": [
+      {
+        "stream_id": "0x01",
+        "domain": "Host OS / WindowServer Untrusted Domain",
+        "producer": "AppleCLCD2.kext / IOMobileFramebuffer",
+        "source_memory_carveout": "DISP-FB-ACTIVE (0x05000000 / 80 MB)",
+        "iommu_translation": "DART-DISP0 (0x1fa300000)",
+        "content_type": "General UI, Metal surfaces, Video playback, UIKit layer tree",
+        "read_permissions": "Host AP (Read/Write), DCP DMA (Read)",
+        "security_classification": "Non-Secure / User-Space Composited"
+      },
+      {
+        "stream_id": "0x02",
+        "domain": "Secure Enclave / ExclaveOS Trusted Domain",
+        "producer": "com.apple.service.SecureRTBuddyDCP / exdisplaypipe",
+        "source_memory_carveout": "DCP-EXCLAVE / EXCLAVE-SECURE-CARVEOUT",
+        "iommu_translation": "DART-DCP mapper-dcp-exclave (0x1fa340000)",
+        "content_type": "Secure Indicator Light (SIL - Camera/Mic dots), Apple Pay UI, Face ID biometric confirmation, Passcode PIN entry",
+        "read_permissions": "ExclaveOS (Read/Write), DCP DMA (Read Only)",
+        "security_classification": "Secure Exclave Isolated / Host AP Prohibited"
+      },
+      {
+        "stream_id": "0x03",
+        "domain": "Hardware Hardware Cursor Plane",
+        "producer": "IOMobileFramebuffer Cursor Subsystem",
+        "source_memory_carveout": "DISP-CARVE-OUT (Cursor plane slice)",
+        "iommu_translation": "DART-DISP0 (0x1fa300000)",
+        "content_type": "Pointer cursor raster overlay (AssistiveTouch, Stage Manager cursor)",
+        "read_permissions": "Host AP (Write Only), DCP DMA (Read Only)",
+        "security_classification": "Non-Secure Low Latency Overlay"
+      }
+    ],
+    "exclave_services": {
+      "xnu_proxy": "com.apple.service.EXDisplayPipeDriver_xnuproxy",
+      "edk_proxy": "com.apple.service.EXDisplayPipeDriver_EDK_xnuproxy",
+      "rtbuddy_service": "com.apple.service.SecureRTBuddyDCP",
+      "rtbuddy_edk_service": "com.apple.service.SecureRTBuddyDCP_EDK",
+      "mailbox_node": "dcp-exclave-mailbox",
+      "ioreporting_node": "dcp-exclave-ioreporting",
+      "ipc_transport": "RTKExclaveTBEndpoint (Tightbeam RPC over AFKTightbeamEndpointInterface)"
+    },
+    "hardware_blending_engine": {
+      "module": "UPBlock_Blend_v18 / UPBlock_DPE_v1",
+      "handler": "SecureBlendHandler.cpp",
+      "composition_mode": "Zero-DRAM Writeback Real-Time Scanout Alpha Blending",
+      "z_order_hierarchy": [
+        {"layer": 0, "stream_id": "0x01", "name": "Host Background / WindowServer Base Plane"},
+        {"layer": 1, "stream_id": "0x03", "name": "Hardware Cursor Plane"},
+        {"layer": 2, "stream_id": "0x02", "name": "Exclave Secure Overlay Plane (SIL, Apple Pay, Face ID)"}
+      ],
+      "host_isolation_guarantee": "Exclave plane scanout lines are blended directly in the scanout FIFO without buffering back into system memory. Host CPU, GPU, and DART-DISP0 DMA engines have no address translation entries or bus route to read composited pixels or Stream ID 0x02 source buffers.",
+      "secure_indicator_light_protection": {
+        "camera_dot_rgb": [0, 255, 0],
+        "microphone_dot_rgb": [255, 140, 0],
+        "nits_capping_enforcement": "SecureBlendHandler checks indicator luminance against panel maximum; triggers 'IOMFB: Secure indicator nits (0x%x) above Indicator nits cap (0x%x)' if request exceeds hardware limit.",
+        "anti_spoofing": "Host planes cannot occlude layer 2 pixels. Any host pixel mapped to the SIL bounding box is overridden with hardware alpha clamp."
+      }
+    }
+  }
+}

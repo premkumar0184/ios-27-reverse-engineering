@@ -1,0 +1,187 @@
+{
+  "subsystem": "AppleProResHW 8K ProRes 422 HQ Real-Time Hardware Encode Pipeline",
+  "target_hardware": {
+    "soc": "Apple Silicon A19 Pro (t8150) / Apple H18 Generation",
+    "driver_kext": "com.apple.driver.AppleProResHW",
+    "hardware_device_tree_node": "apr,m0",
+    "hardware_cores": [
+      "apr,m0 (Master Command Arbiter)",
+      "apr,a1 (Slice Engine Core 0)",
+      "apr,a2 (Slice Engine Core 1)"
+    ],
+    "iommu": "dart-apr / mapper-apr",
+    "mmio_base": "0x77080000",
+    "target_operating_system": "iOS 27.2 (Darwin 24.2.0, Build 24B119)"
+  },
+  "prores_422_hq_specifications": {
+    "target_resolution": "8192 x 4320 (8K DCI) and 7680 x 4320 (8K UHD)",
+    "target_framerate_fps": 60,
+    "chroma_subsampling": "YCbCr 4:2:2 (Y0, C0 planar / semi-planar)",
+    "bit_depth": 10,
+    "compression_type": "Intra-frame DCT with macroblock-adaptive quantization",
+    "target_bitrate_mbps": 1768,
+    "max_slice_data_rate_mbps": 2200,
+    "multi_core_parallelization": {
+      "strategy": "Horizontal slice band parallelization across dual hardware cores (apr,a1 and apr,a2)",
+      "slices_per_frame": 16,
+      "slice_height_macroblocks": 17,
+      "core_allocation": {
+        "apr_a1": "Slices 0 through 7 (Upper half of 8K raster: Y=0..2160)",
+        "apr_a2": "Slices 8 through 15 (Lower half of 8K raster: Y=2160..4320)"
+      },
+      "slice_size_alignment_bytes": 64
+    }
+  },
+  "hardware_command_descriptors": {
+    "command_name": "EncodeYCbCr",
+    "driver_structure": "ProRes_EncodeFrame_UserKernel_In_Info",
+    "parameters": {
+      "fid": {
+        "type": "uint32_t",
+        "description": "Frame identifier"
+      },
+      "fstpss": {
+        "type": "uint32_t",
+        "description": "Fast pass single-pass rate control enable flag (1=fast pass, 0=multi-pass)"
+      },
+      "Int": {
+        "type": "uint32_t",
+        "description": "Interrupt generation enable on hardware slice completion"
+      },
+      "enc": {
+        "type": "uint32_t",
+        "description": "Mode select (1=Encode, 0=Decode)"
+      },
+      "a": {
+        "type": "uint32_t",
+        "description": "Alpha plane present (0=No alpha, 1=Alpha plane present for 4444)"
+      },
+      "cmp": {
+        "type": "uint32_t",
+        "description": "Lossless compression enable for input pixel surfaces"
+      },
+      "nPass": {
+        "type": "uint32_t",
+        "description": "Number of rate control evaluation passes (1 or 2)"
+      },
+      "cfmt": {
+        "type": "uint32_t",
+        "description": "Chroma format: 0=4:2:2, 1=4:4:4, 2=RAW"
+      },
+      "bd": {
+        "type": "uint32_t",
+        "description": "Bit depth: 10=10-bit, 12=12-bit"
+      },
+      "cmd_word": {
+        "type": "uint32_t",
+        "description": "Primary hardware control command word"
+      },
+      "cmdX_word": {
+        "type": "uint32_t",
+        "description": "Extended hardware control command word (bus burst, DMA snoop)"
+      },
+      "LCA": {
+        "type": "uint32_t",
+        "description": "Lossless Compression Alpha plane enable"
+      },
+      "LCC": {
+        "type": "uint32_t",
+        "description": "Lossless Compression Chroma plane enable"
+      },
+      "LCY": {
+        "type": "uint32_t",
+        "description": "Lossless Compression Luma plane enable"
+      },
+      "BrWrDis": {
+        "type": "uint32_t",
+        "description": "Bitstream write disable (for stats-only dry run passes)"
+      }
+    },
+    "buffer_geometry": {
+      "OutputDartVA": "64-bit Virtual Address allocated in DART IOMMU (dart-apr)",
+      "OutputAddressLowHigh": "Address=0x%08x.%08x (split 64-bit physical address)",
+      "MaxSize": "Maximum allowed bitstream output buffer size in bytes",
+      "InputOffsetHV": "Input horizontal and vertical crop offsets (OffsetH, OffsetV)",
+      "InputSizeHV": "Input frame dimensions (SizeH, SizeV)",
+      "WidthHeight": "Active raster width and height (8192, 4320)",
+      "Strides": {
+        "StrideY0": "Byte stride for Luma plane (aligned to 64 bytes)",
+        "StrideC0": "Byte stride for interleaved CbCr Chroma plane (aligned to 64 bytes)",
+        "StrideA0": "Byte stride for Alpha plane (if present)"
+      },
+      "DataMetaAddresses": {
+        "DataY0_MetaY0": "Pointers to Y0 pixel data and tile metadata headers",
+        "DataC0_MetaC0": "Pointers to C0 pixel data and tile metadata headers",
+        "DataA0_MetaA0": "Pointers to A0 pixel data and tile metadata headers"
+      }
+    }
+  },
+  "adaptive_quantization_and_rate_control": {
+    "macroblock_geometry": {
+      "codedWindowWidthInMb": 512,
+      "codedWindowHeightInMb": 270,
+      "total_macroblocks_per_frame": 138240,
+      "numSlices": 16,
+      "log2DesiredSliceSizeInMb": 13
+    },
+    "rate_control_parameters": {
+      "QIndex": 1,
+      "TargetSize": 2949120,
+      "MaxSize": 3686400,
+      "mbCategoryThr": [
+        128,
+        256,
+        512,
+        1024,
+        2048,
+        4096
+      ],
+      "disQuantRefin": 0,
+      "alpha": 128,
+      "alpha0": 128,
+      "gamma0": 64,
+      "beta": [
+        16,
+        32,
+        64,
+        128
+      ],
+      "corrRatio_quantThr": [
+        [
+          10,
+          20,
+          30,
+          40
+        ],
+        [
+          15,
+          25,
+          35,
+          45
+        ],
+        [
+          20,
+          30,
+          40,
+          50
+        ],
+        [
+          25,
+          35,
+          45,
+          55
+        ]
+      ],
+      "ControlCRC": "0x50524F53",
+      "QuantMatrixIndex": 0
+    },
+    "statistics_feedback": {
+      "SwrEn": "Stats software write enable",
+      "QpmEn": "QP map extraction enable",
+      "stats_est": "Hardware estimated bitcount",
+      "stats_slice": "Hardware generated slice bitcount",
+      "stats_mb": "Macroblock count verified",
+      "stats_qpm_rd": "QP Map read address pointer"
+    }
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "specification_metadata": {
+    "title": "Apple AGX G18 Command Stream Wire Protocol & Descriptor Specification",
+    "target_platform": "Apple Silicon A19 Pro (t8150 / v57ap)",
+    "gpu_generation": "Apple AGX G18P (PI_300)",
+    "operating_system": "iOS 27.2 (Darwin 24.2.0, Build 24B119)",
+    "metal_version": "Metal 3.2 (Runtime v362.5)",
+    "endianness": "Little-Endian (AArch64 / AGX ISA)",
+    "descriptor_alignment_bytes": 64,
+    "native_page_size_bytes": 16384
+  },
+  "command_descriptor_64_bytes": {
+    "total_size_bytes": 64,
+    "alignment_bytes": 64,
+    "c_struct_name": "struct agx_command_descriptor",
+    "xnu_type_encoding": "v16@?0^{IOGPUCommandDescriptor=^^?iAI^{IOGPU}^^{OSObject}ii^^{IOGPUMemory}ii{IOGPUIOFenceListHead=^{sIOGPUIOFence}^^{sIOGPUIOFence}}iBC^{IOGPUWorkQueue}^{IOGPUTask}^{IOGPUCommandQueue}^{IOGPUBlockFence}QII{IOGPUEvent={?=I[15I]}}{IOGPUEvent={?=I[15I]}}QQ^^vIiiQQQ}8",
+    "field_layout": [
+      {
+        "offset_hex": "0x00",
+        "offset_bytes": 0,
+        "size_bytes": 8,
+        "field_name": "header",
+        "description": "Packed 64-bit descriptor execution header",
+        "subfields": {
+          "opcode": {
+            "bits": "7:0",
+            "type": "uint8_t",
+            "description": "Hardware execution opcode (agx_opcode_t)"
+          },
+          "data_master": {
+            "bits": "11:8",
+            "type": "uint8_t:4",
+            "description": "Target Data Master: 0=VDM, 1=PDM, 2=BLIT, 3=CDM/RIA"
+          },
+          "priority": {
+            "bits": "15:12",
+            "type": "uint8_t:4",
+            "description": "Submission priority: 0=Normal, 1=High, 2=RealTime (VRR/ProMotion)"
+          },
+          "flags": {
+            "bits": "31:16",
+            "type": "uint16_t",
+            "description": "Execution flags: Coherent (bit 0), Sync (bit 1), Profiling (bit 2), Secure (bit 3), LateEval (bit 4)"
+          },
+          "context_id": {
+            "bits": "63:32",
+            "type": "uint32_t",
+            "description": "Hardware Context Identifier mapped in RTBuddy scheduler"
+          }
+        }
+      },
+      {
+        "offset_hex": "0x08",
+        "offset_bytes": 8,
+        "size_bytes": 8,
+        "field_name": "trace_id",
+        "description": "64-bit unique telemetry and profiling trace identifier (Metal system trace)"
+      },
+      {
+        "offset_hex": "0x10",
+        "offset_bytes": 16,
+        "size_bytes": 8,
+        "field_name": "command_buffer_gpu_va",
+        "description": "64-bit GPU virtual address pointing to contiguous payload command stream buffer"
+      },
+      {
+        "offset_hex": "0x18",
+        "offset_bytes": 24,
+        "size_bytes": 8,
+        "field_name": "buffer_lengths",
+        "description": "Payload valid byte count and total allocated buffer bounds",
+        "subfields": {
+          "used_bytes": {
+            "bits": "31:0",
+            "type": "uint32_t",
+            "description": "Actual valid payload byte count written by userland encoder"
+          },
+          "allocated_bytes": {
+            "bits": "63:32",
+            "type": "uint32_t",
+            "description": "Total allocated buffer capacity (16 KB page multiple)"
+          }
+        }
+      },
+      {
+        "offset_hex": "0x20",
+        "offset_bytes": 32,
+        "size_bytes": 8,
+        "field_name": "fence_list_head",
+        "description": "64-bit pointer / token for IOGPUIOFenceListHead and AGXBlockFence synchronizations"
+      },
+      {
+        "offset_hex": "0x28",
+        "offset_bytes": 40,
+        "size_bytes": 8,
+        "field_name": "timestamp_token",
+        "description": "Completion tracking timestamp token and status page ring slot index",
+        "subfields": {
+          "queue_index": {
+            "bits": "31:0",
+            "type": "uint32_t",
+            "description": "Status page completed_stamps array slot index (0..1023)"
+          },
+          "stamp_value": {
+            "bits": "63:32",
+            "type": "uint32_t",
+            "description": "Monotonically increasing completion value asserted upon execution finish"
+          }
+        }
+      },
+      {
+        "offset_hex": "0x30",
+        "offset_bytes": 48,
+        "size_bytes": 8,
+        "field_name": "parameter_buffer_desc",
+        "description": "GPU virtual address of Parameter Scene Allocation (MList / MTileArray / VHeap / Surface Bindings)"
+      },
+      {
+        "offset_hex": "0x38",
+        "offset_bytes": 56,
+        "size_bytes": 8,
+        "field_name": "completion_event",
+        "description": "64-bit Metal shared event completion descriptor and signaling mask"
+      }
+    ]
+  },
+  "opcodes": {
+    "0x01": {
+      "name": "CMD_3D_RENDER_PASS",
+      "target_dm": "VDM / PDM",
+      "data_master_id": 0,
+      "description": "Submits full Tile-Based Deferred Rendering pass (Vertex/Tiling phase followed by Fragment phase)",
+      "encoder": "agx_encode_render_pass",
+      "hardware_pipeline": "TA -> USC Vertex -> Tile Allocator -> USC Fragment -> Tile Buffer Store"
+    },
+    "0x02": {
+      "name": "CMD_COMPUTE_DISPATCH",
+      "target_dm": "CDM",
+      "data_master_id": 3,
+      "description": "Launches general-purpose compute kernel threadgroups into unified shader core clusters",
+      "encoder": "agx_encode_compute_dispatch",
+      "hardware_pipeline": "CDM -> USC Threadgroup Scheduler -> Shared Memory / Register File -> L2"
+    },
+    "0x03": {
+      "name": "CMD_BLIT_2D",
+      "target_dm": "BLIT",
+      "data_master_id": 2,
+      "description": "Hardware 2D memory copy, DMA surface transfer, buffer clear, and texture sub-resource remapping",
+      "encoder": "agx_encode_blit_2d",
+      "hardware_pipeline": "Blit Engine DMA -> Memory Subsystem / Crossbar -> DRAM / SLC"
+    },
+    "0x04": {
+      "name": "CMD_RAY_TRACING_DISPATCH",
+      "target_dm": "CDM / RIA",
+      "data_master_id": 3,
+      "description": "Executes ray-generation, intersection, and closest-hit shaders with hardware Ray Intersection Accelerator",
+      "encoder": "agx_encode_ray_tracing_dispatch",
+      "hardware_pipeline": "CDM -> RIA Ray Stack -> BVH2/BVH4 Box/Triangle Intersection -> USC Shader"
+    },
+    "0x05": {
+      "name": "CMD_TILE_LOAD_STORE",
+      "target_dm": "TA / PDM",
+      "data_master_id": 1,
+      "description": "Explicit on-chip tile memory load/store operations to/from system DRAM"
+    },
+    "0x06": {
+      "name": "CMD_BLIT_COPY",
+      "target_dm": "BLIT",
+      "data_master_id": 2,
+      "description": "Extended format conversion, MSAA resolve blit, and compressed ASTC tile unpacking"
+    },
+    "0x07": {
+      "name": "CMD_BARRIER_FENCE",
+      "target_dm": "All DMs",
+      "data_master_id": 0,
+      "description": "Inserts pipeline execution barrier and flushes USC L1 instruction/data caches"
+    },
+    "0x08": {
+      "name": "CMD_SHARED_EVENT_SIGNAL",
+      "target_dm": "Event Engine",
+      "data_master_id": 3,
+      "description": "Signals a Metal SharedEvent object upon hardware completion of preceding commands"
+    },
+    "0x09": {
+      "name": "CMD_SHARED_EVENT_WAIT",
+      "target_dm": "Event Engine",
+      "data_master_id": 3,
+      "description": "Suspends pipeline execution until specified SharedEvent reaches threshold value"
+    },
+    "0x0A": {
+      "name": "CMD_RAY_TRACING_BVH_BUILD",
+      "target_dm": "CDM / RIA",
+      "data_master_id": 3,
+      "description": "Constructs or refits acceleration structures (BVH2 / BVH4) using hardware traversal accelerators"
+    },
+    "0x0F": {
+      "name": "CMD_NOP",
+      "target_dm": "Control",
+      "data_master_id": 0,
+      "description": "No-operation descriptor used for ring alignment, latency pads, and heartbeat keepalive"
+    }
+  },
+  "data_masters": [
+    {
+      "id": 0,
+      "name": "VDM",
+      "symbolic_name": "AGX_DM_VDM",
+      "description": "Vertex / Meshlet Data Master (Geometry Phase & Tiling Control)"
+    },
+    {
+      "id": 1,
+      "name": "PDM",
+      "symbolic_name": "AGX_DM_PDM",
+      "description": "Pixel / Primitive Data Master (Rasterization & Fragment Phase)"
+    },
+    {
+      "id": 2,
+      "name": "BLIT",
+      "symbolic_name": "AGX_DM_BLIT",
+      "description": "2D Memory Blit / DMA Transfer Engine"
+    },
+    {
+      "id": 3,
+      "name": "CDM",
+      "symbolic_name": "AGX_DM_CDM",
+      "description": "Compute Data Master (GPGPU, Threadgroups & RIA Ray Tracing)"
+    }
+  ],
+  "pmp_doorbell_kick_protocol": {
+    "register_region": "kAGFIPIORegionTypePMPDoorbell",
+    "access_granularity": "Atomic 64-bit Store (STR Xn, [Xm])",
+    "token_bitfields": {
+      "queue_id": {
+        "bits": "15:0",
+        "size_bits": 16,
+        "description": "Hardware Queue ID allocated by XNU driver during queue creation"
+      },
+      "tail_offset": {
+        "bits": "47:16",
+        "size_bits": 32,
+        "description": "64-byte aligned ring byte offset pointing to latest producer write pointer (supports atomic batched submission)"
+      },
+      "flags": {
+        "bits": "63:48",
+        "size_bits": 16,
+        "description": "Doorbell flags: bit 63 indicates High-Priority/RealTime preemptive kick"
+      }
+    },
+    "formula": "Token = ((uint64_t)flags << 48) | ((uint64_t)tail_offset << 16) | (uint64_t)queue_id"
+  },
+  "metal_3_2_runtime_features": {
+    "indirect_command_buffers": {
+      "version": "ICB v3",
+      "dispatch_support": "Concurrent 3D and Compute execution encoding on GPU timeline without CPU intervention"
+    },
+    "mesh_shaders": {
+      "stages": ["Object Shader (Task)", "Mesh Shader", "Rasterizer"],
+      "data_master": "VDM",
+      "amplification": "Hardware meshlet primitive culling and dynamic primitive expansion"
+    },
+    "ray_tracing": {
+      "acceleration_structure_formats": ["BVH2", "BVH4", "CurveBVH"],
+      "traversal_hardware": "RIA v3 (Integrated within USC clusters)",
+      "metal_api_parity": "Full MTLAccelerationStructure, MTLLinkedFunctions, and Ray Tracing Pipelines"
+    },
+    "fast_resource_loading": {
+      "interface": "MTLIOCommandQueue",
+      "hardware_path": "ANS2 NVMe Storage Direct-to-GPU Memory DMA Streaming"
+    }
+  }
+}

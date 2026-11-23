@@ -1,0 +1,113 @@
+{
+  "subsystem": "Apple Video Encoder 2 (AVE2) Motion Estimation Coprocessor Hardware Architecture",
+  "target_hardware": {
+    "soc": "Apple Silicon A19 Pro (t8150) / Apple H18 Generation",
+    "firmware_image": "AppleAVE2FW_H18.im4p (Mach-O 64-bit MH_PRELOAD ARM64e)",
+    "satellite_cpus": "9x RISC-V 32-bit cores (AVE0 through AVE8)",
+    "target_operating_system": "iOS 27.2 (Darwin 24.2.0, Build 24B119)"
+  },
+  "motion_estimation_coprocessor_cluster": {
+    "hmesc": {
+      "name": "Hierarchical Motion Estimation and Spatial Complexity",
+      "cpp_classes": [
+        "CAVECommonController",
+        "CMCTFController",
+        "CGGMController",
+        "COFController"
+      ],
+      "registers": {
+        "HMESCSRCPIXRD_CTXCFG_SRCADDR": "64-bit source pixel read context DMA base address",
+        "HMESCSRCPIXRD_CTXCFG_STRIDE": "Source pixel stride and compression enable flag",
+        "HMEDMA_HMESC_WMACMPCHANNELCFG_HDRADDRLOW": "Compressed tile metadata header address",
+        "HMEDMA_HMESC_WMACMPCHANNELCFG_CMPADDRLOW": "Compressed payload address",
+        "HMEDMA_HMESC_WMACMPCHANNELCFG_STRIDE": "Compressed channel byte stride",
+        "ProcessHMESCStart": "Trigger register to start hierarchical search execution",
+        "HMESCDone": "Hardware interrupt status register signaling pass completion"
+      },
+      "algorithm": {
+        "hierarchy_levels": 4,
+        "downsampling_factors": [
+          1,
+          2,
+          4,
+          8
+        ],
+        "spatial_complexity_metric": "Per-macroblock directional luma variance (H, V, D45, D135) for adaptive QP modulation",
+        "motion_candidate_seed_generation": "Hierarchical quadtree candidate propagation from Level 3 to Level 0"
+      }
+    },
+    "lrme": {
+      "name": "Low-Resolution Motion Estimation",
+      "cpp_classes": [
+        "CLRMEFSController (Full Search)",
+        "CLRMERSController (Refinement Search)"
+      ],
+      "downsampling_ratio": "16x spatial downsample (16:1 Luma pyramid)",
+      "search_window": {
+        "horizontal_range_pixels": "[-128, +127]",
+        "vertical_range_pixels": "[-64, +63]",
+        "search_pattern": "Diamond search with early termination threshold"
+      },
+      "dma_interfaces": {
+        "ConfigRdDMALowResSrc": "Low-resolution source image DMA reader",
+        "ConfigRdDMALowResRef": "Low-resolution reference frame DMA reader",
+        "ConfigRdDMALowResRCPrvRslts": "Previous pass motion vector feedback buffer",
+        "ConfigHwBlockWrDMA": "Coarse motion vector field output DMA writer"
+      },
+      "multi_pass_rate_control": {
+        "method": "MultiPassControl26CollectMultiPassStats_LRME",
+        "function": "Extracts coarse temporal correlation and bits-per-macroblock budget before high-resolution full-pel search"
+      }
+    },
+    "dmv": {
+      "name": "Dense Motion Vector Engine",
+      "cpp_class": "CDMVController",
+      "methods": [
+        "StartDMV",
+        "ProcessDMVStart",
+        "ProcessDMVDone",
+        "SetDefaultParameters"
+      ],
+      "precision": "Quarter-pixel (1/4-pel) sub-pixel precision",
+      "interpolation_filter": "8-tap DCT-based interpolation filter for half-pel and 4-tap filter for quarter-pel",
+      "vector_density": "1 motion vector per 4x4 sub-block in 8K frames"
+    },
+    "mctf": {
+      "name": "Motion-Compensated Temporal Filtering",
+      "cpp_class": "CMCTFController",
+      "methods": [
+        "CreateMCTFController",
+        "ConfigReadDMA",
+        "ConfigWriteDMA",
+        "SetRefFrameInfo",
+        "SetFilterGating",
+        "CollectHMEScStats",
+        "ResetFilterStrengthLookup"
+      ],
+      "buffer_management": "MCTF LFSRef buffers num %d (manages 3 past and 1 future temporal reference frames)",
+      "noise_reduction_kernel": "Motion-adaptive temporal IIR/FIR filter blending along estimated motion trajectories, eliminating sensor photon noise before quantization"
+    },
+    "satellite_riscv_microcode_engines": {
+      "AVE0": {
+        "name": "TaskDispatcher",
+        "role": "Inter-coprocessor command ring dispatcher"
+      },
+      "AVE3": {
+        "name": "SubPelMotionSearch",
+        "role": "Executes fractional sub-pel refinement on DMV candidate vectors"
+      },
+      "AVE4": {
+        "name": "MVCandidateSifter",
+        "role": "Evaluates spatial (A0, A1, B0, B1, B2) and temporal (Colocated) motion vector predictors"
+      },
+      "AVE5": {
+        "name": "RDOAndSkipDecision",
+        "role": "Lagrangian Cost = Distortion + Lambda * Bits; decides early SKIP mode"
+      },
+      "AVE8": {
+        "name": "CoreArbitrator",
+        "role": "Controls hardware clock gating and power state transitions across all ME blocks"
+      }
+    }
+  }
+}

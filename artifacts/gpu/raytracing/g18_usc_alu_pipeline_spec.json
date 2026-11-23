@@ -1,0 +1,156 @@
+{
+  "architecture_metadata": {
+    "architecture": "Apple AGX G18",
+    "generation": "G18",
+    "variant": "G18P (Pro)",
+    "internal_codename": "PI_300",
+    "target_soc": "t8150",
+    "commercial_name": "Apple A19 Pro",
+    "process_node": "TSMC N3P (3nm FinFET)",
+    "nominal_clock_mhz": 1450,
+    "peak_boost_clock_mhz": 1620,
+    "gpu_page_size_bytes": 16384
+  },
+  "cluster_microarchitecture": {
+    "cluster_count": 6,
+    "cluster_designation": "FSTP (Fixed-Function Shader & Tile Processing Cluster)",
+    "execution_model": "SIMD32 Divergence-Tolerant Warp Architecture",
+    "warp_size_threads": 32,
+    "warps_per_usc_scheduler": 16,
+    "max_resident_threads_per_usc": 512,
+    "max_resident_threads_gpu_total": 3072,
+    "warp_scheduler_topology": "Dual-issue Quad-warp Interleaved Round-Robin Scheduler",
+    "divergence_management": {
+      "stack_type": "Hardware Divergence Stack",
+      "stack_depth": 32,
+      "mask_register": "EXEC_MASK_32",
+      "reconvergence_mechanism": "Dynamic reconvergence PC tracking with immediate mask pop"
+    }
+  },
+  "alu_pipeline_throughput_per_usc": {
+    "fp32_alu_count": 128,
+    "fp16_alu_count": 256,
+    "int32_alu_count": 64,
+    "special_function_unit_sfu_count": 32,
+    "fp32_fma_throughput_ops_per_cycle": 256,
+    "fp16_fma_throughput_ops_per_cycle": 512,
+    "int32_ops_per_cycle": 64,
+    "sfu_ops_per_cycle": 32,
+    "pipeline_latencies_cycles": {
+      "fp32_fma": 4,
+      "fp16_fma": 3,
+      "int32_alu": 2,
+      "sfu_transcendental": 8,
+      "register_forwarding_bypass": 0
+    }
+  },
+  "alu_pipeline_throughput_gpu_aggregate": {
+    "total_uscs": 6,
+    "total_fp32_alus": 768,
+    "total_fp16_alus": 1536,
+    "total_int32_alus": 384,
+    "total_special_function_units_sfu": 192,
+    "aggregate_fp32_ops_per_clock": 1536,
+    "aggregate_fp16_ops_per_clock": 3072,
+    "aggregate_int32_ops_per_clock": 384,
+    "aggregate_sfu_ops_per_clock": 192,
+    "peak_throughput_at_boost_1620mhz": {
+      "fp32_tflops": 2.48832,
+      "fp16_tflops": 4.97664,
+      "int32_tops": 0.62208,
+      "sfu_gigaops": 311.04
+    },
+    "nominal_throughput_at_base_1450mhz": {
+      "fp32_tflops": 2.2272,
+      "fp16_tflops": 4.4544,
+      "int32_tops": 0.5568,
+      "sfu_gigaops": 278.4
+    }
+  },
+  "register_file_architecture": {
+    "registers_per_threadgroup": 1024,
+    "register_bit_width": 32,
+    "register_capacity_bytes_per_threadgroup": 4096,
+    "resident_threadgroups_per_usc": 4,
+    "physical_registers_per_usc": 4096,
+    "total_physical_registers_6_uscs": 24576,
+    "physical_register_file_kb_per_usc": 16,
+    "physical_register_file_kb_gpu_total": 96,
+    "dynamic_allocation_modes": [
+      {
+        "mode": "16-bit packed SIMD",
+        "packing_factor": 2,
+        "description": "Two 16-bit half-precision floating-point or integer values packed into a single 32-bit register lane"
+      },
+      {
+        "mode": "32-bit scalar",
+        "packing_factor": 1,
+        "description": "One standard single-precision 32-bit float or 32-bit integer per physical register lane"
+      },
+      {
+        "mode": "128-bit vector grouping",
+        "packing_factor": 0.25,
+        "description": "Quad-register aligned grouping for 4x32-bit or 8x16-bit vector operations"
+      }
+    ],
+    "banking_and_arbitration": {
+      "banks_per_usc": 4,
+      "bank_interleave_granularity_bytes": 16,
+      "bank_conflict_resolution": "Hardware stall replay buffer with priority bypass network"
+    }
+  },
+  "on_chip_memory_hierarchy": {
+    "threadgroup_sram_kb_per_usc": 128,
+    "threadgroup_sram_bytes_per_usc": 131072,
+    "total_threadgroup_sram_kb_6_uscs": 768,
+    "total_threadgroup_sram_bytes_6_uscs": 786432,
+    "threadgroup_sram_banks": 32,
+    "threadgroup_sram_bandwidth_bytes_per_clock_usc": 128,
+    "l1_instruction_cache_kb_per_usc": 64,
+    "l1_instruction_cache_bytes_per_usc": 65536,
+    "total_l1_instruction_cache_kb_6_uscs": 384,
+    "l1_instruction_cache_geometry": {
+      "associativity": "4-way set associative",
+      "cache_line_bytes": 64,
+      "periodic_flush_timer": "agf_timer_usc_inst_cf",
+      "invalidation_granularity": "Instruction cacheline or full USC cluster"
+    },
+    "l1_texture_data_cache_kb_per_usc": 128,
+    "l1_texture_data_cache_bytes_per_usc": 131072,
+    "total_l1_texture_data_cache_kb_6_uscs": 768,
+    "l1_texture_data_cache_geometry": {
+      "associativity": "8-way set associative",
+      "cache_line_bytes": 128,
+      "coherency_protocol": "Hardware directory-snooped MESI across USCs within FSTP slice",
+      "write_policy": "Write-through to SLC with streaming write bypass"
+    },
+    "system_level_cache_slc": {
+      "total_slice_mb": 24,
+      "total_slice_bytes": 25165824,
+      "gpu_allocation_policy": "Dynamic QoS partition shared with CPU and ANE cores",
+      "line_size_bytes": 128
+    }
+  },
+  "matrix_execution_unit_mxu": {
+    "unit_name": "MXU",
+    "power_domain": "DPWR_USC_MXU",
+    "mmio_region_descriptor": "kAGFIPIORegionTypeDpwrMXURegisters",
+    "mxu_units_per_usc": 1,
+    "total_mxu_units_6_uscs": 6,
+    "ops_per_clock_fp16_per_usc": 256,
+    "aggregate_ops_per_clock_fp16_6_uscs": 1536,
+    "peak_fp16_tflops_at_boost_1620mhz": 2.48832,
+    "supported_precisions": [
+      "FP16",
+      "BF16",
+      "INT8",
+      "INT4"
+    ],
+    "microarchitectural_capabilities": {
+      "fp16_gemm_tile_size": "4x4x4 outer-product systolic matrix multiplier",
+      "bf16_gemm_support": "Native bfloat16 dot products with FP32 accumulator",
+      "int8_integer_tensor_mode": "4-wide INT8 dot product (DP4A) with 32-bit accumulation",
+      "int4_quantized_inference_mode": "Packed 4-bit weights with hardware scaling factor unpack"
+    }
+  }
+}

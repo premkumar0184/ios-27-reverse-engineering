@@ -2,46 +2,81 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Apple Display Coprocessor Panel Pixel Compensation (PPC) Specification",
   "target_soc": "t8150 (Apple A19 Pro)",
+  "platform": "iOS 27.2 / Darwin 24.2.0 (Build 24B119)",
+  "device_model": "iPhone18,3 (v57ap)",
   "panel_compensation_engines": {
     "bics": {
       "module": "UPBlock_BICS_v19",
+      "cpp_source": "UPBlock_BICS.cpp",
       "name": "Burn-In Compensation System (BICS)",
       "target": "Tandem OLED differential subpixel degradation mitigation",
       "history_buffer_size_bytes": 8388608,
+      "history_buffer_hex": "0x800000",
       "history_buffer_human": "8 MB compressed history table",
-      "aging_formula": "Cumulative subpixel stress: S(x, y, c) = sum(Luminance(x, y, c)^gamma * dt * TempFactor(T))",
-      "gain_correction": "Applies per-subpixel voltage boost to worn pixels, restoring uniform luminance across the panel lifetime."
+      "aging_formula": "Cumulative subpixel stress: S(x, y, c) = sum(Luminance(x, y, c)^gamma * dt * exp(-E_a / (k_B * T)))",
+      "constants": {
+        "subpixel_aging_gamma": 1.45,
+        "activation_energy_ev": 0.62,
+        "boltzmann_constant_ev_k": 8.617333262145e-5
+      },
+      "gain_calculation_routines": [
+        "BICS::do_gain",
+        "BICS::do_tbics_gain"
+      ],
+      "gain_correction": "Applies real-time per-subpixel voltage offset to worn pixels, restoring uniform luminance and chromaticity across the panel lifetime."
     },
     "ptuc": {
       "module": "UPBlock_PTUC_v4",
+      "cpp_source": "TableCompensator.cpp",
+      "thermal_monitor_source": "TempMonitorHandler.cpp",
       "name": "Panel Temperature Uniformity Compensation (PTUC)",
       "target": "Temperature gradient compensation across SoC and battery regions",
       "sensor_inputs": [
         "A19 Pro die temperature sensors (T8150_TTR0..3)",
         "Battery temperature thermistors",
+        "Power Management IC (PMU) temperature telemetry (set_PMU_service)",
         "Display driver IC (DDIC) temperature telemetry"
       ],
-      "grid_resolution": "64x32 thermal interpolation zone",
-      "compensation_action": "Modulates subpixel drive currents to prevent thermal discoloration over hot SoC components."
+      "fallback_temperature_policy": "If SMC 2D temperature is unread, fallback to PMU temperature as initial_guess.",
+      "grid_resolution": {
+        "grid_x_count": 64,
+        "grid_y_count": 32,
+        "total_zones": 2048,
+        "zone_width_pixels": 20.625,
+        "zone_height_pixels": 89.625
+      },
+      "lut_architecture": {
+        "name": "2DTC LUT (2D Temperature Compensation)",
+        "tap_dimensions": ["temperature", "display_brightness_value (DBV)", "refresh_rate_mode (rr_mode)", "HGOD_status"],
+        "interpolation": "Bilinear spatial interpolation combined with piecewise-linear temperature/brightness evaluation."
+      },
+      "compensation_action": "Modulates subpixel drive currents to prevent localized thermal discoloration over hot SoC components."
     },
     "pdc": {
       "module": "UPBlock_PDC_v11",
+      "cpp_source": "UPBlock_PDC.cpp",
       "name": "Pixel Distortion & Density Compensation (PDC)",
-      "target": "Dynamic Island subpixel geometric distortion correction",
+      "target": "Dynamic Island subpixel geometric distortion correction & corner curvature feathering",
+      "configuration_blocks": [
+        "PDCc (Configuration control block)",
+        "PDCp (Parameter data block)"
+      ],
       "features": [
-        "Anti-aliased border feathering around sensor cutouts",
+        "Anti-aliased border feathering around sensor cutouts (Dynamic Island)",
         "Curved display corner subpixel luminance smoothing",
-        "Subpixel Uniformity Compensation (SPUC) per-panel factory calibration map"
-      ]
+        "Subpixel Uniformity Compensation (SPUC) per-panel factory calibration map",
+        "Mix bin blending: mix bin g1 and bin g2 with weight w -> g_out"
+      ],
+      "channels_compensated": ["Red", "Green", "Blue"]
     },
     "acss": {
       "module": "UPBlock_ACSS_v11",
+      "cpp_source": "UPBlock_ACSS.cpp",
       "name": "Active / Angle Color Shift (ACSS)",
       "target": "Off-axis OLED viewing angle color shift mitigation",
-      "features": [
-        "Compensates for blue/yellow chromaticity drift at viewing angles > 30 degrees",
-        "Dynamic micro-cavity optical resonance tuning"
-      ]
+      "table_type": "EMMP table (Electro-Magnetic Microcavity Parameter table)",
+      "ambient_adaptation": "ACSS_ALS_RESCALE: Rescales EMMP matrix based on multi-channel ambient light sensor lux and CCT.",
+      "viewing_angle_compensation": "Compensates for blue/yellow chromaticity drift at viewing angles > 30 degrees by dynamic micro-cavity optical resonance tuning."
     }
   }
 }

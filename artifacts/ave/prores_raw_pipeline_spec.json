@@ -1,0 +1,273 @@
+{
+  "subsystem": "AppleProResHW 8K ProRes RAW Real-Time Hardware Encode Pipeline",
+  "target_hardware": {
+    "soc": "Apple Silicon A19 Pro (t8150) / Apple H18 Generation",
+    "driver_kext": "com.apple.driver.AppleProResHW",
+    "hardware_cores": [
+      "apr,m0",
+      "apr,a1",
+      "apr,a2"
+    ],
+    "target_operating_system": "iOS 27.2 (Darwin 24.2.0, Build 24B119)"
+  },
+  "prores_raw_architecture": {
+    "description": "Direct hardware encoding of uncompressed Color Filter Array (CFA) Bayer sensor data into Apple ProRes RAW bitstreams, preserving raw sensor dynamic range without demosaicing or destructive color conversion.",
+    "sensor_resolution": "8192 x 4320 (8K DCI RAW) @ 60 fps",
+    "bit_depth": 14,
+    "cfa_bayer_patterns": [
+      {
+        "id": 0,
+        "name": "RGGB",
+        "description": "Standard Bayer Red-Green-Green-Blue"
+      },
+      {
+        "id": 1,
+        "name": "BGGR",
+        "description": "Inverted Bayer Blue-Green-Green-Red"
+      },
+      {
+        "id": 2,
+        "name": "GRBG",
+        "description": "Green-Red-Blue-Green quad interleave"
+      },
+      {
+        "id": 3,
+        "name": "GBRG",
+        "description": "Green-Blue-Red-Green quad interleave"
+      }
+    ],
+    "planar_memory_layout": {
+      "plane_count": 4,
+      "channels": [
+        {
+          "channel": "R",
+          "description": "Pure Red sensor cell plane",
+          "plane_index": 0
+        },
+        {
+          "channel": "Gr",
+          "description": "Green on Red row sensor cell plane",
+          "plane_index": 1
+        },
+        {
+          "channel": "Gb",
+          "description": "Green on Blue row sensor cell plane",
+          "plane_index": 2
+        },
+        {
+          "channel": "B",
+          "description": "Pure Blue sensor cell plane",
+          "plane_index": 3
+        }
+      ],
+      "stride_geometry": "Individual 64-byte aligned stride per channel (R, Gr, Gb, B)",
+      "compression_restriction": "Compressed pixel surfaces are strictly disallowed for RAW Planar pixel formats (enforced by kernel assertion)"
+    }
+  },
+  "raw_frame_header_metadata_packet": {
+    "structure_name": "sAppleProResRawFrameHeader",
+    "total_size_bytes": 128,
+    "fields": [
+      {
+        "name": "size",
+        "type": "uint32_t",
+        "description": "Total FrameHeader packet byte size"
+      },
+      {
+        "name": "ver",
+        "type": "uint32_t",
+        "description": "ProRes RAW specification version (typically 1 or 2)"
+      },
+      {
+        "name": "id",
+        "type": "uint32_t",
+        "description": "Sequential frame identifier"
+      },
+      {
+        "name": "hsize",
+        "type": "uint32_t",
+        "description": "Coded horizontal active sensor width (8192)"
+      },
+      {
+        "name": "vsize",
+        "type": "uint32_t",
+        "description": "Coded vertical active sensor height (4320)"
+      },
+      {
+        "name": "crop",
+        "type": "uint32_t[4]",
+        "description": "Sensor active crop rectangle [left, top, right, bottom]"
+      },
+      {
+        "name": "cfa",
+        "type": "uint32_t",
+        "description": "Color Filter Array pattern enum (0..3)"
+      },
+      {
+        "name": "svr",
+        "type": "uint32_t",
+        "description": "Sensor vendor revision and generation tag"
+      },
+      {
+        "name": "wbr",
+        "type": "uint32_t",
+        "description": "White balance Red channel analog gain (Q16.16 fixed-point)"
+      },
+      {
+        "name": "wbb",
+        "type": "uint32_t",
+        "description": "White balance Blue channel analog gain (Q16.16 fixed-point)"
+      },
+      {
+        "name": "cm",
+        "type": "uint32_t[9]",
+        "description": "3x3 Color Matrix coefficients converting native sensor primaries to camera RGB"
+      },
+      {
+        "name": "gf",
+        "type": "uint32_t",
+        "description": "Global flags (gain applied, black-level subtracted)"
+      },
+      {
+        "name": "wbcct",
+        "type": "uint32_t",
+        "description": "White balance Correlated Color Temperature in Kelvin (e.g., 5500K)"
+      },
+      {
+        "name": "hme",
+        "type": "uint32_t",
+        "description": "High dynamic range metadata extension enabled"
+      },
+      {
+        "name": "ltf",
+        "type": "uint32_t",
+        "description": "Lookup table flag (linear vs log transfer function)"
+      },
+      {
+        "name": "dss",
+        "type": "uint32_t",
+        "description": "Demosaic suggestion strength parameter for host NLE post-production"
+      },
+      {
+        "name": "lqm",
+        "type": "uint32_t",
+        "description": "Load quantization matrix override enable"
+      },
+      {
+        "name": "tf",
+        "type": "uint32_t[8]",
+        "description": "8-point transfer function piece-wise curve descriptor"
+      },
+      {
+        "name": "QuantizationScaling",
+        "type": "uint32_t",
+        "description": "Global quantization scaling factor"
+      },
+      {
+        "name": "CRC",
+        "type": "uint32_t",
+        "description": "Hardware CRC checksum for header payload integrity"
+      },
+      {
+        "name": "QuantMatrixIndex",
+        "type": "uint32_t",
+        "description": "Selected hardware quantization matrix index"
+      }
+    ]
+  },
+  "raw_hardware_command_descriptor": {
+    "command_names": [
+      "EncodeRaw",
+      "DecodeRaw"
+    ],
+    "parameters": {
+      "fid": {
+        "type": "uint32_t",
+        "description": "Frame identifier"
+      },
+      "SwBR": {
+        "type": "uint32_t",
+        "description": "Software bitstream readback enable"
+      },
+      "2raw": {
+        "type": "uint32_t",
+        "description": "Bayer direct-to-raw hardware path flag"
+      },
+      "Int": {
+        "type": "uint32_t",
+        "description": "Interrupt enable on frame completion"
+      },
+      "dec": {
+        "type": "uint32_t",
+        "description": "0=Encode mode, 1=Decode mode"
+      },
+      "ga": {
+        "type": "uint32_t",
+        "description": "Geometric aberration compensation flag"
+      },
+      "cmpGaEn": {
+        "type": "uint32_t",
+        "description": "Compressed geometric aberration map enable"
+      },
+      "ds": {
+        "type": "uint32_t",
+        "description": "Downsampling mode"
+      },
+      "bd": {
+        "type": "uint32_t",
+        "description": "Bit depth: 14-bit sensor RAW"
+      },
+      "pk": {
+        "type": "uint32_t",
+        "description": "Packed input format (1=Packed MIPI RAW14, 0=Unpacked 16-bit)"
+      },
+      "iv": {
+        "type": "uint32_t",
+        "description": "Interleaved plane configuration"
+      },
+      "cpd": {
+        "type": "uint32_t",
+        "description": "Compressed data flag"
+      },
+      "FO": {
+        "type": "uint32_t",
+        "description": "Frame orientation / rotation metadata"
+      },
+      "Fld": {
+        "type": "uint32_t",
+        "description": "Field / Progressive mode flag (0=Progressive)"
+      }
+    }
+  },
+  "raw_rate_control_and_qp_map": {
+    "rate_control_flags": {
+      "bRAWRateControl": 1,
+      "bHWStatsQPMap": 1,
+      "bSwapBRRaw": 0,
+      "bRAWV2": 1
+    },
+    "rate_distortion_lookup": {
+      "rdk": [
+        "0x04",
+        "0x08",
+        "0x10",
+        "0x20",
+        "0x40",
+        "0x80",
+        "0x100",
+        "0x200"
+      ],
+      "shift": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "MaxSizeRcRow": "0x00020000 (128 KB maximum row budget for 8K lines)"
+    }
+  }
+}

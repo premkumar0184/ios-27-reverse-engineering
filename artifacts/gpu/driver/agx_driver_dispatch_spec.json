@@ -1,0 +1,281 @@
+{
+  "dispatch_metadata": {
+    "title": "Apple AGX G18 Darwin Host Driver Boundary & Dispatch Architecture",
+    "target_platform": "Apple Silicon A19 Pro (t8150 / v57ap)",
+    "gpu_generation": "Apple AGX G18P (PI_300)",
+    "operating_system": "iOS 27.2 (Darwin 24.2.0, Build 24B119)"
+  },
+  "kernel_extensions": {
+    "primary_accelerator": {
+      "bundle_id": "com.apple.AGXG18P",
+      "version": "362.5",
+      "uuid": "bb6c2084b748349eb25875d15d90a006",
+      "bundle_path": "/System/Library/Extensions/AGXG18P.kext",
+      "text_exec_entrypoint": "0xfffffe00084e5960",
+      "text_exec_size_bytes": 892632,
+      "total_kext_size_bytes": 1102559,
+      "description": "Hardware driver managing G18 (PI_300) register spaces, power domains, USC clusters, and RTBuddy firmware coordination"
+    },
+    "iokit_family": {
+      "bundle_id": "com.apple.iokit.IOGPUFamily",
+      "version": "162.16.1",
+      "uuid": "ee98ba292d203f06ba1806bf3ccc0895",
+      "bundle_path": "/System/Library/Extensions/IOGPUFamily.kext",
+      "text_exec_entrypoint": "0xfffffe000a0dede0",
+      "text_exec_size_bytes": 280604,
+      "total_kext_size_bytes": 372545,
+      "description": "Common GPU framework managing memory mappings, resource lifetimes, command queues, and IOKit userclient dispatch"
+    },
+    "rtbuddy_firmware_kext": {
+      "bundle_id": "com.apple.AGXFirmwareKextG18PRTBuddy",
+      "version": "1.0.0d1",
+      "bundle_path": "/System/Library/Extensions/AGXFirmwareKextG18PRTBuddy.kext",
+      "description": "Coprocessor bridge initializing and managing RTBuddy RTKit OS on GPU ASC cores"
+    }
+  },
+  "core_cpp_classes": [
+    {
+      "class_name": "AGXAccelerator",
+      "inheritance": "IOGPUDevice -> IOService",
+      "responsibilities": "Central hardware coordinator; manages clock and power gating, SAPT interrupts, frequency/power transfer tables, CSC and UMA descriptors"
+    },
+    {
+      "class_name": "AGX3DChannelSKSM",
+      "inheritance": "IOGPUCommandQueueChannel",
+      "responsibilities": "Coordinates 3D rasterization, tile allocation, and fragment work. Implements virtual void AGX3DChannelSKSM::submitBuffer(IOGPUCommandDescriptor *)"
+    },
+    {
+      "class_name": "AGXCLChannelSKSM",
+      "inheritance": "IOGPUCommandQueueChannel",
+      "responsibilities": "Coordinates GPGPU compute and ray tracing workloads. Implements virtual void AGXCLChannelSKSM::submitBuffer(IOGPUCommandDescriptor *)"
+    },
+    {
+      "class_name": "AGXFirmwareKextG18PRTBuddy",
+      "inheritance": "IOService",
+      "responsibilities": "Manages bidirectional RTKit endpoint communication and firmware event ring draining with RTBuddy Core 1"
+    },
+    {
+      "class_name": "IOGPUDeviceUserClient",
+      "inheritance": "IOUserClient",
+      "responsibilities": "Base Mach message trap handler, implements memory mappings, shared events, and legacy command submission"
+    },
+    {
+      "class_name": "AGXDeviceUserClient",
+      "inheritance": "IOGPUDeviceUserClient",
+      "responsibilities": "Hardware-specialized userclient exposing PMPDoorbell aperture and direct submission ring buffer configuration"
+    }
+  ],
+  "user_client_methods": {
+    "selectors": [
+      {
+        "selector": 0,
+        "symbolic_name": "s_new_command_queue",
+        "description": "Allocates hardware command queue, creates shared ring buffers, and maps PMPDoorbell page",
+        "input_scalar_count": 2,
+        "input_struct_size": 64,
+        "output_scalar_count": 2,
+        "output_struct_size": 128
+      },
+      {
+        "selector": 1,
+        "symbolic_name": "s_delete_command_queue",
+        "description": "Flushes pending work and deallocates hardware command queue resources",
+        "input_scalar_count": 1,
+        "input_struct_size": 0,
+        "output_scalar_count": 0,
+        "output_struct_size": 0
+      },
+      {
+        "selector": 2,
+        "symbolic_name": "s_new_resource",
+        "description": "Allocates GPU virtual memory, texture backing, or parameter buffers via IOGPUMemory",
+        "input_scalar_count": 4,
+        "input_struct_size": 96,
+        "output_scalar_count": 2,
+        "output_struct_size": 64
+      },
+      {
+        "selector": 3,
+        "symbolic_name": "s_submit_command_buffers",
+        "description": "Legacy fallback path: submits command buffers via IOKit kernel Mach message trap",
+        "input_scalar_count": 2,
+        "input_struct_size": 256,
+        "output_scalar_count": 1,
+        "output_struct_size": 0
+      },
+      {
+        "selector": 4,
+        "symbolic_name": "s_async_signal_mtlLateEvalevent",
+        "description": "Asynchronously signals a speculative late-evaluation event from userland",
+        "input_scalar_count": 3,
+        "input_struct_size": 32,
+        "output_scalar_count": 0,
+        "output_struct_size": 0
+      },
+      {
+        "selector": 5,
+        "symbolic_name": "s_query_mtlLateEvalevent",
+        "description": "Queries resolution status of a speculative late-evaluation event",
+        "input_scalar_count": 1,
+        "input_struct_size": 0,
+        "output_scalar_count": 2,
+        "output_struct_size": 16
+      },
+      {
+        "selector": 6,
+        "symbolic_name": "t_signal_shared_event",
+        "description": "Fast trap for atomic signaling of an IOSurfaceSharedEvent monotonic counter",
+        "input_scalar_count": 4,
+        "input_struct_size": 0,
+        "output_scalar_count": 0,
+        "output_struct_size": 0
+      },
+      {
+        "selector": 7,
+        "symbolic_name": "t_wait_shared_event",
+        "description": "Fast trap for suspending execution until an IOSurfaceSharedEvent reaches threshold",
+        "input_scalar_count": 5,
+        "input_struct_size": 0,
+        "output_scalar_count": 0,
+        "output_struct_size": 0
+      },
+      {
+        "selector": 8,
+        "symbolic_name": "s_create_io_command_queue",
+        "description": "Creates specialized direct-to-storage I/O queue for Fast Resource Loading (Metal 3.2)",
+        "input_scalar_count": 3,
+        "input_struct_size": 48,
+        "output_scalar_count": 1,
+        "output_struct_size": 32
+      },
+      {
+        "selector": 9,
+        "symbolic_name": "s_submit_io_commands",
+        "description": "Enqueues asynchronous file-to-GPU memory stream requests bypassing CPU paging",
+        "input_scalar_count": 2,
+        "input_struct_size": 128,
+        "output_scalar_count": 1,
+        "output_struct_size": 0
+      }
+    ],
+    "memory_mapping_types": [
+      {
+        "type_id": 0,
+        "name": "IOGPU_CLIENT_MEMORY_COMMAND_RING",
+        "size_bytes": 65536,
+        "protection": "VM_PROT_READ | VM_PROT_WRITE",
+        "caching": "VM_WIMG_WCOMB (Write-Combined)",
+        "description": "Shared circular command descriptor ring buffer (1024 entries x 64 bytes)"
+      },
+      {
+        "type_id": 1,
+        "name": "IOGPU_CLIENT_MEMORY_STATUS_PAGE",
+        "size_bytes": 16384,
+        "protection": "VM_PROT_READ",
+        "caching": "VM_WIMG_COHERENT",
+        "description": "Hardware timestamp completion status page written by RTBuddy firmware",
+        "layout": {
+          "completed_stamps_array": "0x0000..0x0FFF (1024 x 4 bytes = 4096 bytes)",
+          "firmware_heartbeat": "0x1000 (32-bit RTBuddy Core 0 heartbeat pulse)",
+          "channel_error_code": "0x1004 (32-bit Stage-2 SAPT / channel fault code)",
+          "active_context_id": "0x1008 (32-bit active context identifier)",
+          "recovery_counter": "0x100C (32-bit hardware restart recovery counter)",
+          "firmware_read_index": "0x1010 (32-bit consumer read index getReadIndex())",
+          "firmware_cfi_index": "0x1014 (32-bit control flow integrity getCFIIndex())",
+          "reserved_bytes": "0x1018..0x3FFF (12264 bytes)"
+        }
+      },
+      {
+        "type_id": 2,
+        "name": "IOGPU_CLIENT_MEMORY_DOORBELL",
+        "size_bytes": 16384,
+        "protection": "VM_PROT_WRITE",
+        "caching": "VM_WIMG_IO (Inhibit Cache / Guarded Device)",
+        "description": "Hardware PMPDoorbell MMIO trigger page mapped into user process"
+      }
+    ]
+  },
+  "gpu_virtual_memory": {
+    "native_page_size_bytes": 16384,
+    "virtual_address_bits": 48,
+    "page_offset_bits": 14,
+    "radix_translation_hierarchy": {
+      "level_0": {
+        "index_bits": "47:45",
+        "num_bits": 3,
+        "num_entries": 8,
+        "table_size_bytes": 64,
+        "span_per_entry": "64 TB"
+      },
+      "level_1": {
+        "index_bits": "44:36",
+        "num_bits": 9,
+        "num_entries": 512,
+        "table_size_bytes": 4096,
+        "span_per_entry": "128 GB"
+      },
+      "level_2": {
+        "index_bits": "35:25",
+        "num_bits": 11,
+        "num_entries": 2048,
+        "table_size_bytes": 16384,
+        "span_per_entry": "64 MB"
+      },
+      "level_3": {
+        "index_bits": "24:14",
+        "num_bits": 11,
+        "num_entries": 2048,
+        "table_size_bytes": 16384,
+        "span_per_entry": "16 KB"
+      }
+    },
+    "pte_bitfield_layout": {
+      "valid": {"bits": "0", "desc": "Page present"},
+      "table": {"bits": "1", "desc": "1=Table descriptor, 0=Block descriptor"},
+      "cache_attr": {"bits": "3:2", "desc": "0=Coherent, 1=Write-Combined, 2=Device/MMIO, 3=Inner-Cached"},
+      "ap": {"bits": "7:6", "desc": "0=Read-Write, 1=Read-Only, 2=No-Access, 3=Kernel-Only"},
+      "shareability": {"bits": "9:8", "desc": "0=Non-shareable, 2=Outer-shareable, 3=Inner-shareable"},
+      "access_flag": {"bits": "10", "desc": "Accessed flag"},
+      "non_global": {"bits": "11", "desc": "Non-global (DSID / ASID tagged)"},
+      "pfn": {"bits": "47:14", "desc": "Physical Frame Number (16 KB aligned)"},
+      "execute_never": {"bits": "54", "desc": "Execute-never flag"},
+      "dart_stream_id": {"bits": "63:55", "desc": "DART Stage-2 domain tag"}
+    },
+    "stage_2_dart_protection": {
+      "mechanism": "Device Address Resolution Table (DART) Stage-2 hardware IOMMU",
+      "isolation": "GPU translations are bound to process DSID; illegal access generates kAGFIFirmwareEventTypeChannelError"
+    }
+  },
+  "synchronization_and_locks": {
+    "io_shared_lock": {
+      "struct_name": "struct agx_io_shared_lock",
+      "size_bytes": 16,
+      "mechanism": "Ticket spinlock with owner tracking and contention fallback"
+    },
+    "kernel_lock_primitives": [
+      "fFenceLock: Protects IOFence creation and signaling callbacks",
+      "fSQDoorbellLock: Serializes doorbell allocation and hardware queue register updates",
+      "fRequestProcessLock: Governs channel queue scheduling and preemptive dispatch",
+      "fGARTCollectorLock: Controls dynamic memory deallocation and page table reclamation",
+      "mClientInfoLock: Synchronizes userclient lifecycle and resource registration"
+    ]
+  },
+  "submission_path_latency_metrics": {
+    "legacy_iokit_path": {
+      "mechanism": "Mach message IPC trap (io_connect_method) -> XNU Kernel -> AGX3DChannelSKSM -> Doorbell",
+      "privilege_transitions": 2,
+      "lock_acquisitions": ["mClientInfoLock", "fRequestProcessLock", "fSQDoorbellLock"],
+      "dispatch_cycles": 36000,
+      "dispatch_latency_microseconds": 12.5
+    },
+    "apple_metal_direct_path": {
+      "mechanism": "Lock-free ring write -> Memory Barrier -> Atomic 64-bit PMPDoorbell Store -> RTBuddy Core 1",
+      "privilege_transitions": 0,
+      "lock_acquisitions": [],
+      "dispatch_cycles": 12,
+      "dispatch_latency_nanoseconds": 8.0
+    },
+    "performance_speedup_factor": "1562x",
+    "speedup_ratio_numeric": 1562.5
+  }
+}

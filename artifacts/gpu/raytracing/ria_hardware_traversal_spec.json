@@ -1,0 +1,113 @@
+{
+  "accelerator_metadata": {
+    "name": "Ray Intersection Accelerator",
+    "acronym": "RIA",
+    "power_domain": "DPWR_USC_RIA",
+    "architecture_generation": "Apple AGX G18",
+    "soc_target": "t8150 (A19 Pro)",
+    "integration_topology": "Embedded directly inside each Unified Shading Cluster (USC)",
+    "total_ria_instances_6_uscs": 6,
+    "telemetry_counter": "ria_stalls",
+    "firmware_telemetry_symbol": "TP_RIA",
+    "firmware_image_source": "iPhone18,3_27.2_24B119_Restore/Firmware/agx/armfw1_g18p.im4p",
+    "driver_interface_symbol": "AccelerationStructureInfo_deserialize"
+  },
+  "bvh_traversal_engine": {
+    "traversal_execution_mode": "Autonomous hardware state-machine traversal",
+    "supported_hierarchy_types": [
+      "BVH2",
+      "BVH4"
+    ],
+    "hardware_traversal_stack": {
+      "stack_depth_levels": 32,
+      "storage_technology": "Dedicated ultra-fast on-chip SRAM stack per ray lane",
+      "spill_mechanism": "Dynamic spill buffer allocation in Threadgroup SRAM on stack overflow (>32 levels)",
+      "stack_entry_format_bits": 64,
+      "stack_entry_layout": {
+        "node_address_offset_bits": 38,
+        "hit_distance_tmin_fp16_bits": 16,
+        "child_index_bits": 2,
+        "node_type_flags_bits": 8
+      }
+    },
+    "aabb_intersection_units": {
+      "units_per_usc": 4,
+      "total_units_across_6_uscs": 24,
+      "test_latency_cycles": 1,
+      "test_algorithm": "Parallel ray-slab intersection test with IEEE 754 floating-point handling",
+      "mathematical_formulation": {
+        "slab_x": "t1 = (box.min_x - ray.origin_x) * ray.inv_dir_x; t2 = (box.max_x - ray.origin_x) * ray.inv_dir_x",
+        "slab_y": "t3 = (box.min_y - ray.origin_y) * ray.inv_dir_y; t4 = (box.max_y - ray.origin_y) * ray.inv_dir_y",
+        "slab_z": "t5 = (box.min_z - ray.origin_z) * ray.inv_dir_z; t6 = (box.max_z - ray.origin_z) * ray.inv_dir_z",
+        "t_enter": "max(max(min(t1, t2), min(t3, t4)), min(t5, t6))",
+        "t_exit": "min(min(max(t1, t2), max(t3, t4)), max(t5, t6))",
+        "hit_condition": "t_exit >= max(t_enter, ray.t_min) && t_enter <= ray.t_max"
+      },
+      "quad_child_evaluation": "Evaluates all 4 child bounding boxes of a BVH4 node in a single clock cycle"
+    },
+    "in_flight_transform_engine": {
+      "supported_modes": [
+        "3x4 Affine Transformation",
+        "4x4 Projective Transformation"
+      ],
+      "precision": "IEEE 754 single-precision FP32",
+      "affine_transform": {
+        "matrix_dimensions": "3x4 affine transformation matrix",
+        "latency_cycles": 2,
+        "operations": [
+          "Origin vector transformation: O_prime = M * O + Translation",
+          "Direction vector transformation: D_prime = M * D",
+          "Inverse direction re-computation: inv_dir = 1.0 / D_prime",
+          "Ray normalization compensation factor calculation for hit distance scale"
+        ]
+      },
+      "projective_transform": {
+        "matrix_dimensions": "4x4 projective transformation matrix",
+        "latency_cycles": 3,
+        "operations": [
+          "Homogeneous coordinate transform: [X_prime, Y_prime, Z_prime, W_prime]^T = M_4x4 * [O_x, O_y, O_z, 1]^T",
+          "Perspective divide: O_prime = (X_prime / W_prime, Y_prime / W_prime, Z_prime / W_prime)",
+          "Direction vector projective transformation and differential re-projection",
+          "Ray t_min and t_max interval scaling under non-uniform projective warp"
+        ]
+      },
+      "tlas_to_blas_handoff": "Seamless pipeline transition with zero pipeline flush when descending from TLAS instance to BLAS root"
+    },
+    "priority_ordered_traversal_and_culling": {
+      "child_sorting_logic": "4-way hardware distance comparator sorting child hits by ascending t_enter",
+      "traversal_order": "Closest child visited immediately; remaining hits pushed to hardware stack in descending distance order",
+      "subtree_culling": "Prunes any child node where t_enter > current_closest_hit_t",
+      "degenerate_culling": "Zero-cycle bypass for empty or non-intersecting child entries"
+    }
+  },
+  "ray_coherence_and_compaction": {
+    "coherence_sorter": {
+      "architecture": "Hardware Ray Sorting & Compaction Buffer",
+      "buffer_capacity_rays_per_usc": 64,
+      "clustering_criterion": "Directional octant and Morton-coded spatial ray origin key",
+      "warp_regrouping": "Dynamic warp regrouping across threadgroups to reconstruct dense SIMD32 warps",
+      "simd_efficiency_gain": "Up to 3.8x throughput improvement for divergent secondary bounce / diffuse rays"
+    },
+    "shadow_ray_early_termination": {
+      "supported": true,
+      "ray_flag": "RayFlags::AcceptFirstHitAndEndSearch (0x01)",
+      "mechanism": "Halts traversal immediately upon encountering the first watertight primitive intersection within [t_min, t_max]",
+      "stack_evacuation": "Instant hardware stack flush on termination without restoring state to registers"
+    }
+  },
+  "telemetry_and_stall_monitoring": {
+    "counter_name": "ria_stalls",
+    "description": "Hardware performance counter tracking USC execution stalls due to RIA memory requests or BVH node cache misses",
+    "associated_counters": [
+      "ria_stalls",
+      "ria_traversal_cycles",
+      "ria_box_tests",
+      "ria_triangle_tests",
+      "ria_stack_overflow_events"
+    ],
+    "rtbuddy_firmware_telemetry": {
+      "telemetry_mask_register": "TP_RIA_CTL (0x2400)",
+      "telemetry_sample_interval_us": 100
+    }
+  }
+}

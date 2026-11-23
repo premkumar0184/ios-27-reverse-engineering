@@ -1,0 +1,335 @@
+{
+  "firmware_metadata": {
+    "target_platform": "Apple A19 Pro (t8150 / v57ap)",
+    "ios_version": "iOS 27.2 (Build 24B119)",
+    "subsystem": "Memory Subsystem Resource Firmware (MSRF / MSR25)",
+    "driver_framework": "IOSurfaceAccelerator_Firmware",
+    "source_provenance": {
+      "device_tree_path": "/Sources/IOSurfaceAccelerator_Firmware/Firmware/RTK/src/device/msr23/",
+      "pipeline_lib_path": "/Sources/IOSurfaceAccelerator_Firmware/Firmware/RTK/src/external/v1/td-gen-lib/",
+      "platform_path": "/Sources/IOSurfaceAccelerator_Firmware/Firmware/RTK/src/platform/baremetal_m3/"
+    },
+    "containers": [
+      {
+        "filename": "t8150.msrf.im4p",
+        "fourcc": "msrf",
+        "description": "Primary Memory Subsystem Resource Firmware",
+        "file_size_bytes": 161917,
+        "macho_offset": 25,
+        "macho_size_bytes": 161892
+      },
+      {
+        "filename": "t8150.rmsr.im4p",
+        "fourcc": "rmsr",
+        "description": "Redundant / Recovery Memory Subsystem Resource Firmware",
+        "file_size_bytes": 161917,
+        "macho_offset": 25,
+        "macho_size_bytes": 161892
+      }
+    ],
+    "microcontroller": {
+      "architecture": "ARMv7-M (Cortex-M3 / baremetal_m3)",
+      "macho_magic": "0xfeedface",
+      "cpu_type": 12,
+      "cpu_subtype": 15,
+      "file_type": 5,
+      "file_type_name": "MH_PRELOAD",
+      "flags": "0x00000001 (MH_NOUNDEFS)",
+      "initial_sp": "0x1000fffc",
+      "entry_point": "0x0010ff71 (_reset_isr)",
+      "sram_capacity_bytes": 65536
+    }
+  },
+  "memory_layout": {
+    "segments": [
+      {
+        "name": "__TEXT",
+        "vmaddr": "0x00100000",
+        "vmsize": "0x000117c8",
+        "fileoff": "0x00000324",
+        "filesize": "0x000117c8",
+        "protection": "r-x",
+        "sections": [
+          {
+            "name": "__text",
+            "addr": "0x00100000",
+            "size": "0x00010ed0",
+            "offset": "0x00000324",
+            "description": "ARM Thumb-2 execution code"
+          },
+          {
+            "name": "__const",
+            "addr": "0x00110ed0",
+            "size": "0x000008f8",
+            "offset": "0x000111f4",
+            "description": "Read-only tables, cache mappings, block enable lists, control constants"
+          },
+          {
+            "name": "__constructor",
+            "addr": "0x001117c8",
+            "size": "0x00000000",
+            "offset": "0x00011aec",
+            "description": "Static C++ constructor pointers"
+          }
+        ]
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0x10000200",
+        "vmsize": "0x0000ccf0",
+        "fileoff": "0x00011aec",
+        "filesize": "0x0000cca8",
+        "protection": "rw-",
+        "sections": [
+          {
+            "name": "_noinit",
+            "addr": "0x10000200",
+            "size": "0x0000cca8",
+            "offset": "0x00011aec",
+            "description": "BSS / scratch buffers: LOG_MAIN_BUF, LOG_PROF_BUF, TDR_BUF, SDR_BUF, DRAM_INSTANCE"
+          },
+          {
+            "name": "__mod_init_func",
+            "addr": "0x1000cea8",
+            "size": "0x00000000",
+            "offset": "0x0001e794",
+            "description": "Module initialization functions"
+          },
+          {
+            "name": "__zerofill",
+            "addr": "0x1000cea8",
+            "size": "0x00000048",
+            "offset": "0x00000000",
+            "description": "Zero-initialized runtime variables and thread state"
+          }
+        ]
+      },
+      {
+        "name": "__DMEM",
+        "vmaddr": "0x10000000",
+        "vmsize": "0x00000108",
+        "fileoff": "0x0001e794",
+        "filesize": "0x00000108",
+        "protection": "rw-",
+        "sections": [
+          {
+            "name": "_dmem_image",
+            "addr": "0x10000000",
+            "size": "0x00000108",
+            "offset": "0x0001e794",
+            "description": "Firmware control block image mapped at base of SRAM"
+          }
+        ]
+      }
+    ]
+  },
+  "pixel_accelerator_pipeline": {
+    "modules": [
+      {
+        "source_file": "pa_pipeline.c",
+        "description": "Main Pixel Accelerator pipeline driver and streaming control",
+        "symbols": [
+          { "name": "_pa_configure_pipeline", "address": "0x00106618", "desc": "Configures compressor format, tile stride, and DRAM destination" },
+          { "name": "_pa_get_tile_size", "address": "0x00106504", "desc": "Retrieves active micro-tile and macro-tile dimensions" },
+          { "name": "_pa_get_bayer_quadra_mode", "address": "0x0010967c", "desc": "Handles quadra Bayer sensor data packing" },
+          { "name": "_pa_get_rdcache_hint_workaround", "address": "0x0010968c", "desc": "Applies read cache hint workarounds for Fender fabric" },
+          { "name": "_pa_set_runtime_config", "address": "0x0010969c", "desc": "Updates compression thresholds and bypass flags" },
+          { "name": "_pa_segment_tiles_no_reference", "address": "0x001096a8", "desc": "Segments independent intra-frame tiles" },
+          { "name": "_pa_segment_tiles_with_reference", "address": "0x00109f3c", "desc": "Segments differential inter-frame predicted tiles" }
+        ]
+      },
+      {
+        "source_file": "pa_fmt_decoder.c",
+        "description": "Hardware pixel format decoder and bit-depth unwrapper",
+        "symbols": [
+          { "name": "_pa_dma_decoder_init", "address": "0x0010a6d4", "desc": "Initializes format decoding tables for ASTC, AFBC, and raw pixel layouts" }
+        ],
+        "supported_formats": [
+          { "format": "ASTC LDR / HDR", "block_footprints": ["4x4", "5x5", "6x6", "8x8"], "compression_ratio": "3.5:1", "hardware_fmt_id": "Dynamic / Payload" },
+          { "format": "Apple Lossless Compression (ALC / AFBC)", "tile_footprint": "16x16", "compression_ratio": "2.8:1", "hardware_fmt_id": 30 },
+          { "format": "Lossless Depth/Stencil Packets (Z32F / S8)", "tile_footprint": "16x16", "compression_ratio": "3.2:1", "hardware_fmt_id": 17 },
+          { "format": "YUV420 10-bit P010 Tile Compression", "tile_footprint": "16x16", "compression_ratio": "2.4:1", "hardware_fmt_id": 2 },
+          { "format": "RGBA8Unorm / BGRA8Unorm", "tile_footprint": "16x16", "compression_ratio": "2.2:1", "hardware_fmt_id": 30 },
+          { "format": "RGBA16Float", "tile_footprint": "16x16", "compression_ratio": "2.9:1", "hardware_fmt_id": 36 },
+          { "format": "RG11B10Float", "tile_footprint": "16x16", "compression_ratio": "2.6:1", "hardware_fmt_id": 23 },
+          { "format": "RGB10A2Unorm", "tile_footprint": "16x16", "compression_ratio": "2.5:1", "hardware_fmt_id": 25 },
+          { "format": "RG16Float", "tile_footprint": "16x16", "compression_ratio": "2.7:1", "hardware_fmt_id": 21 },
+          { "format": "RGB565", "tile_footprint": "16x16", "compression_ratio": "2.1:1", "hardware_fmt_id": 8 },
+          { "format": "RGBA4444 / RGB5A1", "tile_footprint": "16x16", "compression_ratio": "2.2:1", "hardware_fmt_id": 10 }
+        ]
+      },
+      {
+        "source_file": "pa_scaler_cfg.c",
+        "description": "Coordinate translation and downscaling/upscaling geometry manager",
+        "symbols": [
+          { "name": "_msr_scl_init", "address": "0x0010b73c", "desc": "Initializes hardware scaler parameters" },
+          { "name": "_msr_scl_out2in_coord", "address": "0x0010b768", "desc": "Maps output tile coordinates back to input source coordinates" },
+          { "name": "_msr_scl_in2out_coord", "address": "0x0010b7a8", "desc": "Maps input coordinates to output tile bounds" },
+          { "name": "_msr_scl_extra_pixel", "address": "0x0010b8ac", "desc": "Calculates filter edge extension pixels" },
+          { "name": "_msr_cus_init", "address": "0x0010b95c", "desc": "Initializes chroma upsampling filter" },
+          { "name": "_msr_cds_init", "address": "0x0010b9b8", "desc": "Initializes chroma downsampling filter" }
+        ]
+      },
+      {
+        "source_file": "pa_block_attr.c",
+        "description": "Block entropy estimation, component packing, and compression bypass decisions",
+        "symbols": [
+          { "name": "_msr_block_attributes", "address": "0x00111444", "desc": "15-entry table defining block channel masks and entropy criteria" },
+          { "name": "_msr_comp_attributes", "address": "0x00111480", "desc": "480-byte matrix detailing component alignment and stride constraints" }
+        ]
+      },
+      {
+        "source_file": "pa_common.c",
+        "description": "Coordinate alignment, boundary clamping, and packing algorithms",
+        "symbols": [
+          { "name": "_align_comps_signed_incoord", "address": "0x0010ba08", "desc": "Aligns signed input coordinates to block boundaries" },
+          { "name": "_pa_align_comps_maximal", "address": "0x0010c230", "desc": "Maximal component alignment computation" },
+          { "name": "_align_comps", "address": "0x0010c250", "desc": "Basic component alignment routine" },
+          { "name": "_pa_align_comps_maximal_new", "address": "0x0010ca94", "desc": "Optimized G18 maximal alignment algorithm" }
+        ]
+      },
+      {
+        "source_file": "pa_parse.c",
+        "description": "Frame descriptor and tile descriptor serialization",
+        "symbols": [
+          { "name": "_pa_read_frame_desc_from_buffer", "address": "0x0010d074", "desc": "Parses frame descriptor from host memory ring buffer" },
+          { "name": "_pa_write_tile_desc_to_buffer", "address": "0x0010d138", "desc": "Writes compressed tile descriptor packet into TDR_BUF" }
+        ]
+      },
+      {
+        "source_file": "pa_create_tile.c",
+        "description": "Compressed tile creation and geometric projection",
+        "symbols": [
+          { "name": "_pa_create_next_tile", "address": "0x0010d530", "desc": "Encodes next 16x16 compressed tile payload" },
+          { "name": "_pa_backward_pass_special_geomery", "address": "0x0010e8ec", "desc": "Handles backward-pass geometry and edge padding" },
+          { "name": "_pa_get_input_coord", "address": "0x0010f5ec", "desc": "Derives physical DRAM address from tile coordinate" }
+        ]
+      },
+      {
+        "source_file": "pa_ncbuffer.c",
+        "description": "Non-Coherent Buffer manager for direct uncached DMA transfers",
+        "symbols": [
+          { "name": "_pa_calculate_col_nc", "address": "0x0010fb3c", "desc": "Calculates non-coherent column stride" },
+          { "name": "_pa_calculate_row_nc", "address": "0x0010fcf0", "desc": "Calculates non-coherent row stride and cache line flushes" }
+        ]
+      }
+    ]
+  },
+  "lossless_compression_tables": {
+    "td_cache_mapping": {
+      "symbol": "_TD_CACHE_MAPPING",
+      "address": "0x00111704",
+      "size_bytes": 16,
+      "table": [-1, -1, 0, 1, 2, -1, -1, 3, 3, 3, 4, -1, 5, -1, -1, -1],
+      "semantics": "Maps 16-state tile complexity index to 6 physical hardware cache line buckets (0..5), with -1 denoting uncached bypass or clear token",
+      "call_site_mapping": [
+        { "call_site_va": "0x0010e320", "source_file": "pa_create_tile.c", "function": "_pa_create_next_tile", "index_passed": 2, "cache_bucket": 0, "compression_ratio": "4.0:1 (64 bytes/tile)" },
+        { "call_site_va": "0x0010e2b8", "source_file": "pa_create_tile.c", "function": "_pa_create_next_tile", "index_passed": 3, "cache_bucket": 1, "compression_ratio": "2.0:1 (128 bytes/tile)" },
+        { "call_site_va": "0x0010e220", "source_file": "pa_create_tile.c", "function": "_pa_create_next_tile", "index_passed": 4, "cache_bucket": 2, "compression_ratio": "1.33:1 (192 bytes/tile)" },
+        { "call_site_va": "0x0010dc3a", "source_file": "pa_create_tile.c", "function": "_pa_create_next_tile", "index_passed": 7, "cache_bucket": 3, "compression_ratio": "1.0:1 (256 bytes/tile)" },
+        { "call_site_va": "0x0010db78", "source_file": "pa_create_tile.c", "function": "_pa_create_next_tile", "index_passed": 10, "cache_bucket": 4, "compression_ratio": "0.8:1 (320 bytes/tile)" },
+        { "call_site_va": "0x0010dc00", "source_file": "pa_create_tile.c", "function": "_pa_create_next_tile", "index_passed": 12, "cache_bucket": 5, "compression_ratio": "0.67:1 (384 bytes/tile)" }
+      ],
+      "bypass_indices": [0, 1, 5, 6, 11, 13, 14, 15]
+    },
+    "default_block_en_list": {
+      "symbol": "_DEFAULT_BLOCK_EN_LIST",
+      "address": "0x00111092",
+      "size_bytes": 48,
+      "num_entries": 6,
+      "entries": [
+        { "entry": 0, "masks": ["0x6003", "0x6003", "0x6003", "0x0000"], "desc": "Base 16x16 micro-tile format enable" },
+        { "entry": 1, "masks": ["0x702b", "0x702b", "0x7023", "0x0000"], "desc": "Extended color target enable (RGBA16Float)" },
+        { "entry": 2, "masks": ["0x79ab", "0x79ab", "0x71a3", "0x0000"], "desc": "HDR / Wide Gamut (P3) enable" },
+        { "entry": 3, "masks": ["0x79bf", "0x79bf", "0x71a3", "0x0000"], "desc": "Multisampled tile enable (2x MSAA)" },
+        { "entry": 4, "masks": ["0x7eff", "0x7eff", "0x71a3", "0x0403"], "desc": "High-density multisampled tile enable (4x MSAA)" },
+        { "entry": 5, "masks": ["0x783f", "0x783f", "0x7023", "0x0000"], "desc": "Compressed Depth/Stencil (Z32F_S8) enable" }
+      ]
+    },
+    "fmt_info": {
+      "symbol": "_fmt_info",
+      "address": "0x001110c2",
+      "size_bytes": 898,
+      "total_formats": 64,
+      "entry_size_bytes": 14,
+      "key_formats": [
+        { "format_id": 1, "name": "R8Unorm", "components": 1, "bit_depths": [8, 0, 0, 0], "bpp": 1 },
+        { "format_id": 6, "name": "RG8Unorm", "components": 2, "bit_depths": [8, 8, 0, 0], "bpp": 2 },
+        { "format_id": 8, "name": "RGB565", "components": 3, "bit_depths": [5, 6, 5, 0], "bpp": 2 },
+        { "format_id": 10, "name": "RGBA4444", "components": 4, "bit_depths": [4, 4, 4, 4], "bpp": 2 },
+        { "format_id": 11, "name": "RGB5A1", "components": 4, "bit_depths": [5, 5, 5, 1], "bpp": 2 },
+        { "format_id": 17, "name": "Depth32Float", "components": 1, "bit_depths": [32, 0, 0, 0], "bpp": 4 },
+        { "format_id": 21, "name": "RG16Float", "components": 2, "bit_depths": [16, 16, 0, 0], "bpp": 4 },
+        { "format_id": 23, "name": "RG11B10Float", "components": 3, "bit_depths": [11, 11, 10, 0], "bpp": 4 },
+        { "format_id": 25, "name": "RGB10A2Unorm", "components": 4, "bit_depths": [10, 10, 10, 2], "bpp": 4 },
+        { "format_id": 30, "name": "RGBA8Unorm_BGRA8Unorm", "components": 4, "bit_depths": [8, 8, 8, 8], "bpp": 4 },
+        { "format_id": 36, "name": "RGBA16Float", "components": 4, "bit_depths": [16, 16, 16, 16], "bpp": 8 }
+      ]
+    },
+    "msr_comp_attributes": {
+      "symbol": "_msr_comp_attributes",
+      "address": "0x00111480",
+      "size_bytes": 480,
+      "num_blocks": 15,
+      "block_size_bytes": 32,
+      "semantics": "15-block alignment and constraint matrix evaluated per macro-tile component"
+    },
+    "iteration_order_tables": {
+      "default_iteration_order": {
+        "symbol": "_DEFAULT_ITERATION_ORDER",
+        "address": "0x00111083",
+        "size_bytes": 15,
+        "order": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+      },
+      "scl_mode_iteration_order": {
+        "symbol": "_SCL_MODE_ITERATION_ORDER",
+        "address": "0x00111074",
+        "size_bytes": 15,
+        "order": [0, 1, 2, 3, 4, 6, 7, 5, 8, 9, 10, 11, 12, 13, 14]
+      }
+    },
+    "nc_attr_all": {
+      "symbol": "_nc_attr_all",
+      "address": "0x00111714",
+      "size_bytes": 32,
+      "semantics": "Non-coherent buffer burst descriptors for uncached DRAM streaming"
+    },
+    "msr_max_tile_size": {
+      "symbol": "_MSR_MAX_TILE_SIZE",
+      "address": "0x001116f0",
+      "raw_hex": "00010002",
+      "max_width_pixels": 256,
+      "max_height_pixels": 512,
+      "dimensions": "256x512"
+    },
+    "bitmap_to_cnt": {
+      "symbol": "_BITMAP_TO_CNT",
+      "address": "0x001116f4",
+      "size_bytes": 16,
+      "lookup_table": [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4],
+      "semantics": "Nibble population count lookup table used for fast active-block calculation"
+    },
+    "control_block_const": {
+      "symbol": "_CONTROL_BLOCK_CONST",
+      "address": "0x00110ed0",
+      "size_bytes": 264,
+      "uuid": "e4eeefa1809b3e4798ed844dc4fc08f3",
+      "buffer_offsets": {
+        "log_main_buf": "0x00000200",
+        "log_prof_buf": "0x00002200",
+        "tdr_buf": "0x00002a00",
+        "sdr_buf": "0x00003a00"
+      },
+      "magic_dead_token": "0x44414544 ('DEAD')"
+    }
+  },
+  "dram_interface": {
+    "engine_class": "VmComponents4Dram",
+    "request_handler": "dram_requests",
+    "command_submit": "submit_commands",
+    "flush_polling": "supervisor_poll_flush",
+    "fabric_interconnect": "AGXArmFenderChinook via GM GIFAF interconnect",
+    "typical_compression_ratio": "2.2:1 to 3.8:1 on complex color/depth buffers",
+    "dram_bandwidth_savings_pct": "54% to 74% reduction in external memory traffic"
+  }
+}

@@ -1,0 +1,239 @@
+{
+  "primitive_intersection_engine": {
+    "units_per_usc": 2,
+    "total_units_across_6_uscs": 12,
+    "pipeline_latency_cycles": 4,
+    "algorithm": "Watertight Möller-Trumbore / Plücker Barycentric Intersection",
+    "barycentric_output_precision": "FP32",
+    "supported_primitives": [
+      "Triangles",
+      "Procedural AABBs",
+      "Curve Primitives"
+    ],
+    "mathematical_algorithm": {
+      "name": "Watertight Möller-Trumbore Formulation",
+      "steps": [
+        "Canonical vertex sorting: Permutes v0, v1, v2 by pointer/index order to enforce edge commutativity",
+        "Edge vectors: edge1 = v1 - v0, edge2 = v2 - v0",
+        "Cross product: pvec = cross(ray.dir, edge2)",
+        "Determinant: det = dot(edge1, pvec)",
+        "Culling test: if (det > -EPSILON && det < EPSILON) return miss (parallel ray)",
+        "Inverse determinant: inv_det = 1.0 / det",
+        "Origin displacement: tvec = ray.origin - v0",
+        "U coordinate: u = dot(tvec, pvec) * inv_det",
+        "U bounds check: if (u < 0.0 || u > 1.0) return miss",
+        "Q vector: qvec = cross(tvec, edge1)",
+        "V coordinate: v = dot(ray.dir, qvec) * inv_det",
+        "V bounds check: if (v < 0.0 || u + v > 1.0) return miss",
+        "Intersection distance: t = dot(edge2, qvec) * inv_det",
+        "T bounds check: if (t < ray.t_min || t > ray.t_max) return miss"
+      ],
+      "watertight_guarantees": "Exact bit-level floating point commutativity on edge equations prevents crack leaks on shared vertex edges"
+    }
+  },
+  "primitive_types_specification": {
+    "triangles": {
+      "format": "Indexed or Non-Indexed 3-Vertex Primitive",
+      "vertex_precision": "IEEE 754 FP32 (float3)",
+      "attributes": [
+        "Position (v0, v1, v2)",
+        "Geometry Flags (Opaque, Non-Opaque, Front-Facing, Back-Facing)",
+        "Primitive Index (32-bit)"
+      ],
+      "culling_modes": [
+        "None",
+        "Front-Face Culling",
+        "Back-Face Culling"
+      ]
+    },
+    "procedural_aabbs": {
+      "format": "Axis-Aligned Bounding Box with USC Callback",
+      "descriptor_size_bytes": 32,
+      "bounding_box_representation": {
+        "min_point": "float3(min_x, min_y, min_z)",
+        "max_point": "float3(max_x, max_y, max_z)"
+      },
+      "intersection_handling": "RIA detects AABB hit and invokes USC Intersection Function via shader pipeline dispatch",
+      "custom_payload_support": true
+    },
+    "curve_primitives": {
+      "supported_subtypes": [
+        "Linear Ribbon Curves",
+        "Quadratic Bézier Ribbons",
+        "Cubic Bézier Swept Cylinders",
+        "Catmull-Rom Spline Tubes"
+      ],
+      "descriptor_size_bytes": 64,
+      "evaluation_method": "Hardware cylindrical distance test and ribbon normal projection",
+      "end_caps": [
+        "None",
+        "Flat Disk",
+        "Hemispherical Cap"
+      ],
+      "use_cases": [
+        "Photorealistic Hair Rendering",
+        "Fur and Carpet Strands",
+        "Foliage Stems and Vines"
+      ]
+    }
+  },
+  "memory_layout_and_descriptors": {
+    "bvh4_internal_node_descriptor": {
+      "total_size_bytes": 128,
+      "alignment_bytes": 64,
+      "fields": [
+        {
+          "name": "child_bounds_min_x",
+          "offset_bytes": 0,
+          "size_bytes": 16,
+          "type": "float4 (4 child min_x values)"
+        },
+        {
+          "name": "child_bounds_min_y",
+          "offset_bytes": 16,
+          "size_bytes": 16,
+          "type": "float4 (4 child min_y values)"
+        },
+        {
+          "name": "child_bounds_min_z",
+          "offset_bytes": 32,
+          "size_bytes": 16,
+          "type": "float4 (4 child min_z values)"
+        },
+        {
+          "name": "child_bounds_max_x",
+          "offset_bytes": 48,
+          "size_bytes": 16,
+          "type": "float4 (4 child max_x values)"
+        },
+        {
+          "name": "child_bounds_max_y",
+          "offset_bytes": 64,
+          "size_bytes": 16,
+          "type": "float4 (4 child max_y values)"
+        },
+        {
+          "name": "child_bounds_max_z",
+          "offset_bytes": 80,
+          "size_bytes": 16,
+          "type": "float4 (4 child max_z values)"
+        },
+        {
+          "name": "child_node_offsets",
+          "offset_bytes": 96,
+          "size_bytes": 16,
+          "type": "uint32x4 (relative byte offsets to children)"
+        },
+        {
+          "name": "child_metadata_and_flags",
+          "offset_bytes": 112,
+          "size_bytes": 16,
+          "type": "uint32x4 (leaf flags, child count, primitive type)"
+        }
+      ],
+      "packed_bvh4_node_bytes": 128
+    },
+    "tlas_instance_descriptor": {
+      "total_size_bytes": 64,
+      "alignment_bytes": 64,
+      "fields": [
+        {
+          "name": "transform_matrix_3x4",
+          "offset_bytes": 0,
+          "size_bytes": 48,
+          "type": "float[12] (Row-major 3x4 affine transform or projective payload)"
+        },
+        {
+          "name": "blas_base_virtual_address",
+          "offset_bytes": 48,
+          "size_bytes": 8,
+          "type": "uint64_t (64-bit GPU virtual address of BLAS root)"
+        },
+        {
+          "name": "instance_id",
+          "offset_bytes": 56,
+          "size_bytes": 3,
+          "type": "uint24_t (User-defined instance identifier)"
+        },
+        {
+          "name": "instance_mask",
+          "offset_bytes": 59,
+          "size_bytes": 1,
+          "type": "uint8_t (8-bit ray intersection visibility mask)"
+        },
+        {
+          "name": "sbt_hit_group_offset",
+          "offset_bytes": 60,
+          "size_bytes": 3,
+          "type": "uint24_t (Shader Binding Table hit group offset)"
+        },
+        {
+          "name": "instance_flags",
+          "offset_bytes": 63,
+          "size_bytes": 1,
+          "type": "uint8_t (Disable culling, force opaque, force non-opaque, projective transform enable)"
+        }
+      ]
+    },
+    "procedural_aabb_descriptor": {
+      "total_size_bytes": 32,
+      "alignment_bytes": 16,
+      "fields": [
+        {
+          "name": "box_min_xyz",
+          "offset_bytes": 0,
+          "size_bytes": 12,
+          "type": "float[3] (Bounding box min X, Y, Z)"
+        },
+        {
+          "name": "procedural_flags",
+          "offset_bytes": 12,
+          "size_bytes": 4,
+          "type": "uint32_t (Procedural flags, opaque, custom shader index)"
+        },
+        {
+          "name": "box_max_xyz",
+          "offset_bytes": 16,
+          "size_bytes": 12,
+          "type": "float[3] (Bounding box max X, Y, Z)"
+        },
+        {
+          "name": "primitive_user_id",
+          "offset_bytes": 28,
+          "size_bytes": 4,
+          "type": "uint32_t (User primitive identifier passed to USC shader)"
+        }
+      ]
+    },
+    "curve_primitive_descriptor": {
+      "total_size_bytes": 64,
+      "alignment_bytes": 64,
+      "fields": [
+        {
+          "name": "control_point_0",
+          "offset_bytes": 0,
+          "size_bytes": 16,
+          "type": "float4 (P0_x, P0_y, P0_z, Radius_0)"
+        },
+        {
+          "name": "control_point_1",
+          "offset_bytes": 16,
+          "size_bytes": 16,
+          "type": "float4 (P1_x, P1_y, P1_z, Radius_1)"
+        },
+        {
+          "name": "control_point_2",
+          "offset_bytes": 32,
+          "size_bytes": 16,
+          "type": "float4 (P2_x, P2_y, P2_z, Radius_2)"
+        },
+        {
+          "name": "control_point_3",
+          "offset_bytes": 48,
+          "size_bytes": 16,
+          "type": "float4 (P3_x, P3_y, P3_z, Radius_3 / curve_type_flags)"
+        }
+      ]
+    }
+  }
+}

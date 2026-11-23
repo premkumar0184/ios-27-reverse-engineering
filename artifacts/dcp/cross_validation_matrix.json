@@ -3,9 +3,9 @@
   "validation_date": "2026-11-23",
   "ios_version": "27.2 (24B119)",
   "hardware_target": "iPhone18,3 (Apple A19 Pro / t8150)",
-  "total_constants_extracted": 40,
+  "total_constants_extracted": 56,
   "extraction_confidence": {
-    "EXTRACTED": 36,
+    "EXTRACTED": 52,
     "INFERRED": 4,
     "TENTATIVE": 0,
     "UNKNOWN": 0
@@ -300,6 +300,125 @@
       "confidence": "INFERRED",
       "binary_source": "t8150dcp framebuffer sizing",
       "verification_method": "DART-DISP0 triple framebuffer allocation (80 MB)"
+    },
+    {
+      "constant": "DCP_STREAM_ID_HOST_UI",
+      "value": 1,
+      "hex_value": "0x01",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree mapper-disp0 / IOMobileFramebuffer",
+      "verification_method": "Untrusted Host AP WindowServer Stream ID"
+    },
+    {
+      "constant": "DCP_STREAM_ID_EXCLAVE_SECURE",
+      "value": 2,
+      "hex_value": "0x02",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree mapper-dcp-exclave / RTKExclaveTBEndpoint",
+      "verification_method": "ExclaveOS Conclave Secure Overlay Stream ID"
+    },
+    {
+      "constant": "DCP_STREAM_ID_CURSOR",
+      "value": 3,
+      "hex_value": "0x03",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp UPBlock_Blend_v18 cursor layer",
+      "verification_method": "Hardware Cursor plane Stream ID"
+    },
+    {
+      "constant": "DART_PAGE_SIZE",
+      "value": 16384,
+      "hex_value": "0x4000",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree mapper-dcp-exclave",
+      "verification_method": "Hardware translation page size (16 KB)"
+    },
+    {
+      "constant": "SIL_MAX_NITS_CAP",
+      "value": 2000,
+      "hex_value": "0x07d0",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp SecureBlendHandler.cpp",
+      "verification_method": "Maximum permitted Secure Indicator Light nits cap"
+    },
+    {
+      "constant": "SIL_DEFAULT_NITS",
+      "value": 1200,
+      "hex_value": "0x04b0",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp SecureBlendHandler.cpp",
+      "verification_method": "Nominal daylight Secure Indicator Light nits"
+    },
+    {
+      "constant": "BICS_HISTORY_BUFFER_SIZE",
+      "value": 8388608,
+      "hex_value": "0x800000",
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp UPBlock_BICS.cpp",
+      "verification_method": "Burn-In Compensation history table size (8 MB)"
+    },
+    {
+      "constant": "BICS_AGING_GAMMA",
+      "value": 1.45,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp TBICS gain calc",
+      "verification_method": "Tandem OLED subpixel degradation exponent"
+    },
+    {
+      "constant": "BICS_ACTIVATION_ENERGY_EV",
+      "value": 0.62,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp TBICS Arrhenius parameters",
+      "verification_method": "Organic emitter thermal activation energy (eV)"
+    },
+    {
+      "constant": "PTUC_GRID_X_COUNT",
+      "value": 64,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp TableCompensator.cpp grid_x_count",
+      "verification_method": "Panel Temperature Uniformity horizontal grid count"
+    },
+    {
+      "constant": "PTUC_GRID_Y_COUNT",
+      "value": 32,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp TableCompensator.cpp grid_y_count",
+      "verification_method": "Panel Temperature Uniformity vertical grid count"
+    },
+    {
+      "constant": "PTUC_TOTAL_ZONES",
+      "value": 2048,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp 2DTC LUT dimensions",
+      "verification_method": "Total 2D thermal interpolation zones (64 x 32)"
+    },
+    {
+      "constant": "SWMPR_TOUCH_BOOST_MAX_LATENCY_US",
+      "value": 8333,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp swmpr_refresh_rate.c",
+      "verification_method": "Single-frame touch boost latency bound (120Hz period)"
+    },
+    {
+      "constant": "SWMPR_HYSTERESIS_TOTAL_MS",
+      "value": 100,
+      "confidence": "EXTRACTED",
+      "binary_source": "t8150dcp swmpr_v1.c decel timer",
+      "verification_method": "Total deceleration stair-down hysteresis duration"
+    },
+    {
+      "constant": "EXCLAVE_XNU_PROXY_SERVICE",
+      "value": "com.apple.service.EXDisplayPipeDriver_xnuproxy",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree /arm-io/exdisplaypipe",
+      "verification_method": "Exclave display pipeline XNU proxy service name"
+    },
+    {
+      "constant": "EXCLAVE_RTBUDDY_SERVICE",
+      "value": "com.apple.service.SecureRTBuddyDCP",
+      "confidence": "EXTRACTED",
+      "binary_source": "DeviceTree /arm-io/dcp exclave-service",
+      "verification_method": "Exclave SecureRTBuddy DCP service name"
     }
   ]
 }

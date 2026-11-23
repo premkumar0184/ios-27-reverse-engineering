@@ -1,0 +1,260 @@
+{
+  "specification_name": "Apple AGX G18 RTBuddy Inter-Core Shared Memory & Mailbox Protocol Specification",
+  "soc": "Apple Silicon A19 Pro (t8150)",
+  "board_id": "v57ap (iPhone 18,3)",
+  "gpu_generation": "G18 / G18P (PI_300)",
+  "host_os": "iOS 27.2 (Darwin 24.2.0, Build 24B119)",
+  "inter_core_shared_memory": {
+    "segment_symbol": "_RTK_EXT_SHD_DTA",
+    "mach_segment_name": "__DATA_SHARED_RO",
+    "size_bytes": 32768,
+    "size_hex": "0x8000",
+    "page_count_16k": 2,
+    "core_0_mapping": {
+      "vm_address": "0xfffffc0000110000",
+      "file_offset": "0x114000",
+      "protection": "rw- (initprot: 3, maxprot: 3)",
+      "role": "Supervisor Read/Write shared buffer"
+    },
+    "core_1_mapping": {
+      "vm_address": "0xfffffc0000100000",
+      "file_offset": "0x104000",
+      "protection": "rw- (initprot: 3, maxprot: 3)",
+      "role": "Dispatcher Shared aperture"
+    },
+    "dseg_contract": {
+      "descriptor_symbol": "_SH_DATA_SEGS",
+      "symbol_address_core_0": "0xfffffc0000000244",
+      "symbol_address_core_1": "0xfffffc0000000244",
+      "magic_ascii": "dseg",
+      "magic_hex": "0x67657364",
+      "version": 1,
+      "segment_count": 1,
+      "core_0_dseg_entry": {
+        "offset_from_data_base": "0x000c0000",
+        "target_vm_address": "0xfffffc0000110000",
+        "length_bytes": 32768
+      },
+      "core_1_dseg_entry": {
+        "offset_from_data_base": "0x000b4000",
+        "target_vm_address": "0xfffffc0000100000",
+        "length_bytes": 32768
+      }
+    }
+  },
+  "ascwrap_v6_mailbox_interface": {
+    "protocol_version": "ASCwrap-v6 / Apple Storage & Coprocessor Controller",
+    "register_geometry": [
+      {
+        "name": "MBI_INBOX_CTRL",
+        "offset": "0x0000",
+        "width_bits": 32,
+        "type": "Control/Status",
+        "desc": "Inbox IRQ enable (bit 0), FIFO occupancy count (bits 15:8)"
+      },
+      {
+        "name": "MBI_INBOX_DATA",
+        "offset": "0x0008",
+        "width_bits": 64,
+        "type": "Data FIFO Read",
+        "desc": "Reads pop next 64-bit message packet from incoming queue"
+      },
+      {
+        "name": "MBI_OUTBOX_CTRL",
+        "offset": "0x0020",
+        "width_bits": 32,
+        "type": "Control/Status",
+        "desc": "Outbox acknowledge flags and status bits"
+      },
+      {
+        "name": "MBI_OUTBOX_DATA",
+        "offset": "0x0028",
+        "width_bits": 64,
+        "type": "Data FIFO Write",
+        "desc": "Stores push 64-bit message packet into destination queue"
+      },
+      {
+        "name": "MBI_STATUS",
+        "offset": "0x0040",
+        "width_bits": 32,
+        "type": "Status",
+        "desc": "Bit 0: FIFO Empty, Bit 1: FIFO Full"
+      },
+      {
+        "name": "DOORBELL_SET",
+        "offset": "0x0000",
+        "width_bits": 32,
+        "type": "Write-1-to-Set",
+        "desc": "Writes 1 to trigger target core AIC doorbell interrupt"
+      },
+      {
+        "name": "DOORBELL_CLEAR",
+        "offset": "0x0004",
+        "width_bits": 32,
+        "type": "Write-1-to-Clear",
+        "desc": "Acknowledges and clears pending doorbell interrupt"
+      },
+      {
+        "name": "DOORBELL_STATUS",
+        "offset": "0x0008",
+        "width_bits": 32,
+        "type": "Read-Only",
+        "desc": "Bitmask of currently asserted doorbell lines"
+      }
+    ],
+    "doorbell_handshake_flow": [
+      "1. Initiating core writes 64-bit payload word into MBI_OUTBOX_DATA (+0x0028).",
+      "2. Initiating core executes ARM64 Inner Shareable Store barrier (dmb ishst).",
+      "3. Initiating core issues atomic write of bit 0 to DOORBELL_SET (+0x0000).",
+      "4. Interconnect routes doorbell interrupt directly to Apple Interrupt Controller (AIC).",
+      "5. Receiving core enters __rtk_arch_fast_interrupt / __rtk_arch_interrupt.",
+      "6. Receiving core reads 64-bit message from MBI_INBOX_DATA (+0x0008).",
+      "7. Receiving core writes bit 0 to DOORBELL_CLEAR (+0x0004) to acknowledge."
+    ]
+  },
+  "aic_interrupt_matrix": {
+    "controller": "Apple Interrupt Controller (AIC-3)",
+    "device_tree_nodes": {
+      "core_0": "/device-tree/arm-io/gfx-asc",
+      "core_1": "/device-tree/arm-io/gfx1-asc"
+    },
+    "core_0_vectors": [
+      {
+        "vector_dec": 952,
+        "vector_hex": "0x03b8",
+        "role": "RTBuddy Core 0 Mailbox Inbox",
+        "source": "/device-tree/arm-io/gfx-asc"
+      },
+      {
+        "vector_dec": 953,
+        "vector_hex": "0x03b9",
+        "role": "RTBuddy Core 0 Mailbox Outbox",
+        "source": "/device-tree/arm-io/gfx-asc"
+      },
+      {
+        "vector_dec": 954,
+        "vector_hex": "0x03ba",
+        "role": "RTBuddy Core 0 Doorbell",
+        "source": "/device-tree/arm-io/gfx-asc"
+      },
+      {
+        "vector_dec": 955,
+        "vector_hex": "0x03bb",
+        "role": "RTBuddy Core 0 Error",
+        "source": "/device-tree/arm-io/gfx-asc"
+      }
+    ],
+    "core_1_vectors": [
+      {
+        "vector_dec": 956,
+        "vector_hex": "0x03bc",
+        "role": "RTBuddy Core 1 Mailbox Inbox",
+        "source": "/device-tree/arm-io/gfx1-asc"
+      },
+      {
+        "vector_dec": 957,
+        "vector_hex": "0x03bd",
+        "role": "RTBuddy Core 1 Mailbox Outbox",
+        "source": "/device-tree/arm-io/gfx1-asc"
+      },
+      {
+        "vector_dec": 958,
+        "vector_hex": "0x03be",
+        "role": "RTBuddy Core 1 Doorbell",
+        "source": "/device-tree/arm-io/gfx1-asc"
+      },
+      {
+        "vector_dec": 959,
+        "vector_hex": "0x03bf",
+        "role": "RTBuddy Core 1 Error",
+        "source": "/device-tree/arm-io/gfx1-asc"
+      }
+    ]
+  },
+  "stacks_and_exception_handling": {
+    "stack_geometry": {
+      "stack_size_bytes": 16384,
+      "stack_size_hex": "0x4000",
+      "stacks_per_core": [
+        {
+          "name": "Init Stack (_rtk_init_stack)",
+          "core_0_addr": "0xfffffc0000073d30",
+          "core_1_addr": "0xfffffc000006fd30",
+          "role": "Used during microkernel bootstrap, stack canary initialization, and hardware discovery"
+        },
+        {
+          "name": "IRQ Stack (_rtk_irq_stack)",
+          "core_0_addr": "0xfffffc00000784e0",
+          "core_1_addr": "0xfffffc00000745c0",
+          "role": "Dedicated stack for servicing AIC interrupts and mailbox notifications without polluting thread stacks"
+        },
+        {
+          "name": "Exception Stack (_rtk_exc_stack)",
+          "core_0_addr": "0xfffffc000007c4e0",
+          "core_1_addr": "0xfffffc00000785c0",
+          "role": "Dedicated stack for servicing synchronous data/instruction aborts, undefined instructions, and faults"
+        },
+        {
+          "name": "GXF Stack (__rtk_crt_mmu_gxf_stack)",
+          "core_0_addr": "0xfffffc0000054000",
+          "core_1_addr": "0xfffffc0000050000",
+          "role": "Secure execution fabric stack utilized during address space and hypercall context switches"
+        }
+      ]
+    },
+    "exception_vector_tables": {
+      "primary_vector_base": "0xfffffc0000002000 (__rtk_arch_vectors)",
+      "gxf_vector_base": "0xfffffc0000001800 (__rtk_arch_gxf_vectors)",
+      "handlers": [
+        {
+          "name": "__rtk_arch_gxf_vector_abort",
+          "core_0_addr": "0xfffffc0000001a00",
+          "core_1_addr": "0xfffffc0000001a00",
+          "desc": "GXF vector abort handler"
+        },
+        {
+          "name": "__rtk_arch_fast_interrupt",
+          "core_0_addr": "0xfffffc000002b664",
+          "core_1_addr": "0xfffffc000002b9cc",
+          "desc": "High-priority fast FIQ handler"
+        },
+        {
+          "name": "__rtk_arch_interrupt",
+          "core_0_addr": "0xfffffc000002b608",
+          "core_1_addr": "0xfffffc000002b970",
+          "desc": "Standard IRQ interrupt dispatcher"
+        },
+        {
+          "name": "__rtk_arch_exception",
+          "core_0_addr": "0xfffffc000002c5a8",
+          "core_1_addr": "0xfffffc000002c910",
+          "desc": "Synchronous architectural exception handler"
+        },
+        {
+          "name": "__rtk_arch_svc_handler",
+          "core_0_addr": "0xfffffc000002b688",
+          "core_1_addr": "0xfffffc000002b9f0",
+          "desc": "Microkernel system service trap handler"
+        }
+      ],
+      "nmi_storage": {
+        "symbol": "__nmi_frame",
+        "core_0_addr": "0xfffffc000010e5e8",
+        "core_1_addr": "0xfffffc00000ff568",
+        "desc": "Non-maskable interrupt register context save area"
+      },
+      "crash_log_subsystem": {
+        "core_0": {
+          "crash_log_buffer": "0xfffffc0000110000 (_gCrashLog)",
+          "is_local_flag": "0xfffffc00000730f0 (__rtk_crashlog_is_local)",
+          "requested_size": "0xfffffc00000730e0 (__rtk_crashlog_requested_size)"
+        },
+        "core_1": {
+          "crash_log_buffer": "0xfffffc0000100000 (_gCrashLog)",
+          "is_local_flag": "0xfffffc000006f0f0 (__rtk_crashlog_is_local)",
+          "requested_size": "0xfffffc000006f0e0 (__rtk_crashlog_requested_size)"
+        }
+      }
+    }
+  }
+}

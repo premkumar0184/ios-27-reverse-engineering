@@ -1138,6 +1138,39 @@ class KnowledgeGraphBuilder:
             self.add_edge("xnu_kernelcache_release", "silenus_driver_appleh16cam", "binds_kernel_extension",
                           source_file="artifacts/silenus/driver/silenus_host_interface.h", _src="xnu_kernelcache_release", _tgt="silenus_driver_appleh16cam")
 
+        # 7. Apple AGX G18 Ray-Tracing GPU Subsystem & RTBuddy Firmware
+        p_agx = ARTIFACTS_DIR / "gpu/firmware/rtbuddy_macho_manifest.json"
+        if p_agx.exists():
+            self.add_node("coproc_agx_g18_gpu", "Apple AGX G18 Pro Ray-Tracing GPU Subsystem (PI_300 / A19 Pro)",
+                          "code", "artifacts/gpu/firmware/rtbuddy_macho_manifest.json", "G18P PI_300 Silicon", community=2)
+            self.add_node("agx_rtbuddy_firmware", "RTBuddy Dual-Core ARM64e RTKit Microkernel (armfw_g18p / armfw1_g18p)",
+                          "code", "artifacts/gpu/firmware/rtbuddy_core_partition_spec.json", "0xfffffc0000000000", community=2)
+            self.add_node("agx_ria_raytracing", "Ray Intersection Accelerator (RIA HW BVH2/4 Walker & Watertight MT)",
+                          "code", "artifacts/gpu/raytracing/ria_hardware_traversal_spec.json", "DPWR_USC_RIA", community=2)
+            self.add_node("agx_mesh_shading", "Two-Stage Mesh Shading Engine & Parameter Buffer Memory",
+                          "code", "artifacts/gpu/raytracing/mesh_shading_pipeline_spec.json", "Meshlet Parameter Cache", community=2)
+            self.add_node("agx_tbdr_msrf_engine", "TBDR Tile Accelerator & MSRF DRAM Compression Co-Engine (t8150.msrf)",
+                          "code", "artifacts/gpu/tbdr/msrf_macho_manifest.json", "pa_pipeline.c / Cortex-M3", community=2)
+            self.add_node("agx_metal_direct_dispatch", "AppleMetalDirect Low-Latency Userland Fast-Path (~8.0 ns Doorbell)",
+                          "code", "artifacts/gpu/driver/agx_command_stream_wire_spec.json", "kAGFIPIORegionTypePMPDoorbell", community=1)
+            self.add_node("agx_driver_kernel", "com.apple.AGXG18P & IOGPUFamily Host Kernel Extensions",
+                          "code", "artifacts/gpu/driver/agx_driver_dispatch_spec.json", "com.apple.AGXG18P v362.5", community=1)
+
+            self.add_edge("coproc_agx_g18_gpu", "agx_rtbuddy_firmware", "executes_microkernel",
+                          source_file="artifacts/gpu/firmware/rtbuddy_core_partition_spec.json", _src="coproc_agx_g18_gpu", _tgt="agx_rtbuddy_firmware")
+            self.add_edge("coproc_agx_g18_gpu", "agx_ria_raytracing", "accelerates_raytracing",
+                          source_file="artifacts/gpu/raytracing/ria_hardware_traversal_spec.json", _src="coproc_agx_g18_gpu", _tgt="agx_ria_raytracing")
+            self.add_edge("coproc_agx_g18_gpu", "agx_mesh_shading", "executes_mesh_pipeline",
+                          source_file="artifacts/gpu/raytracing/mesh_shading_pipeline_spec.json", _src="coproc_agx_g18_gpu", _tgt="agx_mesh_shading")
+            self.add_edge("coproc_agx_g18_gpu", "agx_tbdr_msrf_engine", "compresses_tile_dram",
+                          source_file="artifacts/gpu/tbdr/msrf_pixel_accelerator_spec.json", _src="coproc_agx_g18_gpu", _tgt="agx_tbdr_msrf_engine")
+            self.add_edge("agx_driver_kernel", "coproc_agx_g18_gpu", "manages_gpu_lifecycle",
+                          source_file="artifacts/gpu/driver/agx_driver_dispatch_spec.json", _src="agx_driver_kernel", _tgt="coproc_agx_g18_gpu")
+            self.add_edge("agx_metal_direct_dispatch", "agx_rtbuddy_firmware", "kicks_pmp_doorbell_direct",
+                          source_file="artifacts/gpu/driver/agx_command_stream_wire_spec.json", _src="agx_metal_direct_dispatch", _tgt="agx_rtbuddy_firmware")
+            self.add_edge("xnu_kernelcache_release", "agx_driver_kernel", "loads_kext_driver",
+                          source_file="artifacts/gpu/driver/agx_driver_dispatch_spec.json", _src="xnu_kernelcache_release", _tgt="agx_driver_kernel")
+
     def ingest_rootfs(self):
         print("[*] Ingesting core OS runtime & IPC artifacts (Community 3)...")
         # 1. daemon_catalog.json

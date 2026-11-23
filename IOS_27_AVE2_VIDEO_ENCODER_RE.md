@@ -290,10 +290,15 @@ Managed by C++ controller class `CAVCController`:
 - **Syntax Writers**: `AVC_SPS`, `AVC_PPS`, and `AVC_Slice` with custom reference picture list modification.
 
 ### 5.4 ProRes Hardware Accelerator (`AppleProResHW`)
-- **Supported Formats**: ProRes 422 Proxy, LT, Standard, HQ, and ProRes 4444 / 4444 XQ with full alpha channel encoding.
-- **Resolution**: Up to 8K60 HDR video capture.
-- **Quantization**: Matrix-based discrete cosine transform (DCT) quantization with perceptual human visual system weighting.
-- **Slice Architecture**: Frame divided into uniform horizontal slices encoded independently to enable deterministic multi-threaded decoding.
+- **Dedicated Silicon Nodes**: `apr,m0` (Master Command Arbiter & Queue FIFO), `apr,a1` (Slice Engine Core 0), and `apr,a2` (Slice Engine Core 1) mapped at MMIO `0x77080000` with dedicated IOMMU `dart-apr`.
+- **Supported Formats**:
+  - ProRes 422 (Proxy, LT, Standard, HQ) at 10-bit YCbCr 4:2:2.
+  - ProRes 4444 / 4444 XQ with full 16-bit half-float alpha plane encoding.
+  - ProRes RAW and ProRes RAW HQ direct 14-bit 4-plane CFA Bayer ingestion (`R`, `Gr`, `Gb`, `B`).
+- **Resolution & Throughput**: Real-time 8K DCI ($8192 \times 4320$) and 8K UHD ($7680 \times 4320$) @ 60 FPS (~1,768 Mbps bitstream).
+- **Multi-Core Slice Architecture**: The 8K frame is split into 16 horizontal slices (`log2DesiredSliceSizeInMb = 13`) processed in parallel across `apr,a1` (Slices 0..7) and `apr,a2` (Slices 8..15).
+- **Hardware Command Descriptors**: Submissions execute via `ProRes_EncodeFrame_UserKernel_In_Info` (`EncodeYCbCr` and `DecodeRaw`), utilizing 128-byte `sAppleProResRawFrameHeader` metadata structures and 6 macroblock complexity thresholds (`mbCategoryThr0..5`).
+- **Companion Deep-Dive Dossier**: Detailed register maps, timing diagrams, and disassembly flow are fully documented in [`findings/ave/02_PRORES_AND_MOTION_ESTIMATION_HARDWARE.md`](file:///home/prem/Projects/iOS%2027/findings/ave/02_PRORES_AND_MOTION_ESTIMATION_HARDWARE.md).
 
 ## 6. Dedicated Motion Estimation & Temporal Filtering Coprocessors
 

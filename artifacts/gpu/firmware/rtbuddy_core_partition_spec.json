@@ -1,0 +1,461 @@
+{
+  "architecture_name": "Apple AGX G18 RTBuddy Dual-Core Coprocessor Partitioning Specification",
+  "soc": "Apple Silicon A19 Pro (t8150)",
+  "board_id": "v57ap (iPhone 18,3)",
+  "gpu_generation": "G18 / G18P (PI_300)",
+  "host_os": "iOS 27.2 (Darwin 24.2.0, Build 24B119)",
+  "rtkit_version": "RTKit_armv8_lightning_Oz_flto_pac-3514.40.18.release",
+  "macho_profile": {
+    "magic": "0xfeedfacf (MH_MAGIC_64)",
+    "cputype": "0x100000c (CPU_TYPE_ARM64)",
+    "cpusubtype": "0x80000002 (CPU_SUBTYPE_ARM64E_PAC00)",
+    "filetype": 5,
+    "filetype_name": "MH_PRELOAD",
+    "ncmds": 8,
+    "sizeofcmds": 2944,
+    "flags": "0x200001 (MH_NOUNDEFS | 0x200000)"
+  },
+  "core_0_supervisor": {
+    "role": "Supervisor, Scheduler, Host IPC, Power State Machine, SPTM Telemetry & Watchdog",
+    "container": "armfw_g18p.im4p",
+    "fourcc": "gfxf",
+    "file_size": 3510409,
+    "payload_size": 3510384,
+    "vm_base_address": "0xfffffc0000000000",
+    "entrypoint_pc": "0xfffffc0000000000",
+    "entrypoint_symbol": "new_rtk_start_anywhere_uatv2",
+    "primary_stepping_tag": "a000",
+    "stepping_count": 3,
+    "steppings": [
+      "a000",
+      "b000",
+      "a010"
+    ],
+    "segments": {
+      "__TEXT": {
+        "vmaddr": "0xfffffc0000000000",
+        "vmsize": 327680,
+        "vmsize_hex": "0x50000",
+        "fileoff": 16384,
+        "prot": "r-x (5/5)",
+        "sections": {
+          "__text": {
+            "addr": "0xfffffc0000000000",
+            "size": 249864,
+            "size_hex": "0x3d008",
+            "fileoff": "0x4000",
+            "desc": "Core 0 Supervisor & RTKit OS executable microkernel code"
+          },
+          "__gxf_code": {
+            "addr": "0xfffffc0000040000",
+            "size": 20768,
+            "size_hex": "0x5120",
+            "fileoff": "0x44000",
+            "desc": "GXF (Graphics Execution Fabric) secure execution code"
+          },
+          "__gxf_shr_code": {
+            "addr": "0xfffffc0000048000",
+            "size": 1376,
+            "size_hex": "0x560",
+            "fileoff": "0x4c000",
+            "desc": "GXF shared routines between Core 0 and Core 1"
+          },
+          "__const": {
+            "addr": "0xfffffc0000048560",
+            "size": 4269,
+            "size_hex": "0x10ad",
+            "fileoff": "0x4c560",
+            "desc": "Read-only constants and branch tables"
+          },
+          "_rtk_tunables": {
+            "addr": "0xfffffc000004960d",
+            "size": 1856,
+            "size_hex": "0x740",
+            "fileoff": "0x4d60d",
+            "desc": "ASC tunables and retained configuration parameters"
+          },
+          "_rtk_patchbay": {
+            "addr": "0xfffffc0000049d4d",
+            "size": 561,
+            "size_hex": "0x231",
+            "fileoff": "0x4dd4d",
+            "desc": "Boot patch table (STKG, GxPB, GxPS, SLID, RTSZ, TUNS, etc.)"
+          },
+          "__cstring": {
+            "addr": "0xfffffc0000049f7e",
+            "size": 9030,
+            "size_hex": "0x2346",
+            "fileoff": "0x4df7e",
+            "desc": "Diagnostic, assertion, and tracing strings"
+          },
+          "__chain_starts": {
+            "addr": "0xfffffc000004c2c4",
+            "size": 36,
+            "size_hex": "0x24",
+            "fileoff": "0x502c4",
+            "desc": "Chained fixup / PAC relocation pointers"
+          }
+        }
+      },
+      "__DATA": {
+        "vmaddr": "0xfffffc0000050000",
+        "vmsize": 786432,
+        "vmsize_hex": "0xc0000",
+        "fileoff": 344064,
+        "prot": "rw- (3/3)",
+        "sections": {
+          "__gxf_data": {
+            "addr": "0xfffffc0000050000",
+            "size": 33120,
+            "size_hex": "0x8160",
+            "fileoff": "0x54000",
+            "desc": "GXF secure memory state & context storage"
+          },
+          "__data": {
+            "addr": "0xfffffc000005c000",
+            "size": 97576,
+            "size_hex": "0x17d28",
+            "fileoff": "0x60000",
+            "desc": "Global variables, queue descriptors, and driver state"
+          },
+          "_rtk_init_stack": {
+            "addr": "0xfffffc0000073d30",
+            "size": 16384,
+            "size_hex": "0x4000",
+            "fileoff": "0x77d30",
+            "desc": "Bootstrap initialization execution stack (16 KB)"
+          },
+          "__const": {
+            "addr": "0xfffffc0000077d30",
+            "size": 1960,
+            "size_hex": "0x7a8",
+            "fileoff": "0x7bd30",
+            "desc": "Relocated data constants"
+          },
+          "_rtk_irq_stack": {
+            "addr": "0xfffffc00000784e0",
+            "size": 16384,
+            "size_hex": "0x4000",
+            "fileoff": "0x7c4e0",
+            "desc": "Hardware interrupt service routine stack (16 KB)"
+          },
+          "_rtk_exc_stack": {
+            "addr": "0xfffffc000007c4e0",
+            "size": 16384,
+            "size_hex": "0x4000",
+            "fileoff": "0x804e0",
+            "desc": "Synchronous exception / abort trap stack (16 KB)"
+          },
+          "_rtk_boot_l1": {
+            "addr": "0xfffffc00000804e0",
+            "size": 512,
+            "size_hex": "0x200",
+            "fileoff": "0x844e0",
+            "desc": "Early level-1 MMU bootstrap page directory"
+          },
+          "_rtk_boot": {
+            "addr": "0xfffffc0000084000",
+            "size": 49152,
+            "size_hex": "0xc000",
+            "fileoff": "0x88000",
+            "desc": "Bootstrap relocation code and secondary stage init"
+          },
+          "_rtk_mtab": {
+            "addr": "0xfffffc0000090000",
+            "size": 912,
+            "size_hex": "0x390",
+            "fileoff": "0x94000",
+            "desc": "ASCwrap message / mailbox endpoint dispatch table (114 PAC-signed ptrs)"
+          },
+          "_rtk_power": {
+            "addr": "0xfffffc0000090390",
+            "size": 920,
+            "size_hex": "0x398",
+            "fileoff": "0x94390",
+            "desc": "DVFS power state descriptors & hibernation contexts (__hb_context, __fp_context)"
+          },
+          "_rtk_page_tables": {
+            "addr": "0xfffffc0000094000",
+            "size": 131072,
+            "size_hex": "0x20000",
+            "fileoff": "0x98000",
+            "desc": "Preallocated 128 KB radix page tables for coprocessor UAT MMU"
+          },
+          "__mod_init_func": {
+            "addr": "0xfffffc00000b4000",
+            "size": 8,
+            "size_hex": "0x8",
+            "fileoff": "0xb8000",
+            "desc": "C++ runtime constructor pointers"
+          },
+          "__zerofill": {
+            "addr": "0xfffffc00000b4040",
+            "size": 370552,
+            "size_hex": "0x5a778",
+            "fileoff": "0xb8040",
+            "desc": "Zero-initialized BSS segment (heaps, trace buffers, threads)"
+          }
+        }
+      },
+      "__DATA_SHARED_RO": {
+        "vmaddr": "0xfffffc0000110000",
+        "vmsize": 32768,
+        "vmsize_hex": "0x8000",
+        "fileoff": 1130496,
+        "prot": "rw- (3/3)",
+        "sections": {
+          "_RTK_EXT_SHD_DTA": {
+            "addr": "0xfffffc0000110000",
+            "size": 32768,
+            "size_hex": "0x8000",
+            "fileoff": "0x114000",
+            "desc": "32 KB inter-core shared memory aperture (linked to Core 1)"
+          }
+        }
+      }
+    },
+    "power_management": {
+      "states": {
+        "RTK_POWER_SLEEP": {
+          "id": 0,
+          "description": "Deep sleep power gating, clock tree suspended, UAT state saved in __hb_context"
+        },
+        "RTK_POWER_NAP": {
+          "id": 1,
+          "description": "Light idle retention plane, fast resume < 2 microseconds"
+        },
+        "RTK_POWER_ACTIVE": {
+          "id": 2,
+          "description": "Full operational frequency, autonomous DVFS voltage/frequency scaling"
+        }
+      },
+      "dvfs_controller": "APS_USC (Adaptive Power Subsystem for Unified Shading Clusters)"
+    }
+  },
+  "core_1_dispatcher": {
+    "role": "Real-Time Command Dispatch, Context Switching, Low-latency Doorbell Servicing & Ring Buffer Tracking",
+    "container": "armfw1_g18p.im4p",
+    "fourcc": "gf1f",
+    "file_size": 3313873,
+    "payload_size": 3313848,
+    "vm_base_address": "0xfffffc0000000000",
+    "entrypoint_pc": "0xfffffc0000000000",
+    "entrypoint_symbol": "new_rtk_start_anywhere_uatv2",
+    "primary_stepping_tag": "a000",
+    "stepping_count": 3,
+    "steppings": [
+      "a000",
+      "b000",
+      "a010"
+    ],
+    "segments": {
+      "__TEXT": {
+        "vmaddr": "0xfffffc0000000000",
+        "vmsize": 311296,
+        "vmsize_hex": "0x4c000",
+        "fileoff": 16384,
+        "prot": "r-x (5/5)",
+        "sections": {
+          "__text": {
+            "addr": "0xfffffc0000000000",
+            "size": 252316,
+            "size_hex": "0x3d99c",
+            "fileoff": "0x4000",
+            "desc": "Core 1 Context Switching & Real-Time Dispatch executable code"
+          },
+          "__gxf_code": {
+            "addr": "0xfffffc0000040000",
+            "size": 20768,
+            "size_hex": "0x5120",
+            "fileoff": "0x44000",
+            "desc": "GXF execution engine for secure GPU address spaces"
+          },
+          "__gxf_shr_code": {
+            "addr": "0xfffffc0000048000",
+            "size": 1376,
+            "size_hex": "0x560",
+            "fileoff": "0x4c000",
+            "desc": "GXF shared routines identical to Core 0"
+          },
+          "__const": {
+            "addr": "0xfffffc0000048560",
+            "size": 2757,
+            "size_hex": "0xac5",
+            "fileoff": "0x4c560",
+            "desc": "Read-only pipeline dispatch tables"
+          },
+          "_rtk_tunables": {
+            "addr": "0xfffffc0000049025",
+            "size": 1856,
+            "size_hex": "0x740",
+            "fileoff": "0x4d025",
+            "desc": "Core 1 ASC tunables block"
+          },
+          "_rtk_patchbay": {
+            "addr": "0xfffffc0000049765",
+            "size": 561,
+            "size_hex": "0x231",
+            "fileoff": "0x4d765",
+            "desc": "Core 1 boot patchbay table"
+          },
+          "__cstring": {
+            "addr": "0xfffffc0000049996",
+            "size": 9117,
+            "size_hex": "0x239d",
+            "fileoff": "0x4d996",
+            "desc": "Pipeline error diagnostics and channel command strings"
+          },
+          "__chain_starts": {
+            "addr": "0xfffffc000004bd34",
+            "size": 36,
+            "size_hex": "0x24",
+            "fileoff": "0x4fd34",
+            "desc": "Chained fixup / PAC relocation pointers"
+          }
+        }
+      },
+      "__DATA": {
+        "vmaddr": "0xfffffc000004c000",
+        "vmsize": 737280,
+        "vmsize_hex": "0xb4000",
+        "fileoff": 327680,
+        "prot": "rw- (3/3)",
+        "sections": {
+          "__gxf_data": {
+            "addr": "0xfffffc000004c000",
+            "size": 33120,
+            "size_hex": "0x8160",
+            "fileoff": "0x50000",
+            "desc": "GXF context state & registers"
+          },
+          "__data": {
+            "addr": "0xfffffc0000058000",
+            "size": 97576,
+            "size_hex": "0x17d28",
+            "fileoff": "0x5c000",
+            "desc": "Command queue head/tail pointers, circular ring descriptors"
+          },
+          "_rtk_init_stack": {
+            "addr": "0xfffffc000006fd30",
+            "size": 16384,
+            "size_hex": "0x4000",
+            "fileoff": "0x73d30",
+            "desc": "Core 1 Bootstrap initialization stack (16 KB)"
+          },
+          "__const": {
+            "addr": "0xfffffc0000073d30",
+            "size": 2184,
+            "size_hex": "0x888",
+            "fileoff": "0x77d30",
+            "desc": "Core 1 data constants"
+          },
+          "_rtk_irq_stack": {
+            "addr": "0xfffffc00000745c0",
+            "size": 16384,
+            "size_hex": "0x4000",
+            "fileoff": "0x785c0",
+            "desc": "Core 1 Hardware IRQ stack (16 KB)"
+          },
+          "_rtk_exc_stack": {
+            "addr": "0xfffffc00000785c0",
+            "size": 16384,
+            "size_hex": "0x4000",
+            "fileoff": "0x7c5c0",
+            "desc": "Core 1 Synchronous exception stack (16 KB)"
+          },
+          "_rtk_boot_l1": {
+            "addr": "0xfffffc000007c5c0",
+            "size": 512,
+            "size_hex": "0x200",
+            "fileoff": "0x805c0",
+            "desc": "Core 1 early level-1 MMU bootstrap table"
+          },
+          "_rtk_boot": {
+            "addr": "0xfffffc0000080000",
+            "size": 49152,
+            "size_hex": "0xc000",
+            "fileoff": "0x84000",
+            "desc": "Core 1 bootstrap relocation routines"
+          },
+          "_rtk_mtab": {
+            "addr": "0xfffffc000008c000",
+            "size": 912,
+            "size_hex": "0x390",
+            "fileoff": "0x90000",
+            "desc": "Core 1 mailbox message table (114 PAC-signed ptrs)"
+          },
+          "_rtk_power": {
+            "addr": "0xfffffc000008c390",
+            "size": 920,
+            "size_hex": "0x398",
+            "fileoff": "0x90390",
+            "desc": "Core 1 local power state & context descriptors"
+          },
+          "_rtk_page_tables": {
+            "addr": "0xfffffc0000090000",
+            "size": 131072,
+            "size_hex": "0x20000",
+            "fileoff": "0x94000",
+            "desc": "Preallocated 128 KB radix page tables for Core 1"
+          },
+          "__mod_init_func": {
+            "addr": "0xfffffc00000b0000",
+            "size": 8,
+            "size_hex": "0x8",
+            "fileoff": "0xb4000",
+            "desc": "Runtime constructor pointers"
+          },
+          "__zerofill": {
+            "addr": "0xfffffc00000b0080",
+            "size": 325304,
+            "size_hex": "0x4f6b8",
+            "fileoff": "0xb4080",
+            "desc": "Core 1 zero-filled BSS memory"
+          }
+        }
+      },
+      "__DATA_SHARED_RO": {
+        "vmaddr": "0xfffffc0000100000",
+        "vmsize": 32768,
+        "vmsize_hex": "0x8000",
+        "fileoff": 1064960,
+        "prot": "rw- (3/3)",
+        "sections": {
+          "_RTK_EXT_SHD_DTA": {
+            "addr": "0xfffffc0000100000",
+            "size": 32768,
+            "size_hex": "0x8000",
+            "fileoff": "0x104000",
+            "desc": "32 KB inter-core shared memory aperture (linked to Core 0)"
+          }
+        }
+      }
+    },
+    "command_dispatch_pipelines": [
+      {
+        "name": "Firmware VDM Command Pool",
+        "pipeline": "Vertex Data Master (VDM)",
+        "dm_id": 0,
+        "desc": "Vertex fetch, tessellation, and geometry pipeline kick"
+      },
+      {
+        "name": "Firmware PDM Command Pool",
+        "pipeline": "Primitive / Pixel Data Master (PDM)",
+        "dm_id": 1,
+        "desc": "Tile rasterization, early Z-cull, and fragment shader dispatch"
+      },
+      {
+        "name": "Firmware PDM Blit Command Pool",
+        "pipeline": "2D Blit Engine",
+        "dm_id": 2,
+        "desc": "High-throughput 2D blits, color buffer clears, format conversions"
+      },
+      {
+        "name": "Firmware CDM Command Pool",
+        "pipeline": "Compute Data Master (CDM)",
+        "dm_id": 3,
+        "desc": "General-purpose compute kernels, mesh shaders, ray-tracing work"
+      }
+    ]
+  }
+}

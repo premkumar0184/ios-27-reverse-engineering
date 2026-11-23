@@ -1,0 +1,209 @@
+{
+  "tbdr_architecture": {
+    "generation": "Apple AGX G18 / G18P",
+    "soc": "t8150",
+    "subsystem": "Tile-Based Deferred Rendering (TBDR) & Scene Allocation Engine",
+    "channel_class": "AGX·PI_300·P·A0·TAChannelSKSM",
+    "tiling_mode": "Split-Pass Deferred Rasterization with Hardware Tile Acceleration",
+    "spatial_tile_geometry": {
+      "micro_tile": {
+        "width_pixels": 16,
+        "height_pixels": 16,
+        "pixel_count": 256,
+        "usage": "Fine rasterization, fragment shading, 2x/4x MSAA resolve, MRT color blending"
+      },
+      "macro_tile": {
+        "width_pixels": 32,
+        "height_pixels": 32,
+        "pixel_count": 1024,
+        "usage": "Coarse bounding-box primitive binning, screen-space subdivision, 4K render targets"
+      },
+      "max_hardware_tile_size": {
+        "width_pixels": 256,
+        "height_pixels": 512,
+        "source_symbol": "_MSR_MAX_TILE_SIZE",
+        "firmware_address": "0x001116f0",
+        "usage": "Maximum coprocessor tile buffer allocation in MSR25 hardware"
+      }
+    },
+    "onchip_tile_memory": {
+      "sram_per_usc_cluster_kb": 128,
+      "color_attachments_max": 8,
+      "color_attachment_formats": [
+        "MTLColorWriteMaskAll",
+        "RGBA8Unorm",
+        "BGRA8Unorm",
+        "RGBA16Float",
+        "RG11B10Float",
+        "RGB10A2Unorm",
+        "RGBA32Float"
+      ],
+      "depth_stencil_attachment": {
+        "depth_format": "Z32_FLOAT (32-bit floating point depth)",
+        "stencil_format": "Stencil_8 (8-bit stencil)",
+        "residency": "100% on-chip USC SRAM throughout rasterization pass",
+        "dram_traffic": "Zero external DRAM round-trips for intermediate depth/stencil evaluations"
+      },
+      "hidden_surface_removal": {
+        "engine": "Image Synthesis Processor (ISP) Early-Z / Coarse-Z Unit",
+        "mechanism": "Pre-fragment depth testing against on-chip Z-buffer before shader invocation",
+        "overdraw_elimination": "100% for opaque geometry; non-occluded fragment scheduling only",
+        "fragment_kill_penalty": "Zero shader cycles wasted on occluded fragments"
+      }
+    }
+  },
+  "scene_allocator_pipeline": {
+    "subsystem_name": "Parameter Scene Allocator (MList, MTileArray, VHeap Table)",
+    "execution_stages": [
+      {
+        "stage": 1,
+        "name": "Vertex Transformation & Tiling Pass (TA Pass)",
+        "operation": "USC executes vertex/meshlet shaders and passes transformed primitives to Tile Accelerator"
+      },
+      {
+        "stage": 2,
+        "name": "Coarse Bounding Box Evaluation & Binning",
+        "operation": "TA calculates screen-space bounding boxes and projects primitives onto macro-tile grid"
+      },
+      {
+        "stage": 3,
+        "name": "MList Node Allocation & Linking",
+        "operation": "TA writes primitive packets into chunked linked lists indexed per tile in MTileArray"
+      },
+      {
+        "stage": 4,
+        "name": "Deferred Pixel Rasterization (PDM Pass)",
+        "operation": "USC fetches binned primitive streams per tile from MTileArray/MList and rasters on-chip"
+      }
+    ],
+    "data_structures": {
+      "mlist": {
+        "name": "Macro-tile Primitive List (MList)",
+        "description": "Dynamic singly-linked list of parameter buffer chunks storing vertex pointers and primitive packets",
+        "node_structure": {
+          "header_bytes": 16,
+          "fields": [
+            {
+              "name": "next_chunk_gpu_va",
+              "offset_bytes": 0,
+              "width_bits": 64,
+              "desc": "GPU virtual address of next MList chunk (0 if tail)"
+            },
+            {
+              "name": "primitive_count",
+              "offset_bytes": 8,
+              "width_bits": 32,
+              "desc": "Number of primitives packed in this chunk (max 256)"
+            },
+            {
+              "name": "chunk_flags",
+              "offset_bytes": 12,
+              "width_bits": 32,
+              "desc": "Flags: has_clip_planes, is_quad_primitive, uses_extended_vtx_attrs"
+            }
+          ],
+          "payload_format": "Array of 32-bit vertex indices and 64-bit parameter pointers"
+        },
+        "chunk_size_bytes": 4096,
+        "allocation_pool": "VHeap dynamic memory pool"
+      },
+      "mtilearray": {
+        "name": "Macro-tile Array (MTileArray)",
+        "description": "2D screen-space tile descriptor grid referencing head and tail pointers of MList chains",
+        "entry_structure": {
+          "entry_size_bytes": 16,
+          "fields": [
+            {
+              "name": "mlist_head_va",
+              "offset_bytes": 0,
+              "width_bits": 64,
+              "desc": "GPU virtual address of first MList chunk intersecting this tile"
+            },
+            {
+              "name": "mlist_tail_va",
+              "offset_bytes": 8,
+              "width_bits": 64,
+              "desc": "GPU virtual address of active MList chunk being appended"
+            }
+          ]
+        },
+        "grid_calculation": {
+          "tiles_x": "(render_width + 31) / 32",
+          "tiles_y": "(render_height + 31) / 32",
+          "total_entries": "tiles_x * tiles_y",
+          "stride_bytes": "tiles_x * 16"
+        }
+      },
+      "vheap": {
+        "name": "Vertex Heap Table (VHeap Table)",
+        "description": "Elastic parameter memory pool managing dynamic expansion and overflow during high scene complexity",
+        "memory_manager": "AGXUSCPrivMemPoolUMA",
+        "grow_engine": "halNewUMAGrowEngine",
+        "grow_event": "Start-of-Kick Parameter Buffer Grow Event",
+        "initial_page_allocation_kb": 1024,
+        "growth_step_kb": 1024,
+        "max_heap_size_mb": 512,
+        "reclaim_policy": "Full deallocation or pool recycling upon render pass completion (MsrTileDone)"
+      }
+    }
+  },
+  "fender_chinook_fabric_controller": {
+    "controller_name": "AGXArmFenderChinook",
+    "description": "Apple G18 Memory Fabric Controller arbitrating traffic between GPU pipelines, MSRF coprocessor, and unified DRAM",
+    "components": {
+      "GFenderCfg": {
+        "description": "Fender memory controller configuration, fabric routing policies, and bandwidth throttling",
+        "features": [
+          "Priority routing between TA (tiling) and PDM (rasterization) pipelines",
+          "Thermal throttling and memory bandwidth allocation",
+          "QoS arbitration for realtime display surface refreshes"
+        ]
+      },
+      "GM_GIFAF": {
+        "description": "GPU Memory Fabric Interface (GIFAF) interconnect connecting GPU clusters to LPDDR5X UMA",
+        "width_bits": 256,
+        "frequency_mhz": 4266,
+        "peak_bandwidth_gb_sec": 136.5
+      },
+      "FenderScratchRam": {
+        "description": "On-chip high-speed scratchpad SRAM buffer embedded inside Fender controller",
+        "size_kb": 64,
+        "access_latency_cycles": 2,
+        "usage": "Temporary tile state caching and non-coherent DMA descriptor buffering"
+      },
+      "DFender_CS": {
+        "description": "Dual-Fender Command Stream serialization and dispatch unit",
+        "registers": "DFender CS Regs",
+        "operation": "Serializes command packets across dual memory channels"
+      },
+      "DFender_IVDM": {
+        "description": "Dual-Fender Internal Vertex Data Master pipeline routing unit",
+        "registers": "DFender IVDM Regs",
+        "operation": "Routes transformed vertex data directly to MSRF and L2 cache without CPU intervention"
+      }
+    },
+    "mmio_apertures": [
+      {
+        "symbolic_name": "kAGFIPIORegionTypeFender",
+        "description": "Primary Fender controller MMIO aperture",
+        "page_size_bytes": 16384
+      },
+      {
+        "symbolic_name": "kAGFIPIORegionTypePMPDoorbell",
+        "description": "Power Management & Processor Doorbell MMIO region for direct userland command submission",
+        "page_size_bytes": 16384,
+        "write_size_bytes": 8
+      },
+      {
+        "symbolic_name": "GFenderCfg Regs",
+        "description": "Memory fabric configuration and channel routing aperture",
+        "page_size_bytes": 16384
+      },
+      {
+        "symbolic_name": "GM GIFAF Regs",
+        "description": "GPU Memory Fabric Interface interconnect registers",
+        "page_size_bytes": 16384
+      }
+    ]
+  }
+}

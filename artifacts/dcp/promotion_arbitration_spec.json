@@ -2,8 +2,15 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Apple ProMotion Dynamic Refresh Rate Arbitration & State Machine Specification",
   "target_soc": "t8150 (Apple A19 Pro)",
+  "platform": "iOS 27.2 / Darwin 24.2.0 (Build 24B119)",
+  "device_model": "iPhone18,3 (v57ap)",
   "promotion_architecture": {
     "subsystem": "Software-Managed Pixel Refresh (SWMPR_v1)",
+    "cpp_source": "UPBlock_SWMPR_v1.cpp",
+    "c_sources": [
+      "swmpr_v1.c",
+      "swmpr_refresh_rate.c"
+    ],
     "panel_technology": "Low-Temperature Polycrystalline Oxide (LTPO 3.0) Tandem OLED",
     "range_hz": {
       "min_aod_hz": 1,
@@ -13,83 +20,131 @@
     "discrete_refresh_rates": [
       {
         "rate_hz": 120,
-        "frame_duration_us": 8333,
+        "frame_duration_us": 8333.333,
         "divisor_120": 1,
-        "trigger": "Active touch contact, high-velocity fling gestures, 120fps Metal games."
+        "trigger": "Active touch contact, high-velocity fling gestures, 120fps Metal games.",
+        "power_profile": "High Performance Scanout"
       },
       {
         "rate_hz": 80,
-        "frame_duration_us": 12500,
+        "frame_duration_us": 12500.0,
         "divisor_120": 1.5,
-        "trigger": "Deceleration ramp-down from 120Hz scroll gestures."
+        "trigger": "Deceleration ramp-down step 1 from 120Hz scroll gestures.",
+        "power_profile": "Intermediate Ramp"
       },
       {
         "rate_hz": 60,
-        "frame_duration_us": 16666,
+        "frame_duration_us": 16666.667,
         "divisor_120": 2,
-        "trigger": "Standard UI animations, 60fps video playback, web scrolling."
+        "trigger": "Standard UI animations, 60fps video playback, web scrolling deceleration.",
+        "power_profile": "Standard UI"
       },
       {
         "rate_hz": 48,
-        "frame_duration_us": 20833,
+        "frame_duration_us": 20833.333,
         "divisor_120": 2.5,
-        "trigger": "Cinema 24fps content with 2:2 pulldown (zero judder)."
+        "trigger": "Cinema 24fps content with 2:2 pulldown (zero judder).",
+        "power_profile": "Cinema Mode"
       },
       {
         "rate_hz": 40,
-        "frame_duration_us": 25000,
+        "frame_duration_us": 25000.0,
         "divisor_120": 3,
-        "trigger": "Intermediate ramp step, high-efficiency scrolling."
+        "trigger": "Intermediate ramp step, high-efficiency scrolling.",
+        "power_profile": "Low Interactive"
       },
       {
         "rate_hz": 30,
-        "frame_duration_us": 33333,
+        "frame_duration_us": 33333.333,
         "divisor_120": 4,
-        "trigger": "30fps video playback, low-activity interactive apps."
+        "trigger": "30fps video playback, low-activity interactive apps.",
+        "power_profile": "Video Playback"
       },
       {
         "rate_hz": 24,
-        "frame_duration_us": 41666,
+        "frame_duration_us": 41666.667,
         "divisor_120": 5,
-        "trigger": "Native cinema 24fps video playback without frame repetition."
+        "trigger": "Native cinema 24fps video playback without frame repetition.",
+        "power_profile": "Cinema Native"
       },
       {
         "rate_hz": 20,
-        "frame_duration_us": 50000,
+        "frame_duration_us": 50000.0,
         "divisor_120": 6,
-        "trigger": "Static reading with minimal UI updates."
+        "trigger": "Static reading with minimal UI updates.",
+        "power_profile": "Low Power Reading"
       },
       {
         "rate_hz": 15,
-        "frame_duration_us": 66666,
+        "frame_duration_us": 66666.667,
         "divisor_120": 8,
-        "trigger": "Extended idle reading, photo viewing."
+        "trigger": "Extended idle reading, photo viewing.",
+        "power_profile": "Extended Idle"
       },
       {
         "rate_hz": 10,
-        "frame_duration_us": 100000,
+        "frame_duration_us": 100000.0,
         "divisor_120": 12,
-        "trigger": "Completely static interactive screen (idle user reading book or web article)."
+        "trigger": "Completely static interactive screen (idle user reading book or web article).",
+        "power_profile": "Idle Interactive Floor"
       },
       {
         "rate_hz": 1,
-        "frame_duration_us": 1000000,
+        "frame_duration_us": 1000000.0,
         "divisor_120": 120,
-        "trigger": "Always-On Display (AOD) locked sleep state, driven by AOP via CBAOPEndpoint."
+        "trigger": "Always-On Display (AOD) locked sleep state, driven by AOP via CBAOPEndpoint.",
+        "power_profile": "Ultra-Low Power Standby"
       }
     ],
     "arbitration_state_machine": {
       "states": [
-        "SWMPR_STATE_IDLE_10HZ",
-        "SWMPR_STATE_INTERACTIVE_RAMP_UP",
-        "SWMPR_STATE_ACTIVE_120HZ",
-        "SWMPR_STATE_DECEL_RAMP_DOWN",
-        "SWMPR_STATE_MEDIA_LOCK_24_48_60HZ",
-        "SWMPR_STATE_AOD_1HZ"
+        {
+          "name": "SWMPR_STATE_IDLE_10HZ",
+          "id": 0,
+          "description": "Interactive baseline state when no user input or animation has occurred for >100ms."
+        },
+        {
+          "name": "SWMPR_STATE_INTERACTIVE_RAMP_UP",
+          "id": 1,
+          "description": "Transient boost state triggered by IOHIDEvent tap or pan; pre-arms 120Hz VBP timings."
+        },
+        {
+          "name": "SWMPR_STATE_ACTIVE_120HZ",
+          "id": 2,
+          "description": "Peak refresh mode sustaining direct finger tracking, rapid momentum scrolling, and Metal games."
+        },
+        {
+          "name": "SWMPR_STATE_DECEL_RAMP_DOWN",
+          "id": 3,
+          "description": "Graduated stair-down state traversing 120 -> 80 -> 60 -> 40 -> 30 -> 10 Hz across hysteresis window."
+        },
+        {
+          "name": "SWMPR_STATE_MEDIA_LOCK_24_48_60HZ",
+          "id": 4,
+          "description": "AVFoundation video cadence lock mode matching movie frame presentation (24Hz, 48Hz, or 60Hz)."
+        },
+        {
+          "name": "SWMPR_STATE_AOD_1HZ",
+          "id": 5,
+          "description": "Always-on display low-power mode with 357,116 lines of blanking, refreshed once per second."
+        }
       ],
-      "ramp_up_latency_us": 8333,
-      "ramp_down_hysteresis_ms": 100,
-      "touch_boost_policy": "Instantaneous jump from 10Hz to 120Hz upon first touch-down event (Phase began) within a single VSYNC interval."
+      "touch_boost_policy": {
+        "activation_trigger": "IOHIDEvent with phase UITouchPhaseBegan or continuous motion gesture.",
+        "ramp_up_latency_us": 8333.333,
+        "guarantee": "Immediate jump from 10Hz to 120Hz within a single VSYNC boundary without intermediate steps."
+      },
+      "deceleration_hysteresis": {
+        "hold_time_ms": 100,
+        "stair_down_sequence": [
+          {"step": 1, "target_hz": 80, "hold_ms": 25},
+          {"step": 2, "target_hz": 60, "hold_ms": 25},
+          {"step": 3, "target_hz": 40, "hold_ms": 25},
+          {"step": 4, "target_hz": 30, "hold_ms": 15},
+          {"step": 5, "target_hz": 10, "hold_ms": 10}
+        ],
+        "total_hysteresis_duration_ms": 100
+      }
     }
   }
 }

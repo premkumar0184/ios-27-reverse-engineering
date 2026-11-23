@@ -1,10 +1,13 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Apple Vertical Flexible Timing Generator (VFTG_v38) Specification",
+  "title": "Apple Vertical Flexible Timing Generator (VFTG_v38) Dynamic Refresh Specification",
   "target_soc": "t8150 (Apple A19 Pro)",
+  "platform": "iOS 27.2 / Darwin 24.2.0 (Build 24B119)",
+  "device_model": "iPhone18,3 (v57ap)",
   "vftg_hardware": {
     "module": "UPBlock_VFTG_v38",
-    "timing_standard": "Apple Flexible-V Dynamic Timing Standard",
+    "cpp_source": "UPBlock_VFTG.cpp",
+    "timing_standard": "Apple Flexible-V Dynamic Timing Standard (Tandem LTPO 3.0)",
     "pixel_clock_hz": 504000000,
     "pixel_clock_human": "504.0 MHz",
     "horizontal_geometry": {
@@ -13,38 +16,134 @@
       "sync_width_pixels": 16,
       "back_porch_pixels": 40,
       "total_pixels_per_line": 1400,
-      "line_time_ns": 2777.77
+      "line_time_ns": 2777.777778,
+      "line_time_us": 2.777778
     },
     "vertical_geometry": {
       "active_lines": 2868,
       "front_porch_lines": 12,
       "sync_width_lines": 4,
-      "base_back_porch_lines_120hz": 116,
-      "total_lines_120hz": 3000,
-      "frame_time_120hz_us": 8333.33
+      "active_scan_time_ms": 7.966667,
+      "fixed_vertical_overhead_lines": 2884
     },
     "dynamic_blanking_modulation": {
       "mechanism": "Vertical Back Porch Expansion (VBP Modulation)",
-      "line_scan_invariance": "Active scan lines (2868 lines) are ALWAYS scanned out at a constant 504 MHz line rate (2.778 microseconds per line) regardless of frame rate, eliminating OLED charge leakage and color shifts.",
-      "back_porch_lines_by_rate": {
-        "120hz": 116,
-        "80hz": 1616,
-        "60hz": 3116,
-        "48hz": 4616,
-        "40hz": 6116,
-        "30hz": 9116,
-        "24hz": 12116,
-        "20hz": 15116,
-        "15hz": 21116,
-        "10hz": 33116,
-        "1hz": 357116
-      }
+      "line_scan_invariance_principle": "All 2868 active scan lines are ALWAYS scanned out at a constant 504.0 MHz pixel clock rate (2.777778 microseconds per line = 7.966667 ms active scan duration) regardless of display refresh rate. This hardware invariant eliminates OLED TFT charge relaxation, differential subpixel decay, and flicker.",
+      "total_lines_formula": "total_lines = active_lines(2868) + front_porch_lines(12) + sync_width_lines(4) + vertical_back_porch_lines",
+      "frame_duration_formula_us": "frame_duration_us = total_lines * (1400 / 504.0)",
+      "discrete_timing_modes": [
+        {
+          "rate_hz": 120,
+          "frame_duration_us": 8333.333,
+          "vbp_lines": 116,
+          "total_lines": 3000,
+          "vblank_lines": 132,
+          "vblank_duration_us": 366.667,
+          "active_duty_cycle_percent": 95.6
+        },
+        {
+          "rate_hz": 80,
+          "frame_duration_us": 12500.0,
+          "vbp_lines": 1616,
+          "total_lines": 4500,
+          "vblank_lines": 1632,
+          "vblank_duration_us": 4533.333,
+          "active_duty_cycle_percent": 63.73
+        },
+        {
+          "rate_hz": 60,
+          "frame_duration_us": 16666.667,
+          "vbp_lines": 3116,
+          "total_lines": 6000,
+          "vblank_lines": 3132,
+          "vblank_duration_us": 8700.0,
+          "active_duty_cycle_percent": 47.8
+        },
+        {
+          "rate_hz": 48,
+          "frame_duration_us": 20833.333,
+          "vbp_lines": 4616,
+          "total_lines": 7500,
+          "vblank_lines": 4632,
+          "vblank_duration_us": 12866.667,
+          "active_duty_cycle_percent": 38.24
+        },
+        {
+          "rate_hz": 40,
+          "frame_duration_us": 25000.0,
+          "vbp_lines": 6116,
+          "total_lines": 9000,
+          "vblank_lines": 6132,
+          "vblank_duration_us": 17033.333,
+          "active_duty_cycle_percent": 31.87
+        },
+        {
+          "rate_hz": 30,
+          "frame_duration_us": 33333.333,
+          "vbp_lines": 9116,
+          "total_lines": 12000,
+          "vblank_lines": 9132,
+          "vblank_duration_us": 25366.667,
+          "active_duty_cycle_percent": 23.9
+        },
+        {
+          "rate_hz": 24,
+          "frame_duration_us": 41666.667,
+          "vbp_lines": 12116,
+          "total_lines": 15000,
+          "vblank_lines": 12132,
+          "vblank_duration_us": 33700.0,
+          "active_duty_cycle_percent": 19.12
+        },
+        {
+          "rate_hz": 20,
+          "frame_duration_us": 50000.0,
+          "vbp_lines": 15116,
+          "total_lines": 18000,
+          "vblank_lines": 15132,
+          "vblank_duration_us": 42033.333,
+          "active_duty_cycle_percent": 15.93
+        },
+        {
+          "rate_hz": 15,
+          "frame_duration_us": 66666.667,
+          "vbp_lines": 21116,
+          "total_lines": 24000,
+          "vblank_lines": 21132,
+          "vblank_duration_us": 58700.0,
+          "active_duty_cycle_percent": 11.95
+        },
+        {
+          "rate_hz": 10,
+          "frame_duration_us": 100000.0,
+          "vbp_lines": 33116,
+          "total_lines": 36000,
+          "vblank_lines": 33132,
+          "vblank_duration_us": 92033.333,
+          "active_duty_cycle_percent": 7.97
+        },
+        {
+          "rate_hz": 1,
+          "frame_duration_us": 1000000.0,
+          "vbp_lines": 357116,
+          "total_lines": 360000,
+          "vblank_lines": 357132,
+          "vblank_duration_us": 992033.333,
+          "active_duty_cycle_percent": 0.8
+        }
+      ]
     },
     "panel_synchronization": {
       "tearing_effect_signal": "Fast_TE (Hardware GPIO line from panel TCON)",
       "te_sample_clock_hz": 24000000,
+      "sample_clock_period_ns": 41.667,
       "max_te_jitter_ticks": 48,
-      "quick_media_switching": "QMS Cinema VRR Supported without black-screen resync"
+      "max_te_jitter_us": 2.0,
+      "quick_media_switching": "QMS Cinema VRR Supported without black-screen resync",
+      "interrupt_handlers": [
+        {"name": "COMMON_INT_STA_1", "description": "Status register reporting HSYNC_MISSING and ALPM state"},
+        {"name": "isr_swmpr", "description": "Interrupt service routine for VFTG blanking modulation update"}
+      ]
     }
   }
 }

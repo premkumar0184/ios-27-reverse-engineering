@@ -1,0 +1,169 @@
+{
+  "pipeline_metadata": {
+    "name": "Apple AGX G18 Mesh Shading & Primitive Pipeline",
+    "architecture": "Generation G18 (PI_300)",
+    "soc_target": "t8150 (A19 Pro)",
+    "paradigm": "Two-stage programmable geometry synthesis replacing fixed-function input assembler",
+    "framework_feature_flags": {
+      "supportsMeshShaders": true,
+      "supportsMeshShadersInICB": true,
+      "supportsFunctionPointersFromMesh": true
+    }
+  },
+  "pipeline_stages": [
+    {
+      "stage_index": 0,
+      "stage_name": "Object Shader",
+      "aliases": [
+        "Task Shader",
+        "Amplification Shader"
+      ],
+      "purpose": "Coarse-grained scene hierarchy traversal, bounding sphere/AABB frustum testing, dynamic LOD determination, and meshlet dispatch amplification",
+      "payload_passing": "Outputs dynamic payload struct passed to spawned Mesh Shader child workgroups via Threadgroup SRAM",
+      "dispatch_amplification_limit": 1024
+    },
+    {
+      "stage_index": 1,
+      "stage_name": "Mesh Shader",
+      "aliases": [
+        "Meshlet Generator",
+        "Primitive Synthesis Stage"
+      ],
+      "purpose": "Fine-grained per-meshlet vertex attribute expansion and primitive index topology generation directly within on-chip memory",
+      "memory_target": "16 KB Meshlet Shared Memory (Threadgroup SRAM)"
+    },
+    {
+      "stage_index": 2,
+      "stage_name": "Hardware Primitive Culling",
+      "aliases": [
+        "Backface & Frustum Culling Accelerator",
+        "Sub-pixel Culling Unit"
+      ],
+      "purpose": "Silicon-level geometric rejection of invisible or degenerate primitives prior to parameter buffer allocation"
+    },
+    {
+      "stage_index": 3,
+      "stage_name": "Tile Parameter Buffer Assembly",
+      "aliases": [
+        "TA / IVDM Scene Allocator"
+      ],
+      "purpose": "Compresses surviving primitive indices and vertex attributes into TBDR tile parameter streams (MList, MTileArray, VHeap Table)"
+    }
+  ],
+  "workgroup_limits_and_dimensions": {
+    "max_threads_per_object_shader": 256,
+    "max_threads_per_mesh_shader": 256,
+    "max_output_vertices": 256,
+    "max_output_primitives": 512,
+    "meshlet_shared_memory_bytes": 16384,
+    "meshlet_shared_memory_kb": 16,
+    "max_mesh_shader_threadgroups_per_usc": 4,
+    "max_concurrent_meshlets_gpu_total": 24
+  },
+  "meshlet_parameter_cache": {
+    "cache_architecture": "On-chip Parameter Cache integrated within Threadgroup SRAM",
+    "cache_capacity_kb_per_usc": 32,
+    "line_size_bytes": 64,
+    "coherency_mechanism": "Hardware scoreboard invalidation upon meshlet task completion",
+    "throughput_bytes_per_clock": 128,
+    "benefit": "Eliminates redundant external memory traffic for shared meshlet vertex attributes"
+  },
+  "hardware_culling_accelerators": {
+    "frustum_culling_unit": {
+      "test_latency_cycles": 2,
+      "clip_planes": 6,
+      "algorithm": "Bounding box sphere projection against normalized view frustum clip planes"
+    },
+    "backface_culling_unit": {
+      "winding_orders": [
+        "Clockwise (CW)",
+        "Counter-Clockwise (CCW)"
+      ],
+      "algorithm": "Signed 2D cross-product area calculation: Area = (x1 - x0)*(y2 - y0) - (y1 - y0)*(x2 - x0)",
+      "two_sided_lighting_override": true,
+      "test_latency_cycles": 1
+    },
+    "subpixel_culling_unit": {
+      "minimum_area_threshold_pixels": 0.0625,
+      "zero_area_degenerate_rejection": true,
+      "benefit": "Eliminates zero-area or sub-pixel sliver triangles before expensive tile memory allocation"
+    }
+  },
+  "memory_layout_and_descriptors": {
+    "meshlet_descriptor": {
+      "total_size_bytes": 32,
+      "alignment_bytes": 32,
+      "fields": [
+        {
+          "name": "vertex_offset",
+          "offset_bytes": 0,
+          "size_bytes": 4,
+          "type": "uint32_t (Base index into vertex attribute stream)"
+        },
+        {
+          "name": "primitive_offset",
+          "offset_bytes": 4,
+          "size_bytes": 4,
+          "type": "uint32_t (Base offset into primitive index buffer)"
+        },
+        {
+          "name": "vertex_count",
+          "offset_bytes": 8,
+          "size_bytes": 1,
+          "type": "uint8_t (Number of output vertices, max 256)"
+        },
+        {
+          "name": "primitive_count",
+          "offset_bytes": 9,
+          "size_bytes": 1,
+          "type": "uint8_t (Number of output primitives, max 512)"
+        },
+        {
+          "name": "meshlet_flags",
+          "offset_bytes": 10,
+          "size_bytes": 2,
+          "type": "uint16_t (Culling flags, topology tri/line)"
+        },
+        {
+          "name": "bounding_sphere_center",
+          "offset_bytes": 12,
+          "size_bytes": 12,
+          "type": "float[3] (Bounding sphere center X, Y, Z)"
+        },
+        {
+          "name": "bounding_sphere_radius",
+          "offset_bytes": 24,
+          "size_bytes": 4,
+          "type": "float (Radius R)"
+        },
+        {
+          "name": "cone_cutoff_angle_packed",
+          "offset_bytes": 28,
+          "size_bytes": 4,
+          "type": "float (Cluster normal cone cutoff angle for early backface culling)"
+        }
+      ]
+    }
+  },
+  "data_masters_interaction": {
+    "compute_data_master_cdm": {
+      "role": "Object and Mesh workgroup scheduling and dispatch across FSTP clusters",
+      "interface": "CDM Command Stream (0x30 packet type)"
+    },
+    "vertex_data_master_ivdm_gvdm": {
+      "role": "Streaming memory fetch for meshlet vertex attributes and bindless buffer lookups",
+      "cache_coherency": "L1 instruction and texture data cache line prefetching"
+    },
+    "primitive_data_master_pdm": {
+      "role": "Primitive index buffer decoding, topology validation, and viewport clipping",
+      "output_bus": "PDM-to-TA parameter write crossbar"
+    },
+    "tile_accelerator_ta": {
+      "role": "Allocation of tile lists (MTileArray) and scene virtual heap (VHeap Table) for rasterization",
+      "tile_dimensions_supported": [
+        "16x16",
+        "32x32"
+      ]
+    }
+  }
+}
