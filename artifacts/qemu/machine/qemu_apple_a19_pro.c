@@ -121,8 +121,8 @@ void apple_a19_pro_machine_init(void *opaque) {
 
     /* 3. Initialize Apple DART Gen3/Gen4 IOMMUs */
     dart_init(&s->dart_isp, "dart_isp", &s->aic, AIC_IRQ_DART_ISP_FAULT);
-    dart_init(&s->dart_ave, "dart_ave", &s->aic, AIC_IRQ_PRORES_COMPLETE);
-    dart_init(&s->dart_sep, "dart_sep", &s->aic, AIC_IRQ_DART_ISP_FAULT);
+    dart_init(&s->dart_ave, "dart_ave", &s->aic, AIC_IRQ_DART_AVE_FAULT);
+    dart_init(&s->dart_sep, "dart_sep", &s->aic, AIC_IRQ_DART_SEP_FAULT);
 
     /* 4. Initialize Clean-Room Accelerators */
     agx_direct_init(&s->agx_gpu, "agx_g18p", &s->aic, &s->asc_agx_core0, &s->dart_isp);

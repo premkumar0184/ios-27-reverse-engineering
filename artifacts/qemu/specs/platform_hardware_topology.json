@@ -222,14 +222,14 @@
       "name": "DART_SEP",
       "base_hex": "0x0000000070c80000",
       "size_bytes": 65536,
-      "irq_fault": 302,
+      "irq_fault": 314,
       "max_streams": 16
     },
     {
       "name": "DART_AVE",
       "base_hex": "0x0000000077020000",
       "size_bytes": 65536,
-      "irq_fault": 256,
+      "irq_fault": 917,
       "max_streams": 16
     },
     {

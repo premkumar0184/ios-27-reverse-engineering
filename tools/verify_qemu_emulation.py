@@ -224,6 +224,23 @@ class QEMUVerifier:
         if suite_passed:
             self.ok(f"AIC v4 interrupt vector routing matrix verified ({len(expected_vectors)} vectors).")
 
+        # Verify DART IOMMU instance configurations
+        iommus = {i["name"]: i for i in topo.get("iommu_instances", [])}
+        expected_iommus = {
+            "DART_ISP": 302,
+            "DART_SEP": 314,
+            "DART_AVE": 917
+        }
+        for iname, ifault in expected_iommus.items():
+            if iname not in iommus:
+                self.fail(f"Missing IOMMU instance: {iname}")
+                suite_passed = False
+            elif iommus[iname].get("irq_fault") != ifault:
+                self.fail(f"IOMMU {iname} fault IRQ mismatch: expected {ifault}, got {iommus[iname].get('irq_fault')}")
+                suite_passed = False
+        if suite_passed:
+            self.ok(f"DART Gen3/Gen4 IOMMU instances verified (ISP: 302, SEP: 314, AVE: 917).")
+
         if suite_passed:
             self.passed_suites += 1
 
@@ -308,14 +325,27 @@ class QEMUVerifier:
                 self.fail(f"BIN image missing or empty: {bin_file}")
                 suite_passed = False
 
-            # Verify RTKSTACK canary presence in ELF
+            # Verify ELF Header and RTKSTACK canary presence in ELF
             if elf_file.exists():
                 elf_data = elf_file.read_bytes()
-                if canary_bytes not in elf_data:
+                # 1. ELF Magic
+                if len(elf_data) < 52 or elf_data[:4] != b"\x7fELF":
+                    self.fail(f"Invalid ELF magic in {elf_file.name}")
+                    suite_passed = False
+                # 2. EI_CLASS == 2 (64-bit), EI_DATA == 1 (Little-Endian)
+                elif elf_data[4] != 2 or elf_data[5] != 1:
+                    self.fail(f"ELF geometry mismatch (not 64-bit LE) in {elf_file.name}")
+                    suite_passed = False
+                # 3. e_machine == 0xB7 (EM_AARCH64 = 183)
+                elif struct.unpack_from("<H", elf_data, 18)[0] != 0xB7:
+                    self.fail(f"ELF e_machine is not AArch64 (0xB7) in {elf_file.name}")
+                    suite_passed = False
+                # 4. Canary presence
+                elif canary_bytes not in elf_data:
                     self.fail(f"RTKSTACK canary watermark missing in {elf_file.name}")
                     suite_passed = False
                 else:
-                    self.ok(f"{sname}: RTKSTACK canary watermark (0x52544B535441434B) present.")
+                    self.ok(f"{sname}: Valid ELF64 AArch64 & RTKSTACK canary (0x52544B535441434B) verified.")
 
         if suite_passed:
             self.passed_suites += 1
@@ -386,6 +416,23 @@ class QEMUVerifier:
             suite_passed = False
         else:
             self.ok("RTKit Endpoint 0 Handshake: PASSED.")
+
+        # Check robustness and edge invariant probes
+        invariants = trace.get("robustness_invariants", {})
+        expected_invariants = [
+            ("firmware_binaries_loaded", "RTKit coprocessor firmware binary images loaded into SRAM"),
+            ("dart_fault_w1c_passed", "DART translation fault assertion and W1C interrupt clearing"),
+            ("aic_priority_arbitration_passed", "AIC interrupt priority arbitration (DART fault over doorbell)"),
+            ("ascwrap_32bit_mmio_passed", "ASCwrap 32-bit MMIO high/low word staging"),
+            ("doorbell_multibit_passed", "ASCwrap doorbell multi-bit persistence across partial clears"),
+            ("silenus_fault_isolation_passed", "Silenus DMA unmapped DVA fault isolation & DMA error reporting")
+        ]
+        for inv_key, inv_desc in expected_invariants:
+            if not invariants.get(inv_key):
+                self.fail(f"Robustness invariant failed: {inv_desc} ({inv_key})")
+                suite_passed = False
+            else:
+                self.ok(f"Invariant: {inv_desc} passed.")
 
         if suite_passed:
             self.passed_suites += 1
