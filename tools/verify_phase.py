@@ -45,10 +45,100 @@ PLACEHOLDER_STRINGS = [
 PHASE_SPECS = {
     # ── Original phases (preserved) ──────────────────────────────────────
     "phase_01_recon_and_inventory": {
-        "required_artifacts": ["artifacts/manifests/buildmanifest_inventory.json"],
-        "findings_docs": [],
+        "required_artifacts": [
+            "artifacts/manifests/manifest_summary.json",
+            "artifacts/manifests/image_inventory.json",
+            "artifacts/manifests/firmware_inventory.json",
+            "artifacts/manifests/component_map.json"
+        ],
+        "findings_docs": ["findings/01_RECON_AND_INVENTORY.md"],
         "min_findings_bytes": 2500,
-        "json_schemas": {"artifacts/manifests/buildmanifest_inventory.json": ["restore_identities"]},
+        "json_schemas": {},
+    },
+    "phase_02_crypto_and_extraction": {
+        "required_artifacts": [
+            "artifacts/crypto/141-08876-216_rootfs.dmg",
+            "artifacts/crypto/141-09724-226_cryptex_systemos.dmg",
+            "artifacts/crypto/141-08904-238_exclaveos.dmg",
+            "artifacts/kernel/kernelcache.release.raw",
+            "artifacts/kernel/kernelcache.research.raw"
+        ],
+        "findings_docs": ["findings/02_CRYPTO_AND_EXTRACTION.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {},
+    },
+    "phase_03_kernel_sptm_txm": {
+        "required_artifacts": [
+            "artifacts/kernel/kext_catalog_release.json",
+            "artifacts/kernel/kext_catalog_research.json",
+            "artifacts/kernel/kext_diff.json",
+            "artifacts/kernel/sptm_analysis.json",
+            "artifacts/kernel/txm_analysis.json"
+        ],
+        "findings_docs": ["findings/03_KERNEL_AND_CORE_SECURITY.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {},
+    },
+    "phase_04_firmware_coprocessors": {
+        "required_artifacts": [
+            "artifacts/coprocessors/coprocessor_inventory.json",
+            "artifacts/coprocessors/aop_analysis.json",
+            "artifacts/coprocessors/sep_analysis.json",
+            "artifacts/coprocessors/baseband_inventory.json"
+        ],
+        "findings_docs": ["findings/04_FIRMWARE_COPROCESSORS.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {},
+    },
+    "phase_05_rootfs_dyld_frameworks": {
+        "required_artifacts": [
+            "artifacts/rootfs/daemon_catalog.json",
+            "artifacts/rootfs/mach_services_map.json",
+            "artifacts/rootfs/shared_cache_overview.json"
+        ],
+        "findings_docs": ["findings/05_ROOTFS_AND_FRAMEWORKS.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {},
+    },
+    "phase_06_ui_and_applications": {
+        "required_artifacts": [
+            "artifacts/ui/springboard_analysis.json",
+            "artifacts/ui/asset_catalog_inventory.json",
+            "artifacts/ui/app_ecosystem_matrix.json"
+        ],
+        "findings_docs": ["findings/06_UI_AND_APPLICATIONS.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {},
+    },
+    "phase_07_security_trust_architecture": {
+        "required_artifacts": [
+            "artifacts/security/trustcache_catalog.json",
+            "artifacts/security/cdhash_database.json",
+            "artifacts/security/entitlements_analysis.json"
+        ],
+        "findings_docs": ["findings/07_SECURITY_TRUST_ARCHITECTURE.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {},
+    },
+    "phase_08_graphify_synthesis": {
+        "required_artifacts": [
+            "graphify-out/graph.json",
+            "graphify-out/GRAPH_REPORT.md",
+            "findings/08_SYNTHESIS_AND_GRAPH.md"
+        ],
+        "findings_docs": ["findings/08_SYNTHESIS_AND_GRAPH.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {},
+    },
+    "phase_09_apple_ecosystem_deep_dive": {
+        "required_artifacts": [
+            "artifacts/ecosystem/ecosystem_gap_audit.json",
+            "artifacts/ecosystem/continuity_ipc_matrix.json",
+            "findings/09_APPLE_ECOSYSTEM_DEEP_DIVE.md"
+        ],
+        "findings_docs": ["findings/09_APPLE_ECOSYSTEM_DEEP_DIVE.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {},
     },
 
     # ── Scrolling Reverse Engineering phases ──────────────────────────────
@@ -1169,6 +1259,117 @@ PHASE_SPECS = {
               "artifacts/ans2/cross_validation_matrix.json",
               lambda d: d.get("extraction_confidence", {}).get("EXTRACTED", 0) >= 20,
               "cross_validation_matrix must have at least 20 EXTRACTED confidence constants"),
+        ]
+    },
+
+    # ── Display Coprocessor (DCP / ProMotion) phases ────────────────────
+    "dcp_phase_1a_workspace_baseline": {
+        "required_artifacts": [
+            "artifacts/dcp/phase_1a_workspace_baseline.json",
+            "artifacts/dcp/dcp_firmware_container_spec.json",
+            "findings/dcp/01A_WORKSPACE_BASELINE.md"
+        ],
+        "findings_docs": ["findings/dcp/01A_WORKSPACE_BASELINE.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {
+            "artifacts/dcp/phase_1a_workspace_baseline.json": ["firmware_envelope", "hardware_interconnect"],
+            "artifacts/dcp/dcp_firmware_container_spec.json": ["container"]
+        },
+        "assertions": [
+            ("fourcc_is_dcpf",
+             "artifacts/dcp/dcp_firmware_container_spec.json",
+             lambda d: d.get("container", {}).get("fourcc_tag") == "dcpf",
+             "container fourcc_tag must be 'dcpf'"),
+        ]
+    },
+
+    "dcp_phase_1b_microkernel": {
+        "required_artifacts": [
+            "artifacts/dcp/dcp_microkernel_spec.json",
+            "artifacts/dcp/dcp_service_topology.json",
+            "findings/dcp/01B_DCP_MICROKERNEL.md"
+        ],
+        "findings_docs": ["findings/dcp/01B_DCP_MICROKERNEL.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {
+            "artifacts/dcp/dcp_microkernel_spec.json": ["microkernel", "memory_carveouts"],
+            "artifacts/dcp/dcp_service_topology.json": ["hardware_pipe_blocks", "endpoints"]
+        },
+        "assertions": [
+            ("rtkit_version_verified",
+             "artifacts/dcp/dcp_microkernel_spec.json",
+             lambda d: "3514.40.18" in d.get("microkernel", {}).get("version", ""),
+             "RTKit version must contain '3514.40.18'"),
+        ]
+    },
+
+    "dcp_phase_2_promotion_arbitration": {
+        "required_artifacts": [
+            "artifacts/dcp/promotion_arbitration_spec.json",
+            "artifacts/dcp/vftg_timing_generator_spec.json",
+            "findings/dcp/02_PROMOTION_AND_FRAME_PACING.md"
+        ],
+        "findings_docs": ["findings/dcp/02_PROMOTION_AND_FRAME_PACING.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {
+            "artifacts/dcp/promotion_arbitration_spec.json": ["promotion_architecture"],
+            "artifacts/dcp/vftg_timing_generator_spec.json": ["vftg_hardware"]
+        },
+        "assertions": [
+            ("vftg_pixel_clock_504mhz",
+             "artifacts/dcp/vftg_timing_generator_spec.json",
+             lambda d: d.get("vftg_hardware", {}).get("pixel_clock_hz") == 504000000,
+             "pixel_clock_hz must be 504000000 (504 MHz)"),
+        ]
+    },
+
+    "dcp_phase_3_pixel_compensation": {
+        "required_artifacts": [
+            "artifacts/dcp/pixel_compensation_spec.json",
+            "artifacts/dcp/color_pipeline_lut_spec.json",
+            "findings/dcp/03_PIXEL_COMPENSATION_AND_COLOR.md"
+        ],
+        "findings_docs": ["findings/dcp/03_PIXEL_COMPENSATION_AND_COLOR.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {
+            "artifacts/dcp/pixel_compensation_spec.json": ["burn_in_compensation_bics", "panel_temperature_uniformity_ptuc"],
+            "artifacts/dcp/color_pipeline_lut_spec.json": ["color_manager_3d_lut", "pcc_2d_local_tone_mapping"]
+        },
+    },
+
+    "dcp_phase_4_xnu_boundary": {
+        "required_artifacts": [
+            "artifacts/dcp/xnu_dcp_boundary_spec.json",
+            "artifacts/dcp/pseudocode/dcp_mailbox_client.pseudo.c",
+            "findings/dcp/04_XNU_DRIVER_BOUNDARY.md"
+        ],
+        "findings_docs": ["findings/dcp/04_XNU_DRIVER_BOUNDARY.md"],
+        "min_findings_bytes": 2500,
+        "json_schemas": {
+            "artifacts/dcp/xnu_dcp_boundary_spec.json": ["mailbox_interconnect", "kernel_drivers"]
+        },
+    },
+
+    "dcp_phase_5_synthesis": {
+        "required_artifacts": [
+            "IOS_27_DISPLAY_COPROCESSOR_DCP_RE.md",
+            "artifacts/dcp/cross_validation_matrix.json",
+            "tools/verify_dcp_constants.py"
+        ],
+        "findings_docs": ["IOS_27_DISPLAY_COPROCESSOR_DCP_RE.md"],
+        "min_findings_bytes": 50000,
+        "json_schemas": {
+            "artifacts/dcp/cross_validation_matrix.json": ["extraction_confidence"]
+        },
+        "assertions": [
+            ("verify_script_exists",
+             None,
+             lambda _: Path(ROOT / "tools/verify_dcp_constants.py").is_file(),
+             "tools/verify_dcp_constants.py must exist"),
+            ("has_extracted_constants",
+             "artifacts/dcp/cross_validation_matrix.json",
+             lambda d: d.get("extraction_confidence", {}).get("EXTRACTED", 0) >= 25,
+             "cross_validation_matrix must have at least 25 EXTRACTED constants"),
         ]
     },
 

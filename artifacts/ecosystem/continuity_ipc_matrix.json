@@ -8,7 +8,7 @@
     "total_continuity_daemons": 11,
     "total_ids_alloy_services": 112,
     "total_ble_subtypes": 7,
-    "generated_at": "2026-11-23T00:57:31.098410+00:00",
+    "generated_at": "2026-11-23T01:11:39.745100+00:00",
     "generator_tool": "tools/generate_continuity_matrix.py"
   },
   "continuity_daemons": {

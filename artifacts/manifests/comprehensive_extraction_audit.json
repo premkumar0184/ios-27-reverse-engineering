@@ -1,0 +1,318 @@
+{
+  "project": "iOS 27.2 Full-Stack Reverse Engineering Pipeline",
+  "target_hardware": "iPhone18,3 (A19 Pro / t8150 / v57ap)",
+  "build_train": "RaveB (24B119)",
+  "audit_timestamp": "2026-11-23T06:40:00Z",
+  "audit_scope": "Comprehensive Phase-by-Phase Extraction Audit & Residual Asset Discovery",
+  "summary": {
+    "total_restore_files": 168,
+    "total_binary_firmware_assets": 91,
+    "completed_core_phases": 9,
+    "completed_subsystem_campaigns": 13,
+    "total_verified_phases": 67,
+    "master_dossiers_count": 13,
+    "all_verification_scripts_passing": true
+  },
+  "core_phases": [
+    {
+      "id": "phase_01_recon_and_inventory",
+      "title": "IPSW Reconnaissance & Component Inventory",
+      "status": "COMPLETED",
+      "dossier": "findings/01_RECON_AND_INVENTORY.md",
+      "dossier_bytes": 9707,
+      "placeholders": 0
+    },
+    {
+      "id": "phase_02_crypto_and_extraction",
+      "title": "Cryptographic Decryption & Full Filesystem Extraction",
+      "status": "COMPLETED",
+      "dossier": "findings/02_CRYPTO_AND_EXTRACTION.md",
+      "dossier_bytes": 11489,
+      "placeholders": 0
+    },
+    {
+      "id": "phase_03_kernel_sptm_txm",
+      "title": "Kernelcache, SPTM, TXM & ExclaveOS Security Architecture",
+      "status": "COMPLETED",
+      "dossier": "findings/03_KERNEL_AND_CORE_SECURITY.md",
+      "dossier_bytes": 19903,
+      "placeholders": 0
+    },
+    {
+      "id": "phase_04_firmware_coprocessors",
+      "title": "Coprocessor & Peripheral Firmware Reverse Engineering",
+      "status": "COMPLETED",
+      "dossier": "findings/04_FIRMWARE_COPROCESSORS.md",
+      "dossier_bytes": 18050,
+      "placeholders": 0
+    },
+    {
+      "id": "phase_05_rootfs_dyld_frameworks",
+      "title": "Core System Runtime, dyld_shared_cache & System Daemons",
+      "status": "COMPLETED",
+      "dossier": "findings/05_ROOTFS_AND_FRAMEWORKS.md",
+      "dossier_bytes": 26329,
+      "placeholders": 0
+    },
+    {
+      "id": "phase_06_ui_and_applications",
+      "title": "Apple iOS UI Layer, SpringBoard & System Applications",
+      "status": "COMPLETED",
+      "dossier": "findings/06_UI_AND_APPLICATIONS.md",
+      "dossier_bytes": 23537,
+      "placeholders": 0
+    },
+    {
+      "id": "phase_07_security_trust_architecture",
+      "title": "Platform Security, TrustCache & Full Entitlement Matrix",
+      "status": "COMPLETED",
+      "dossier": "findings/07_SECURITY_TRUST_ARCHITECTURE.md",
+      "dossier_bytes": 31864,
+      "placeholders": 0
+    },
+    {
+      "id": "phase_08_graphify_synthesis",
+      "title": "Cross-Component Knowledge Graph Synthesis",
+      "status": "COMPLETED",
+      "dossier": "findings/08_SYNTHESIS_AND_GRAPH.md",
+      "dossier_bytes": 51221,
+      "placeholders": 0
+    },
+    {
+      "id": "phase_09_apple_ecosystem_deep_dive",
+      "title": "Apple Ecosystem Architecture & Continuity Fabric",
+      "status": "COMPLETED",
+      "dossier": "findings/09_APPLE_ECOSYSTEM_DEEP_DIVE.md",
+      "dossier_bytes": 32443,
+      "placeholders": 0
+    }
+  ],
+  "specialized_subsystem_campaigns": [
+    {
+      "name": "Scrolling Reverse Engineering",
+      "master_dossier": "IOS_27_SCROLLING_REVERSE_ENGINEERING.md",
+      "bytes": 87882,
+      "verification_suite": "14/14 PASS",
+      "standalone_repo": null
+    },
+    {
+      "name": "Animation Physics Engine",
+      "master_dossier": "IOS_27_ANIMATION_PHYSICS_RE.md",
+      "bytes": 56218,
+      "verification_suite": "PASS",
+      "standalone_repo": null
+    },
+    {
+      "name": "Gesture Arbitration System",
+      "master_dossier": "IOS_27_GESTURE_ARBITRATION_RE.md",
+      "bytes": 57124,
+      "verification_suite": "PASS",
+      "standalone_repo": null
+    },
+    {
+      "name": "Apple Neural Engine (ANE) H18",
+      "master_dossier": "IOS_27_APPLE_NEURAL_ENGINE_RE.md",
+      "bytes": 51048,
+      "verification_suite": "PASS",
+      "standalone_repo": "apple-neural-engine-h18-re"
+    },
+    {
+      "name": "ExclaveOS & Tightbeam RPC",
+      "master_dossier": "IOS_27_EXCLAVEOS_TIGHTBEAM_RE.md",
+      "bytes": 56192,
+      "verification_suite": "PASS",
+      "standalone_repo": "apple-exclaveos-tightbeam-re"
+    },
+    {
+      "name": "Secure Enclave (sepOS)",
+      "master_dossier": "IOS_27_SECURE_ENCLAVE_SEPOS_RE.md",
+      "bytes": 52180,
+      "verification_suite": "PASS",
+      "standalone_repo": "apple-sepos-crypto-re"
+    },
+    {
+      "name": "SPTM & TXM Boot Architecture",
+      "master_dossier": "IOS_27_SPTM_TXM_BOOT_RE.md",
+      "bytes": 68420,
+      "verification_suite": "PASS",
+      "standalone_repo": "apple-sptm-txm-re"
+    },
+    {
+      "name": "Always-On Processor 2 (AOP2) & RTKit",
+      "master_dossier": "IOS_27_AOP_RTKIT_SENSOR_RE.md",
+      "bytes": 67890,
+      "verification_suite": "PASS",
+      "standalone_repo": "apple-aop-rtkit"
+    },
+    {
+      "name": "Apple Video Encoder 2 (AVE2)",
+      "master_dossier": "IOS_27_AVE2_VIDEO_ENCODER_RE.md",
+      "bytes": 74312,
+      "verification_suite": "PASS",
+      "standalone_repo": "apple-ave2-codecs-re"
+    },
+    {
+      "name": "Apple Display Coprocessor (DCP / ProMotion)",
+      "master_dossier": "IOS_27_DISPLAY_COPROCESSOR_DCP_RE.md",
+      "bytes": 52020,
+      "verification_suite": "PASS",
+      "standalone_repo": "apple-dcp-promotion-re"
+    },
+    {
+      "name": "Apple Storage Processor (ANS2 NVMe)",
+      "master_dossier": "IOS_27_ANS2_NVME_STORAGE_RE.md",
+      "bytes": 52104,
+      "verification_suite": "PASS",
+      "standalone_repo": "apple-ans2-nvme-re"
+    },
+    {
+      "name": "Apple AGX GPU (G18)",
+      "master_dossier": "IOS_27_APPLE_AGX_GPU_RE.md",
+      "bytes": 52340,
+      "verification_suite": "PASS",
+      "standalone_repo": "apple-agx-gpu-g18-re"
+    },
+    {
+      "name": "A19 Pro Architecture Synthesis Book",
+      "master_dossier": "APPLE_SILICON_A19_PRO_ARCHITECTURE_BOOK.md",
+      "bytes": 103450,
+      "verification_suite": "PASS",
+      "standalone_repo": "apple-silicon-a19-pro-architecture"
+    }
+  ],
+  "residual_firmware_assets_catalog": [
+    {
+      "file": "Firmware/isp_bni/adc-silenus-v57.im4p",
+      "fourcc": "ispf",
+      "size_bytes": 29016091,
+      "format": "Mach-O 64-bit ARM64E (MH_PRELOAD)",
+      "rtos": "RTKit_armv8_tempest_smp_Oz_flto_pac-3514.40.18.release",
+      "role": "Apple Silenus ISP (Image Signal Processor & BNI) multi-core SMP computational photography engine"
+    },
+    {
+      "file": "Firmware/t2026phoneG1/Release/ftab.bin",
+      "fourcc": "ftab",
+      "size_bytes": 29600848,
+      "format": "Apple FTAB Package",
+      "rtos": "RTKit_armv8_chinook_Oz_flto_pac-3514.40.18.release",
+      "role": "Apple in-house Wi-Fi 7 & Bluetooth 6 silicon (Centauri / t2026phoneG1 / AirshipDK)"
+    },
+    {
+      "file": "Firmware/V57_MtpFirmware.im4p",
+      "fourcc": "mtpf",
+      "size_bytes": 9981367,
+      "format": "IM4P rkos (RTKit)",
+      "rtos": "RTKit_armv8_chinook_Oz_flto-3514.40.18.release",
+      "role": "Apple Multi-Touch Processor (MTP) 240Hz capacitive touch matrix scanner"
+    },
+    {
+      "file": "Firmware/Rose/r2p1/ftab.bin",
+      "fourcc": "rose",
+      "size_bytes": 1069300,
+      "format": "Apple FTAB Package",
+      "rtos": "RTKit_armv7em_Oz_floatabihard-3514.40.18.release",
+      "role": "Apple U2 Ultra-Wideband (UWB) spatial tracking and directional awareness coprocessor"
+    },
+    {
+      "file": "Firmware/SmartIOFirmware_ASCv7.im4p",
+      "fourcc": "siof",
+      "size_bytes": 1140621,
+      "format": "IM4P ARM64",
+      "rtos": "RTKit_armv8_chinook_Oz_flto-3514.40.18.release",
+      "role": "Apple SmartIO ASCv7 high-speed PCIe / USB-C controller"
+    },
+    {
+      "file": "Firmware/AppleLPM/AppleLPM.v57.release.im4p",
+      "fourcc": "alpm",
+      "size_bytes": 1269913,
+      "format": "IM4P ARM64e",
+      "rtos": "RTKit_armv8_chinook_Oz_flto_pac-3514.40.18.release",
+      "role": "Apple Low Power Monitor (AppleLPM) sleep state governor"
+    },
+    {
+      "file": "Firmware/M3/bin/securem3fw-v57.im4p",
+      "fourcc": "sm3f",
+      "size_bytes": 93189,
+      "format": "IM4P ARMv7-M",
+      "rtos": "RTKit_armv7m_Oz_floatabisoft-3514.40.18.release",
+      "role": "Secure M3 Tightbeam IPC bridge and cryptographic translator (M3_tb_ipc.c)"
+    },
+    {
+      "file": "Firmware/WirelessPower/WirelessPower.d23_v5z.im4p",
+      "fourcc": "wchf",
+      "size_bytes": 240015,
+      "format": "IM4P rkos (RTKit)",
+      "rtos": "RTKit_armv7em_Oz_floatabihard-3514.40.18.release",
+      "role": "MagSafe and Qi wireless inductive power controller"
+    },
+    {
+      "file": "Firmware/pmp/t8150pmp.im4p",
+      "fourcc": "pmpf",
+      "size_bytes": 643097,
+      "format": "IM4P ARM64",
+      "rtos": "RTKit_armv8_chinook_Oz_flto-3514.40.18.release",
+      "role": "Apple Power Management Processor (PMP) rail and voltage regulator"
+    },
+    {
+      "file": "Firmware/pmc/t8150pmcfw.im4p",
+      "fourcc": "pmcf",
+      "size_bytes": 30235,
+      "format": "IM4P ARMv7-M",
+      "rtos": "Embedded Power RTOS",
+      "role": "Apple Power Management Controller (PMC)"
+    },
+    {
+      "file": "Firmware/msr/t8150.msrf.im4p",
+      "fourcc": "msrf",
+      "size_bytes": 161917,
+      "format": "IM4P ARMv7-M",
+      "rtos": "Embedded Memory Controller RTOS",
+      "role": "Memory System Resource (MSR) and DRAM calibration controller"
+    },
+    {
+      "file": "Firmware/V57_LeapHapticsFirmware.im4p",
+      "fourcc": "lphp",
+      "size_bytes": 312552,
+      "format": "IM4P Binary",
+      "rtos": "Embedded Haptics Controller",
+      "role": "Taptic Engine (Leap Haptics) voice coil actuator waveform driver"
+    },
+    {
+      "file": "Firmware/vinyl_20.vnlfw",
+      "fourcc": "vnlfw",
+      "size_bytes": 19633897,
+      "format": "PK Zip Archive (132 files)",
+      "rtos": "G&D SmartCard Operating System",
+      "role": "Vinyl embedded UICC (eSIM) security profile and DER firmware archive"
+    },
+    {
+      "file": "Firmware/SE/StockholmE.RELEASE.sefw",
+      "fourcc": "sefw",
+      "size_bytes": 13420343,
+      "format": "ASN.1 DER JCOP Container",
+      "rtos": "NXP JCOP OS (Java Card Open Platform)",
+      "role": "Stockholm Secure Element (eSE) NFC Apple Pay transit applet firmware"
+    },
+    {
+      "file": "141-08824-244.dmg",
+      "fourcc": "dmg",
+      "size_bytes": 16777216,
+      "format": "APFS Disk Image (Unencrypted)",
+      "role": "Cryptex1,AppOS holding Safari, WebKit, and PasswordBreach system daemons"
+    },
+    {
+      "file": "141-09491-242.dmg",
+      "fourcc": "rdsk",
+      "size_bytes": 247463963,
+      "format": "IM4P wrapped APFS RamDisk",
+      "role": "Customer Upgrade RestoreRamDisk holding DriverKit Centauri drivers and Astris hardware SWD flashers"
+    },
+    {
+      "file": "141-10399-240.dmg",
+      "fourcc": "rdsk",
+      "size_bytes": 245366811,
+      "format": "IM4P wrapped APFS RamDisk",
+      "role": "Customer Erase RestoreRamDisk holding low-level factory partitioning and restore utilities"
+    }
+  ]
+}
