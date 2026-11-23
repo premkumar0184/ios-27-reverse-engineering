@@ -1,0 +1,193 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro Camera ISP Driver Dispatch & UserClient Specification",
+  "platform": "Apple Silicon A19 Pro (t8150) / iOS 27.2 (24B119)",
+  "driver_bundle": {
+    "bundle_id": "com.apple.driver.AppleH16CameraInterface",
+    "bundle_path": "/System/Library/Extensions/AppleH16CameraInterface.kext",
+    "version": "6.104",
+    "primary_classes": [
+      {
+        "class_name": "AppleH16CameraInterface",
+        "super_class": "IOService",
+        "role": "Top-level IOKit driver matching DeviceTree /arm-io/isp node"
+      },
+      {
+        "class_name": "AppleH16CamIn",
+        "super_class": "IOService",
+        "role": "Core ISP controller driver, power governor, and channel arbitrator"
+      },
+      {
+        "class_name": "AppleH16CamInUserClient",
+        "super_class": "IOUserClient",
+        "role": "User-space client gateway for camera capture daemons"
+      },
+      {
+        "class_name": "AppleH16PearlCamUserClient",
+        "super_class": "IOUserClient",
+        "role": "Specialized user client for Pearl FaceID NIR sensor ingest"
+      },
+      {
+        "class_name": "AppleH16CamInFrameReceiver",
+        "super_class": "OSObject",
+        "role": "Kernel frame stream engine managing DART buffer queues"
+      },
+      {
+        "class_name": "AppleH16CamInFrameReceiverBufferPool",
+        "super_class": "OSObject",
+        "role": "Pre-mapped DMA memory surface pool for zero-copy frame ingest"
+      }
+    ]
+  },
+  "user_client_dispatch": {
+    "entitlements_required": [
+      "com.apple.camera.iokit-user-access",
+      "com.apple.pearl.iokit-user-access"
+    ],
+    "authorized_client_binaries": [
+      "appleh16camerad",
+      "dietappleh16camerad",
+      "appleh16darwincamerad",
+      "cameracaptured",
+      "mediaserverd",
+      "h16isp"
+    ],
+    "external_method_dispatch_table": [
+      {
+        "selector": 0,
+        "name": "ISP_OpenSession",
+        "scalar_in_count": 2,
+        "struct_in_size": 0,
+        "scalar_out_count": 1,
+        "struct_out_size": 0,
+        "description": "Initializes camera session and acquires channel lease"
+      },
+      {
+        "selector": 1,
+        "name": "ISP_CloseSession",
+        "scalar_in_count": 1,
+        "struct_in_size": 0,
+        "scalar_out_count": 0,
+        "struct_out_size": 0,
+        "description": "Releases channel lease and tears down session resources"
+      },
+      {
+        "selector": 2,
+        "name": "ISP_GeneralProcessBuffers",
+        "scalar_in_count": 1,
+        "struct_in_size": 48,
+        "scalar_out_count": 1,
+        "struct_out_size": 48,
+        "description": "Dispatches kH16ISPUserClientCommand_GeneralProcessBuffers for frame submission"
+      },
+      {
+        "selector": 3,
+        "name": "ISP_RegisterFrameReceiverQueue",
+        "scalar_in_count": 1,
+        "struct_in_size": 0,
+        "scalar_out_count": 1,
+        "struct_out_size": 0,
+        "description": "Sets up IOSharedDataQueue memory mapping for event delivery"
+      },
+      {
+        "selector": 4,
+        "name": "ISP_ConfigureStreamingChannel",
+        "scalar_in_count": 3,
+        "struct_in_size": 128,
+        "scalar_out_count": 1,
+        "struct_out_size": 0,
+        "description": "Applies CISP channel parameters, format, and sensor clock dividers"
+      },
+      {
+        "selector": 5,
+        "name": "ISP_StartChannel",
+        "scalar_in_count": 1,
+        "struct_in_size": 0,
+        "scalar_out_count": 0,
+        "struct_out_size": 0,
+        "description": "Starts DMA frame streaming from MIPI CSI-2 receiver"
+      },
+      {
+        "selector": 6,
+        "name": "ISP_StopChannel",
+        "scalar_in_count": 1,
+        "struct_in_size": 0,
+        "scalar_out_count": 0,
+        "struct_out_size": 0,
+        "description": "Halts DMA frame streaming and drains pending buffer queues"
+      },
+      {
+        "selector": 7,
+        "name": "ISP_ReturnBuffer",
+        "scalar_in_count": 2,
+        "struct_in_size": 0,
+        "scalar_out_count": 0,
+        "struct_out_size": 0,
+        "description": "Returns processed IOSurface back to the kernel/firmware pool"
+      }
+    ]
+  },
+  "memory_mapping_functions": {
+    "function_isp_map_iobmd": {
+      "symbol": "function-isp_map_iobmd",
+      "kernel_function": "ispMapIobmd",
+      "signature": "uint64_t ispMapIobmd(IOService* provider, IOMemoryDescriptor* desc, uint32_t stream_id, uint32_t flags)",
+      "description": "Maps an I/O Buffer Memory Descriptor into the DART-ISP IOMMU page table window",
+      "return_type": "DART Virtual Address (DVA / uint64_t)"
+    },
+    "function_isp_unmap_iobmd": {
+      "symbol": "function-isp_unmap_iobmd",
+      "kernel_function": "ispUnmapIobmd",
+      "signature": "void ispUnmapIobmd(IOService* provider, uint64_t dva, uint32_t stream_id)",
+      "description": "Unmaps and invalidates DART-ISP TLB entries associated with the DVA",
+      "return_type": "void"
+    }
+  },
+  "shared_data_queue": {
+    "class_name": "IOSharedDataQueue",
+    "queue_capacity_bytes": 65536,
+    "entry_header_size_bytes": 4,
+    "ring_buffer_version": 2,
+    "header_struct": "IODataQueueMemory",
+    "event_notifications": [
+      {
+        "event_id": 1,
+        "name": "ISP_EVENT_FRAME_INGESTED",
+        "description": "New Bayer or YUV frame surface available for consumer processing"
+      },
+      {
+        "event_id": 2,
+        "name": "ISP_EVENT_DISCONTINUITY",
+        "description": "Frame drop or sequence counter mismatch detected in CSI-2 stream"
+      },
+      {
+        "event_id": 3,
+        "name": "ISP_EVENT_3A_STATS_READY",
+        "description": "Auto-exposure, white-balance, or focus statistical grids updated"
+      },
+      {
+        "event_id": 4,
+        "name": "ISP_EVENT_THERMAL_THROTTLE",
+        "description": "ISP or sensor thermal threshold exceeded; clock rate reduced"
+      },
+      {
+        "event_id": 5,
+        "name": "ISP_EVENT_HARDWARE_FAULT",
+        "description": "DART bus error or CIL circuit breaker activation notification"
+      }
+    ]
+  },
+  "surface_format_geometry": {
+    "bi_planar_ycc_420v": {
+      "fourcc": "420v",
+      "description": "Bi-Planar YCbCr 4:2:0 Video Range (8-bit)",
+      "plane_0": "Y Luma Plane (Full Resolution)",
+      "plane_1": "CbCr Chroma Plane (Subsampled 2x2 Interleaved)"
+    },
+    "raw_bayer_planes": {
+      "fourcc": "r408",
+      "description": "Raw 14-bit Uncompressed Quadra Bayer Sensor Ingest",
+      "plane_0": "Raw CFA Sensor Pixels"
+    }
+  }
+}

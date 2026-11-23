@@ -2310,6 +2310,62 @@
       ],
       "completed_at": "2026-11-23T08:53:00+05:30",
       "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "silenus_phase_1_rtkit_smp_microkernel",
+      "number": "S1",
+      "title": "Silenus Camera ISP — RTKit SMP Microkernel, MMU & Memory Layout",
+      "status": "completed",
+      "prerequisites": [],
+      "assigned_agent_prompt": "agent_prompts/silenus_01_rtkit_smp_microkernel.md",
+      "required_disk_artifacts": [
+        "artifacts/silenus/firmware/silenus_isp.macho",
+        "artifacts/silenus/firmware/silenus_isp_28995840.macho",
+        "artifacts/silenus/firmware/silenus_macho_manifest.json",
+        "artifacts/silenus/firmware/silenus_rtkit_cstring_dictionary.json",
+        "artifacts/silenus/firmware/silenus_rtkit_mtab.json",
+        "artifacts/silenus/firmware/silenus_rtkit_tunables.json",
+        "artifacts/silenus/firmware/silenus_rtkit_mmu_map.json"
+      ],
+      "findings_document": "findings/silenus/01_RTKIT_SMP_MICROKERNEL.md",
+      "objectives": [
+        "Extract 29.01MB Mach-O PRELOAD binary from silenus-isp-v57.im4p",
+        "Map dual-core SMP bootstrap, reset vectors, and stack canaries (RTKSTACK)",
+        "Dissect 4MB page tables and MMU translations at 0x15a4000",
+        "Catalog 90 mailbox endpoints, tunables partitions, and 17,407 cstrings"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py silenus_phase_1_rtkit_smp_microkernel"
+      ],
+      "completed_at": "2026-11-23T10:43:00+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "silenus_phase_4_darwin_driver_camera_topology",
+      "number": "S4",
+      "title": "Silenus Camera ISP — Darwin Host Driver Boundary & Camera Hardware Topography",
+      "status": "completed",
+      "prerequisites": [],
+      "assigned_agent_prompt": "Agent 4: Darwin Host Driver Boundary & Camera Hardware Topography",
+      "required_disk_artifacts": [
+        "artifacts/silenus/driver/silenus_host_interface.h",
+        "artifacts/silenus/driver/camera_hardware_topography.json",
+        "artifacts/silenus/driver/driver_dispatch_spec.json",
+        "artifacts/silenus/driver/volchok_actuator_spec.json"
+      ],
+      "findings_document": "findings/silenus/04_DARWIN_DRIVER_CAMERA_TOPOLOGY.md",
+      "objectives": [
+        "Disassemble AppleH16CameraInterface.kext and AppleH16CamIn in XNU Kernelcache",
+        "Map UserClient dispatch tables, IOSharedDataQueue buffers, and memory mapping functions (function-isp_map_iobmd / function-isp_unmap_iobmd)",
+        "Map DeviceTree properties: dart-isp MMIO base 0x1128c0000, 64 KB aperture, AIC IRQ 302, Stream IDs 0x00..0x03, ref clocks 1200/800/400 MHz",
+        "Dissect Volchok X3357 actuator controller (ARM Cortex-M 96KB microcode, 24KB su_crypto, Sensor-Shift OIS at 10 kHz)",
+        "Write silenus_host_interface.h clean-room C99 interface"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py silenus_phase_4_darwin_driver_camera_topology"
+      ],
+      "completed_at": "2026-11-23T10:50:00+05:30",
+      "verified_by": "tools/verify_phase.py"
     }
   ],
   "verification_log": [
@@ -2624,7 +2680,19 @@
       "verified_at": "2026-11-23T03:25:33.184168+00:00",
       "status": "passed",
       "command": "python3 tools/verify_phase.py centauri_phase_5_synthesis"
+    },
+    {
+      "phase_id": "silenus_phase_1_rtkit_smp_microkernel",
+      "verified_at": "2026-11-23T10:50:12+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py silenus_phase_1_rtkit_smp_microkernel"
+    },
+    {
+      "phase_id": "silenus_phase_4_darwin_driver_camera_topology",
+      "verified_at": "2026-11-23T10:50:08+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py silenus_phase_4_darwin_driver_camera_topology"
     }
   ],
-  "last_updated": "2026-11-23T03:25:33.184168+00:00"
+  "last_updated": "2026-11-23T10:50:08+05:30"
 }

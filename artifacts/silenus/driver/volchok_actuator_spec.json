@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro Volchok X3357 Lens Actuator & Sensor-Shift OIS Specification",
+  "platform": "Apple Silicon A19 Pro (t8150) / iPhone18,3 (v57ap) / iOS 27.2 (24B119)",
+  "actuator_controller": {
+    "product_id": "X3357",
+    "board_id": 13143,
+    "board_id_hex": "0x3357",
+    "hardware_version": "20",
+    "processor_core": "ARM Cortex-M Embedded Real-Time Controller",
+    "firmware_container": "iPhone18,3_27.2_24B119_Restore/Firmware/Volchok/X3357/FirmwareMap.plist",
+    "digest_container": "iPhone18,3_27.2_24B119_Restore/Firmware/Volchok/X3357/DigestMap.der"
+  },
+  "microcode_payload": {
+    "payload_size_bytes": 98304,
+    "payload_size_kb": 96,
+    "version": 209200028,
+    "sha256": "b5b468f0bd6d6a40345ef8c0260d435dd52ee9d617c8799f5b2b61aee4c65d9e",
+    "vector_table": {
+      "initial_stack_pointer": "0x20006000",
+      "reset_vector": "0x0000c49d",
+      "entrypoint_thumb": "0x0000c49c",
+      "nmi_handler": "0x0001b8ff",
+      "hardfault_handler": "0x0001d131"
+    },
+    "rtos_execution_tasks": [
+      {
+        "task_name": "vPRCTsk",
+        "description": "Primary Actuator Processing Task - executes high-frequency PID positioning loops"
+      },
+      {
+        "task_name": "vUPDTsk",
+        "description": "Sensor-Shift OIS Update Task - ingests angular velocity vectors from AOP gyro"
+      }
+    ]
+  },
+  "security_crypto_module": {
+    "payload_name": "su_crypto",
+    "payload_size_bytes": 24576,
+    "payload_size_kb": 24,
+    "version": 172501,
+    "sha256": "2ffa673c570c81abaf61dbe31632638ed1949e8a05a457a8cba63059a68134c5",
+    "description": "Secure Update & Hardware Cryptographic Authentication Module"
+  },
+  "digest_authentication_map": {
+    "format": "ASN.1 DER Authenticated Digest Map",
+    "size_bytes": 1792,
+    "sha256": "78992ebbae630ba4c0c979f34b40143151e7851f33207a86d2d820096ef7e9bd",
+    "header_product_tag": "X3357",
+    "header_board_tag": "3357"
+  },
+  "stabilization_subsystems": {
+    "voice_coil_motor": {
+      "type": "Bi-Directional Voice Coil Motor (VCM)",
+      "function": "Autofocus (AF) Lens Translation",
+      "calibration_syscfg_key": "syscfg/BCAR",
+      "control_functions": [
+        "function-saca0",
+        "function-saca1",
+        "function-saca2",
+        "function-saca3",
+        "function-saca4",
+        "function-saca5"
+      ]
+    },
+    "sensor_shift_ois": {
+      "type": "Sphere-Ball Electromagnetic Actuator (Sensor-Shift)",
+      "devicetree_flag": "has-sphere",
+      "devicetree_value": 1,
+      "motion_telemetry_source": "Always-On Processor (AOP2) High-Rate Gyro Stream",
+      "telemetry_endpoint": "aop-isp-endpoint-cfg",
+      "sampling_rate_hz": 10000,
+      "degrees_of_freedom": "3-Axis (Pitch, Yaw, Roll Translation)"
+    }
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Silicon A19 Pro Camera ISP (Silenus) Hardware Topography & IOMMU Map",
+  "platform": "Apple Silicon A19 Pro (t8150) / iPhone18,3 (v57ap) / iOS 27.2 (24B119)",
+  "subsystem": "Camera Image Signal Processor (ISP) & Bayer Neural Interface (BNI)",
+  "iommu": {
+    "node_name": "device-tree/arm-io/dart-isp",
+    "compatible": "dart,t8110",
+    "mmio_base": "0x00000001128c0000",
+    "aperture_size_bytes": 65536,
+    "aperture_size_hex": "0x10000",
+    "page_granule_bytes": 16384,
+    "sid_count": 16,
+    "aic_interrupt_vector": 302,
+    "aic_interrupt_hex": "0x012e",
+    "vm_base": "0x0000010000000000",
+    "vm_size": "0x00000000fe000000",
+    "register_banks": [
+      {
+        "bank_index": 0,
+        "base_address": "0x00000001128c0000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000",
+        "description": "Primary Translation Table & Page Directory Registers"
+      },
+      {
+        "bank_index": 1,
+        "base_address": "0x00000001128e0000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000",
+        "description": "Stream ID Mapping & Invalidation Control"
+      },
+      {
+        "bank_index": 2,
+        "base_address": "0x0000000112900000",
+        "size_bytes": 49152,
+        "size_hex": "0xc000",
+        "description": "TLB Maintenance & Fault Reporting"
+      },
+      {
+        "bank_index": 3,
+        "base_address": "0x00000001128f4000",
+        "size_bytes": 16384,
+        "size_hex": "0x4000",
+        "description": "DAPF Control Bank"
+      },
+      {
+        "bank_index": 4,
+        "base_address": "0x0000000112914000",
+        "size_bytes": 16384,
+        "size_hex": "0x4000",
+        "description": "Bypass & Performance Monitor Counters"
+      },
+      {
+        "bank_index": 5,
+        "base_address": "0x00000001128d0000",
+        "size_bytes": 16384,
+        "size_hex": "0x4000",
+        "description": "SMMU RT Ingress Control"
+      }
+    ],
+    "stream_id_mappings": [
+      {
+        "sid": 0,
+        "sid_hex": "0x00",
+        "name": "mapper-isp",
+        "target": "Host Kernel Control, Command Descriptors & Mailbox Ring Buffers",
+        "security_domain": "Darwin Ring 0 (Host)",
+        "iomd_cache_size": 262144,
+        "iomd_cache_ttl": 3000
+      },
+      {
+        "sid": 1,
+        "sid_hex": "0x01",
+        "name": "mapper-isp-raw",
+        "target": "Raw Camera Sensor Bayer Ingest (Streaming DMA Ingress)",
+        "security_domain": "ISP Pipeline Core",
+        "iomd_cache_size": 262144,
+        "iomd_cache_ttl": 3000
+      },
+      {
+        "sid": 2,
+        "sid_hex": "0x02",
+        "name": "mapper-isp-pearl",
+        "target": "Bayer Neural Interface (BNI) & Pearl FaceID Biometric Frames (Routes to SEP TZ1S)",
+        "security_domain": "Secure Enclave (SEP / sepOS)",
+        "iomd_cache_size": 262144,
+        "iomd_cache_ttl": 3000
+      },
+      {
+        "sid": 3,
+        "sid_hex": "0x03",
+        "name": "mapper-isp-yuv",
+        "target": "Processed YUV Video & Live Camera Viewfinder Preview Planes",
+        "security_domain": "Display & UserClient Plane",
+        "iomd_cache_size": 262144,
+        "iomd_cache_ttl": 3000
+      },
+      {
+        "sid": 4,
+        "sid_hex": "0x04",
+        "name": "mapper-isp-epipe0-exclave",
+        "target": "Exclave Secure Camera Processing Engine Pipe 0",
+        "security_domain": "ExclaveOS cL4 Microkernel",
+        "iomd_cache_size": 262144,
+        "iomd_cache_ttl": 3000
+      },
+      {
+        "sid": 5,
+        "sid_hex": "0x05",
+        "name": "mapper-isp-epipe1-exclave",
+        "target": "Exclave Secure Camera Processing Engine Pipe 1",
+        "security_domain": "ExclaveOS cL4 Microkernel",
+        "iomd_cache_size": 262144,
+        "iomd_cache_ttl": 3000
+      },
+      {
+        "sid": 9,
+        "sid_hex": "0x09",
+        "name": "mapper-isp-piodma1-exclave",
+        "target": "Exclave PIO Direct Memory Access Controller 1",
+        "security_domain": "ExclaveOS cL4 Microkernel",
+        "iomd_cache_size": 262144,
+        "iomd_cache_ttl": 3000
+      },
+      {
+        "sid": 12,
+        "sid_hex": "0x0c",
+        "name": "mapper-isp-mpm",
+        "target": "Multi-Plane Memory Surface Controller",
+        "security_domain": "ISP Internal Memory Fabric",
+        "iomd_cache_size": 262144,
+        "iomd_cache_ttl": 3000
+      }
+    ]
+  },
+  "isp_core": {
+    "node_name": "device-tree/arm-io/isp",
+    "compatible": [
+      "isp,isp-generic-ex",
+      "isp,s5l8960x"
+    ],
+    "memory_apertures": [
+      {
+        "aperture_name": "ISP_CORE_SRAM_REG",
+        "base_address": "0x0000000101000000",
+        "size_bytes": 67092480,
+        "size_hex": "0x03ffc000",
+        "description": "Primary ISP Engine Core Register Fabric & Shared Pipeline SRAM"
+      },
+      {
+        "aperture_name": "ISP_CONTROL_REGS",
+        "base_address": "0x00000000f0700000",
+        "size_bytes": 98304,
+        "size_hex": "0x00018000",
+        "description": "Secondary ISP System & Power Management Registers"
+      },
+      {
+        "aperture_name": "ISP_SIF_SENSOR_IF",
+        "base_address": "0x00000000f0724000",
+        "size_bytes": 16384,
+        "size_hex": "0x00004000",
+        "description": "Sensor Interface (SIF) MIPI CSI-2 D-PHY / C-PHY Control Window"
+      }
+    ],
+    "aic_interrupt_vectors": [
+      {
+        "vector_dec": 284,
+        "vector_hex": "0x011c",
+        "name": "ISP_IRQ_FRAME_DONE",
+        "description": "Primary Frame Ingestion Complete Interrupt"
+      },
+      {
+        "vector_dec": 285,
+        "vector_hex": "0x011d",
+        "name": "ISP_IRQ_STATS_READY",
+        "description": "Auto-Exposure / Auto-White-Balance / Auto-Focus (3A) Statistics Ready"
+      },
+      {
+        "vector_dec": 286,
+        "vector_hex": "0x011e",
+        "name": "ISP_IRQ_DMA_ERROR",
+        "description": "DART Memory Translation or Bus Fault Interrupt"
+      },
+      {
+        "vector_dec": 287,
+        "vector_hex": "0x011f",
+        "name": "ISP_IRQ_CIL_BREAKER",
+        "description": "Camera Interface Link (CIL) Circuit Breaker Activated"
+      },
+      {
+        "vector_dec": 297,
+        "vector_hex": "0x0129",
+        "name": "ISP_IRQ_MAILBOX_NOTIFY",
+        "description": "Host-to-Coprocessor Mailbox Event Notification"
+      }
+    ],
+    "reference_clocks": [
+      {
+        "function_name": "function-conf_isp_ref0_clk_freq",
+        "target_clock": "ISP Core Pipeline Clock (ref0)",
+        "hex_signature": "2300000043505349000000009e1ac15516981b55",
+        "frequency_nominal_hz": 1200000000,
+        "frequency_nominal_mhz": 1200
+      },
+      {
+        "function_name": "function-conf_isp_ref1_clk_freq",
+        "target_clock": "Sensor MIPI CSI-2 Receiver Clock (ref1)",
+        "hex_signature": "2300000043505349010000009e1ac15516981b55",
+        "frequency_nominal_hz": 800000000,
+        "frequency_nominal_mhz": 800
+      },
+      {
+        "function_name": "function-conf_isp_ref2_clk_freq",
+        "target_clock": "Actuator & Telemetry Clock (ref2)",
+        "hex_signature": "2300000043505349020000009e1ac15516981b55",
+        "frequency_nominal_hz": 400000000,
+        "frequency_nominal_mhz": 400
+      }
+    ],
+    "exclave_integration": {
+      "service_name": "com.apple.service.ISPEngine",
+      "service_endpoint": 23,
+      "edk_service_name": "com.apple.service.ISPEngine_EDK",
+      "edk_service_endpoint": 24,
+      "proxy_node": "device-tree/arm-io/isp-exclave-proxy"
+    }
+  }
+}

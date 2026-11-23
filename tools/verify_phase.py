@@ -1963,6 +1963,65 @@ PHASE_SPECS = {
              "tools/verify_centauri_constants.py must pass 100% green"),
         ]
     },
+
+    # ── Silenus Camera ISP Subsystem phases ───────────────────────────────
+    "silenus_phase_1_rtkit_smp_microkernel": {
+        "required_artifacts": [
+            "artifacts/silenus/firmware/silenus_isp.macho",
+            "artifacts/silenus/firmware/silenus_isp_28995840.macho",
+            "artifacts/silenus/firmware/silenus_macho_manifest.json",
+            "artifacts/silenus/firmware/silenus_rtkit_cstring_dictionary.json",
+            "artifacts/silenus/firmware/silenus_rtkit_mtab.json",
+            "artifacts/silenus/firmware/silenus_rtkit_tunables.json",
+            "artifacts/silenus/firmware/silenus_rtkit_mmu_map.json",
+            "findings/silenus/01_RTKIT_SMP_MICROKERNEL.md"
+        ],
+        "findings_docs": ["findings/silenus/01_RTKIT_SMP_MICROKERNEL.md"],
+        "min_findings_bytes": 30000,
+        "json_schemas": {
+            "artifacts/silenus/firmware/silenus_macho_manifest.json": ["macho_binary"],
+            "artifacts/silenus/firmware/silenus_rtkit_tunables.json": ["partition_count", "partitions"]
+        },
+        "assertions": [
+            ("silenus_p1_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "tools/verify_silenus_constants.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "tools/verify_silenus_constants.py must pass 100% green"),
+        ]
+    },
+
+    "silenus_phase_4_darwin_driver_camera_topology": {
+        "required_artifacts": [
+            "artifacts/silenus/driver/silenus_host_interface.h",
+            "artifacts/silenus/driver/camera_hardware_topography.json",
+            "artifacts/silenus/driver/driver_dispatch_spec.json",
+            "artifacts/silenus/driver/volchok_actuator_spec.json",
+            "findings/silenus/04_DARWIN_DRIVER_CAMERA_TOPOLOGY.md"
+        ],
+        "findings_docs": ["findings/silenus/04_DARWIN_DRIVER_CAMERA_TOPOLOGY.md"],
+        "min_findings_bytes": 40000,
+        "json_schemas": {
+            "artifacts/silenus/driver/camera_hardware_topography.json": ["iommu", "isp_core"],
+            "artifacts/silenus/driver/driver_dispatch_spec.json": ["driver_bundle", "memory_mapping_functions", "shared_data_queue"],
+            "artifacts/silenus/driver/volchok_actuator_spec.json": ["actuator_controller", "microcode_payload", "security_crypto_module", "stabilization_subsystems"]
+        },
+        "assertions": [
+            ("silenus_driver_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "tools/verify_silenus_driver.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "tools/verify_silenus_driver.py must pass 100% green"),
+            ("dart_isp_base_valid",
+             "artifacts/silenus/driver/camera_hardware_topography.json",
+             lambda d: d.get("iommu", {}).get("mmio_base") == "0x00000001128c0000",
+             "DART-ISP MMIO base must be 0x00000001128c0000"),
+            ("volchok_microcode_size_valid",
+             "artifacts/silenus/driver/volchok_actuator_spec.json",
+             lambda d: d.get("microcode_payload", {}).get("payload_size_bytes") == 98304,
+             "Volchok microcode size must be 98304 bytes"),
+        ]
+    },
 }
 import re
 
