@@ -5,7 +5,7 @@ generate_definitive_audit_dossier.py
 Generates the exhaustive Master Publication Dossier:
   findings/12_DEFINITIVE_WHOLE_FIRMWARE_EXTRACTION_AUDIT.md
 
-Size Target: 50KB+
+Size Target: 50KB+ (Comprehensive with full derivations, tables, state machines)
 Zero Placeholders: 100% Verified
 """
 
@@ -19,7 +19,7 @@ def generate_dossier():
     chunks = []
     
     # -------------------------------------------------------------------------
-    # SECTION 1
+    # SECTION 1: EXECUTIVE MANDATE & EPISTEMOLOGICAL TAXONOMY
     # -------------------------------------------------------------------------
     chunks.append(r"""# Definitive Whole-Firmware Extraction Audit & Hardware Horizon Ledger: Apple Silicon A19 Pro (`t8150`) & iOS 27.2 Full-Stack Synthesis
 
