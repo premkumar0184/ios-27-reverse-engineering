@@ -149,6 +149,30 @@ def run_master_verification() -> bool:
         all_ok &= verify_assertion("CSCA/CSCB transpose-inverse Frobenius error < 0.0002",
                                   frob_err < 0.0002, f"error = {frob_err:.6f}")
 
+        # Direct Mach-O Binary Float Validation
+        if macho_path.is_file():
+            csca_raw = struct.unpack("<9f", data[0x00b42b68:0x00b42b68+36])
+            csca_bin = np.array(csca_raw, dtype=np.float64).reshape((3, 3))
+            bin_det_a = float(np.linalg.det(csca_bin))
+            all_ok &= verify_assertion("Mach-O CSCA binary floats match det == 2.452400",
+                                      abs(bin_det_a - 2.452400) < 0.001, f"{bin_det_a:.6f}")
+
+            cscb_raw = struct.unpack("<9f", data[0x00b42b8c:0x00b42b8c+36])
+            cscb_bin = np.array(cscb_raw, dtype=np.float64).reshape((3, 3))
+            bin_det_b = float(np.linalg.det(cscb_bin))
+            all_ok &= verify_assertion("Mach-O CSCB binary floats match det == 0.407785",
+                                      abs(bin_det_b - 0.407785) < 0.001, f"{bin_det_b:.6f}")
+
+            bin_inv_t = np.linalg.inv(csca_bin).T
+            bin_frob = float(np.linalg.norm(cscb_bin - bin_inv_t))
+            all_ok &= verify_assertion("Mach-O binary CSCA/CSCB transpose-inverse Frobenius error < 0.0002",
+                                      bin_frob < 0.0002, f"error = {bin_frob:.6f}")
+
+            srgb_raw = struct.unpack("<257H", data[0x00b30080:0x00b30080+514])
+            all_ok &= verify_assertion("Mach-O sRGB table at 0x00b30080 start=0, mid=48310, end=65535",
+                                      srgb_raw[0] == 0 and srgb_raw[128] == 48310 and srgb_raw[256] == 65535,
+                                      f"[{srgb_raw[0]}, {srgb_raw[128]}, {srgb_raw[256]}]")
+
         # sRGB Curve
         trc = m_data.get("tone_reproduction_curves", {})
         srgb = trc.get("srgb_gamma_curve", {})
@@ -243,6 +267,10 @@ def run_master_verification() -> bool:
         all_ok &= verify_assertion("DART-ISP Stream ID 0x01 is mapper-isp-raw", sids.get("0x01") == "mapper-isp-raw")
         all_ok &= verify_assertion("DART-ISP Stream ID 0x02 is mapper-isp-pearl", sids.get("0x02") == "mapper-isp-pearl")
         all_ok &= verify_assertion("DART-ISP Stream ID 0x03 is mapper-isp-yuv", sids.get("0x03") == "mapper-isp-yuv")
+        all_ok &= verify_assertion("DART-ISP Stream ID 0x04 is mapper-isp-epipe0-exclave", sids.get("0x04") == "mapper-isp-epipe0-exclave")
+        all_ok &= verify_assertion("DART-ISP Stream ID 0x05 is mapper-isp-epipe1-exclave", sids.get("0x05") == "mapper-isp-epipe1-exclave")
+        all_ok &= verify_assertion("DART-ISP Stream ID 0x09 is mapper-isp-piodma1-exclave", sids.get("0x09") == "mapper-isp-piodma1-exclave")
+        all_ok &= verify_assertion("DART-ISP Stream ID 0x0C is mapper-isp-mpm", sids.get("0x0c") == "mapper-isp-mpm")
 
         isp_core = tdata.get("isp_core", {})
         clks = {c["function_name"]: c["frequency_nominal_mhz"] for c in isp_core.get("reference_clocks", [])}
@@ -267,6 +295,12 @@ def run_master_verification() -> bool:
             if (sizeof(struct cisp_command_packet) != 64) return 2;
             if (sizeof(struct isp_ring_buffer_header_v2) != 64) return 3;
             if (sizeof(struct h16_isp_process_buffer_args) != 48) return 4;
+            if (DART_ISP_BASE_ADDR != 0x00000001128c0000ULL) return 5;
+            if (AIC_IRQ_DART_ISP_FAULT != 302) return 6;
+            if (DART_ISP_SID_EXCLAVE_EPIPE0 != 0x04) return 7;
+            if (DART_ISP_SID_MPM != 0x0c) return 8;
+            if (CISP_MAGIC != 0x43495350) return 9;
+            if (IOP_RINGBUFFER_VERSION_V2 != 0x0002) return 10;
             return 0;
         }}
         """
@@ -277,7 +311,7 @@ def run_master_verification() -> bool:
                                   capture_output=True, text=True)
         if comp_res.returncode == 0:
             run_res = subprocess.run([str(tmp_bin)], capture_output=True)
-            all_ok &= verify_assertion("Exact C struct sizes: Header=16B, Packet=64B, Ring=64B, Args=48B",
+            all_ok &= verify_assertion("Exact C struct sizes & constants: Header=16B, Packet=64B, Ring=64B, Args=48B",
                                       run_res.returncode == 0, f"exit code {run_res.returncode}")
         else:
             all_ok = False

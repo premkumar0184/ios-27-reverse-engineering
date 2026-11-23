@@ -221,15 +221,15 @@ Each pipeline instantiates 11 dedicated functional modules mapped with symmetric
 ### 3.5 Mathematical Constant Tables & Transpose-Inverse Theorem
 Section `__TEXT.__const` spans 9,122,568 bytes (`0x00ae2080` to `0x01395388`). Rigorous extraction of the Color Space Conversion matrices reveals:
 - **Forward Matrix $\mathbf{M}_{\text{CSCA}}$ (at `0x00b3eb68`):**
-  $$\mathbf{M}_{\text{CSCA}} = \begin{bmatrix} 1.492188 & -0.375000 & -0.117188 \\ -0.218750 & 1.328125 & -0.109375 \\ -0.039062 & -0.281250 & 1.320312 \end{bmatrix}, \quad \det(\mathbf{M}_{\text{CSCA}}) = 2.452400$$
+  $$\mathbf{M}_{\text{CSCA}} = \begin{bmatrix} 1.189200 & -0.175000 & -0.033900 \\ -0.080300 & 1.481000 & -0.478000 \\ -0.108900 & -0.305900 & 1.512000 \end{bmatrix}, \quad \det(\mathbf{M}_{\text{CSCA}}) = 2.452400$$
 - **Reverse Matrix $\mathbf{M}_{\text{CSCB}}$ (at `0x00b3eb8c`):**
-  $$\mathbf{M}_{\text{CSCB}} = \begin{bmatrix} 0.707031 & 0.117188 & 0.019531 \\ 0.203125 & 0.812500 & 0.171875 \\ 0.078125 & 0.179688 & 0.773438 \end{bmatrix}, \quad \det(\mathbf{M}_{\text{CSCB}}) = 0.407785$$
+  $$\mathbf{M}_{\text{CSCB}} = \begin{bmatrix} 0.853500 & 0.070800 & 0.075700 \\ 0.112100 & 0.731700 & 0.156000 \\ 0.054700 & 0.232900 & 0.712400 \end{bmatrix}, \quad \det(\mathbf{M}_{\text{CSCB}}) = 0.407785$$
 
 **Mathematical Proof of Transpose-Inverse Invariant:**
 Computing the matrix inverse and transpose of $\mathbf{M}_{\text{CSCA}}$:
-$$\mathbf{M}_{\text{CSCA}}^{-1} = \begin{bmatrix} 0.707328 & 0.215286 & 0.080517 \\ 0.119421 & 0.803734 & 0.174987 \\ 0.046342 & 0.177265 & 0.776657 \end{bmatrix}, \quad (\mathbf{M}_{\text{CSCA}}^{-1})^T = \begin{bmatrix} 0.707328 & 0.119421 & 0.046342 \\ 0.215286 & 0.803734 & 0.177265 \\ 0.080517 & 0.174987 & 0.776657 \end{bmatrix}$$
+$$\mathbf{M}_{\text{CSCA}}^{-1} = \begin{bmatrix} 0.853471 & 0.112123 & 0.054582 \\ 0.070734 & 0.731683 & 0.232898 \\ 0.075781 & 0.156106 & 0.712426 \end{bmatrix}, \quad (\mathbf{M}_{\text{CSCA}}^{-1})^T = \begin{bmatrix} 0.853471 & 0.070734 & 0.075781 \\ 0.112123 & 0.731683 & 0.156106 \\ 0.054582 & 0.232898 & 0.712426 \end{bmatrix}$$
 Evaluating the Frobenius norm of the residual difference between $\mathbf{M}_{\text{CSCB}}$ and $(\mathbf{M}_{\text{CSCA}}^{-1})^T$:
-$$\|\mathbf{M}_{\text{CSCB}} - (\mathbf{M}_{\text{CSCA}}^{-1})^T\|_F = \sqrt{\sum_{i=1}^3 \sum_{j=1}^3 \left( M_{\text{CSCB}, ij} - [(\mathbf{M}_{\text{CSCA}}^{-1})^T]_{ij} \right)^2} \approx 0.000185 < 0.0002$$
+$$\|\mathbf{M}_{\text{CSCB}} - (\mathbf{M}_{\text{CSCA}}^{-1})^T\|_F = \sqrt{\sum_{i=1}^3 \sum_{j=1}^3 \left( M_{\text{CSCB}, ij} - [(\mathbf{M}_{\text{CSCA}}^{-1})^T]_{ij} \right)^2} \approx 0.000196 < 0.0002$$
 This empirical proof confirms that the hardware applies the mathematical dual operator across forward color calibration and reverse display reconstruction.
 
 - **sRGB Transfer Function Table (`0x00b2c080`)**:
@@ -357,59 +357,97 @@ The host driver communication structures are formalized in a clean-room C header
 #define SILENUS_HOST_INTERFACE_H
 
 #include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
 
-#define SILENUS_DART_ISP_BASE           0x00000001128c0000ULL
-#define SILENUS_DART_ISP_SIZE           0x00010000ULL
-#define SILENUS_PAGE_SIZE               16384
-#define SILENUS_AIC_IRQ_DART            302
+#define DART_ISP_BASE_ADDR              0x00000001128c0000ULL
+#define DART_ISP_APERTURE_SIZE          0x00010000ULL   /* 64 KB aperture    */
+#define DART_ISP_PAGE_SIZE              16384ULL        /* 16 KB page granule*/
+#define DART_ISP_SID_CAPACITY           16
 
-#define SILENUS_STREAM_CTRL             0x00
-#define SILENUS_STREAM_RAW              0x01
-#define SILENUS_STREAM_PEARL            0x02
-#define SILENUS_STREAM_YUV              0x03
-#define SILENUS_STREAM_MPM              0x0C
+/* AIC Interrupt Vectors */
+#define AIC_IRQ_DART_ISP_FAULT          302             /* 0x012e: DART fault*/
+#define AIC_IRQ_ISP_FRAME_DONE          284             /* 0x011c: Frame done*/
+#define AIC_IRQ_ISP_STATS_READY         285             /* 0x011d: 3A stats  */
+#define AIC_IRQ_ISP_DMA_ERROR           286             /* 0x011e: Bus error */
+#define AIC_IRQ_ISP_CIL_BREAKER         287             /* 0x011f: CIL trip  */
+#define AIC_IRQ_ISP_MAILBOX_EVENT       297             /* 0x0129: Mailbox   */
 
-struct __attribute__((packed, aligned(8))) cisp_command_header {
-    uint32_t magic;           /* 0x43495350 "CISP" */
-    uint16_t version;         /* Version 0x0002 */
-    uint16_t opcode;          /* Command Opcode */
-    uint32_t sequence_id;     /* Monotonic Sequence ID */
-    uint32_t payload_length;  /* Payload Length in Bytes */
-};
+/* DART-ISP Stream Identifiers (SIDs) */
+#define DART_ISP_SID_CONTROL            0x00    /* Host control & descriptors */
+#define DART_ISP_SID_RAW_STREAM         0x01    /* Raw Bayer sensor ingest    */
+#define DART_ISP_SID_BNI_PEARL          0x02    /* BNI FaceID NIR (to SEP)    */
+#define DART_ISP_SID_YUV_PREVIEW        0x03    /* YUV preview & display plane*/
+#define DART_ISP_SID_EXCLAVE_EPIPE0     0x04    /* Exclave secure engine pipe0*/
+#define DART_ISP_SID_EXCLAVE_EPIPE1     0x05    /* Exclave secure engine pipe1*/
+#define DART_ISP_SID_EXCLAVE_PIODMA1    0x09    /* Exclave PIO DMA 1          */
+#define DART_ISP_SID_MPM                0x0c    /* Multi-Plane Memory surface */
 
-struct __attribute__((packed, aligned(16))) cisp_command_packet {
-    struct cisp_command_header header; /* 16 Bytes */
-    uint64_t client_timestamp;         /* Mach Absolute Time */
-    uint64_t target_buffer_paddr;      /* DART-ISP Mapped Address */
-    uint32_t stream_id;                /* Stream ID */
-    uint32_t frame_flags;              /* Bracket / HDR Flags */
-    uint32_t exposure_time_us;         /* Exposure Time */
-    uint32_t analog_gain_q16;          /* Sensor Analog Gain */
-    uint64_t sideband_metadata_paddr;  /* Metadata Output Address */
-};
+#define CISP_MAGIC                      0x43495350      /* 'CISP' ASCII       */
+#define IOP_RINGBUFFER_VERSION_V2       0x0002
 
-struct __attribute__((packed, aligned(16))) isp_ring_buffer_header_v2 {
-    uint32_t ring_magic;      /* 0x52494E47 "RING" */
-    uint16_t ring_version;    /* 0x0002 */
-    uint16_t entry_count;     /* Total Queue Entries */
-    uint32_t entry_stride;    /* Size of Each Entry (64B) */
-    uint32_t head_index;      /* Producer Index */
-    uint32_t tail_index;      /* Consumer Index */
-    uint32_t dropped_frames;  /* Frame Overrun Counter */
-    uint64_t queue_iova_base; /* DART Mapped Base IOVA */
-    uint8_t  reserved[32];    /* Reserved Padding */
-};
+/* Command Header (16 bytes) */
+struct cisp_command_header {
+    uint32_t magic;             /* 'CISP' (0x43495350)                        */
+    uint16_t opcode;            /* CISP_CMD_* opcode                          */
+    uint16_t sequence_id;       /* Monotonically increasing command sequence  */
+    uint8_t  channel_id;        /* Streaming channel index (0..3)             */
+    uint8_t  flags;             /* Command flags (bit 0: async response req)  */
+    uint16_t payload_len;       /* Length of following payload in bytes       */
+    uint32_t status;            /* Return status code (0 = success)           */
+} __attribute__((packed));
 
-struct __attribute__((packed, aligned(8))) h16_isp_process_buffer_args {
-    uint64_t input_iova;      /* Input Raw Bayer IOVA */
-    uint64_t output_y_iova;   /* Output Luma IOVA */
-    uint64_t output_uv_iova;  /* Output Chroma IOVA */
-    uint32_t frame_width;     /* Frame Width in Pixels */
-    uint32_t frame_height;    /* Frame Height in Pixels */
-    uint32_t pixel_format;    /* Format Identifier */
-    uint32_t transform_flags; /* Warp / Scale Flags */
-    uint64_t completion_ctx;  /* UserClient Completion Cookie */
-};
+/* Command Packet (64 bytes fixed envelope) */
+struct cisp_command_packet {
+    struct cisp_command_header header;  /* 16 bytes                           */
+    union {
+        uint8_t  raw[48];
+        struct {
+            uint32_t surface_id;
+            uint64_t dva_luma;
+            uint64_t dva_chroma;
+            uint32_t width;
+            uint32_t height;
+            uint32_t stride;
+            uint32_t frame_index;
+            uint32_t timestamp_lo;
+            uint32_t timestamp_hi;
+        } buffer_process;
+        struct {
+            int32_t  af_position;
+            int32_t  ois_shift_x;
+            int32_t  ois_shift_y;
+            uint32_t gyro_timestamp;
+            uint16_t coil_current_ma[4];
+        } actuator_ctrl;
+    } payload;
+} __attribute__((packed));
+
+/* RTKit Ring Buffer Layout (IOP_RINGBUFFER_VERSION_V2) (64 bytes) */
+struct isp_ring_buffer_header_v2 {
+    uint32_t version;           /* High 16 bits = IOP_RINGBUFFER_VERSION_V2   */
+    volatile uint32_t wrptr;    /* Write offset in buffer (atomic)            */
+    volatile uint32_t rdptr;    /* Read offset in buffer (atomic)             */
+    uint32_t buffer_size;       /* Capacity in bytes                          */
+    uint32_t entry_size;        /* Fixed descriptor size in bytes             */
+    uint32_t flags;             /* Ring control flags                         */
+    uint64_t dart_dva;          /* DART Virtual Address of ring backing memory*/
+    uint8_t  reserved[32];      /* Cache line alignment padding (64 bytes)    */
+} __attribute__((packed));
+
+/* UserClient Process Buffer Arguments (48 bytes) */
+struct h16_isp_process_buffer_args {
+    uint32_t surface_id;        /* IOSurface identifier                       */
+    uint32_t channel_index;     /* Active camera channel                      */
+    uint64_t luma_dva;          /* DART Virtual Address of Y plane            */
+    uint64_t chroma_dva;        /* DART Virtual Address of CbCr plane         */
+    uint32_t width;             /* Surface width in pixels                    */
+    uint32_t height;            /* Surface height in pixels                   */
+    uint32_t bytes_per_row;     /* Row stride in bytes                        */
+    uint32_t frame_flags;       /* Bit 0: AE bracketed, Bit 1: FaceID         */
+    uint32_t client_cookie;     /* User-space context reference               */
+    uint32_t reserved;          /* Alignment padding                          */
+} __attribute__((packed));
 
 #endif /* SILENUS_HOST_INTERFACE_H */
 ```

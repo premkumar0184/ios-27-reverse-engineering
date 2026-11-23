@@ -1991,6 +1991,71 @@ PHASE_SPECS = {
         ]
     },
 
+    "silenus_phase_2_photonic_engine": {
+        "required_artifacts": [
+            "artifacts/silenus/photonic/vispipe_architecture.json",
+            "artifacts/silenus/photonic/stats_pipeline_state_machines.json",
+            "artifacts/silenus/photonic/isp_mathematical_tables.json",
+            "artifacts/silenus/photonic/frmstate_synchronization.json",
+            "findings/silenus/02_PHOTONIC_ENGINE_STATS_PIPELINE.md"
+        ],
+        "findings_docs": ["findings/silenus/02_PHOTONIC_ENGINE_STATS_PIPELINE.md"],
+        "min_findings_bytes": 35000,
+        "json_schemas": {
+            "artifacts/silenus/photonic/vispipe_architecture.json": ["subsystem", "pipeline_endpoints"],
+            "artifacts/silenus/photonic/stats_pipeline_state_machines.json": ["total_state_machines", "modules"],
+            "artifacts/silenus/photonic/isp_mathematical_tables.json": ["color_space_conversion_matrices", "tone_reproduction_curves"]
+        },
+        "assertions": [
+            ("silenus_photonic_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "artifacts/silenus/photonic/verify_silenus_photonic.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "artifacts/silenus/photonic/verify_silenus_photonic.py must pass 100% green"),
+            ("vispipe_endpoints_count",
+             "artifacts/silenus/photonic/vispipe_architecture.json",
+             lambda d: len(d.get("pipeline_endpoints", [])) >= 17,
+             "VISPIPE must have at least 17 hardware endpoints"),
+            ("stats_state_machines_count",
+             "artifacts/silenus/photonic/stats_pipeline_state_machines.json",
+             lambda d: d.get("total_state_machines") == 22,
+             "Must have exactly 22 stats state machines"),
+        ]
+    },
+
+    "silenus_phase_3_bni": {
+        "required_artifacts": [
+            "artifacts/silenus/bni/bni_dma_architecture_spec.json",
+            "artifacts/silenus/bni/deep_fusion_alignment_spec.json",
+            "artifacts/silenus/bni/semantic_segmentation_spec.json",
+            "artifacts/silenus/bni/zsl_ring_buffer_spec.json",
+            "findings/silenus/03_BAYER_NEURAL_INTERFACE_BNI.md"
+        ],
+        "findings_docs": ["findings/silenus/03_BAYER_NEURAL_INTERFACE_BNI.md"],
+        "min_findings_bytes": 40000,
+        "json_schemas": {
+            "artifacts/silenus/bni/bni_dma_architecture_spec.json": ["subsystem", "dma_channels_matrix"],
+            "artifacts/silenus/bni/deep_fusion_alignment_spec.json": ["mstf_pipeline_architecture"],
+            "artifacts/silenus/bni/semantic_segmentation_spec.json": ["eight_distinct_semantic_masks"],
+            "artifacts/silenus/bni/zsl_ring_buffer_spec.json": ["zsl_ring_buffer_architecture"]
+        },
+        "assertions": [
+            ("silenus_bni_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "artifacts/silenus/bni/verify_silenus_bni.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "artifacts/silenus/bni/verify_silenus_bni.py must pass 100% green"),
+            ("bni_channels_count",
+             "artifacts/silenus/bni/bni_dma_architecture_spec.json",
+             lambda d: len(d.get("dma_channels_matrix", [])) == 249,
+             "BNI must have exactly 249 DMA channels"),
+            ("semantic_masks_count",
+             "artifacts/silenus/bni/semantic_segmentation_spec.json",
+             lambda d: len(d.get("eight_distinct_semantic_masks", [])) == 8,
+             "Must specify 8 distinct semantic segmentation masks"),
+        ]
+    },
+
     "silenus_phase_4_darwin_driver_camera_topology": {
         "required_artifacts": [
             "artifacts/silenus/driver/silenus_host_interface.h",
@@ -2020,6 +2085,28 @@ PHASE_SPECS = {
              "artifacts/silenus/driver/volchok_actuator_spec.json",
              lambda d: d.get("microcode_payload", {}).get("payload_size_bytes") == 98304,
              "Volchok microcode size must be 98304 bytes"),
+        ]
+    },
+
+    "silenus_phase_5_master_synthesis": {
+        "required_artifacts": [
+            "findings/silenus/00_MASTER_SILENUS_ISP_BNI_SYNTHESIS.md",
+            "IOS_27_APPLE_SILENUS_ISP_BNI_RE.md",
+            "tools/verify_silenus_all.py",
+            "artifacts/silenus/driver/silenus_host_interface.h"
+        ],
+        "findings_docs": [
+            "findings/silenus/00_MASTER_SILENUS_ISP_BNI_SYNTHESIS.md",
+            "IOS_27_APPLE_SILENUS_ISP_BNI_RE.md"
+        ],
+        "min_findings_bytes": 35000,
+        "json_schemas": {},
+        "assertions": [
+            ("silenus_master_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "tools/verify_silenus_all.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "tools/verify_silenus_all.py must pass 100% green"),
         ]
     },
 }
@@ -2147,6 +2234,14 @@ if __name__ == "__main__":
         print(f"\nAOP2 & RTKit phases:")
         for k in PHASE_SPECS:
             if k.startswith("aop"):
+                print(f"  {k}")
+        print(f"\nCentauri Wireless phases:")
+        for k in PHASE_SPECS:
+            if k.startswith("centauri"):
+                print(f"  {k}")
+        print(f"\nSilenus Camera ISP phases:")
+        for k in PHASE_SPECS:
+            if k.startswith("silenus"):
                 print(f"  {k}")
         sys.exit(1)
 
