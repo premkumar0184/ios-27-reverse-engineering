@@ -1,0 +1,94 @@
+{
+  "subsystem": "Memory System Resource & IOSurfaceAccelerator (MSR)",
+  "hardware_platform": {
+    "soc": "t8150",
+    "chip_family": "Apple Silicon A19 Pro",
+    "device": "iPhone18,3 (v57ap)",
+    "voltage_domains": [
+      "MSR-V",
+      "MSR-SOC-VNOM",
+      "MSR-SOC-VMAX",
+      "MSR_ASE_CORE"
+    ]
+  },
+  "firmware_metadata": {
+    "source_file": "iPhone18,3_27.2_24B119_Restore/Firmware/msr/t8150.msrf.im4p",
+    "recovery_file": "iPhone18,3_27.2_24B119_Restore/Firmware/msr/t8150.rmsr.im4p",
+    "container_format": "Apple Image4 Payload (IM4P)",
+    "fourcc_tag": "msrf",
+    "recovery_tag": "rmsr",
+    "file_size_bytes": 161917,
+    "payload_offset_bytes": 25,
+    "payload_size_bytes": 161892,
+    "binary_format": "Mach-O 32-bit (MH_PRELOAD)",
+    "cputype": "0x0000000c (CPU_TYPE_ARM)",
+    "cpusubtype": "0x0000000f (CPU_SUBTYPE_ARM_V7M)",
+    "target_core": "ARM Cortex-M Embedded Microcontroller (ARMv7-M)"
+  },
+  "memory_layout": {
+    "text_segment": {
+      "vm_address": "0x00100000",
+      "vm_size": "0x000117c8",
+      "sections": [
+        {"name": "__text", "address": "0x00100000", "size": "0x00010ed0"},
+        {"name": "__const", "address": "0x00110ed0", "size": "0x000008f8"}
+      ]
+    },
+    "data_segment": {
+      "vm_address": "0x10000200",
+      "vm_size": "0x0000ccf0",
+      "sections": [
+        {"name": "_noinit", "address": "0x10000200", "size": "0x0000cca8"},
+        {"name": "__zerofill", "address": "0x1000cea8", "size": "0x00000048"}
+      ]
+    },
+    "dmem_segment": {
+      "vm_address": "0x10000000",
+      "vm_size": "0x00000108",
+      "sections": [
+        {"name": "_dmem_image", "address": "0x10000000", "size": "0x00000108", "description": "Tightly-Coupled Data Memory scratchpad"}
+      ]
+    }
+  },
+  "hardware_engines": {
+    "pixel_accelerator_pipeline": {
+      "source_files": ["pa_pipeline.c", "pa_scaler_cfg.c"],
+      "core_routines": [
+        "_pa_configure_pipeline",
+        "_pa_dma_decoder_init",
+        "_prescaler_chroma_attr_lookup"
+      ],
+      "responsibilities": "Hardware 2D scaling, chroma sub-sampling (YUV420 to RGB), and color space conversion for IOSurface buffers"
+    },
+    "apiodma_engine": {
+      "class_name": "Apiodma",
+      "methods": [
+        "Apiodma::configure_bar",
+        "Apiodma::configure",
+        "Apiodma::prepare_packets"
+      ],
+      "responsibilities": "Direct Memory Access descriptor formatting for DRAM buffer blits"
+    },
+    "msr_tiler_engine": {
+      "class_name": "VmComponents::MsrCoreLocalTilerInternal::Scheduler",
+      "methods": [
+        "Scheduler::push_thread",
+        "Scheduler::submit_free"
+      ],
+      "responsibilities": "DRAM micro-tiling arbitration and bandwidth-optimized raster traversal"
+    },
+    "control_plane": {
+      "class_name": "VmComponents::ControlPlane",
+      "endpoints": [
+        "Mailbox0InstanceProvider",
+        "Mailbox1InstanceProvider",
+        "DoorbellInstanceProvider",
+        "DashboardInstanceProvider"
+      ],
+      "interrupt_handlers": [
+        "inbox_not_empty_isr",
+        "ptd_write_isr"
+      ]
+    }
+  }
+}

@@ -451,7 +451,7 @@
     {
       "id": "anim_phase_1a_workspace_baseline",
       "number": "1A",
-      "title": "Animation RE \u2014 Workspace Baseline & DSC Address Resolution",
+      "title": "Animation RE — Workspace Baseline & DSC Address Resolution",
       "status": "completed",
       "prerequisites": [],
       "assigned_agent_prompt": "agent_prompts/anim_01a_workspace_baseline_agent.md",
@@ -465,7 +465,7 @@
     {
       "id": "anim_phase_1b_symbol_discovery",
       "number": "1B",
-      "title": "Animation RE \u2014 Symbol Discovery Across All 6 Frameworks",
+      "title": "Animation RE — Symbol Discovery Across All 6 Frameworks",
       "status": "completed",
       "prerequisites": [
         "anim_phase_1a_workspace_baseline"
@@ -482,7 +482,7 @@
     {
       "id": "anim_phase_2_physics_extraction",
       "number": "2",
-      "title": "Animation RE \u2014 Physics Constants Extraction",
+      "title": "Animation RE — Physics Constants Extraction",
       "status": "completed",
       "prerequisites": [
         "anim_phase_1b_symbol_discovery"
@@ -499,7 +499,7 @@
     {
       "id": "anim_phase_3_context_tables",
       "number": "3",
-      "title": "Animation RE \u2014 Per-Context Parameter Tables & Timing Curves",
+      "title": "Animation RE — Per-Context Parameter Tables & Timing Curves",
       "status": "completed",
       "prerequisites": [
         "anim_phase_2_physics_extraction"
@@ -517,7 +517,7 @@
     {
       "id": "anim_phase_4_modern_api",
       "number": "4",
-      "title": "Animation RE \u2014 Modern perceptualDuration/bounce API Verification",
+      "title": "Animation RE — Modern perceptualDuration/bounce API Verification",
       "status": "completed",
       "prerequisites": [
         "anim_phase_3_context_tables"
@@ -534,7 +534,7 @@
     {
       "id": "anim_phase_5_synthesis",
       "number": "5",
-      "title": "Animation RE \u2014 Cross-Validation, Clean-Room Spec & Publication",
+      "title": "Animation RE — Cross-Validation, Clean-Room Spec & Publication",
       "status": "completed",
       "prerequisites": [
         "anim_phase_4_modern_api"
@@ -552,7 +552,7 @@
     {
       "id": "gest_phase_1a_workspace_baseline",
       "number": "G1A",
-      "title": "Gesture RE \u2014 Workspace Baseline & DSC Address Resolution",
+      "title": "Gesture RE — Workspace Baseline & DSC Address Resolution",
       "status": "completed",
       "prerequisites": [],
       "assigned_agent_prompt": "agent_prompts/gest_01a_workspace_baseline_agent.md",
@@ -572,7 +572,7 @@
     {
       "id": "gest_phase_1b_symbol_discovery",
       "number": "G1B",
-      "title": "Gesture RE \u2014 Symbol Discovery: Classes, Protocols & Ivar Layouts",
+      "title": "Gesture RE — Symbol Discovery: Classes, Protocols & Ivar Layouts",
       "status": "completed",
       "prerequisites": [
         "gest_phase_1a_workspace_baseline"
@@ -596,7 +596,7 @@
     {
       "id": "gest_phase_2_slop_extraction",
       "number": "G2",
-      "title": "Gesture RE \u2014 Per-Gesture Slop & Velocity Threshold Extraction",
+      "title": "Gesture RE — Per-Gesture Slop & Velocity Threshold Extraction",
       "status": "completed",
       "prerequisites": [
         "gest_phase_1b_symbol_discovery"
@@ -622,7 +622,7 @@
     {
       "id": "gest_phase_3_arbitration_state_machine",
       "number": "G3",
-      "title": "Gesture RE \u2014 Arbitration State Machine & Simultaneous Recognition Rules",
+      "title": "Gesture RE — Arbitration State Machine & Simultaneous Recognition Rules",
       "status": "completed",
       "prerequisites": [
         "gest_phase_2_slop_extraction"
@@ -646,7 +646,7 @@
     {
       "id": "gest_phase_4_edge_gestures",
       "number": "G4",
-      "title": "Gesture RE \u2014 Edge Gesture Thresholds & Exclusion Zones",
+      "title": "Gesture RE — Edge Gesture Thresholds & Exclusion Zones",
       "status": "completed",
       "prerequisites": [
         "gest_phase_3_arbitration_state_machine"
@@ -672,7 +672,7 @@
     {
       "id": "gest_phase_5_synthesis",
       "number": "G5",
-      "title": "Gesture RE \u2014 Cross-Validation, Clean-Room Spec & Publication Dossier",
+      "title": "Gesture RE — Cross-Validation, Clean-Room Spec & Publication Dossier",
       "status": "completed",
       "prerequisites": [
         "gest_phase_4_edge_gestures"
@@ -698,7 +698,7 @@
     {
       "id": "ane_phase_1a_workspace_baseline",
       "number": "A1A",
-      "title": "ANE RE \u2014 Workspace Baseline & Subcache Address Resolution",
+      "title": "ANE RE — Workspace Baseline & Subcache Address Resolution",
       "status": "completed",
       "prerequisites": [],
       "assigned_agent_prompt": "agent_prompts/ane_01a_workspace_baseline_agent.md",
@@ -717,7 +717,7 @@
     {
       "id": "ane_phase_1b_symbol_discovery",
       "number": "A1B",
-      "title": "ANE RE \u2014 Symbol Discovery: Client/Server Topology & Ivar Layouts",
+      "title": "ANE RE — Symbol Discovery: Client/Server Topology & Ivar Layouts",
       "status": "completed",
       "prerequisites": [
         "ane_phase_1a_workspace_baseline"
@@ -739,7 +739,7 @@
     {
       "id": "ane_phase_2_hwx_compiler",
       "number": "A2",
-      "title": "ANE RE \u2014 Model Compilation & HWX Container Dissection",
+      "title": "ANE RE — Model Compilation & HWX Container Dissection",
       "status": "completed",
       "prerequisites": [
         "ane_phase_1b_symbol_discovery"
@@ -761,7 +761,7 @@
     {
       "id": "ane_phase_3_isa_bytecode",
       "number": "A3",
-      "title": "ANE RE \u2014 Hardware ISA, Opcode Decoding & Tile Scheduling",
+      "title": "ANE RE — Hardware ISA, Opcode Decoding & Tile Scheduling",
       "status": "completed",
       "prerequisites": [
         "ane_phase_2_hwx_compiler"
@@ -783,7 +783,7 @@
     {
       "id": "ane_phase_4_driver_dispatch",
       "number": "A4",
-      "title": "ANE RE \u2014 Driver Dispatch, FIFO Submission & Memory Channels",
+      "title": "ANE RE — Driver Dispatch, FIFO Submission & Memory Channels",
       "status": "completed",
       "prerequisites": [
         "ane_phase_3_isa_bytecode"
@@ -802,7 +802,7 @@
     {
       "id": "ane_phase_5_synthesis",
       "number": "A5",
-      "title": "ANE RE \u2014 Cross-Validation, Standalone Driver Spec & Publication Dossier",
+      "title": "ANE RE — Cross-Validation, Standalone Driver Spec & Publication Dossier",
       "status": "completed",
       "prerequisites": [
         "ane_phase_4_driver_dispatch"
@@ -821,7 +821,7 @@
     {
       "id": "exclave_phase_1a_workspace_baseline",
       "number": "E1A",
-      "title": "ExclaveOS RE \u2014 Workspace Baseline, Image Extraction & BUND Container Dissection",
+      "title": "ExclaveOS RE — Workspace Baseline, Image Extraction & BUND Container Dissection",
       "status": "completed",
       "prerequisites": [],
       "assigned_agent_prompt": "agent_prompts/exclave_01a_workspace_baseline_agent.md",
@@ -842,7 +842,7 @@
     {
       "id": "exclave_phase_1b_cl4_microkernel",
       "number": "E1B",
-      "title": "ExclaveOS RE \u2014 cL4 Microkernel Architecture, Syscalls & Capability Delegation",
+      "title": "ExclaveOS RE — cL4 Microkernel Architecture, Syscalls & Capability Delegation",
       "status": "completed",
       "prerequisites": [
         "exclave_phase_1a_workspace_baseline"
@@ -873,7 +873,7 @@
     {
       "id": "exclave_phase_2_tightbeam_wire_format",
       "number": "E2",
-      "title": "ExclaveOS RE \u2014 Tightbeam RPC Serialization, Wire Protocol & Transports",
+      "title": "ExclaveOS RE — Tightbeam RPC Serialization, Wire Protocol & Transports",
       "status": "completed",
       "prerequisites": [
         "exclave_phase_1b_cl4_microkernel"
@@ -903,7 +903,7 @@
     {
       "id": "exclave_phase_3_pmm_datacubes",
       "number": "E3",
-      "title": "ExclaveOS RE \u2014 Memory Subsystem, Datacubes & Shared Memory Architecture",
+      "title": "ExclaveOS RE — Memory Subsystem, Datacubes & Shared Memory Architecture",
       "status": "completed",
       "prerequisites": [
         "exclave_phase_2_tightbeam_wire_format"
@@ -934,7 +934,7 @@
     {
       "id": "exclave_phase_4_xnu_boundary",
       "number": "E4",
-      "title": "ExclaveOS RE \u2014 XNU Boundary, xnuproxy & Conclave Lifecycle Management",
+      "title": "ExclaveOS RE — XNU Boundary, xnuproxy & Conclave Lifecycle Management",
       "status": "completed",
       "prerequisites": [
         "exclave_phase_3_pmm_datacubes"
@@ -965,7 +965,7 @@
     {
       "id": "exclave_phase_5_synthesis",
       "number": "E5",
-      "title": "ExclaveOS RE \u2014 Cross-Validation, Clean-Room Driver Spec & Publication Dossier",
+      "title": "ExclaveOS RE — Cross-Validation, Clean-Room Driver Spec & Publication Dossier",
       "status": "completed",
       "prerequisites": [
         "exclave_phase_4_xnu_boundary"
@@ -996,7 +996,7 @@
     {
       "id": "sep_phase_1a_workspace_baseline",
       "number": "S1A",
-      "title": "Secure Enclave RE \u2014 Firmware Container, Image4 & Hardware Reconnaissance",
+      "title": "Secure Enclave RE — Firmware Container, Image4 & Hardware Reconnaissance",
       "status": "completed",
       "prerequisites": [
         "phase_04_firmware_coprocessors"
@@ -1029,7 +1029,7 @@
     {
       "id": "sep_phase_1b_sepos_microkernel",
       "number": "S1B",
-      "title": "Secure Enclave RE \u2014 sepOS Microkernel Architecture & Service Topology",
+      "title": "Secure Enclave RE — sepOS Microkernel Architecture & Service Topology",
       "status": "completed",
       "prerequisites": [
         "sep_phase_1a_workspace_baseline"
@@ -1062,7 +1062,7 @@
     {
       "id": "sep_phase_2_key_ladder",
       "number": "S2",
-      "title": "Secure Enclave RE \u2014 Hardware Key Ladder, UID/GID Derivation & Data Protection",
+      "title": "Secure Enclave RE — Hardware Key Ladder, UID/GID Derivation & Data Protection",
       "status": "completed",
       "prerequisites": [
         "sep_phase_1b_sepos_microkernel"
@@ -1094,7 +1094,7 @@
     {
       "id": "sep_phase_3_mailbox_protocol",
       "number": "S3",
-      "title": "Secure Enclave RE \u2014 Mailbox IPC Protocol, Command Packets & Anti-Replay NVRAM",
+      "title": "Secure Enclave RE — Mailbox IPC Protocol, Command Packets & Anti-Replay NVRAM",
       "status": "completed",
       "prerequisites": [
         "sep_phase_2_key_ladder"
@@ -1128,7 +1128,7 @@
     {
       "id": "sep_phase_4_xnu_driver_boundary",
       "number": "S4",
-      "title": "Secure Enclave RE \u2014 XNU Driver Boundary & Standalone C Client Runtime",
+      "title": "Secure Enclave RE — XNU Driver Boundary & Standalone C Client Runtime",
       "status": "completed",
       "prerequisites": [
         "sep_phase_3_mailbox_protocol"
@@ -1159,7 +1159,7 @@
     {
       "id": "sep_phase_5_synthesis",
       "number": "S5",
-      "title": "Secure Enclave RE \u2014 Synthesis, Verification Suite & Master Publication Dossier",
+      "title": "Secure Enclave RE — Synthesis, Verification Suite & Master Publication Dossier",
       "status": "completed",
       "prerequisites": [
         "sep_phase_4_xnu_driver_boundary"
@@ -1184,7 +1184,7 @@
     {
       "id": "sptm_phase_1a_workspace_baseline",
       "number": "M1A",
-      "title": "SPTM & TXM RE \u2014 Workspace Baseline, Image4 Container Dissection & Asset Forensic Catalog",
+      "title": "SPTM & TXM RE — Workspace Baseline, Image4 Container Dissection & Asset Forensic Catalog",
       "status": "completed",
       "prerequisites": [
         "phase_03_kernel_sptm_txm"
@@ -1217,7 +1217,7 @@
     {
       "id": "sptm_phase_1b_architecture_topology",
       "number": "M1B",
-      "title": "SPTM & TXM RE \u2014 Execution Privilege Model, Hypervisor Topology & CSM Symbols",
+      "title": "SPTM & TXM RE — Execution Privilege Model, Hypervisor Topology & CSM Symbols",
       "status": "completed",
       "prerequisites": [
         "sptm_phase_1a_workspace_baseline"
@@ -1248,7 +1248,7 @@
     {
       "id": "sptm_phase_2_hardware_register_geometry",
       "number": "M2",
-      "title": "SPTM & TXM RE \u2014 Stage-2 Translation Geometry, 59 Frame Types & Protection Registers",
+      "title": "SPTM & TXM RE — Stage-2 Translation Geometry, 59 Frame Types & Protection Registers",
       "status": "completed",
       "prerequisites": [
         "sptm_phase_1b_architecture_topology"
@@ -1281,7 +1281,7 @@
     {
       "id": "sptm_phase_3_hypercall_protocol",
       "number": "M3",
-      "title": "SPTM & TXM RE \u2014 Hypercall Wire Protocol, 17 Dispatch Tables & iBoot Diagnostics",
+      "title": "SPTM & TXM RE — Hypercall Wire Protocol, 17 Dispatch Tables & iBoot Diagnostics",
       "status": "completed",
       "prerequisites": [
         "sptm_phase_2_hardware_register_geometry"
@@ -1314,7 +1314,7 @@
     {
       "id": "sptm_phase_4_kernel_boundary",
       "number": "M4",
-      "title": "SPTM & TXM RE \u2014 Host Kernel Bridge & Clean-Room C Client Implementation",
+      "title": "SPTM & TXM RE — Host Kernel Bridge & Clean-Room C Client Implementation",
       "status": "completed",
       "prerequisites": [
         "sptm_phase_3_hypercall_protocol"
@@ -1346,7 +1346,7 @@
     {
       "id": "sptm_phase_5_synthesis",
       "number": "M5",
-      "title": "SPTM & TXM RE \u2014 Synthesis, Test Suite & Master Publication Dossier",
+      "title": "SPTM & TXM RE — Synthesis, Test Suite & Master Publication Dossier",
       "status": "completed",
       "prerequisites": [
         "sptm_phase_4_kernel_boundary"
@@ -1376,7 +1376,7 @@
     {
       "id": "aop_phase_1a_workspace_baseline",
       "number": "A1A",
-      "title": "AOP2 & RTKit RE \u2014 Image4 Container Dissection, BUND Parsing & Workspace Baseline",
+      "title": "AOP2 & RTKit RE — Image4 Container Dissection, BUND Parsing & Workspace Baseline",
       "status": "completed",
       "prerequisites": [
         "phase_04_firmware_coprocessors"
@@ -1407,7 +1407,7 @@
     {
       "id": "aop_phase_1b_rtkit_microkernel",
       "number": "A1B",
-      "title": "AOP2 & RTKit RE \u2014 Preemptive Microkernel Architecture & AFK Service Topology",
+      "title": "AOP2 & RTKit RE — Preemptive Microkernel Architecture & AFK Service Topology",
       "status": "completed",
       "prerequisites": [
         "aop_phase_1a_workspace_baseline"
@@ -1438,7 +1438,7 @@
     {
       "id": "aop_phase_2_hardware_and_sensor_hub",
       "number": "A2",
-      "title": "AOP2 & RTKit RE \u2014 Hardware Registers, DART IOMMU, Sensor Hub Geometry & Ultra-Low-Power Peripherals",
+      "title": "AOP2 & RTKit RE — Hardware Registers, DART IOMMU, Sensor Hub Geometry & Ultra-Low-Power Peripherals",
       "status": "completed",
       "prerequisites": [
         "aop_phase_1b_rtkit_microkernel"
@@ -1469,7 +1469,7 @@
     {
       "id": "aop_phase_3_endpoint_wire_format",
       "number": "A3",
-      "title": "AOP2 & RTKit RE \u2014 Mailbox Framing, Endpoint Multiplexing & Handshake Protocol",
+      "title": "AOP2 & RTKit RE — Mailbox Framing, Endpoint Multiplexing & Handshake Protocol",
       "status": "completed",
       "prerequisites": [
         "aop_phase_2_hardware_and_sensor_hub"
@@ -1500,7 +1500,7 @@
     {
       "id": "aop_phase_4_xnu_driver_boundary",
       "number": "A4",
-      "title": "AOP2 & RTKit RE \u2014 XNU Driver Boundary & Standalone Clean-Room C Client",
+      "title": "AOP2 & RTKit RE — XNU Driver Boundary & Standalone Clean-Room C Client",
       "status": "completed",
       "prerequisites": [
         "aop_phase_3_endpoint_wire_format"
@@ -1531,7 +1531,7 @@
     {
       "id": "aop_phase_5_synthesis",
       "number": "A5",
-      "title": "AOP2 & RTKit RE \u2014 Synthesis, Verification Suite & Master Publication Dossier",
+      "title": "AOP2 & RTKit RE — Synthesis, Verification Suite & Master Publication Dossier",
       "status": "completed",
       "prerequisites": [
         "aop_phase_4_xnu_driver_boundary"
@@ -1562,7 +1562,7 @@
     {
       "id": "ave_phase_1a_workspace_baseline",
       "number": "V1A",
-      "title": "AVE2 Hardware Codec RE \u2014 Firmware Container Dissection & Workspace Baseline",
+      "title": "AVE2 Hardware Codec RE — Firmware Container Dissection & Workspace Baseline",
       "status": "completed",
       "prerequisites": [
         "phase_04_firmware_coprocessors"
@@ -1587,7 +1587,7 @@
     {
       "id": "ave_phase_1b_architecture_topology",
       "number": "V1B",
-      "title": "AVE2 Hardware Codec RE \u2014 Microkernel Topology & Codec Pipeline Architecture",
+      "title": "AVE2 Hardware Codec RE — Microkernel Topology & Codec Pipeline Architecture",
       "status": "completed",
       "prerequisites": [
         "ave_phase_1a_workspace_baseline"
@@ -1612,7 +1612,7 @@
     {
       "id": "ave_phase_2_hardware_register_geometry",
       "number": "V2",
-      "title": "AVE2 Hardware Codec RE \u2014 MMIO Register Map, Quantization & DMA Geometry",
+      "title": "AVE2 Hardware Codec RE — MMIO Register Map, Quantization & DMA Geometry",
       "status": "completed",
       "prerequisites": [
         "ave_phase_1b_architecture_topology"
@@ -1637,7 +1637,7 @@
     {
       "id": "ave_phase_3_command_queue_protocol",
       "number": "V3",
-      "title": "AVE2 Hardware Codec RE \u2014 Multi-Stream Command Queue & Mailbox Protocol",
+      "title": "AVE2 Hardware Codec RE — Multi-Stream Command Queue & Mailbox Protocol",
       "status": "completed",
       "prerequisites": [
         "ave_phase_2_hardware_register_geometry"
@@ -1662,7 +1662,7 @@
     {
       "id": "ave_phase_4_kernel_boundary",
       "number": "V4",
-      "title": "AVE2 Hardware Codec RE \u2014 XNU Driver Interface & Clean-Room C Client",
+      "title": "AVE2 Hardware Codec RE — XNU Driver Interface & Clean-Room C Client",
       "status": "completed",
       "prerequisites": [
         "ave_phase_3_command_queue_protocol"
@@ -1687,7 +1687,7 @@
     {
       "id": "ave_phase_5_synthesis",
       "number": "V5",
-      "title": "AVE2 Hardware Codec RE \u2014 Synthesis, Test Suite & Master Publication Dossier",
+      "title": "AVE2 Hardware Codec RE — Synthesis, Test Suite & Master Publication Dossier",
       "status": "completed",
       "prerequisites": [
         "ave_phase_4_kernel_boundary"
@@ -1716,7 +1716,7 @@
     {
       "id": "synthesis_phase_1a_workspace_baseline",
       "number": "S1A",
-      "title": "A19 Pro Architecture Synthesis \u2014 Workspace Baseline & Topology Spec",
+      "title": "A19 Pro Architecture Synthesis — Workspace Baseline & Topology Spec",
       "status": "completed",
       "prerequisites": [
         "aop_phase_5_synthesis",
@@ -1739,7 +1739,7 @@
     {
       "id": "synthesis_phase_1b_global_memory_map",
       "number": "S1B",
-      "title": "A19 Pro Architecture Synthesis \u2014 32 GB Global Physical Memory Map",
+      "title": "A19 Pro Architecture Synthesis — 32 GB Global Physical Memory Map",
       "status": "completed",
       "prerequisites": [
         "synthesis_phase_1a_workspace_baseline"
@@ -1760,7 +1760,7 @@
     {
       "id": "synthesis_phase_2_unified_dart_ledger",
       "number": "S2",
-      "title": "A19 Pro Architecture Synthesis \u2014 Unified DART Gen3 IOMMU Ledger",
+      "title": "A19 Pro Architecture Synthesis — Unified DART Gen3 IOMMU Ledger",
       "status": "completed",
       "prerequisites": [
         "synthesis_phase_1b_global_memory_map"
@@ -1781,7 +1781,7 @@
     {
       "id": "synthesis_phase_3_interrupt_and_mailbox_matrix",
       "number": "S3",
-      "title": "A19 Pro Architecture Synthesis \u2014 Master AIC Interrupt & ASCwrap Mailbox Matrix",
+      "title": "A19 Pro Architecture Synthesis — Master AIC Interrupt & ASCwrap Mailbox Matrix",
       "status": "completed",
       "prerequisites": [
         "synthesis_phase_2_unified_dart_ledger"
@@ -1803,7 +1803,7 @@
     {
       "id": "synthesis_phase_4_cross_enclave_topology",
       "number": "S4",
-      "title": "A19 Pro Architecture Synthesis \u2014 Inter-Enclave IPC Topology & Clean-Room C Router",
+      "title": "A19 Pro Architecture Synthesis — Inter-Enclave IPC Topology & Clean-Room C Router",
       "status": "completed",
       "prerequisites": [
         "synthesis_phase_3_interrupt_and_mailbox_matrix"
@@ -1825,7 +1825,7 @@
     {
       "id": "synthesis_phase_5_synthesis",
       "number": "S5",
-      "title": "A19 Pro Architecture Synthesis \u2014 Master Dossier Book & Standalone Publication",
+      "title": "A19 Pro Architecture Synthesis — Master Dossier Book & Standalone Publication",
       "status": "completed",
       "prerequisites": [
         "synthesis_phase_4_cross_enclave_topology"
@@ -1848,7 +1848,7 @@
     {
       "id": "gpu_phase_1a_workspace_baseline",
       "number": "G1A",
-      "title": "Apple AGX GPU (G18) \u2014 Workspace Baseline & Container Spec",
+      "title": "Apple AGX GPU (G18) — Workspace Baseline & Container Spec",
       "status": "completed",
       "prerequisites": [],
       "required_disk_artifacts": [
@@ -1865,7 +1865,7 @@
     {
       "id": "gpu_phase_1b_microarchitecture",
       "number": "G1B",
-      "title": "Apple AGX GPU (G18) \u2014 G18 Microarchitecture & RTBuddy Coprocessor Topology",
+      "title": "Apple AGX GPU (G18) — G18 Microarchitecture & RTBuddy Coprocessor Topology",
       "status": "completed",
       "prerequisites": [
         "gpu_phase_1a_workspace_baseline"
@@ -1884,7 +1884,7 @@
     {
       "id": "gpu_phase_2_mmio_and_tile_geometry",
       "number": "G2",
-      "title": "Apple AGX GPU (G18) \u2014 Hardware Register & Tile Memory Geometry",
+      "title": "Apple AGX GPU (G18) — Hardware Register & Tile Memory Geometry",
       "status": "completed",
       "prerequisites": [
         "gpu_phase_1b_microarchitecture"
@@ -1902,7 +1902,7 @@
     {
       "id": "gpu_phase_3_command_stream",
       "number": "G3",
-      "title": "Apple AGX GPU (G18) \u2014 Wire Format, Command Descriptors & Ring Buffer Protocol",
+      "title": "Apple AGX GPU (G18) — Wire Format, Command Descriptors & Ring Buffer Protocol",
       "status": "completed",
       "prerequisites": [
         "gpu_phase_2_mmio_and_tile_geometry"
@@ -1920,7 +1920,7 @@
     {
       "id": "gpu_phase_4_kernel_boundary",
       "number": "G4",
-      "title": "Apple AGX GPU (G18) \u2014 Kernel Boundary & Clean-Room Direct Submission Client",
+      "title": "Apple AGX GPU (G18) — Kernel Boundary & Clean-Room Direct Submission Client",
       "status": "completed",
       "prerequisites": [
         "gpu_phase_3_command_stream"
@@ -1938,7 +1938,7 @@
     {
       "id": "gpu_phase_5_synthesis",
       "number": "G5",
-      "title": "Apple AGX GPU (G18) \u2014 Synthesis, Verification Test Suite & Standalone Repository",
+      "title": "Apple AGX GPU (G18) — Synthesis, Verification Test Suite & Standalone Repository",
       "status": "completed",
       "prerequisites": [
         "gpu_phase_4_kernel_boundary"
@@ -1958,7 +1958,7 @@
     {
       "id": "ans2_phase_1a_workspace_baseline",
       "number": "N1A",
-      "title": "Apple ANS2 NVMe Storage \u2014 Workspace Baseline & Container Spec",
+      "title": "Apple ANS2 NVMe Storage — Workspace Baseline & Container Spec",
       "status": "completed",
       "prerequisites": [],
       "required_disk_artifacts": [
@@ -1975,7 +1975,7 @@
     {
       "id": "ans2_phase_1b_microarchitecture",
       "number": "N1B",
-      "title": "Apple ANS2 NVMe Storage \u2014 ANS2 Microarchitecture & RTKit FTL Topology",
+      "title": "Apple ANS2 NVMe Storage — ANS2 Microarchitecture & RTKit FTL Topology",
       "status": "completed",
       "prerequisites": [
         "ans2_phase_1a_workspace_baseline"
@@ -1994,7 +1994,7 @@
     {
       "id": "ans2_phase_2_mmio_and_nand_geometry",
       "number": "N2",
-      "title": "Apple ANS2 NVMe Storage \u2014 Hardware Register, NAND Geometry & AES-XTS Crypto Engine",
+      "title": "Apple ANS2 NVMe Storage — Hardware Register, NAND Geometry & AES-XTS Crypto Engine",
       "status": "completed",
       "prerequisites": [
         "ans2_phase_1b_microarchitecture"
@@ -2014,7 +2014,7 @@
     {
       "id": "ans2_phase_3_command_stream",
       "number": "N3",
-      "title": "Apple ANS2 NVMe Storage \u2014 Wire Format, NVMe Ring Buffers & Mailbox Protocol",
+      "title": "Apple ANS2 NVMe Storage — Wire Format, NVMe Ring Buffers & Mailbox Protocol",
       "status": "completed",
       "prerequisites": [
         "ans2_phase_2_mmio_and_nand_geometry"
@@ -2033,7 +2033,7 @@
     {
       "id": "ans2_phase_4_kernel_boundary",
       "number": "N4",
-      "title": "Apple ANS2 NVMe Storage \u2014 Kernel Boundary & Clean-Room C Driver Runtime",
+      "title": "Apple ANS2 NVMe Storage — Kernel Boundary & Clean-Room C Driver Runtime",
       "status": "completed",
       "prerequisites": [
         "ans2_phase_3_command_stream"
@@ -2051,7 +2051,7 @@
     {
       "id": "ans2_phase_5_synthesis",
       "number": "N5",
-      "title": "Apple ANS2 NVMe Storage \u2014 Synthesis, Verification Test Suite & Standalone Repository",
+      "title": "Apple ANS2 NVMe Storage — Synthesis, Verification Test Suite & Standalone Repository",
       "status": "completed",
       "prerequisites": [
         "ans2_phase_4_kernel_boundary"
@@ -2071,7 +2071,7 @@
     {
       "id": "dcp_phase_1a_workspace_baseline",
       "number": "D1A",
-      "title": "Apple Display Coprocessor (DCP) \u2014 Workspace Baseline & Container Spec",
+      "title": "Apple Display Coprocessor (DCP) — Workspace Baseline & Container Spec",
       "status": "completed",
       "prerequisites": [],
       "required_disk_artifacts": [
@@ -2088,7 +2088,7 @@
     {
       "id": "dcp_phase_1b_microkernel",
       "number": "D1B",
-      "title": "Apple Display Coprocessor (DCP) \u2014 RTKit Microkernel & AFK Service Topology",
+      "title": "Apple Display Coprocessor (DCP) — RTKit Microkernel & AFK Service Topology",
       "status": "completed",
       "prerequisites": [
         "dcp_phase_1a_workspace_baseline"
@@ -2106,7 +2106,7 @@
     {
       "id": "dcp_phase_2_promotion_and_timing",
       "number": "D2",
-      "title": "Apple Display Coprocessor (DCP) \u2014 ProMotion Dynamic Refresh & VFTG Timing",
+      "title": "Apple Display Coprocessor (DCP) — ProMotion Dynamic Refresh & VFTG Timing",
       "status": "completed",
       "prerequisites": [
         "dcp_phase_1b_microkernel"
@@ -2124,7 +2124,7 @@
     {
       "id": "dcp_phase_3_pixel_compensation_and_color",
       "number": "D3",
-      "title": "Apple Display Coprocessor (DCP) \u2014 Panel Pixel Compensation & Color Pipeline",
+      "title": "Apple Display Coprocessor (DCP) — Panel Pixel Compensation & Color Pipeline",
       "status": "completed",
       "prerequisites": [
         "dcp_phase_2_promotion_and_timing"
@@ -2142,7 +2142,7 @@
     {
       "id": "dcp_phase_4_kernel_boundary",
       "number": "D4",
-      "title": "Apple Display Coprocessor (DCP) \u2014 XNU Driver Interface & Clean-Room C Client",
+      "title": "Apple Display Coprocessor (DCP) — XNU Driver Interface & Clean-Room C Client",
       "status": "completed",
       "prerequisites": [
         "dcp_phase_3_pixel_compensation_and_color"
@@ -2160,7 +2160,7 @@
     {
       "id": "dcp_phase_5_synthesis",
       "number": "D5",
-      "title": "Apple Display Coprocessor (DCP) \u2014 Synthesis, Verification Suite & Standalone Repository",
+      "title": "Apple Display Coprocessor (DCP) — Synthesis, Verification Suite & Standalone Repository",
       "status": "completed",
       "prerequisites": [
         "dcp_phase_4_kernel_boundary"
@@ -2180,7 +2180,7 @@
     {
       "id": "centauri_phase_1_firmware_rtkit_core",
       "number": "C1",
-      "title": "Centauri Wireless SoC \u2014 Firmware Container & RTKit Microkernel",
+      "title": "Centauri Wireless SoC — Firmware Container & RTKit Microkernel",
       "status": "completed",
       "prerequisites": [
         "phase_04_firmware_coprocessors"
@@ -2206,7 +2206,7 @@
     {
       "id": "centauri_phase_2_wifi7_mac_phy",
       "number": "C2",
-      "title": "Centauri Wireless SoC \u2014 Wi-Fi 7 (802.11be) MAC & PHY Subsystem",
+      "title": "Centauri Wireless SoC — Wi-Fi 7 (802.11be) MAC & PHY Subsystem",
       "status": "completed",
       "prerequisites": [
         "centauri_phase_1_firmware_rtkit_core"
@@ -2231,7 +2231,7 @@
     {
       "id": "centauri_phase_3_bluetooth_coex",
       "number": "C3",
-      "title": "Centauri Wireless SoC \u2014 Bluetooth 5.4/6.0, LE Audio & 2.4 GHz RF Coexistence",
+      "title": "Centauri Wireless SoC — Bluetooth 5.4/6.0, LE Audio & 2.4 GHz RF Coexistence",
       "status": "completed",
       "prerequisites": [
         "centauri_phase_1_firmware_rtkit_core"
@@ -2259,7 +2259,7 @@
     {
       "id": "centauri_phase_4_driverkit_host_ipc",
       "number": "C4",
-      "title": "Centauri Wireless SoC \u2014 DriverKit Dexts, PCIe MMIO & ACIPC v3.0 Protocol",
+      "title": "Centauri Wireless SoC — DriverKit Dexts, PCIe MMIO & ACIPC v3.0 Protocol",
       "status": "completed",
       "prerequisites": [
         "centauri_phase_1_firmware_rtkit_core"
@@ -2285,7 +2285,7 @@
     {
       "id": "centauri_phase_5_synthesis",
       "number": "C5",
-      "title": "Centauri Wireless SoC \u2014 Master Dossier Synthesis & Verification Suite",
+      "title": "Centauri Wireless SoC — Master Dossier Synthesis & Verification Suite",
       "status": "completed",
       "prerequisites": [
         "centauri_phase_1_firmware_rtkit_core",
@@ -2314,7 +2314,7 @@
     {
       "id": "silenus_phase_1_rtkit_smp_microkernel",
       "number": "S1",
-      "title": "Silenus Camera ISP \u2014 RTKit SMP Microkernel, MMU & Memory Layout",
+      "title": "Silenus Camera ISP — RTKit SMP Microkernel, MMU & Memory Layout",
       "status": "completed",
       "prerequisites": [],
       "assigned_agent_prompt": "agent_prompts/silenus_01_rtkit_smp_microkernel.md",
@@ -2343,7 +2343,7 @@
     {
       "id": "silenus_phase_2_photonic_engine",
       "number": "S2",
-      "title": "Silenus Camera ISP \u2014 Photonic Engine, VISPIPE Descriptors & Statistics Pipeline",
+      "title": "Silenus Camera ISP — Photonic Engine, VISPIPE Descriptors & Statistics Pipeline",
       "status": "completed",
       "prerequisites": [
         "silenus_phase_1_rtkit_smp_microkernel"
@@ -2371,7 +2371,7 @@
     {
       "id": "silenus_phase_3_bni",
       "number": "S3",
-      "title": "Silenus Camera ISP \u2014 Bayer Neural Interface (BNI), DMA Matrix & Deep Fusion MSTF",
+      "title": "Silenus Camera ISP — Bayer Neural Interface (BNI), DMA Matrix & Deep Fusion MSTF",
       "status": "completed",
       "prerequisites": [
         "silenus_phase_2_photonic_engine"
@@ -2399,7 +2399,7 @@
     {
       "id": "silenus_phase_4_darwin_driver_camera_topology",
       "number": "S4",
-      "title": "Silenus Camera ISP \u2014 Darwin Host Driver Boundary & Camera Hardware Topography",
+      "title": "Silenus Camera ISP — Darwin Host Driver Boundary & Camera Hardware Topography",
       "status": "completed",
       "prerequisites": [],
       "assigned_agent_prompt": "Agent 4: Darwin Host Driver Boundary & Camera Hardware Topography",
@@ -2426,7 +2426,7 @@
     {
       "id": "silenus_phase_5_master_synthesis",
       "number": "S5",
-      "title": "Silenus Camera ISP & Bayer Neural Interface (BNI) \u2014 Master Synthesis & Clean-Room Repository",
+      "title": "Silenus Camera ISP & Bayer Neural Interface (BNI) — Master Synthesis & Clean-Room Repository",
       "status": "completed",
       "prerequisites": [
         "silenus_phase_1_rtkit_smp_microkernel",
@@ -2576,6 +2576,107 @@
       ],
       "completed_at": "2026-11-23T20:48:00+05:30",
       "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "phase_0_tooling",
+      "number": "SC0",
+      "title": "UIKitCore Scrolling — Tooling & Binary Validation",
+      "status": "completed",
+      "prerequisites": [],
+      "assigned_agent_prompt": "Agent: UIKitCore Scrolling Tooling & Binary Validation",
+      "required_disk_artifacts": [
+        "artifacts/scrolling/phase0_tooling_validation.json",
+        "artifacts/scrolling/evidence_ledger.jsonl",
+        "artifacts/scrolling/uikitcore_offset_resolution.json"
+      ],
+      "findings_document": "",
+      "completed_at": "2026-11-23T20:50:00+05:30",
+      "verified_by": "tools/verify_phase.py",
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py phase_0_tooling"
+      ]
+    },
+    {
+      "id": "phase_1a_workspace",
+      "number": "SC1A",
+      "title": "UIKitCore Scrolling — Workspace Baseline & Subcache Symbols",
+      "status": "completed",
+      "prerequisites": [
+        "phase_0_tooling"
+      ],
+      "assigned_agent_prompt": "Agent: UIKitCore Scrolling Workspace Baseline",
+      "required_disk_artifacts": [
+        "artifacts/scrolling/uikitcore_offset_resolution.json",
+        "findings/scrolling/01A_WORKSPACE_BASELINE.md"
+      ],
+      "findings_document": "findings/scrolling/01A_WORKSPACE_BASELINE.md",
+      "completed_at": "2026-11-23T20:51:00+05:30",
+      "verified_by": "tools/verify_phase.py",
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py phase_1a_workspace"
+      ]
+    },
+    {
+      "id": "phase_2_architecture",
+      "number": "SC2",
+      "title": "UIKitCore Scrolling — Architecture Map & Class Hierarchy",
+      "status": "completed",
+      "prerequisites": [
+        "phase_1a_workspace"
+      ],
+      "assigned_agent_prompt": "Agent: UIKitCore Scrolling Architecture Map",
+      "required_disk_artifacts": [
+        "artifacts/scrolling/class_hierarchy.json",
+        "artifacts/scrolling/framework_dependencies.json",
+        "artifacts/scrolling/execution_flow_preliminary.json",
+        "findings/scrolling/02_ARCHITECTURE_MAP.md"
+      ],
+      "findings_document": "findings/scrolling/02_ARCHITECTURE_MAP.md",
+      "completed_at": "2026-11-23T20:52:00+05:30",
+      "verified_by": "tools/verify_phase.py",
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py phase_2_architecture"
+      ]
+    },
+    {
+      "id": "phase_8_specification",
+      "number": "SC8",
+      "title": "UIKitCore Scrolling — Parameter Reference & Physics Specifications",
+      "status": "completed",
+      "prerequisites": [
+        "phase_2_architecture"
+      ],
+      "assigned_agent_prompt": "Agent: UIKitCore Scrolling Parameter Reference",
+      "required_disk_artifacts": [
+        "artifacts/scrolling/parameter_reference.json",
+        "findings/scrolling/08_IMPLEMENTATION_SPECIFICATION.md"
+      ],
+      "findings_document": "findings/scrolling/08_IMPLEMENTATION_SPECIFICATION.md",
+      "completed_at": "2026-11-23T20:53:00+05:30",
+      "verified_by": "tools/verify_phase.py",
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py phase_8_specification"
+      ]
+    },
+    {
+      "id": "phase_9_report",
+      "number": "SC9",
+      "title": "UIKitCore Scrolling — Master Reverse Engineering Report",
+      "status": "completed",
+      "prerequisites": [
+        "phase_8_specification"
+      ],
+      "assigned_agent_prompt": "Agent: UIKitCore Scrolling Master Report",
+      "required_disk_artifacts": [
+        "IOS_27_SCROLLING_REVERSE_ENGINEERING.md",
+        "artifacts/scrolling/evidence_appendix.json"
+      ],
+      "findings_document": "IOS_27_SCROLLING_REVERSE_ENGINEERING.md",
+      "completed_at": "2026-11-23T20:54:00+05:30",
+      "verified_by": "tools/verify_phase.py",
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py phase_9_report"
+      ]
     }
   ],
   "verification_log": [
@@ -2944,7 +3045,37 @@
       "verified_at": "2026-11-23T20:48:00+05:30",
       "status": "passed",
       "command": "python3 tools/verify_phase.py rose_phase_master_extraction"
+    },
+    {
+      "phase_id": "phase_0_tooling",
+      "verified_at": "2026-11-23T20:50:00+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py phase_0_tooling"
+    },
+    {
+      "phase_id": "phase_1a_workspace",
+      "verified_at": "2026-11-23T20:51:00+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py phase_1a_workspace"
+    },
+    {
+      "phase_id": "phase_2_architecture",
+      "verified_at": "2026-11-23T20:52:00+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py phase_2_architecture"
+    },
+    {
+      "phase_id": "phase_8_specification",
+      "verified_at": "2026-11-23T20:53:00+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py phase_8_specification"
+    },
+    {
+      "phase_id": "phase_9_report",
+      "verified_at": "2026-11-23T20:54:00+05:30",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py phase_9_report"
     }
   ],
-  "last_updated": "2026-11-24T00:50:00+05:30"
+  "last_updated": "2026-11-24T00:55:00+05:30"
 }

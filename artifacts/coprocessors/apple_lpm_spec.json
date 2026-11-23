@@ -1,0 +1,90 @@
+{
+  "subsystem": "Apple Low Power Monitor (ALPM)",
+  "hardware_platform": {
+    "soc": "t8150",
+    "chip_family": "Apple Silicon A19 Pro",
+    "device": "iPhone18,3 (v57ap)",
+    "board_id": 8,
+    "security_domain": 1
+  },
+  "firmware_metadata": {
+    "source_file": "iPhone18,3_27.2_24B119_Restore/Firmware/AppleLPM/AppleLPM.v57.release.im4p",
+    "container_format": "Apple Image4 Payload (IM4P)",
+    "fourcc_tag": "alpm",
+    "file_size_bytes": 1269913,
+    "payload_size_bytes": 1269889,
+    "rtkit_build_string": "RTKit_armv8_chinook_Oz_flto_pac-3514.40.18.release",
+    "target_core": "ARMv8.3-A 64-bit Chinook Core with Pointer Authentication (PAC)"
+  },
+  "binary_container_architecture": {
+    "header_type": "Bare-metal ARM64 Vector Table with Tail fwsg Segment Table",
+    "tail_segment_magic": "fwsg",
+    "tail_segment_offset": "0x136061",
+    "segment_table_offset": "0x136020",
+    "segment_count": 2,
+    "segments": [
+      {
+        "name": "__TEXT",
+        "descriptor_offset": "0x136028",
+        "descriptor_size": 32,
+        "vm_base_address": "0x0ece2800",
+        "vm_size_bytes": 262144,
+        "protection": "RX"
+      },
+      {
+        "name": "__DATA",
+        "descriptor_offset": "0x136048",
+        "descriptor_size": 32,
+        "vm_base_address": "0x08000f00",
+        "vm_size_bytes": 1007616,
+        "protection": "RW"
+      }
+    ]
+  },
+  "ipc_framework": {
+    "framework_name": "Apple Firmware Kit (afklib)",
+    "transport": "Apple Core Inter-Processor Communication (ACIPC) Mailbox / Shared Ring Buffers",
+    "symbols": [
+      "afk_client_init",
+      "afk_client_add_endpoint",
+      "afk_interface_init",
+      "afk_interface_send_command",
+      "afk_messenger_init_acipc",
+      "afk_messenger_init_standard",
+      "afk_msgr_handle_command",
+      "afk_msgr_ringbuffer_abort",
+      "kAFKPacketType_OpenInterface"
+    ]
+  },
+  "low_power_services": [
+    {
+      "service_name": "disp0-service",
+      "description": "Always-On Display (AOD) low-power frame driver and Standby clock renderer",
+      "refresh_rate_hz": 1,
+      "color_depth_bpp": 8,
+      "pixel_format": "RGB565 / L8 Greyscale tonemapped"
+    },
+    {
+      "service_name": "Charging",
+      "description": "MagSafe / Qi2 battery charging state animation and thermal throttle monitor",
+      "charge_thresholds": {
+        "fast_charge_max_temp_c": 38.5,
+        "trickle_charge_target_soc": 80.0
+      }
+    },
+    {
+      "service_name": "distance",
+      "description": "Optical proximity sensor gating and pocket detection power interlock",
+      "poll_interval_ms": 250
+    }
+  ],
+  "devicetree_bindings": {
+    "node_path": "/chosen, /product, /arm-io/pmgr",
+    "has_applelpm": true,
+    "info_scrpad_lpm_ctrl": "0x0000a7dc",
+    "info_scrpad_lpm_log": "0x0000a780",
+    "pkg_lpm_power_target": "0x00000002",
+    "frame_duration_lpm_nclks": "0x00044f10",
+    "frame_duration_microseconds": 11766
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "subsystem": "MagSafe & Qi2 Wireless Power Subsystem",
+  "hardware_platform": {
+    "soc": "t8150",
+    "chip_family": "Apple Silicon A19 Pro",
+    "device": "iPhone18,3 (v57ap)"
+  },
+  "firmware_metadata": {
+    "source_file": "iPhone18,3_27.2_24B119_Restore/Firmware/WirelessPower/WirelessPower.d23_v5z.im4p",
+    "container_format": "Apple Image4 Payload (IM4P) wrapping RTKit FTAB",
+    "fourcc_tag": "wchf",
+    "file_size_bytes": 240015,
+    "ftab_offset_bytes": 59,
+    "ftab_magic": "rkosftab",
+    "ftab_partition_count": 3
+  },
+  "partitions": [
+    {
+      "tag": "DORX",
+      "description": "Direct Operating Wireless Power Receiver (RX) Controller",
+      "offset_bytes": "0x60",
+      "size_bytes": 107040,
+      "entry_vector": "0x001001a1",
+      "features": [
+        "Qi2 / MagSafe 15W/25W inductive power harvesting",
+        "Rectifier efficiency tracking & synchronous FET rectification",
+        "Foreign Object Detection (FOD) through Q-factor resonance monitoring",
+        "Dynamic thermal derating via NTC thermistor telemetry"
+      ]
+    },
+    {
+      "tag": "BOOT",
+      "description": "Wireless Power Microcontroller Bootloader",
+      "offset_bytes": "0x1a280",
+      "size_bytes": 1588,
+      "entry_vector": "0x001266b9",
+      "features": [
+        "Hardware self-test & coil short-circuit verification",
+        "Firmware authentication & partition integrity validation"
+      ]
+    },
+    {
+      "tag": "DOTX",
+      "description": "Direct Operating Wireless Power Transmitter (TX) Controller",
+      "offset_bytes": "0x1a8b4",
+      "size_bytes": 131232,
+      "entry_vector": "0x001001bd",
+      "features": [
+        "Reverse wireless power transfer for MagSafe accessories / AirPods",
+        "Inverter H-bridge frequency modulation (110 kHz - 205 kHz)",
+        "Packet decoding for Qi backscatter communication (ASK modulation)",
+        "Over-current protection (OCP) and over-voltage protection (OVP)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "subsystem": "Secure M3 Coprocessor (SM3)",
+  "hardware_platform": {
+    "soc": "t8150",
+    "chip_family": "Apple Silicon A19 Pro",
+    "device": "iPhone18,3 (v57ap)"
+  },
+  "firmware_metadata": {
+    "source_file": "iPhone18,3_27.2_24B119_Restore/Firmware/M3/bin/securem3fw-v57.im4p",
+    "container_format": "Apple Image4 Payload (IM4P)",
+    "fourcc_tag": "sm3f",
+    "file_size_bytes": 93189,
+    "payload_offset_bytes": 25,
+    "payload_size_bytes": 93164,
+    "binary_format": "Mach-O 32-bit (MH_PRELOAD)",
+    "cputype": "0x0000000c (CPU_TYPE_ARM)",
+    "cpusubtype": "0x0000000f (CPU_SUBTYPE_ARM_V7M)",
+    "rtkit_build_string": "RTKit_armv7m_Oz_floatabisoft-3514.40.18.release",
+    "target_core": "ARM Cortex-M Embedded Microcontroller (ARMv7-M)"
+  },
+  "memory_layout": {
+    "text_segment": {
+      "vm_address": "0x00100000",
+      "vm_size": "0x00014d7c",
+      "sections": [
+        {"name": "__text", "address": "0x00100000", "size": "0x000130e4"},
+        {"name": "__const", "address": "0x001130e8", "size": "0x00000ac8"},
+        {"name": "__cstring", "address": "0x00113bb0", "size": "0x000002c2"},
+        {"name": "_rtk_mtab", "address": "0x00113e74", "size": "0x000000c0"},
+        {"name": "__rtk_vtor", "address": "0x00114000", "size": "0x00000368"},
+        {"name": "__data_const", "address": "0x00114370", "size": "0x00000888"},
+        {"name": "__rebase_info", "address": "0x00114bf8", "size": "0x00000184"}
+      ]
+    },
+    "data_segment": {
+      "vm_address": "0x10000000",
+      "vm_size": "0x0000f964",
+      "sections": [
+        {"name": "__tb_ipc_buf", "address": "0x10000000", "size": "0x00000600", "description": "Tightbeam IPC message exchange buffer (1536 bytes)"},
+        {"name": "__m3_coredump", "address": "0x10000600", "size": "0x0000010c", "description": "Secure M3 crash and exception diagnostic telemetry"},
+        {"name": "__data", "address": "0x10000710", "size": "0x0000076c"},
+        {"name": "_rtk_patchbay", "address": "0x10000e7c", "size": "0x00000172"},
+        {"name": "_rtk_power", "address": "0x10000ff0", "size": "0x00000008"},
+        {"name": "__boot_count", "address": "0x10000ff8", "size": "0x00000008"},
+        {"name": "__zerofill", "address": "0x100017c0", "size": "0x0000e1a4"}
+      ]
+    }
+  },
+  "tightbeam_ipc_architecture": {
+    "source_modules": [
+      "isp_to_m3_tightbeam.c",
+      "secureM3_tb_ipc.c",
+      "secureM3_tb_translator.c",
+      "tb_codec.c",
+      "tb_connection.c",
+      "tb_message.c",
+      "rtk_mbi_mailbox.c",
+      "sm3_configs.c"
+    ],
+    "endpoint_roles": [
+      "m3_tb_client",
+      "m3_tb_server",
+      "tytbmxport_client",
+      "tytbmxport_server"
+    ],
+    "cryptographic_responsibility": "Secure hardware authentication of Camera ISP Bayer frames and Face ID JasmineIR1 structured light dot patterns prior to enclave ingestion"
+  }
+}

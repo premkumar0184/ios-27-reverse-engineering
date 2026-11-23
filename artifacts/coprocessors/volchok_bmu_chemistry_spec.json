@@ -1,0 +1,53 @@
+{
+  "subsystem": "Battery Management Unit (BMU) & Volchok Fuel Gauge",
+  "hardware_platform": {
+    "device": "iPhone18,3 (v57ap)",
+    "product_id": "X3357",
+    "board_id": 13143,
+    "hardware_version": "20"
+  },
+  "package_metadata": {
+    "firmware_map_plist": "iPhone18,3_27.2_24B119_Restore/Firmware/Volchok/X3357/FirmwareMap.plist",
+    "digest_der": "iPhone18,3_27.2_24B119_Restore/Firmware/Volchok/X3357/DigestMap.der",
+    "firmware_map_size_bytes": 399747,
+    "digest_size_bytes": 1792
+  },
+  "chemistry_profiles": [
+    {
+      "battery_id": "1016752677",
+      "cathode_chemistry": "Lithium Cobalt Oxide / Nickel Manganese Cobalt (LCO/NMC)",
+      "anode_chemistry": "Silicon-doped Graphite",
+      "nominal_voltage_mv": 3870,
+      "charge_cutoff_voltage_mv": 4450
+    },
+    {
+      "battery_id": "1016762677",
+      "cathode_chemistry": "High-Density LCO",
+      "nominal_voltage_mv": 3870,
+      "charge_cutoff_voltage_mv": 4450
+    },
+    {
+      "battery_id": "1016772677",
+      "cathode_chemistry": "High-Nickel NMC811",
+      "nominal_voltage_mv": 3860,
+      "charge_cutoff_voltage_mv": 4440
+    },
+    {
+      "battery_id": "1016782617",
+      "cathode_chemistry": "Fast-Charge Optimized LCO",
+      "nominal_voltage_mv": 3875,
+      "charge_cutoff_voltage_mv": 4460
+    },
+    {
+      "battery_id": "1016792617",
+      "cathode_chemistry": "Standard Service LCO",
+      "nominal_voltage_mv": 3870,
+      "charge_cutoff_voltage_mv": 4450
+    }
+  ],
+  "security_authentication": {
+    "engine": "su_crypto (Secure Unlock Cryptographic Coprocessor)",
+    "function": "ECDSA P-256 certificate validation of genuine Apple battery packs preventing unauthorized cell swaps",
+    "tamper_action": "Flags Non-Genuine Battery notification in iOS Settings and restricts fast charging to safe 5W fallback"
+  }
+}
