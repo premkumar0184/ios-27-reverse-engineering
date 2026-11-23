@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Apple Centauri Low-Power Always-On Bluetooth (lpbt), Find My & Sleep Subsystem Specification",
+  "version": "1.1.0",
+  "target_silicon": "Apple Centauri (t2026phoneG1 / Silicon Stepping B0)",
+  "firmware_partition": "lpbt.bin (Low Power Bluetooth: 1,396,800 bytes, SHA-256: 16c62000d144d575348ce1ab4c65dbc88e7a0b039c902786e6b45c11992c5938)",
+  "low_power_subsystem_architecture": {
+    "core_type": "Dedicated Ultra-Low-Power 32-bit ARM Cortex-M Core with Independent Power Island",
+    "memory_architecture": {
+      "retention_sram_bytes": 131072,
+      "tcm_debug_memory": "BT_TCM_DEBUG_MEMORY",
+      "power_domains": "AON_VDD (Always-On Domain) and CORE_VDD (Switched Core Domain)"
+    },
+    "clocking": {
+      "sleep_clock_hz": 32768,
+      "sleep_clock_accuracy_ppm": 20,
+      "active_clock_mhz": 48.0,
+      "clock_switching_state_machine": "SLEEP_STATE_POLLING_SLOW_TO_FAST"
+    },
+    "host_ap_sleep_coordination": {
+      "mode": "Interactive Host Sleep Mode (IHSM)",
+      "abort_handler": "findmy_ihsm_state_abort (Assert ID 370)",
+      "gpio_wake_lines": {
+        "ap_wake_gpio_immediate": "Hardware GPIO Assert line directly triggering Host AP PMU wake",
+        "wake_assertion_guard": "CAPTURE_POINT_ASSERT_AP_WAKE_GPIO_IMMEDIATE_WAS_NOT_SET_ALTHOUGH_EXPECTED"
+      },
+      "aop_interconnect": {
+        "target": "Always-On Processor (AOP)",
+        "protocol": "AOP Endpoint Messaging Service with Monotonic Sequence Numbering",
+        "max_message_size_bytes": 64,
+        "assertion_guards": [
+          "CAPTURE_POINT_ASSERT_AOP_FAILED_TO_SEND_ENDPOINT_MESSAGE",
+          "CAPTURE_POINT_ASSERT_AOP_THREAD_GOT_AN_INVALID_ENDPOINT_MESSAGE",
+          "CAPTURE_POINT_ASSERT_AOP_THREAD_GOT_AN_INVALID_SN_ACK",
+          "AOP doesn't support L2CAP continue packets (Assert ID 403)"
+        ]
+      }
+    }
+  },
+  "acipc_peripheral_sleep_fsm": {
+    "controller_module": "acipcSleep",
+    "enums": {
+      "acipcPeripheralSleepControl_e": "Sleep control directives dispatched by host driver",
+      "acipcSleepCommand_e": "Sleep commands: kSleepCmdSuspend, kSleepCmdResume, kSleepCmdAbort",
+      "acipcPeripheralSleepState_e": "Core sleep states: kStateAwake, kStateEnteringSleep, kStateDeepSleep, kStateWaking",
+      "acipcSleepEvent_e": "State transition events: kEventHostSleep, kEventHostWake, kEventDmaComplete, kEventMsiAck"
+    },
+    "work_scheduler": {
+      "function": "acipcSleep_doWork",
+      "tracking_registers": ["pendingMsi", "activeDMA", "pendingDMA", "waitingQ"],
+      "doorbell_validation": "acipcSleep_isDoorbellValid: dbNondataFlagLocal check against sleep state",
+      "notification_address": "acipcSleep_getSleepNotifyAddress"
+    }
+  },
+  "find_my_autonomous_beacon_engine": {
+    "engine_name": "Autonomous Low-Power Mode Advertising Engine (lpmadv)",
+    "operation_during_host_sleep": "100% autonomous beacon generation, cryptographic key rotation, and transmission while Host AP is in deep DRAM-retention sleep",
+    "advertising_parameters": {
+      "channels": [37, 38, 39],
+      "pdu_type": "ADV_NONCONN_IND (Non-Connectable Undirected Advertising) or ADV_EXT_IND",
+      "phy": "LE 1M Uncoded PHY",
+      "tx_power_dbm": 6.0,
+      "random_delay_jitter_ms": [0, 10],
+      "base_intervals_ms": {
+        "nearby_owner_connected": 2000,
+        "lost_mode_active": 350,
+        "standard_offline_tracking": 15000
+      }
+    },
+    "cryptographic_address_and_payload_rotation": {
+      "rotation_controller": "rotation.adv_addr & rotation.adv_data",
+      "rotation_period_minutes": 15,
+      "address_derivation": "Non-Resolvable Private Address (NRPA) derived from ephemeral public key hash: BD_ADDR = SHA256(P_x || Nonce)[0:6] with upper 2 bits set to 0b00",
+      "payload_structure": {
+        "length_bytes": 31,
+        "fields": [
+          {"offset": 0, "size": 1, "name": "AD Length", "expected_value": "0x1E (30 bytes)"},
+          {"offset": 1, "size": 1, "name": "AD Type", "expected_value": "0xFF (Manufacturer Specific Data)"},
+          {"offset": 2, "size": 2, "name": "Apple Company Identifier", "expected_value": "0x004C (Little-Endian: 0x4C 0x00)"},
+          {"offset": 4, "size": 1, "name": "Apple Subtype", "expected_value": "0x12 (Find My Network Beacon)"},
+          {"offset": 5, "size": 1, "name": "Payload Length", "expected_value": "0x19 (25 bytes)"},
+          {"offset": 6, "size": 1, "name": "Status Byte", "description": "Battery state (2 bits), key rotation epoch (4 bits), maintenance flags (2 bits)"},
+          {"offset": 7, "size": 22, "name": "Ephemeral Public Key (P_x[0:21])", "description": "Compressed elliptic curve P-256 public key prefix for end-to-end encrypted iCloud crowd-sourced location reporting"},
+          {"offset": 29, "size": 1, "name": "Key Hint Byte", "description": "Index hint for owner private key matching"},
+          {"offset": 30, "size": 1, "name": "Authentication Tag", "description": "Truncated AES-GMAC authentication token"}
+        ]
+      }
+    }
+  },
+  "wake_on_ble_filtering_and_matching": {
+    "filter_architecture": "Hardware-accelerated packet inspection engine operating in retention memory",
+    "matching_features": [
+      {
+        "filter_name": "MAGIC_PACKET_WAKE",
+        "target": "Paired Apple Watch, iPad, or Mac connection initiation request",
+        "action": "Immediate AP PMU Wake Pin Assert ('CAPTURE_POINT_WAKEUP_THE_AP')"
+      },
+      {
+        "filter_name": "FIND_MY_SOUND_TRIGGER",
+        "target": "Authorized encrypted Find My chime / alert command from nearby owner device",
+        "action": "Wake audio DSP subsystem while keeping Host AP display and apps suspended"
+      },
+      {
+        "filter_name": "DIGITAL_KEY_UWB_TRIGGER",
+        "target": "CarKey / HomeKey NFC/BLE approach beacon ('connected.open.pending.range_setup.uwb_get_key' & 'connected.open.pending.range_setup.uwb_range_enable')",
+        "driver": "uwb_drv",
+        "action": "Autonomous wake of Apple U1/U2 Ultra-Wideband transceiver for fine ranging handshake"
+      },
+      {
+        "filter_name": "BT_MAGNET_DOCK",
+        "target": "Apple Watch magnetic charging dock and MagSafe accessory telemetry ('Abort: LE link disconnected when BT Magnet is using broadcast HCID ID', Assert ID 169)",
+        "action": "Maintain low-power sync beacon during inductive power transfer"
+      },
+      {
+        "filter_name": "DENY_LIST_VALIDATOR",
+        "target": "Deny list of rogue tracking beacons and spam BLE flooders",
+        "action": "Drop packet at hardware filter level without waking Cortex-M core",
+        "assertion_ref": "CAPTURE_POINT_ASSERT_BLE_FILTER_DENY_LIST_RECORDS_NUM_BIGGER_THAN_LIST_SIZE"
+      }
+    ]
+  }
+}

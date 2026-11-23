@@ -1,0 +1,348 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Apple Centauri Wireless SoC Architectural Constants Cross-Validation Matrix",
+  "platform": "Apple Silicon A19 Pro (t8150) / iOS 27.2 (24B119)",
+  "extraction_confidence": {
+    "EXTRACTED": 45,
+    "INFERRED": 3,
+    "TOTAL": 48
+  },
+  "constants": [
+    {
+      "name": "CENTAURI_FTAB_MAGIC",
+      "value": "rkosftab",
+      "type": "8-byte ASCII string",
+      "confidence": "EXTRACTED",
+      "source": "t2026phoneG1/Release/ftab.bin offset 0x20"
+    },
+    {
+      "name": "CENTAURI_FTAB_PARTITION_COUNT",
+      "value": 78,
+      "type": "uint32_t",
+      "confidence": "EXTRACTED",
+      "source": "t2026phoneG1/Release/ftab.bin offset 0x28"
+    },
+    {
+      "name": "CENTAURI_FTAB_SIZE",
+      "value": 29600848,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "t2026phoneG1/Release/ftab.bin file size"
+    },
+    {
+      "name": "CENTAURI_CHINOOK_CORE_IMPL",
+      "value": "0x61",
+      "type": "uint8_t (Apple Implementer)",
+      "confidence": "EXTRACTED",
+      "source": "rkos.bin MIDR_EL1 extraction"
+    },
+    {
+      "name": "CENTAURI_CHINOOK_PART_NUM",
+      "value": "0x00E",
+      "type": "uint16_t (Chinook Core)",
+      "confidence": "EXTRACTED",
+      "source": "rkos.bin MIDR_EL1 extraction"
+    },
+    {
+      "name": "CENTAURI_OSL_STRINGS_COUNT",
+      "value": 1003,
+      "type": "uint32_t (count)",
+      "confidence": "EXTRACTED",
+      "source": "_osl.bin format string database"
+    },
+    {
+      "name": "CENTAURI_MEMORY_OVERLAYS_COUNT",
+      "value": 34,
+      "type": "uint32_t (count)",
+      "confidence": "EXTRACTED",
+      "source": "rkos.bin scatter-load table"
+    },
+    {
+      "name": "CENTAURI_WIFI_ACIW_SIZE",
+      "value": 2559168,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition aciw"
+    },
+    {
+      "name": "CENTAURI_WIFI_ACIW_RESET_VEC",
+      "value": "0x0016f725",
+      "type": "uint32_t (Thumb address)",
+      "confidence": "EXTRACTED",
+      "source": "aciw.bin entrypoint offset 0x04"
+    },
+    {
+      "name": "CENTAURI_WIFI_W2LP_INITIAL_SP",
+      "value": "0x1002fff0",
+      "type": "uint32_t (SRAM address)",
+      "confidence": "EXTRACTED",
+      "source": "w2lp.bin vector table offset 0x00"
+    },
+    {
+      "name": "CENTAURI_WIFI_W2LP_RESET_VEC",
+      "value": "0x00100bd5",
+      "type": "uint32_t (Thumb address)",
+      "confidence": "EXTRACTED",
+      "source": "w2lp.bin vector table offset 0x04"
+    },
+    {
+      "name": "CENTAURI_WIFI_WFTP_INITIAL_SP",
+      "value": "0x10023ff0",
+      "type": "uint32_t (SRAM address)",
+      "confidence": "EXTRACTED",
+      "source": "wftp.bin vector table offset 0x00"
+    },
+    {
+      "name": "CENTAURI_WIFI_WFTP_RESET_VEC",
+      "value": "0x0010090d",
+      "type": "uint32_t (Thumb address)",
+      "confidence": "EXTRACTED",
+      "source": "wftp.bin vector table offset 0x04"
+    },
+    {
+      "name": "CENTAURI_WIFI_MLD_PRIMARY_STA",
+      "value": 2,
+      "type": "uint8_t (Link index)",
+      "confidence": "EXTRACTED",
+      "source": "aciw.bin MLD architecture constants"
+    },
+    {
+      "name": "CENTAURI_WIFI_MLD_SECONDARY_STA",
+      "value": 3,
+      "type": "uint8_t (Link index)",
+      "confidence": "EXTRACTED",
+      "source": "aciw.bin MLD architecture constants"
+    },
+    {
+      "name": "CENTAURI_WIFI_4096QAM_PPDU_TYPE",
+      "value": 6,
+      "type": "uint8_t (RATE_PPDU_EHT_E)",
+      "confidence": "EXTRACTED",
+      "source": "aciw.bin PHY rate table"
+    },
+    {
+      "name": "CENTAURI_WIFI_4096QAM_BITS_PER_SYM",
+      "value": 12,
+      "type": "uint8_t (bits)",
+      "confidence": "EXTRACTED",
+      "source": "aciw.bin PHY rate table"
+    },
+    {
+      "name": "CENTAURI_WIFI_320MHZ_SUBCHANNELS",
+      "value": 16,
+      "type": "uint8_t (count)",
+      "confidence": "EXTRACTED",
+      "source": "aciw.bin 320 MHz subband mask table"
+    },
+    {
+      "name": "CENTAURI_REG_POWER_TABLE_MAGIC",
+      "value": "0xCAFECAFE",
+      "type": "uint32_t",
+      "confidence": "EXTRACTED",
+      "source": "R000.bin through R009.bin offset 0x00"
+    },
+    {
+      "name": "CENTAURI_REG_POWER_TABLE_VERSION",
+      "value": "0x00010000",
+      "type": "uint32_t (Version 10.0)",
+      "confidence": "EXTRACTED",
+      "source": "R000.bin through R009.bin offset 0x04"
+    },
+    {
+      "name": "CENTAURI_BT_ACIB_SIZE",
+      "value": 2072672,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition acib"
+    },
+    {
+      "name": "CENTAURI_BT_LPBT_SIZE",
+      "value": 1396800,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition lpbt"
+    },
+    {
+      "name": "CENTAURI_BT_BTSE_SIZE",
+      "value": 52000,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition btse"
+    },
+    {
+      "name": "CENTAURI_BT_SCAB_SIZE",
+      "value": 214976,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition scab"
+    },
+    {
+      "name": "CENTAURI_BT_SCAW_SIZE",
+      "value": 225504,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "ftab.bin partition scaw"
+    },
+    {
+      "name": "CENTAURI_BT_COEX_PRIORITY_LEVELS",
+      "value": 8,
+      "type": "uint8_t (Levels 0..7)",
+      "confidence": "EXTRACTED",
+      "source": "scab.bin coexistence priority scheduler"
+    },
+    {
+      "name": "CENTAURI_BT_COEX_BT_ACTIVITIES",
+      "value": 10,
+      "type": "uint8_t (Count)",
+      "confidence": "EXTRACTED",
+      "source": "scab.bin activity classification table"
+    },
+    {
+      "name": "CENTAURI_BT_COEX_WIFI_ACTIVITIES",
+      "value": 6,
+      "type": "uint8_t (Count)",
+      "confidence": "EXTRACTED",
+      "source": "scaw.bin activity classification table"
+    },
+    {
+      "name": "CENTAURI_DART_APCIE0_BASE",
+      "value": "0x180000000",
+      "type": "uint64_t (Host MMIO base)",
+      "confidence": "EXTRACTED",
+      "source": "device-tree: /arm-io/dart-apcie0"
+    },
+    {
+      "name": "CENTAURI_AIC_IRQ_VECTOR",
+      "value": 22,
+      "type": "uint32_t (AIC vector 0x16)",
+      "confidence": "EXTRACTED",
+      "source": "device-tree: /arm-io/apcie/pci-bridge0 interrupts"
+    },
+    {
+      "name": "CENTAURI_DART_SID_CONTROL",
+      "value": "0x10",
+      "type": "uint32_t (Stream ID)",
+      "confidence": "EXTRACTED",
+      "source": "device-tree: /arm-io/apcie/pci-bridge0/centauri-control iommu-stream-id"
+    },
+    {
+      "name": "CENTAURI_DART_SID_ALPHA",
+      "value": "0x11",
+      "type": "uint32_t (Stream ID)",
+      "confidence": "EXTRACTED",
+      "source": "device-tree: /arm-io/apcie/pci-bridge0/centauri-alpha iommu-stream-id"
+    },
+    {
+      "name": "CENTAURI_DART_SID_BETA",
+      "value": "0x12",
+      "type": "uint32_t (Stream ID)",
+      "confidence": "EXTRACTED",
+      "source": "device-tree: /arm-io/apcie/pci-bridge0/centauri-beta iommu-stream-id"
+    },
+    {
+      "name": "CENTAURI_REG_EXEC_STAGE",
+      "value": "0x8000",
+      "type": "uint32_t (Offset)",
+      "confidence": "EXTRACTED",
+      "source": "CentauriControl.framework disasm"
+    },
+    {
+      "name": "CENTAURI_REG_IPC_STATUS",
+      "value": "0x8050",
+      "type": "uint32_t (Offset)",
+      "confidence": "EXTRACTED",
+      "source": "CentauriControl.framework disasm"
+    },
+    {
+      "name": "CENTAURI_REG_RINGDB_BASE",
+      "value": "0x9000",
+      "type": "uint32_t (Offset)",
+      "confidence": "EXTRACTED",
+      "source": "CentauriControl.framework disasm"
+    },
+    {
+      "name": "CENTAURI_REG_SYSTEM_EVENTS",
+      "value": "0x906c",
+      "type": "uint32_t (Offset)",
+      "confidence": "EXTRACTED",
+      "source": "CentauriControl.framework disasm"
+    },
+    {
+      "name": "CENTAURI_ALPHA_DOORBELL_CTRL",
+      "value": "0x1004",
+      "type": "uint32_t (Offset)",
+      "confidence": "EXTRACTED",
+      "source": "CentauriAlpha.framework disasm"
+    },
+    {
+      "name": "CENTAURI_ALPHA_DOORBELL_TX",
+      "value": "0x1030",
+      "type": "uint32_t (Offset)",
+      "confidence": "EXTRACTED",
+      "source": "CentauriAlpha.framework disasm"
+    },
+    {
+      "name": "CENTAURI_ALPHA_DOORBELL_RX",
+      "value": "0x1050",
+      "type": "uint32_t (Offset)",
+      "confidence": "EXTRACTED",
+      "source": "CentauriAlpha.framework disasm"
+    },
+    {
+      "name": "CENTAURI_ACIPC_VERSION",
+      "value": "0x0300",
+      "type": "uint16_t (ACIPC v3.0)",
+      "confidence": "EXTRACTED",
+      "source": "AirshipDK.framework / CentauriControl.framework"
+    },
+    {
+      "name": "CENTAURI_ACIPC_CONTEXT_HEADER_SIZE",
+      "value": 120,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "centauri_host_interface.h verified"
+    },
+    {
+      "name": "CENTAURI_ACIPC_TRD_SIZE",
+      "value": 48,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "centauri_host_interface.h verified"
+    },
+    {
+      "name": "CENTAURI_ACIPC_CRD_SIZE",
+      "value": 32,
+      "type": "uint32_t (bytes)",
+      "confidence": "EXTRACTED",
+      "source": "centauri_host_interface.h verified"
+    },
+    {
+      "name": "CENTAURI_DRIVERKIT_CLASS_COUNT",
+      "value": 227,
+      "type": "uint32_t (classes)",
+      "confidence": "EXTRACTED",
+      "source": "driverkit_class_hierarchy.json"
+    },
+    {
+      "name": "CENTAURI_DRIVERKIT_METHOD_COUNT",
+      "value": 3966,
+      "type": "uint32_t (methods)",
+      "confidence": "EXTRACTED",
+      "source": "driverkit_class_hierarchy.json"
+    },
+    {
+      "name": "CENTAURI_DRIVERKIT_VTABLE_COUNT",
+      "value": 190,
+      "type": "uint32_t (vtables)",
+      "confidence": "EXTRACTED",
+      "source": "driverkit_class_hierarchy.json"
+    },
+    {
+      "name": "CENTAURI_XPC_ENDPOINT",
+      "value": "com.apple.centaurid.xpc",
+      "type": "Mach service name",
+      "confidence": "INFERRED",
+      "source": "centaurid binary strings"
+    }
+  ]
+}

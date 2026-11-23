@@ -1,0 +1,107 @@
+{
+  "acib": {
+    "entry_index": 7,
+    "offset": 5823664,
+    "size": 2072672,
+    "sha256": "0a2f535b962c1240527d9ecfabb6a914e50c22cd3b1c9cf4857ff401e226ed94",
+    "file": "artifacts/centauri/bluetooth/partitions/acib.bin"
+  },
+  "btse": {
+    "entry_index": 8,
+    "offset": 7896336,
+    "size": 52000,
+    "sha256": "494f4ec14eb5dcb6cf5ec8ce701d0db0f4277e031bc5abfaedd4d506e056648d",
+    "file": "artifacts/centauri/bluetooth/partitions/btse.bin"
+  },
+  "scab": {
+    "entry_index": 9,
+    "offset": 7948336,
+    "size": 214976,
+    "sha256": "79bd9c89d088a878178182060555eecd8940c6d4e6458e6d592ba60221652b26",
+    "file": "artifacts/centauri/bluetooth/partitions/scab.bin"
+  },
+  "bt5p": {
+    "entry_index": 12,
+    "offset": 8994128,
+    "size": 312992,
+    "sha256": "9a2878d474686817e29a7b6969992080f95abcd5baa82699a44b7d57be5d0a1b",
+    "file": "artifacts/centauri/bluetooth/partitions/bt5p.bin"
+  },
+  "phyb": {
+    "entry_index": 13,
+    "offset": 9307120,
+    "size": 290336,
+    "sha256": "b007c96cab1394efbc32ee4f5d2e2fdf8f8d530425c6e7969293e1cd6740b2b0",
+    "file": "artifacts/centauri/bluetooth/partitions/phyb.bin"
+  },
+  "scaw": {
+    "entry_index": 14,
+    "offset": 9597456,
+    "size": 225504,
+    "sha256": "953605800b9bc2f6acbab6aea3e574254b7c4ffbe4c68d3c9a824c4f2b5794e2",
+    "file": "artifacts/centauri/bluetooth/partitions/scaw.bin"
+  },
+  "btsm": {
+    "entry_index": 16,
+    "offset": 11895632,
+    "size": 52000,
+    "sha256": "494f4ec14eb5dcb6cf5ec8ce701d0db0f4277e031bc5abfaedd4d506e056648d",
+    "file": "artifacts/centauri/bluetooth/partitions/btsm.bin"
+  },
+  "pbtm": {
+    "entry_index": 17,
+    "offset": 11947632,
+    "size": 290336,
+    "sha256": "b007c96cab1394efbc32ee4f5d2e2fdf8f8d530425c6e7969293e1cd6740b2b0",
+    "file": "artifacts/centauri/bluetooth/partitions/pbtm.bin"
+  },
+  "bt5m": {
+    "entry_index": 18,
+    "offset": 12237968,
+    "size": 312992,
+    "sha256": "9a2878d474686817e29a7b6969992080f95abcd5baa82699a44b7d57be5d0a1b",
+    "file": "artifacts/centauri/bluetooth/partitions/bt5m.bin"
+  },
+  "sbtm": {
+    "entry_index": 19,
+    "offset": 12550960,
+    "size": 214976,
+    "sha256": "79bd9c89d088a878178182060555eecd8940c6d4e6458e6d592ba60221652b26",
+    "file": "artifacts/centauri/bluetooth/partitions/sbtm.bin"
+  },
+  "lpbt": {
+    "entry_index": 28,
+    "offset": 17860400,
+    "size": 1396800,
+    "sha256": "16c62000d144d575348ce1ab4c65dbc88e7a0b039c902786e6b45c11992c5938",
+    "file": "artifacts/centauri/bluetooth/partitions/lpbt.bin"
+  },
+  "sbtl": {
+    "entry_index": 29,
+    "offset": 19257200,
+    "size": 199904,
+    "sha256": "ae38879c7c8c65f2bb67fb94eecc324d42bb805ef46e34b6b4af3886af6ba808",
+    "file": "artifacts/centauri/bluetooth/partitions/sbtl.bin"
+  },
+  "pbtl": {
+    "entry_index": 30,
+    "offset": 19457104,
+    "size": 237760,
+    "sha256": "ac54637d27f65a0c8d9ce1274f27822f3e87254fbfc1b3ee68a5e010539f9850",
+    "file": "artifacts/centauri/bluetooth/partitions/pbtl.bin"
+  },
+  "pbtt": {
+    "entry_index": 31,
+    "offset": 19694864,
+    "size": 262432,
+    "sha256": "e4bab6a3a930bb52371a09f36f8f9e0f046b5bd135f2a5a127fd3efb18018400",
+    "file": "artifacts/centauri/bluetooth/partitions/pbtt.bin"
+  },
+  "bt5t": {
+    "entry_index": 32,
+    "offset": 19957296,
+    "size": 272640,
+    "sha256": "f44ec65a2d3e3988385cdca8e9207efba81b8b5cf3076b7d3b725a872ccf6a12",
+    "file": "artifacts/centauri/bluetooth/partitions/bt5t.bin"
+  }
+}

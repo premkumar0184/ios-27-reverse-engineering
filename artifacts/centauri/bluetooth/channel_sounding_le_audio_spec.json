@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Apple Centauri Bluetooth 5.4/6.0 Channel Sounding (CS), LE Audio (CIS/BIS), GBT & TAS Specification",
+  "version": "1.1.0",
+  "target_silicon": "Apple Centauri (t2026phoneG1 / Silicon Stepping B0)",
+  "firmware_partitions": [
+    "acib.bin (Apple Centauri Interface Bluetooth: 2,072,672 bytes, SHA-256: 0a2f535b962c1240527d9ecfabb6a914e50c22cd3b1c9cf4857ff401e226ed94)",
+    "bt5p.bin (Bluetooth 5.4/6.0 PHY Controller: 312,992 bytes, SHA-256: 9a2878d474686817e29a7b6969992080f95abcd5baa82699a44b7d57be5d0a1b)",
+    "bt5m.bin (Bluetooth 5.4/6.0 MAC Controller: 312,992 bytes, SHA-256: 9a2878d474686817e29a7b6969992080f95abcd5baa82699a44b7d57be5d0a1b)",
+    "phyb.bin (Primary Baseband DSP Core: 290,336 bytes, SHA-256: b007c96cab1394efbc32ee4f5d2e2fdf8f8d530425c6e7969293e1cd6740b2b0)",
+    "pbtt.bin (Primary Timing Scripter: 262,432 bytes, SHA-256: e4bab6a3a930bb52371a09f36f8f9e0f046b5bd135f2a5a127fd3efb18018400)",
+    "bt5t.bin (Bluetooth 5.4 High-Resolution Sequencer: 272,640 bytes, SHA-256: f44ec65a2d3e3ba8912e98ebfbfcb241fe73caaaef453986ec32b90ce86bb5f1)"
+  ],
+  "channel_sounding_subsystem": {
+    "protocol_specification": "Bluetooth Core Specification v5.4 & v6.0 High-Definition Ranging (HDRP)",
+    "operating_frequencies_mhz": {
+      "band_start": 2402,
+      "band_end": 2480,
+      "channel_count": 72,
+      "channel_spacing_mhz": 1,
+      "excluded_primary_adv_channels": [37, 38, 39],
+      "active_channel_map_rule": "Minimum 15 active channels required for valid CS subevent execution ('Aborting - Inactive CH MAP!')"
+    },
+    "ranging_modes": [
+      {
+        "mode_id": 1,
+        "name": "RTT_MODE_1",
+        "description": "Round-Trip Timing (RTT) Time-of-Flight ranging using digital baseband pulse timestamping",
+        "measurement_type": "Digital Baseband Packet Time-of-Flight (ToF)",
+        "timestamp_resolution_ns": 0.125,
+        "coarse_accuracy_meters": 0.5,
+        "packet_format": "CS HDRP Packet with Sync Word and Payload Timestamp",
+        "multipath_tolerance": "Moderate"
+      },
+      {
+        "mode_id": 2,
+        "name": "PBR_MODE_2",
+        "description": "Phase-Based Ranging (PBR) multi-carrier unmodulated tone exchange",
+        "measurement_type": "Carrier Phase Difference across Frequency Hops",
+        "phase_measurement_resolution_degrees": 0.05,
+        "fine_accuracy_meters": 0.02,
+        "tone_duration_options_us": [10, 20, 40],
+        "multipath_mitigation_algorithm": "MUSIC (Multiple Signal Classification) & ESPRIT Super-Resolution",
+        "phase_difference_formula": "Delta_Phi_k = (4 * pi * (f_k - f_0) * d) / c"
+      },
+      {
+        "mode_id": 3,
+        "name": "RTT_PBR_HYBRID_MODE_3",
+        "description": "Hybrid Mode combining RTT coarse distance windowing with PBR sub-centimeter phase unwrapping",
+        "measurement_type": "Joint Coarse Time-of-Flight and Fine Phase Estimation",
+        "unambiguous_range_meters": 150.0,
+        "final_accuracy_meters": 0.015,
+        "multipath_tolerance": "High"
+      }
+    ],
+    "subevent_and_step_execution": {
+      "subevent_scheduler": "Real-Time Hardware Scripter (RT Sequencer in pbtt.bin / bt5t.bin)",
+      "step_timing_parameters": {
+        "t_fcs_frequency_change_us": 15.0,
+        "t_ip1_inter_packet_guard_us": 10.0,
+        "t_ip2_inter_step_guard_us": 30.0,
+        "t_pm_phase_measurement_us": 20.0
+      },
+      "step_types": [
+        {"type_id": 0, "name": "CS_STEP_CALIBRATION", "description": "Local RF transceiver calibration and I/Q DC offset cancellation"},
+        {"type_id": 1, "name": "CS_STEP_RTT_EXCHANGE", "description": "Initiator and Reflector transmit bidirectional digital baseband packets"},
+        {"type_id": 2, "name": "CS_STEP_TONE_PBR_EXCHANGE", "description": "Bidirectional unmodulated carrier tone transmission with I/Q accumulation"},
+        {"type_id": 3, "name": "CS_STEP_ANTENNA_PERMUTATION", "description": "Antenna path switching to collect multi-antenna spatial channel responses"}
+      ],
+      "firmware_assertion_guards": [
+        {"id": 304, "offset": "0x0022755b", "symbol": "Aborting - Inactive CH MAP!"},
+        {"id": 305, "offset": "0x00227577", "symbol": "Subevent error!"},
+        {"id": 306, "offset": "0x00227587", "symbol": "Bad step index! exp=%d, got=%d"},
+        {"id": 307, "offset": "0x002275a6", "symbol": "illegal step status!"},
+        {"id": 308, "offset": "0x002275bb", "symbol": "Resolvable tag descriptor did not finish in time"},
+        {"id": 309, "offset": "0x002275ec", "symbol": "RT Sequencer error - SCAN CORE PLL not locked"},
+        {"id": 310, "offset": "0x0022761a", "symbol": "RT Sequencer error - TX POWER UP script is too late (TX_EN already set)"},
+        {"id": 311, "offset": "0x00227662", "symbol": "RT Sequencer error - RX start without stop"},
+        {"id": 312, "offset": "0x0022768d", "symbol": "Illegal HDRP type: %d"}
+      ]
+    },
+    "security_and_anti_spoofing": {
+      "security_handshake_transaction": "BLE_CONNECTION_TRANS_CS_SECURITY",
+      "ranging_tag_validation": "Resolvable Sounding Tag Descriptors validated via Hardware SARA Engine",
+      "nonce_generation": "Cryptographically secure 128-bit pseudo-random frequency hopping sequence",
+      "physical_layer_spoof_detection": [
+        "Phase gradient continuity verification",
+        "I/Q constellation variance threshold checking",
+        "RTT vs PBR distance cross-correlation sanity check (Delta_d < 1.5 m threshold)"
+      ]
+    }
+  },
+  "le_audio_subsystem": {
+    "isochronous_architecture": "Bluetooth Core Specification v5.4 LE Audio Isochronous Channels (CIS/BIS)",
+    "channel_types": [
+      {
+        "type": "CIS",
+        "name": "Connected Isochronous Stream",
+        "description": "Bidirectional point-to-point stream with hardware acknowledgment and retransmissions",
+        "group_container": "Connected Isochronous Group (CIG)",
+        "max_streams_per_group": 31,
+        "allocation_function": "lm_ble_connected_iso_central_init_data_path_per_cis (Assert ID 335)"
+      },
+      {
+        "type": "BIS",
+        "name": "Broadcast Isochronous Stream",
+        "description": "Unidirectional point-to-multipoint broadcast stream (Auracast)",
+        "group_container": "Broadcast Isochronous Group (BIG)",
+        "max_streams_per_group": 31
+      }
+    ],
+    "isoal_adaptation_layer": {
+      "layer_name": "Isochronous Adaptation Layer (ISOAL)",
+      "framing_modes": [
+        {
+          "mode": "UNFRAMED",
+          "description": "Direct SDU-to-PDU mapping with zero header overhead; optimized for fixed 10 ms LC3 audio frames",
+          "latency_advantage_us": 125
+        },
+        {
+          "mode": "FRAMED",
+          "description": "Segmented and reassembled SDU distribution supporting variable bitrate codecs and multi-SDU packing",
+          "fragment_handler": "lc_main_ble_audio_link_datapath_isoal_framed_notify_audio_packet_tx_complete (Assert ID 324)"
+        }
+      ],
+      "timing_parameters": {
+        "sdu_interval_options_us": [5000, 7500, 10000, 20000],
+        "nse_subevents_per_event_range": [1, 31],
+        "burst_number_bn_range": [1, 7],
+        "flush_timeout_ft_range": [1, 255]
+      }
+    },
+    "lc3_codec_acceleration_and_buffers": {
+      "codec_type": "Low Complexity Communication Codec (LC3 / LC3plus)",
+      "hardware_buffer_architecture": {
+        "ring_buffer_type": "ADMA Dual-Port Circular Linked-List Queues",
+        "payload_pool_allocator": "uc_datapath_ble_audio_link_prepare_resources (Assert ID 341)",
+        "raw_payload_pool_id": 4,
+        "packet_descriptor_pool_id": 7,
+        "max_sdu_payload_bytes": 4096,
+        "frame_durations_supported_ms": [7.5, 10.0],
+        "audio_sampling_rates_khz": [16.0, 24.0, 32.0, 44.1, 48.0, 96.0]
+      },
+      "loss_concealment_and_flushing": {
+        "flushed_pdu_guard": "lc_main_ble_audio_link_datapath_connected_iso_get_tx_packet: flushed PDUs in current event exceeded max allowed (Assert ID 376)",
+        "missing_packet_notification": "CAPTURE_POINT_ASSERT_UC_DATAPATH_BLE_AUDIO_LINK_FAILED_TO_SEND_MISSING_PACKET_NOTIFICATION",
+        "packet_reconstruction": "CAPTURE_POINT_ASSERT_UC_DATAPATH_BLE_AUDIO_LINK_RX_RECONSTRUCTION_FAILURE"
+      }
+    },
+    "apple_proprietary_audio_extensions": {
+      "extension_name": "Ultra Low Latency Audio (ULLA & ULLA Lite)",
+      "features": [
+        "Sub-15ms motion-to-sound latency for AirPods Spatial Audio dynamic head tracking",
+        "Simultaneous bidirectional 48 kHz stereo downlink and 24 kHz wideband microphone uplink",
+        "Dynamic peer relay and earbud snooping coordination ('ULLA_TRANS: lm_ulla_trans_source_ulla_teardown_init', Assert ID 340)",
+        "ADMA high-speed audio stream interface ('ULLA stream started but ADMA address is not configured', Assert ID 325)",
+        "Packet sizing guards: 'ULLA: tried transmitting packet of size %d, maximal size is %d' (Assert ID 160)"
+      ]
+    }
+  },
+  "gbt_generic_bluetooth_transport": {
+    "protocol_name": "Generic Bluetooth Transport (GBT)",
+    "description": "Apple unified multi-device transport layer synchronizing state across iPhone, Apple Watch, and AirPods",
+    "logical_channel_management": "lc_protocol_gbt_logical_channel_tx_packet_fragment_acked",
+    "state_machine": {
+      "event_enum": "ENUM(LC_PROTOCOL_GBT_CENTRAL_EVENT,%d)",
+      "state_enum": "ENUM(LC_PROTOCOL_GBT_CENTRAL_STATE,%d)",
+      "assertion_guard": "Should not get (ENUM(LC_PROTOCOL_GBT_CENTRAL_EVENT,%d)) in (ENUM(LC_PROTOCOL_GBT_CENTRAL_STATE,%d)) state (Assert ID 405)"
+    },
+    "transaction_pool": {
+      "pool_guard": "GBT Transaction Manager: Transaction pool exhausted for transaction code %u (Assert ID 363)",
+      "security_configuration": "GBT security configuration failed. Reason = %d (Assert ID 401)"
+    }
+  },
+  "tas_transmit_antenna_switching": {
+    "subsystem_name": "Time-Averaged SAR Platform (TAS) & Dynamic Power Table Manager",
+    "description": "Manages RF power limits across body-proximity sensor states and antenna paths to ensure FCC/ICNIRP SAR compliance",
+    "activity_types": "lm_tas_set_activity_info: Unknown TAS_ACTIVITY_TYPE type = %d (Assert ID 330)",
+    "power_tables": {
+      "parser_validation": "lm_tas_platform_post_init: incompatible table version detected, local parser - (%d, %d), power table - (%d, %d) (Assert ID 378)",
+      "rate_groups": "lm_tas_platform_post_init: more power rate group %d detected than that PHY supports - %d (Assert ID 390)"
+    }
+  }
+}

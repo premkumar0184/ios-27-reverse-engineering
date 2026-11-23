@@ -1,0 +1,398 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Apple Centauri t2026phoneG1 2.4 GHz RF Coexistence Matrix & Priority Arbitration Specification",
+  "version": "1.1.0",
+  "target_silicon": "Apple Centauri (t2026phoneG1 / Silicon Stepping B0)",
+  "firmware_partitions": [
+    "scab.bin (Shared Coexistence Arbiter Bluetooth: 214,976 bytes, SHA-256: 79bd9c89d088a878178182060555eecd8940c6d4e6458e6d592ba60221652b26)",
+    "scaw.bin (Shared Coexistence Arbiter Wi-Fi: 225,504 bytes, SHA-256: 953605800b9bc2f6acbab6aea3e574254b7c4ffbe4c68d3c9a824c4f2b5794e2)",
+    "acib.bin (Apple Centauri Interface Bluetooth: 2,072,672 bytes, SHA-256: 0a2f535b962c1240527d9ecfabb6a914e50c22cd3b1c9cf4857ff401e226ed94)"
+  ],
+  "coexistence_subsystem_architecture": {
+    "arbiter_topology": "Distributed Hardware-Assisted Arbiter with Dual Cortex-M Co-Processors (SCAB for Bluetooth, SCAW for Wi-Fi)",
+    "subsystem_loading_events": {
+      "wifi_load_notification": "wifi_ss_load (Notifies SCAB that Wi-Fi PHY and MAC layers have completed boot)",
+      "assertion_guard": "CAPTURE_POINT_ASSERT_COEX_ARBITER_NOT_ACCESSED_WHILE_WIFI_LOADED"
+    },
+    "inter_core_communication": {
+      "bus_type": "Hardware Mailbox with Bidirectional Doorbell Interrupts (OSA_ICC)",
+      "spmi_interface": "MIPI SPMI v2.0 Serial Power & Management Interface for Sub-Microsecond Inter-Chip Bus Arbitration (SPMI_RCS)",
+      "spmi_clock_mhz": 26.0,
+      "spmi_response_timeout_us": 12.5,
+      "spmi_error_guards": [
+        "SPMI got an error indication! (Assert ID 156)",
+        "Coex SPMI RCS error! (Assert ID 215)",
+        "Coex SPMI incoming message consecutive error! (Assert ID 221)",
+        "Too many pending SPMI reads! (count=%lu) (Assert ID 231)",
+        "CAPTURE_POINT_WARNING_COEX_SPMI_RCS_HW_NOT_RESPONDING"
+      ],
+      "hardware_semaphores": {
+        "hw_lock_register": "0x40000000",
+        "fw_lock_register": "0x40000004",
+        "coex_activity_bits_offset": "0x40000010",
+        "coex_envelope_bits_offset": "0x40000014",
+        "coex_timestamp_register": "0x40000018",
+        "lock_assertion": "top_lock_semaphore: failed to lock semaphore %hhu for %lu micro (Assert ID 47)"
+      }
+    },
+    "arbitration_granularity": "Frame-by-Frame (FBF) Hardware Trigger Engine with Predictive Sub-Slot Scheduling",
+    "fbf_lookahead_window_us": 1250,
+    "fbf_switch_latency_us": 8.0,
+    "antenna_sharing_modes": [
+      {
+        "mode_id": "SHARED_ANTENNA_TDM",
+        "description": "Time-Division Multiplexing over single shared 2.4 GHz RF chain between Wi-Fi and Bluetooth",
+        "isolation_db": 0.0,
+        "switching_time_us": 6.25
+      },
+      {
+        "mode_id": "SWITCHED_ANTENNA_DIVERSITY",
+        "description": "Antenna diversity path switching based on dynamic RSSI, link margin, and packet priority",
+        "isolation_db": 15.5,
+        "switching_time_us": 4.5
+      },
+      {
+        "mode_id": "CONCURRENT_SLOT_ISOLATION",
+        "description": "Simultaneous 2.4 GHz Bluetooth transmission and 5 GHz / 6 GHz Wi-Fi transmission with zero interference",
+        "isolation_db": 42.0,
+        "switching_time_us": 0.0
+      },
+      {
+        "mode_id": "STEWIE_EXCLUSIVE_RESTRICTION",
+        "description": "Emergency SOS via Satellite (Stewie NTN) priority lock; forces RF front-end bypass and mutes all 2.4 GHz transmissions",
+        "isolation_db": 60.0,
+        "switching_time_us": 12.0
+      }
+    ]
+  },
+  "priority_levels": [
+    {
+      "level": 0,
+      "name": "PRIORITY_CRITICAL_EMERGENCY",
+      "description": "Safety-critical satellite and system emergency signaling. Absolute preemption over all baseband activities.",
+      "preempts_all_lower": true,
+      "max_latency_us": 0
+    },
+    {
+      "level": 1,
+      "name": "PRIORITY_REALTIME_ISOCHRONOUS_AUDIO",
+      "description": "Ultra Low Latency Audio (ULLA) and Bluetooth LE Audio CIS/BIS real-time packets. Critical for AirPods lip-sync and audio glitch prevention.",
+      "preempts_all_lower": true,
+      "max_latency_us": 625
+    },
+    {
+      "level": 2,
+      "name": "PRIORITY_SYNCHRONOUS_VOICE",
+      "description": "Classic Bluetooth eSCO / SCO voice packets (2-EV3 / 3-EV3) for active phone calls and FaceTime audio.",
+      "preempts_all_lower": true,
+      "max_latency_us": 1250
+    },
+    {
+      "level": 3,
+      "name": "PRIORITY_WIFI_BEACON_MANAGEMENT",
+      "description": "Wi-Fi Target Beacon Transmission Time (TBTT) beacons, DTIM frames, and 802.11 association/auth handshakes.",
+      "preempts_all_lower": true,
+      "max_latency_us": 2000
+    },
+    {
+      "level": 4,
+      "name": "PRIORITY_A2DP_BURST_STREAMING",
+      "description": "High-bitrate A2DP music streaming (AAC-ELD / SBC) operating with adaptive buffer refill windows.",
+      "preempts_all_lower": false,
+      "max_latency_us": 5000
+    },
+    {
+      "level": 5,
+      "name": "PRIORITY_LINK_CONTROL_SIGNALING",
+      "description": "Bluetooth LMP / LL Control transactions, encryption key updates, channel sounding subevents, and Wi-Fi AC_VO traffic.",
+      "preempts_all_lower": false,
+      "max_latency_us": 10000
+    },
+    {
+      "level": 6,
+      "name": "PRIORITY_INTERACTIVE_DATA",
+      "description": "Wi-Fi AC_VI / AC_BE data frames, Bluetooth ACL user data, and Apple Watch companion sync.",
+      "preempts_all_lower": false,
+      "max_latency_us": 25000
+    },
+    {
+      "level": 7,
+      "name": "PRIORITY_BACKGROUND_BEST_EFFORT",
+      "description": "Find My background periodic advertising, BLE inquiry/page scans, and Wi-Fi AC_BK background bulk transfers.",
+      "preempts_all_lower": false,
+      "max_latency_us": 100000
+    }
+  ],
+  "activity_classification_table": {
+    "bluetooth_activities": [
+      {
+        "activity_id": "BT_ACT_STEWIE_NTN",
+        "numeric_id": 0,
+        "name": "Stewie Satellite NTN SOS Transmission",
+        "assigned_priority": 0,
+        "duration_typical_us": 20000,
+        "periodicity": "Aperiodic",
+        "antenna_requirement": "Exclusive Direct Ant-0 Lock",
+        "capture_point_ref": "CAPTURE_POINT_ASSERT_STEWIE_COEX_ANTENNA_RESTRICTION_ERROR"
+      },
+      {
+        "activity_id": "BT_ACT_ULLA_ISO_AUDIO",
+        "numeric_id": 1,
+        "name": "Ultra Low Latency Audio (ULLA) & LE Audio CIS",
+        "assigned_priority": 1,
+        "duration_typical_us": 625,
+        "periodicity": "Periodic (5 ms / 7.5 ms / 10 ms interval)",
+        "antenna_requirement": "Shared Ant-0 or Switched Diversity",
+        "capture_point_ref": "CAPTURE_POINT_ASSERT_LC_ULLA_ACL_PAUSE"
+      },
+      {
+        "activity_id": "BT_ACT_ESCO_VOICE",
+        "numeric_id": 2,
+        "name": "Bluetooth eSCO / SCO Voice Call",
+        "assigned_priority": 2,
+        "duration_typical_us": 1250,
+        "periodicity": "Periodic (3.75 ms / 7.5 ms interval)",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_ASSERT_FBF_SCO_GO_WITH_NO_VOICE_SCHEDULED"
+      },
+      {
+        "activity_id": "BT_ACT_CS_SOUNDING_SUBEVENT",
+        "numeric_id": 3,
+        "name": "Bluetooth 5.4/6.0 Channel Sounding Subevent",
+        "assigned_priority": 5,
+        "duration_typical_us": 1600,
+        "periodicity": "Periodic or Triggered",
+        "antenna_requirement": "Shared Ant-0 with Phase-Accurate Calibration",
+        "capture_point_ref": "CAPTURE_POINT_ASSERT_COEX_BLE_CSS_NOT_SUPPORTED"
+      },
+      {
+        "activity_id": "BT_ACT_A2DP_MEDIA_TX",
+        "numeric_id": 4,
+        "name": "Advanced Audio Distribution Profile (A2DP) Streaming",
+        "assigned_priority": 4,
+        "duration_typical_us": 2500,
+        "periodicity": "Burst Periodic (20 ms window)",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_ASSERT_A2DP_ACL_PRIORITY_WITHOUT_A2DP_PARAMETERS"
+      },
+      {
+        "activity_id": "BT_ACT_LMP_LL_CONTROL",
+        "numeric_id": 5,
+        "name": "LMP / LL Control Critical Transaction",
+        "assigned_priority": 5,
+        "duration_typical_us": 1250,
+        "periodicity": "Aperiodic",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_ASSERT_LC_ACL_CONNECTION_PRIORITY_SELECTOR"
+      },
+      {
+        "activity_id": "BT_ACT_PAGE_INQUIRY",
+        "numeric_id": 6,
+        "name": "Page / Inquiry Connection Setup",
+        "assigned_priority": 6,
+        "duration_typical_us": 5000,
+        "periodicity": "Aperiodic",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_ASSERT_LC_PAGE_SCAN_FBF_SCHEDULING_DO_ILLEGAL_STATE"
+      },
+      {
+        "activity_id": "BT_ACT_ACL_USER_DATA",
+        "numeric_id": 7,
+        "name": "ACL General Data Transfer",
+        "assigned_priority": 6,
+        "duration_typical_us": 1875,
+        "periodicity": "Aperiodic",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_ASSERT_LC_ACL_DATA_PRIORITY_CHANGE_ATTEMPT_WITH_INVALID_PRIORITY_MODE_VALUE"
+      },
+      {
+        "activity_id": "BT_ACT_FINDMY_IHSM_ADV",
+        "numeric_id": 8,
+        "name": "Find My IHSM Autonomous Advertising",
+        "assigned_priority": 7,
+        "duration_typical_us": 1200,
+        "periodicity": "Periodic (2000 ms to 15000 ms)",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_WAKEUP_THE_AP"
+      },
+      {
+        "activity_id": "BT_ACT_BLE_SCAN",
+        "numeric_id": 9,
+        "name": "BLE Passive / Active Discovery Scan",
+        "assigned_priority": 7,
+        "duration_typical_us": 10000,
+        "periodicity": "Continuous or Windowed",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_ASSERT_COEX_BLE_SCAN_STATE_UNKNOWN"
+      }
+    ],
+    "wifi_activities": [
+      {
+        "activity_id": "WIFI_ACT_BEACON_RX_TX",
+        "numeric_id": 10,
+        "name": "Wi-Fi DTIM / TBTT Beacon Reception or Transmission",
+        "assigned_priority": 3,
+        "duration_typical_us": 1800,
+        "periodicity": "Periodic (102.4 ms TU)",
+        "antenna_requirement": "Shared Ant-0 or Main Chain",
+        "capture_point_ref": "CAPTURE_POINT_WLAN_TRIGGER_EVENT"
+      },
+      {
+        "activity_id": "WIFI_ACT_AC_VO_FRAMES",
+        "numeric_id": 11,
+        "name": "Wi-Fi Voice Access Category (AC_VO)",
+        "assigned_priority": 2,
+        "duration_typical_us": 800,
+        "periodicity": "Periodic (20 ms typical VoIP)",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_WLAN_TRIGGER_EVENT"
+      },
+      {
+        "activity_id": "WIFI_ACT_AC_VI_FRAMES",
+        "numeric_id": 12,
+        "name": "Wi-Fi Video Access Category (AC_VI)",
+        "assigned_priority": 5,
+        "duration_typical_us": 1500,
+        "periodicity": "Burst Periodic",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_WLAN_TRIGGER_EVENT"
+      },
+      {
+        "activity_id": "WIFI_ACT_AC_BE_FRAMES",
+        "numeric_id": 13,
+        "name": "Wi-Fi Best Effort Access Category (AC_BE)",
+        "assigned_priority": 6,
+        "duration_typical_us": 3000,
+        "periodicity": "Aperiodic",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_WLAN_TRIGGER_EVENT"
+      },
+      {
+        "activity_id": "WIFI_ACT_AC_BK_FRAMES",
+        "numeric_id": 14,
+        "name": "Wi-Fi Background Access Category (AC_BK)",
+        "assigned_priority": 7,
+        "duration_typical_us": 4000,
+        "periodicity": "Aperiodic",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_WLAN_TRIGGER_EVENT"
+      },
+      {
+        "activity_id": "WIFI_ACT_PROBE_SCAN",
+        "numeric_id": 15,
+        "name": "Wi-Fi 2.4 GHz Passive/Active Channel Scan",
+        "assigned_priority": 7,
+        "duration_typical_us": 20000,
+        "periodicity": "Aperiodic",
+        "antenna_requirement": "Shared Ant-0",
+        "capture_point_ref": "CAPTURE_POINT_WLAN_TRIGGER_EVENT"
+      }
+    ]
+  },
+  "pairwise_conflict_arbitration_matrix": [
+    {
+      "conflict_case": "Stewie Satellite NTN vs Wi-Fi Beacon",
+      "bluetooth_activity": "BT_ACT_STEWIE_NTN",
+      "wifi_activity": "WIFI_ACT_BEACON_RX_TX",
+      "winner": "BT_ACT_STEWIE_NTN",
+      "resolution_rule": "ABSOLUTE_PREEMPTION",
+      "action_taken": "Wi-Fi RF chain forced to high-impedance mode; beacon reception skipped until Stewie burst completes.",
+      "packet_drop_allowed": true
+    },
+    {
+      "conflict_case": "Ultra Low Latency Audio (ULLA) vs Wi-Fi Beacon",
+      "bluetooth_activity": "BT_ACT_ULLA_ISO_AUDIO",
+      "wifi_activity": "WIFI_ACT_BEACON_RX_TX",
+      "winner": "BT_ACT_ULLA_ISO_AUDIO",
+      "resolution_rule": "AUDIO_ISOLATION_OVERRIDE",
+      "action_taken": "ULLA audio packet is transmitted immediately. Wi-Fi beacon receiver rescheduled to next TBTT window via CTS-to-self frame protection.",
+      "packet_drop_allowed": false
+    },
+    {
+      "conflict_case": "Ultra Low Latency Audio (ULLA) vs Wi-Fi AC_VO Voice",
+      "bluetooth_activity": "BT_ACT_ULLA_ISO_AUDIO",
+      "wifi_activity": "WIFI_ACT_AC_VO_FRAMES",
+      "winner": "BT_ACT_ULLA_ISO_AUDIO",
+      "resolution_rule": "SUB_SLOT_INTERLEAVING",
+      "action_taken": "ULLA occupies 625 us slot. Wi-Fi AC_VO packet is delayed by FBF engine and transmitted immediately after ULLA slot finishes.",
+      "packet_drop_allowed": false
+    },
+    {
+      "conflict_case": "Classic eSCO Voice vs Wi-Fi Beacon",
+      "bluetooth_activity": "BT_ACT_ESCO_VOICE",
+      "wifi_activity": "WIFI_ACT_BEACON_RX_TX",
+      "winner": "BT_ACT_ESCO_VOICE",
+      "resolution_rule": "SYNCHRONOUS_RESERVATION",
+      "action_taken": "eSCO slot is strictly reserved in hardware scripter. Wi-Fi beacon is delayed or received on secondary antenna path if diversity is available.",
+      "packet_drop_allowed": false
+    },
+    {
+      "conflict_case": "A2DP Music Streaming vs Wi-Fi Beacon",
+      "bluetooth_activity": "BT_ACT_A2DP_MEDIA_TX",
+      "wifi_activity": "WIFI_ACT_BEACON_RX_TX",
+      "winner": "WIFI_ACT_BEACON_RX_TX",
+      "resolution_rule": "BEACON_PROTECTION_YIELD",
+      "action_taken": "A2DP burst yields 1.8 ms window to allow Wi-Fi beacon reception. Centauri A2DP packet queue increases burst rate post-beacon to refill buffer.",
+      "packet_drop_allowed": false
+    },
+    {
+      "conflict_case": "A2DP Music Streaming vs Wi-Fi AC_BE Data",
+      "bluetooth_activity": "BT_ACT_A2DP_MEDIA_TX",
+      "wifi_activity": "WIFI_ACT_AC_BE_FRAMES",
+      "winner": "BT_ACT_A2DP_MEDIA_TX",
+      "resolution_rule": "TIME_SLICED_BURST_GRANT",
+      "action_taken": "A2DP granted 20 ms transmission burst with 75% duty cycle. Wi-Fi AC_BE traffic is throttled using 802.11 CTS-to-self frame clamps.",
+      "packet_drop_allowed": false
+    },
+    {
+      "conflict_case": "Bluetooth 5.4 Channel Sounding vs Wi-Fi AC_VI Video",
+      "bluetooth_activity": "BT_ACT_CS_SOUNDING_SUBEVENT",
+      "wifi_activity": "WIFI_ACT_AC_VI_FRAMES",
+      "winner": "BT_ACT_CS_SOUNDING_SUBEVENT",
+      "resolution_rule": "DYNAMIC_FREQUENCY_AVOIDANCE",
+      "action_taken": "Centauri coex engine coordinates CS active channel map with Wi-Fi 2.4 GHz channel to prevent phase tone corruption across adjacent channels.",
+      "packet_drop_allowed": false
+    },
+    {
+      "conflict_case": "Find My IHSM Advertising vs Wi-Fi Beacon",
+      "bluetooth_activity": "BT_ACT_FINDMY_IHSM_ADV",
+      "wifi_activity": "WIFI_ACT_BEACON_RX_TX",
+      "winner": "WIFI_ACT_BEACON_RX_TX",
+      "resolution_rule": "BACKGROUND_DEFERRAL",
+      "action_taken": "Find My advertising packet is deferred by 20 ms to 50 ms pseudo-random delay, preventing RF collision with Wi-Fi beacon.",
+      "packet_drop_allowed": false
+    },
+    {
+      "conflict_case": "BLE Discovery Scan vs Wi-Fi AC_BE Data",
+      "bluetooth_activity": "BT_ACT_BLE_SCAN",
+      "wifi_activity": "WIFI_ACT_AC_BE_FRAMES",
+      "winner": "WIFI_ACT_AC_BE_FRAMES",
+      "resolution_rule": "BEST_EFFORT_PREEMPTION",
+      "action_taken": "Wi-Fi data transfer is granted antenna access. BLE scan window is paused and resumed during Wi-Fi inter-frame spaces (DIFS/EIFS).",
+      "packet_drop_allowed": false
+    }
+  ],
+  "hardware_registers_and_bitfields": {
+    "coex_activity_bits": {
+      "bit_31": "Stewie Satellite NTN Active",
+      "bit_30": "ULLA Audio ISO Active",
+      "bit_29": "eSCO Voice Active",
+      "bit_28": "Channel Sounding Step Active",
+      "bit_27": "A2DP Burst Active",
+      "bit_26": "LMP/LL Control Active",
+      "bit_25": "Wi-Fi Beacon Window Active",
+      "bit_24": "Wi-Fi AC_VO Active",
+      "bit_23": "Wi-Fi AC_VI Active",
+      "bit_22": "Wi-Fi AC_BE Active",
+      "bit_21": "BLE Fast Adv Active",
+      "bit_20": "Find My IHSM Active",
+      "bit_19_0": "Reserved Baseband Hardware Status"
+    },
+    "coex_envelope_bits": {
+      "bit_15_12": "Current RF Chain Isolation Margin (dB in steps of 3 dB)",
+      "bit_11_8": "Antenna Diversity Path Selection (0=Ant0, 1=Ant1, 2=Dual Isolated)",
+      "bit_7_4": "Active Coexistence Grant Level (0=Emergency to 7=Idle)",
+      "bit_3_0": "SPMI Bus Transaction State"
+    }
+  }
+}

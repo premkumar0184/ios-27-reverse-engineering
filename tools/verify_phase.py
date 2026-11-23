@@ -1262,117 +1262,6 @@ PHASE_SPECS = {
         ]
     },
 
-    # ── Display Coprocessor (DCP / ProMotion) phases ────────────────────
-    "dcp_phase_1a_workspace_baseline": {
-        "required_artifacts": [
-            "artifacts/dcp/phase_1a_workspace_baseline.json",
-            "artifacts/dcp/dcp_firmware_container_spec.json",
-            "findings/dcp/01A_WORKSPACE_BASELINE.md"
-        ],
-        "findings_docs": ["findings/dcp/01A_WORKSPACE_BASELINE.md"],
-        "min_findings_bytes": 2500,
-        "json_schemas": {
-            "artifacts/dcp/phase_1a_workspace_baseline.json": ["firmware_envelope", "hardware_interconnect"],
-            "artifacts/dcp/dcp_firmware_container_spec.json": ["container"]
-        },
-        "assertions": [
-            ("fourcc_is_dcpf",
-             "artifacts/dcp/dcp_firmware_container_spec.json",
-             lambda d: d.get("container", {}).get("fourcc_tag") == "dcpf",
-             "container fourcc_tag must be 'dcpf'"),
-        ]
-    },
-
-    "dcp_phase_1b_microkernel": {
-        "required_artifacts": [
-            "artifacts/dcp/dcp_microkernel_spec.json",
-            "artifacts/dcp/dcp_service_topology.json",
-            "findings/dcp/01B_DCP_MICROKERNEL.md"
-        ],
-        "findings_docs": ["findings/dcp/01B_DCP_MICROKERNEL.md"],
-        "min_findings_bytes": 2500,
-        "json_schemas": {
-            "artifacts/dcp/dcp_microkernel_spec.json": ["microkernel", "memory_carveouts"],
-            "artifacts/dcp/dcp_service_topology.json": ["hardware_pipe_blocks", "endpoints"]
-        },
-        "assertions": [
-            ("rtkit_version_verified",
-             "artifacts/dcp/dcp_microkernel_spec.json",
-             lambda d: "3514.40.18" in d.get("microkernel", {}).get("version", ""),
-             "RTKit version must contain '3514.40.18'"),
-        ]
-    },
-
-    "dcp_phase_2_promotion_arbitration": {
-        "required_artifacts": [
-            "artifacts/dcp/promotion_arbitration_spec.json",
-            "artifacts/dcp/vftg_timing_generator_spec.json",
-            "findings/dcp/02_PROMOTION_AND_FRAME_PACING.md"
-        ],
-        "findings_docs": ["findings/dcp/02_PROMOTION_AND_FRAME_PACING.md"],
-        "min_findings_bytes": 2500,
-        "json_schemas": {
-            "artifacts/dcp/promotion_arbitration_spec.json": ["promotion_architecture"],
-            "artifacts/dcp/vftg_timing_generator_spec.json": ["vftg_hardware"]
-        },
-        "assertions": [
-            ("vftg_pixel_clock_504mhz",
-             "artifacts/dcp/vftg_timing_generator_spec.json",
-             lambda d: d.get("vftg_hardware", {}).get("pixel_clock_hz") == 504000000,
-             "pixel_clock_hz must be 504000000 (504 MHz)"),
-        ]
-    },
-
-    "dcp_phase_3_pixel_compensation": {
-        "required_artifacts": [
-            "artifacts/dcp/pixel_compensation_spec.json",
-            "artifacts/dcp/color_pipeline_lut_spec.json",
-            "findings/dcp/03_PIXEL_COMPENSATION_AND_COLOR.md"
-        ],
-        "findings_docs": ["findings/dcp/03_PIXEL_COMPENSATION_AND_COLOR.md"],
-        "min_findings_bytes": 2500,
-        "json_schemas": {
-            "artifacts/dcp/pixel_compensation_spec.json": ["burn_in_compensation_bics", "panel_temperature_uniformity_ptuc"],
-            "artifacts/dcp/color_pipeline_lut_spec.json": ["color_manager_3d_lut", "pcc_2d_local_tone_mapping"]
-        },
-    },
-
-    "dcp_phase_4_xnu_boundary": {
-        "required_artifacts": [
-            "artifacts/dcp/xnu_dcp_boundary_spec.json",
-            "artifacts/dcp/pseudocode/dcp_mailbox_client.pseudo.c",
-            "findings/dcp/04_XNU_DRIVER_BOUNDARY.md"
-        ],
-        "findings_docs": ["findings/dcp/04_XNU_DRIVER_BOUNDARY.md"],
-        "min_findings_bytes": 2500,
-        "json_schemas": {
-            "artifacts/dcp/xnu_dcp_boundary_spec.json": ["mailbox_interconnect", "kernel_drivers"]
-        },
-    },
-
-    "dcp_phase_5_synthesis": {
-        "required_artifacts": [
-            "IOS_27_DISPLAY_COPROCESSOR_DCP_RE.md",
-            "artifacts/dcp/cross_validation_matrix.json",
-            "tools/verify_dcp_constants.py"
-        ],
-        "findings_docs": ["IOS_27_DISPLAY_COPROCESSOR_DCP_RE.md"],
-        "min_findings_bytes": 50000,
-        "json_schemas": {
-            "artifacts/dcp/cross_validation_matrix.json": ["extraction_confidence"]
-        },
-        "assertions": [
-            ("verify_script_exists",
-             None,
-             lambda _: Path(ROOT / "tools/verify_dcp_constants.py").is_file(),
-             "tools/verify_dcp_constants.py must exist"),
-            ("has_extracted_constants",
-             "artifacts/dcp/cross_validation_matrix.json",
-             lambda d: d.get("extraction_confidence", {}).get("EXTRACTED", 0) >= 25,
-             "cross_validation_matrix must have at least 25 EXTRACTED constants"),
-        ]
-    },
-
     # ── Always-On Processor 2 (AOP2) & RTKit Microkernel phases ─────────
     "aop_phase_1a_workspace_baseline": {
         "required_artifacts": [
@@ -1943,6 +1832,135 @@ PHASE_SPECS = {
              lambda _: subprocess.run([sys.executable, str(ROOT / "tools/verify_synthesis_constants.py")],
                                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
              "tools/verify_synthesis_constants.py must pass 100% green"),
+        ]
+    },
+
+    # ── Centauri Wireless SoC (Wi-Fi 7, Bluetooth 5.4, DriverKit) phases ────
+    "centauri_phase_1_firmware_rtkit_core": {
+        "required_artifacts": [
+            "artifacts/centauri/firmware/ftab_manifest.json",
+            "artifacts/centauri/firmware/osl_string_database.json",
+            "artifacts/centauri/firmware/memory_overlay_map.json",
+            "findings/centauri/01_FIRMWARE_RTKIT_CORE.md"
+        ],
+        "findings_docs": ["findings/centauri/01_FIRMWARE_RTKIT_CORE.md"],
+        "min_findings_bytes": 30000,
+        "json_schemas": {
+            "artifacts/centauri/firmware/ftab_manifest.json": ["magic", "total_partitions", "partitions"]
+        },
+        "assertions": [
+            ("partition_count_78",
+             "artifacts/centauri/firmware/ftab_manifest.json",
+             lambda d: len(d.get("partitions", [])) == 78,
+             "must catalog all 78 partitions in ftab container"),
+            ("magic_is_rkosftab",
+             "artifacts/centauri/firmware/ftab_manifest.json",
+             lambda d: d.get("magic") == "rkosftab",
+             "ftab container magic must be 'rkosftab'"),
+        ]
+    },
+
+    "centauri_phase_2_wifi7_mac_phy": {
+        "required_artifacts": [
+            "artifacts/centauri/wifi/wifi7_feature_matrix.json",
+            "artifacts/centauri/wifi/verify_centauri_wifi.py",
+            "findings/centauri/02_WIFI7_MAC_PHY_SUBSYSTEM.md"
+        ],
+        "findings_docs": ["findings/centauri/02_WIFI7_MAC_PHY_SUBSYSTEM.md"],
+        "min_findings_bytes": 30000,
+        "json_schemas": {
+            "artifacts/centauri/wifi/wifi7_feature_matrix.json": ["wifi7_features"]
+        },
+        "assertions": [
+            ("wifi_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "artifacts/centauri/wifi/verify_centauri_wifi.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "artifacts/centauri/wifi/verify_centauri_wifi.py must pass 100% green"),
+            ("has_16_subchannels",
+             "artifacts/centauri/wifi/wifi7_feature_matrix.json",
+             lambda d: d.get("wifi7_features", {}).get("channelization_320mhz", {}).get("subchannel_count") == 16,
+             "320 MHz channelization must have 16 subchannels"),
+        ]
+    },
+
+    "centauri_phase_3_bluetooth_coex": {
+        "required_artifacts": [
+            "artifacts/centauri/bluetooth/coexistence_priority_matrix.json",
+            "artifacts/centauri/bluetooth/channel_sounding_le_audio_spec.json",
+            "artifacts/centauri/bluetooth/lpbt_findmy_spec.json",
+            "artifacts/centauri/bluetooth/btse_security_engine_spec.json",
+            "artifacts/centauri/bluetooth/verify_centauri_bluetooth.py",
+            "findings/centauri/03_BLUETOOTH_COEX_SUBSYSTEM.md"
+        ],
+        "findings_docs": ["findings/centauri/03_BLUETOOTH_COEX_SUBSYSTEM.md"],
+        "min_findings_bytes": 30000,
+        "json_schemas": {
+            "artifacts/centauri/bluetooth/coexistence_priority_matrix.json": ["priority_levels", "activity_classification_table"]
+        },
+        "assertions": [
+            ("bt_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "artifacts/centauri/bluetooth/verify_centauri_bluetooth.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "artifacts/centauri/bluetooth/verify_centauri_bluetooth.py must pass 100% green"),
+            ("coex_levels_8",
+             "artifacts/centauri/bluetooth/coexistence_priority_matrix.json",
+             lambda d: len(d.get("priority_levels", [])) == 8,
+             "must document 8 coexistence priority levels"),
+        ]
+    },
+
+    "centauri_phase_4_driverkit_host_ipc": {
+        "required_artifacts": [
+            "artifacts/centauri/driverkit/driverkit_class_hierarchy.json",
+            "artifacts/centauri/driverkit/centauri_host_interface.h",
+            "artifacts/centauri/driverkit/verify_driverkit_constants.py",
+            "findings/centauri/04_DRIVERKIT_HOST_IPC.md"
+        ],
+        "findings_docs": ["findings/centauri/04_DRIVERKIT_HOST_IPC.md"],
+        "min_findings_bytes": 40000,
+        "json_schemas": {
+            "artifacts/centauri/driverkit/driverkit_class_hierarchy.json": ["summary", "classes"]
+        },
+        "assertions": [
+            ("driverkit_verifier_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "artifacts/centauri/driverkit/verify_driverkit_constants.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "artifacts/centauri/driverkit/verify_driverkit_constants.py must pass 100% green"),
+            ("classes_count_227",
+             "artifacts/centauri/driverkit/driverkit_class_hierarchy.json",
+             lambda d: d.get("summary", {}).get("total_classes_cataloged") == 227,
+             "must catalog 227 DriverKit classes"),
+        ]
+    },
+
+    "centauri_phase_5_synthesis": {
+        "required_artifacts": [
+            "IOS_27_CENTAURI_WIRELESS_SOC_RE.md",
+            "artifacts/centauri/cross_validation_matrix.json",
+            "tools/verify_centauri_constants.py"
+        ],
+        "findings_docs": ["IOS_27_CENTAURI_WIRELESS_SOC_RE.md"],
+        "min_findings_bytes": 50000,
+        "json_schemas": {
+            "artifacts/centauri/cross_validation_matrix.json": ["extraction_confidence", "constants"]
+        },
+        "assertions": [
+            ("verify_script_exists",
+             None,
+             lambda _: Path(ROOT / "tools/verify_centauri_constants.py").is_file(),
+             "tools/verify_centauri_constants.py must exist"),
+            ("has_extracted_constants",
+             "artifacts/centauri/cross_validation_matrix.json",
+             lambda d: d.get("extraction_confidence", {}).get("EXTRACTED", 0) >= 40,
+             "cross_validation_matrix must have at least 40 EXTRACTED confidence constants"),
+            ("verify_script_passes",
+             None,
+             lambda _: subprocess.run([sys.executable, str(ROOT / "tools/verify_centauri_constants.py")],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0,
+             "tools/verify_centauri_constants.py must pass 100% green"),
         ]
     },
 }

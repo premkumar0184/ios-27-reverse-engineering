@@ -2176,6 +2176,140 @@
         "Validate 40 constants in cross_validation_matrix.json",
         "Publish standalone repository"
       ]
+    },
+    {
+      "id": "centauri_phase_1_firmware_rtkit_core",
+      "number": "C1",
+      "title": "Centauri Wireless SoC \u2014 Firmware Container & RTKit Microkernel",
+      "status": "completed",
+      "prerequisites": [
+        "phase_04_firmware_coprocessors"
+      ],
+      "assigned_agent_prompt": "agent_prompts/centauri_01_firmware_rtkit_core.md",
+      "required_disk_artifacts": [
+        "artifacts/centauri/firmware/ftab_manifest.json",
+        "artifacts/centauri/firmware/osl_string_database.json",
+        "artifacts/centauri/firmware/memory_overlay_map.json"
+      ],
+      "findings_document": "findings/centauri/01_FIRMWARE_RTKIT_CORE.md",
+      "objectives": [
+        "Extract 78 partitions from t2026phoneG1/Release/ftab.bin (rkosftab)",
+        "Dissect Chinook ARMv8.3 core (Implementer 0x61, Part 0x00E) and RTKit microkernel",
+        "Map 34 scatter-load memory overlays and extract 1003 OS logging format strings"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py centauri_phase_1_firmware_rtkit_core"
+      ],
+      "completed_at": "2026-11-23T08:27:00+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "centauri_phase_2_wifi7_mac_phy",
+      "number": "C2",
+      "title": "Centauri Wireless SoC \u2014 Wi-Fi 7 (802.11be) MAC & PHY Subsystem",
+      "status": "completed",
+      "prerequisites": [
+        "centauri_phase_1_firmware_rtkit_core"
+      ],
+      "assigned_agent_prompt": "agent_prompts/centauri_02_wifi7_mac_phy.md",
+      "required_disk_artifacts": [
+        "artifacts/centauri/wifi/wifi7_feature_matrix.json",
+        "artifacts/centauri/wifi/verify_centauri_wifi.py"
+      ],
+      "findings_document": "findings/centauri/02_WIFI7_MAC_PHY_SUBSYSTEM.md",
+      "objectives": [
+        "Reverse engineer Wi-Fi 7 Upper MAC (aciw) and Lower MAC (w2lp, w5lp)",
+        "Extract Fast Packet Processors (wftp, wfrp) and 10 Cortex-M vector tables",
+        "Document MLO architecture (Primary STA 2, Secondary STA 3), 4096-QAM (12 bits/sym), 320 MHz channelization, and regulatory power tables (0xCAFECAFE)"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py centauri_phase_2_wifi7_mac_phy"
+      ],
+      "completed_at": "2026-11-23T08:34:00+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "centauri_phase_3_bluetooth_coex",
+      "number": "C3",
+      "title": "Centauri Wireless SoC \u2014 Bluetooth 5.4/6.0, LE Audio & 2.4 GHz RF Coexistence",
+      "status": "completed",
+      "prerequisites": [
+        "centauri_phase_1_firmware_rtkit_core"
+      ],
+      "assigned_agent_prompt": "agent_prompts/centauri_03_bluetooth_coex.md",
+      "required_disk_artifacts": [
+        "artifacts/centauri/bluetooth/coexistence_priority_matrix.json",
+        "artifacts/centauri/bluetooth/channel_sounding_le_audio_spec.json",
+        "artifacts/centauri/bluetooth/lpbt_findmy_spec.json",
+        "artifacts/centauri/bluetooth/btse_security_engine_spec.json",
+        "artifacts/centauri/bluetooth/verify_centauri_bluetooth.py"
+      ],
+      "findings_document": "findings/centauri/03_BLUETOOTH_COEX_SUBSYSTEM.md",
+      "objectives": [
+        "Dissect Bluetooth Baseband (acib, bt5p, bt5m, bt5t) and Channel Sounding (CS) ranging engine",
+        "Extract LE Audio Connected ISO data paths and Always-On Find My tracking (lpbt)",
+        "Model SARA Hardware Security Accelerator (btse) and 2.4 GHz RF Coexistence Arbiter (scab, scaw) with 8 priority levels"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py centauri_phase_3_bluetooth_coex"
+      ],
+      "completed_at": "2026-11-23T08:29:00+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "centauri_phase_4_driverkit_host_ipc",
+      "number": "C4",
+      "title": "Centauri Wireless SoC \u2014 DriverKit Dexts, PCIe MMIO & ACIPC v3.0 Protocol",
+      "status": "completed",
+      "prerequisites": [
+        "centauri_phase_1_firmware_rtkit_core"
+      ],
+      "assigned_agent_prompt": "agent_prompts/centauri_04_driverkit_host_ipc.md",
+      "required_disk_artifacts": [
+        "artifacts/centauri/driverkit/driverkit_class_hierarchy.json",
+        "artifacts/centauri/driverkit/centauri_host_interface.h",
+        "artifacts/centauri/driverkit/verify_driverkit_constants.py"
+      ],
+      "findings_document": "findings/centauri/04_DRIVERKIT_HOST_IPC.md",
+      "objectives": [
+        "Extract and catalog 227 DriverKit C++ classes, 3966 methods, and 190 vtables across Centauri dexts and frameworks",
+        "Map Bank 0 MMIO registers (0x8000, 0x8050, 0x9000, 0x906c) and Alpha doorbells (0x1004, 0x1030, 0x1050)",
+        "Dissect ACIPC v3.0 transport layout (120B context header, 48B TRD, 32B CRD) and user-space daemon centaurid"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py centauri_phase_4_driverkit_host_ipc"
+      ],
+      "completed_at": "2026-11-23T08:31:00+05:30",
+      "verified_by": "tools/verify_phase.py"
+    },
+    {
+      "id": "centauri_phase_5_synthesis",
+      "number": "C5",
+      "title": "Centauri Wireless SoC \u2014 Master Dossier Synthesis & Verification Suite",
+      "status": "completed",
+      "prerequisites": [
+        "centauri_phase_1_firmware_rtkit_core",
+        "centauri_phase_2_wifi7_mac_phy",
+        "centauri_phase_3_bluetooth_coex",
+        "centauri_phase_4_driverkit_host_ipc"
+      ],
+      "assigned_agent_prompt": "agent_prompts/centauri_05_synthesis.md",
+      "required_disk_artifacts": [
+        "IOS_27_CENTAURI_WIRELESS_SOC_RE.md",
+        "artifacts/centauri/cross_validation_matrix.json",
+        "tools/verify_centauri_constants.py"
+      ],
+      "findings_document": "IOS_27_CENTAURI_WIRELESS_SOC_RE.md",
+      "objectives": [
+        "Synthesize 197KB Master Publication Dossier with 100% verified empirical precision",
+        "Catalog 45+ empirical invariants in cross-validation matrix",
+        "Implement master test suite passing 7/7 suites 100% green"
+      ],
+      "notes": [
+        "Passed automated verification gate: python3 tools/verify_phase.py centauri_phase_5_synthesis"
+      ],
+      "completed_at": "2026-11-23T08:53:00+05:30",
+      "verified_by": "tools/verify_phase.py"
     }
   ],
   "verification_log": [
@@ -2460,7 +2594,37 @@
       "verified_at": "2026-11-23T01:08:19.320386+05:30",
       "status": "passed",
       "command": "python3 tools/verify_phase.py ave_phase_5_synthesis"
+    },
+    {
+      "phase_id": "centauri_phase_1_firmware_rtkit_core",
+      "verified_at": "2026-11-23T03:25:33.184168+00:00",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py centauri_phase_1_firmware_rtkit_core"
+    },
+    {
+      "phase_id": "centauri_phase_2_wifi7_mac_phy",
+      "verified_at": "2026-11-23T03:25:33.184168+00:00",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py centauri_phase_2_wifi7_mac_phy"
+    },
+    {
+      "phase_id": "centauri_phase_3_bluetooth_coex",
+      "verified_at": "2026-11-23T03:25:33.184168+00:00",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py centauri_phase_3_bluetooth_coex"
+    },
+    {
+      "phase_id": "centauri_phase_4_driverkit_host_ipc",
+      "verified_at": "2026-11-23T03:25:33.184168+00:00",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py centauri_phase_4_driverkit_host_ipc"
+    },
+    {
+      "phase_id": "centauri_phase_5_synthesis",
+      "verified_at": "2026-11-23T03:25:33.184168+00:00",
+      "status": "passed",
+      "command": "python3 tools/verify_phase.py centauri_phase_5_synthesis"
     }
   ],
-  "last_updated": "2026-11-23T01:08:19.320386+05:30"
+  "last_updated": "2026-11-23T03:25:33.184168+00:00"
 }

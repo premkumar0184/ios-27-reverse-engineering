@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Apple Centauri Hardware Security Engine (btse / SARA) Specification",
+  "version": "1.1.0",
+  "target_silicon": "Apple Centauri (t2026phoneG1 / Silicon Stepping B0)",
+  "firmware_partition": "btse.bin (Bluetooth Security Engine: 52,000 bytes, SHA-256: 494f4ec14eb5dcb6cf5ec8ce701d0db0f4277e031bc5abfaedd4d506e056648d)",
+  "security_engine_architecture": {
+    "engine_name": "SARA (Security Accelerator Register Architecture) Hardware Crypto Core",
+    "mmio_base_address": "0x4d008000",
+    "dma_accelerator_base": "0x4d408000",
+    "descriptor_table_structure": {
+      "total_bytes": 52000,
+      "total_32bit_words": 13000,
+      "segmented_regions": 2230,
+      "code_pointers": 1172,
+      "mmio_pointers": 394,
+      "primary_mmio_blocks": [
+        {"base": "0x4d008000", "description": "SARA hardware cryptographic core registers"},
+        {"base": "0x4d408000", "description": "SARA DMA descriptor engine registers"},
+        {"base": "0x45f8c004", "description": "Crypto domain power-gating and clock management"},
+        {"base": "0x406b0000", "description": "Coexistence security bus arbiter"},
+        {"base": "0x407842d8", "description": "Baseband hardware encryption interface"}
+      ]
+    },
+    "register_map": {
+      "SARA_CMD": {"offset": "0x00", "address": "0x4d008000", "description": "Command and execution trigger register (START, RESET, FLUSH)"},
+      "SARA_STATUS": {"offset": "0x04", "address": "0x4d008004", "description": "Engine status register (BUSY, DONE, ERROR, KEY_VALID)"},
+      "SARA_IRQ_EN": {"offset": "0x08", "address": "0x4d008008", "description": "Interrupt mask and enable register"},
+      "SARA_IRQ_STAT": {"offset": "0x0c", "address": "0x4d00800c", "description": "Interrupt status flag register"},
+      "SARA_MODE": {"offset": "0x10", "address": "0x4d008010", "description": "Cipher mode select (0=AES-128-CCM, 1=AES-256-CCM, 2=AES-GCM, 3=SHA-256)"},
+      "SARA_KEY_SLOT": {"offset": "0x28", "address": "0x4d008028", "description": "Target key slot index (0 to 31)"},
+      "SARA_IV_0_3": {"offset": "0x30", "address": "0x4d008030", "description": "Initialization Vector / Nonce registers (128 bits)"},
+      "SARA_DMA_SRC": {"offset": "0x00", "address": "0x4d408000", "description": "DMA source memory address pointer"},
+      "SARA_DMA_DST": {"offset": "0x04", "address": "0x4d408004", "description": "DMA destination memory address pointer"},
+      "SARA_DMA_LEN": {"offset": "0x08", "address": "0x4d408008", "description": "DMA byte transfer length"}
+    },
+    "firmware_assertion_guards": [
+      {"symbol": "CAPTURE_POINT_ASSERT_SARA_IS_BUSY", "description": "Crypto dispatched while SARA busy flag asserted"},
+      {"symbol": "CAPTURE_POINT_ASSERT_SARA_INVALID_ERROR_INT", "description": "Hardware parity or authentication error interrupt"},
+      {"symbol": "CAPTURE_POINT_WARNING_SECURITY_CONFIG_MGR_FAILED_TO_RESTORE_SARA_CONFIGURATION", "description": "State restore failed during sleep exit"},
+      {"symbol": "Failed to allocate AES handle, instance=%d", "assert_id": 178, "offset": "0x00225825"},
+      {"symbol": "CAPTURE_POINT_ASSERT_BLE_AES_DIRECT_OPERATION_FAILURE", "description": "Direct AES operation aborted"}
+    ]
+  },
+  "key_storage_and_vault": {
+    "vault_type": "Hardware-isolated on-chip secure register file; plaintext keys are write-only and physically unreadable by Cortex-M firmware",
+    "total_slots": 32,
+    "slot_allocation": [
+      {
+        "slot_range": "0 - 15",
+        "key_type": "Long Term Key (LTK) & Link Key",
+        "algorithm": "AES-128 / AES-256",
+        "purpose": "Authenticated encryption for paired Bluetooth BR/EDR and BLE ACL connections ('acl_generate_link_key', Assert ID 337)"
+      },
+      {
+        "slot_range": "16 - 23",
+        "key_type": "Identity Resolving Key (IRK)",
+        "algorithm": "AES-128",
+        "purpose": "Resolvable Private Address (RPA) hardware hash validation ('IRK list reached out of bounds', Assert ID 175)"
+      },
+      {
+        "slot_range": "24 - 27",
+        "key_type": "Channel Sounding (CS) Ranging Keys",
+        "algorithm": "AES-128 CTR",
+        "purpose": "Pseudo-random sounding tag descriptor and frequency hop pattern generation ('BLE_CONNECTION_TRANS_CS_SECURITY')"
+      },
+      {
+        "slot_range": "28 - 31",
+        "key_type": "Digital Key / CarKey Shared Secrets",
+        "algorithm": "AES-256 GCM",
+        "purpose": "Co-processor secure token generation for UWB ranging unlock ('connected.open.pending.range_setup.uwb_get_key')"
+      }
+    ]
+  },
+  "cryptographic_primitives": {
+    "aes_ccm_engine": {
+      "standard": "NIST SP 800-38C & Bluetooth Core Spec Part B Section 6.5",
+      "mic_lengths_bytes": [4, 8, 16],
+      "throughput_mbps": 120.0,
+      "counter_mode": "39-bit packet counter with 1-bit direction flag to prevent replay attacks",
+      "zero_payload_guard": "LE encryption payload is all zeros (Assert ID 143)"
+    },
+    "aes_gcm_engine": {
+      "standard": "NIST SP 800-38D",
+      "clock_verification": "lc_clock_verify_gcm: gtb/fr/local verification failure (Assert ID 227)",
+      "channels": ["channel_secret", "channel_iv", "channel_key"],
+      "assertion_guard": "CAPTURE_POINT_ASSERT_GCM_INCORRECT_BTCM_TIMER"
+    }
+  },
+  "pairing_and_validation_state_machine": {
+    "stages": [
+      {
+        "stage": 1,
+        "name": "FETCH_VALIDATE_BEGIN",
+        "symbol": "btSecFetchValidateBegin",
+        "description": "Host transfers wrapped ECDH P-256 public key and pairing challenge to Centauri mailbox"
+      },
+      {
+        "stage": 2,
+        "name": "PUBLIC_KEY_VALIDATION",
+        "symbol": "btSecValidatePublicKey",
+        "description": "Hardware SARA engine validates point is on NIST P-256 curve (y^2 = x^3 - 3x + b mod p)"
+      },
+      {
+        "stage": 3,
+        "name": "DIFFIE_HELLMAN_CALCULATION",
+        "symbol": "btSecComputeDHSharedSecret",
+        "description": "Hardware elliptic curve scalar multiplication yields shared secret Z"
+      },
+      {
+        "stage": 4,
+        "name": "FETCH_VALIDATE_DONE",
+        "symbol": "btSecFetchValidateDone",
+        "description": "Derived LTK loaded directly into allocated SARA hardware key slot; returns confirmation token to Host"
+      }
+    ],
+    "failure_handling": {
+      "assertion_ref": "CAPTURE_POINT_KEY_VALIDATION_FAILURE",
+      "action": "Immediate tear-down of BLE connection, flush of key slot, and transmission of LMP_NOT_ACCEPTED error PDU"
+    }
+  }
+}

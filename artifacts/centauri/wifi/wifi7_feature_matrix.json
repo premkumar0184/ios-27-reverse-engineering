@@ -1,0 +1,2645 @@
+{
+  "metadata": {
+    "subsystem": "Apple Centauri Wi-Fi 7 (802.11be) MAC & PHY Subsystem",
+    "silicon_codename": "Proxima",
+    "silicon_revision": "si-b0",
+    "phy_firmware_version": "30.1.151.0",
+    "phy_build_banner_2g": "Proxima WIFIPHY 30.1.151.0 wphy-proxima-si-b0-si-b0-operational-2g",
+    "phy_build_banner_5g": "Proxima WIFIPHY 30.1.151.0 wphy-proxima-si-b0-si-b0-operational-5g",
+    "mfg_phy_banner_2g": "Proxima WIFIPHY 30.1.151.0 wphy-proxima-si-b0-si-b0-mfg-2g",
+    "mfg_phy_banner_5g": "Proxima WIFIPHY 30.1.151.0 wphy-proxima-si-b0-si-b0-mfg-5g",
+    "host_interface": "PCIe Gen 3 x1 / acipc Mailbox Architecture",
+    "base_load_address": "0x00100000",
+    "core_architecture": "Multicore 32-bit ARM Cortex-M with RTKit Microkernel"
+  },
+  "pipeline_architecture": {
+    "dual_band_separation": {
+      "w2_subsystem_2g": {
+        "bands": [
+          "2.4 GHz (802.11b/g/n/ax/be)"
+        ],
+        "max_bandwidth_mhz": 40,
+        "lmac_firmware": [
+          "w2lp (Low Power)",
+          "w2lm (Operational MAC)"
+        ],
+        "packet_processor": [
+          "w2pp (Operational PP)",
+          "w2pm (PP Manager)"
+        ],
+        "phy_microcode": [
+          "w2pt (PHY Manufacturing & Test)"
+        ],
+        "lmac_stack_pointer": "0x1002fff0",
+        "pp_stack_pointer": "0x10023ff0",
+        "sram_budget_bytes": 196608,
+        "rfic_driver": "rfic_si_2g.c",
+        "pll_driver": "pll_driver_si_2g.c",
+        "beamforming_driver": "beamforming_a0_2g.c",
+        "golden_trim_driver": "wphy_proxima_init_golden_trim_proxima_b0_radio_2g.c"
+      },
+      "w5_subsystem_5g_6g": {
+        "bands": [
+          "5 GHz (802.11a/n/ac/ax/be)",
+          "6 GHz (802.11ax/be EHT)"
+        ],
+        "max_bandwidth_mhz": 320,
+        "lmac_firmware": [
+          "w5lp (Low Power)",
+          "w5lm (Operational MAC)"
+        ],
+        "packet_processor": [
+          "w5pp (Operational PP)",
+          "w5pm (PP Manager)"
+        ],
+        "phy_microcode": [
+          "w5pt (PHY Manufacturing & Test)"
+        ],
+        "lmac_stack_pointer": "0x1002fff0",
+        "pp_stack_pointer": "0x1002fff0",
+        "sram_budget_bytes": 196608,
+        "calmem_budget_bytes": 131072,
+        "rfic_driver": "rfic_si_5g.c",
+        "rfic_emlsr_driver": "rfic_si_5g_emlsr.c",
+        "pll_drivers": [
+          "pll_driver_ljpll.c (Low Jitter PLL for 4096-QAM)",
+          "pll_driver_dfs.c (Dynamic Frequency Selection / Radar)",
+          "pll_driver_dco_si_5g.c (Digitally Controlled Oscillator)",
+          "pll_driver_si_5g.c"
+        ],
+        "beamforming_driver": "beamforming_a0_5g.c",
+        "golden_trim_driver": "wphy_proxima_init_golden_trim_proxima_b0_radio_5g.c"
+      }
+    }
+  },
+  "wifi7_features": {
+    "multi_link_operation_mlo": {
+      "link_architecture": {
+        "scan_link": {
+          "id": 0,
+          "name": "ACW_LINK_ID_SCAN"
+        },
+        "global_link": {
+          "id": 1,
+          "name": "ACW_LINK_ID_GLOBAL"
+        },
+        "mld_sta_primary": {
+          "id": 2,
+          "name": "ACW_LINK_ID_FIRST_STA"
+        },
+        "mld_sta_secondary": {
+          "id": 3,
+          "name": "ACW_LINK_ID_SECOND_STA"
+        },
+        "dynamic_mlo_links_range": {
+          "first": 13,
+          "last": 33
+        },
+        "total_managed_links": 44
+      },
+      "emlsr_state_machine": {
+        "driver_module": "emlsr_sm.c",
+        "channel_operations": "emlsr_channel_tune_operations.c",
+        "execution_affinity": "LMAC 5G only (enforced via CH_TUNE_emlsr_enable)",
+        "operational_states": [
+          "EMLSR_STATE_DISABLED",
+          "EMLSR_STATE_OFFLINE",
+          "EMLSR_STATE_DL_PRIMARY",
+          "EMLSR_STATE_DL_SECONDARY",
+          "EMLSR_STATE_UL_SECONDARY",
+          "EMLSR_STATE_SUSPEND",
+          "EMLSR_STATE_RESUME",
+          "EMLSR_STATE_RECONCILE"
+        ],
+        "callbacks": [
+          "EMLSR_DL_sec_post_offline_callback",
+          "EMLSR_DL_pri_pre_channel_tune_callback",
+          "EMLSR_UL_sec_post_tune_callback",
+          "EMLSR_LP_pre_offline_done_common",
+          "EMLSR_LP_post_offline_callback",
+          "EMLSR_LP_resume_post_tune_callback",
+          "EMLSR_LP_suspend_pre_offline_callback",
+          "EMLSR_LP_return_to_offline_pre_channel_tune_callback",
+          "EMLSR_DL_ch_tune_icf_notification_handler_isr",
+          "EMLSR_DL_ch_tune_move_to_offline_notification_handler_isr",
+          "EMLSR_DL_ch_tune_done_notification_handler_isr",
+          "EMLSR_wphy_channel_info_update_notification",
+          "EMLSR_CH_CONFIG_send_channel_config"
+        ]
+      },
+      "low_latency_mlo_sessions_llx": {
+        "command_group": {
+          "id": 24,
+          "name": "AciCommandGroupLowLatency"
+        },
+        "rate_fallback_table": {
+          "id": 1,
+          "name": "RATE_FALLBACK_TABLE_LOW_LAT"
+        },
+        "hardware_queue_binding": {
+          "id": 8,
+          "name": "HAL_LMAC_MA_LLX_E"
+        },
+        "manager_module": "low_latency_session_mgr.c",
+        "state_machine_module": "low_latency_session_sm.c"
+      },
+      "primary_link_services_handoff": {
+        "handler": "security_keys_mldhandleChangePriamryLinkServices",
+        "link_bitmap_field": "otaLinkBitmap",
+        "station_crashlog_struct": "CrashLog_STA_t",
+        "mld_enable_field": "mldEnable",
+        "primary_link_fields": [
+          "moLinkConfig_data_primaryLink_2",
+          "moLinkConfig_data_primaryLink_3"
+        ]
+      }
+    },
+    "modulation_4096_qam": {
+      "ppdu_type_eht": {
+        "rate_ppdu_enum": {
+          "id": 6,
+          "name": "RATE_PPDU_EHT_E"
+        },
+        "umac_lmac_enum": {
+          "id": 4,
+          "name": "PPDU_TYPE_EHT_E"
+        }
+      },
+      "constellation_parameters": {
+        "bits_per_symbol": 12,
+        "supported_mcs_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "eht_4096_qam_mcs_indices": [
+          12,
+          13
+        ],
+        "evm_floor_requirement_db": -38.0
+      },
+      "hardware_low_jitter_pll": {
+        "driver": "pll_driver_ljpll.c",
+        "read_registers": [
+          "uljpll_dig_read_0",
+          "uljpll_dig_read_1"
+        ],
+        "reset_register": "sw_reset0",
+        "hardware_block": "Proxima 5G/6G LJPLL Synthesizer"
+      }
+    },
+    "channelization_320mhz": {
+      "supported_bands": {
+        "2g": {
+          "id": 0,
+          "name": "BAND_2G_E"
+        },
+        "5g": {
+          "id": 1,
+          "name": "BAND_5G_E"
+        },
+        "6g": {
+          "id": 2,
+          "name": "BAND_6G_E"
+        }
+      },
+      "subchannel_count": 16,
+      "primary_20mhz_channel_positions": {
+        "subchannel_0": {
+          "enum_id": 15,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_0_E",
+          "offset_from_lower_edge_mhz": 0
+        },
+        "subchannel_1": {
+          "enum_id": 16,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_1_E",
+          "offset_from_lower_edge_mhz": 20
+        },
+        "subchannel_2": {
+          "enum_id": 17,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_2_E",
+          "offset_from_lower_edge_mhz": 40
+        },
+        "subchannel_3": {
+          "enum_id": 18,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_3_E",
+          "offset_from_lower_edge_mhz": 60
+        },
+        "subchannel_4": {
+          "enum_id": 19,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_4_E",
+          "offset_from_lower_edge_mhz": 80
+        },
+        "subchannel_5": {
+          "enum_id": 20,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_5_E",
+          "offset_from_lower_edge_mhz": 100
+        },
+        "subchannel_6": {
+          "enum_id": 21,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_6_E",
+          "offset_from_lower_edge_mhz": 120
+        },
+        "subchannel_7": {
+          "enum_id": 22,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_7_E",
+          "offset_from_lower_edge_mhz": 140
+        },
+        "subchannel_8": {
+          "enum_id": 23,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_8_E",
+          "offset_from_lower_edge_mhz": 160
+        },
+        "subchannel_9": {
+          "enum_id": 24,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_9_E",
+          "offset_from_lower_edge_mhz": 180
+        },
+        "subchannel_10": {
+          "enum_id": 25,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_10_E",
+          "offset_from_lower_edge_mhz": 200
+        },
+        "subchannel_11": {
+          "enum_id": 26,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_11_E",
+          "offset_from_lower_edge_mhz": 220
+        },
+        "subchannel_12": {
+          "enum_id": 27,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_12_E",
+          "offset_from_lower_edge_mhz": 240
+        },
+        "subchannel_13": {
+          "enum_id": 28,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_13_E",
+          "offset_from_lower_edge_mhz": 260
+        },
+        "subchannel_14": {
+          "enum_id": 29,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_14_E",
+          "offset_from_lower_edge_mhz": 280
+        },
+        "subchannel_15": {
+          "enum_id": 30,
+          "enum_name": "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_15_E",
+          "offset_from_lower_edge_mhz": 300
+        }
+      },
+      "utility_functions": [
+        "Utils_GetBandwidthFor320 (mgmt_utils.c:1296)",
+        "Utils_GetEhtChannelWithFromAciBw (mgmt_utils.c:1091)",
+        "Utils_Get20MHzSubChannels (mgmt_utils.c:542, 563)",
+        "CH_TUNE_primary_bw_to_location_get (channel_tune.c:1691)"
+      ]
+    },
+    "preamble_puncturing": {
+      "support": "Supported across 80 MHz, 160 MHz, and 320 MHz channels",
+      "configuration_handler": "EMLSR_CH_CONFIG_send_channel_config (emlsr_channel_tune_operations.c:1326)",
+      "phy_api_handler": "LMAC_PHY_API_handler.c",
+      "channel_tune_handler": "CHANNEL_TUNE_emlsr_tune_handler (channel_tune.c)",
+      "puncturing_patterns": [
+        "Punctured 20 MHz in 80 MHz (1 non-primary punctured)",
+        "Punctured 40 MHz in 80 MHz (secondary 40 MHz punctured)",
+        "Punctured 20 MHz / 40 MHz in 160 MHz",
+        "Punctured 40 MHz / 80 MHz / 120 MHz in 320 MHz (OFDMA preamble puncturing)"
+      ]
+    }
+  },
+  "rate_adaptation_and_fallback": {
+    "tables": {
+      "regular": {
+        "id": 0,
+        "name": "RATE_FALLBACK_TABLE_REGULAR"
+      },
+      "low_latency": {
+        "id": 1,
+        "name": "RATE_FALLBACK_TABLE_LOW_LAT"
+      }
+    },
+    "phases": {
+      "curiosity": {
+        "id": 0,
+        "name": "RATE_FALLBACK_PHASE_CURIOSITY_E"
+      },
+      "non_curiosity": {
+        "id": 1,
+        "name": "RATE_FALLBACK_PHASE_NON_CURIOSITY_E"
+      },
+      "phase_2": {
+        "id": 2,
+        "name": "RATE_FALLBACK_PHASE_2_E"
+      },
+      "phase_3": {
+        "id": 3,
+        "name": "RATE_FALLBACK_PHASE_3_E"
+      },
+      "phase_4": {
+        "id": 4,
+        "name": "RATE_FALLBACK_PHASE_4_E"
+      },
+      "phase_5": {
+        "id": 5,
+        "name": "RATE_FALLBACK_PHASE_5_E"
+      },
+      "phase_6": {
+        "id": 6,
+        "name": "RATE_FALLBACK_PHASE_6_E"
+      },
+      "phase_7": {
+        "id": 7,
+        "name": "RATE_FALLBACK_PHASE_7_E"
+      }
+    },
+    "ordered_rates": {
+      "RATE_ORDERED_1MBPS_E": 0,
+      "RATE_ORDERED_DCM_DUP_E": 1,
+      "RATE_ORDERED_2MBPS_E": 2,
+      "RATE_ORDERED_DCM_E": 3,
+      "RATE_ORDERED_5_5MBPS_E": 4,
+      "RATE_ORDERED_OFDM6_MCS0_E": 5,
+      "RATE_ORDERED_OFDM9_E": 6,
+      "RATE_ORDERED_11MBPS_E": 7,
+      "RATE_ORDERED_OFDM12_MCS1_E": 8,
+      "RATE_ORDERED_OFDM18_MCS_2_E": 9,
+      "RATE_ORDERED_OFDM24_MCS_3_E": 10,
+      "RATE_ORDERED_OFDM36_MCS_4_E": 11,
+      "RATE_ORDERED_OFDM48_MCS_5_E": 12,
+      "RATE_ORDERED_OFDM54_MCS_6_E": 13,
+      "RATE_ORDERED_MCS_7_E": 14,
+      "RATE_ORDERED_MCS_8_E": 15,
+      "RATE_ORDERED_MCS_9_E": 16,
+      "RATE_ORDERED_MCS_10_E": 17,
+      "RATE_ORDERED_MCS_11_E": 18,
+      "RATE_ORDERED_INVALID_E": 19
+    },
+    "umac_rate_adaptation_functions": [
+      "RA_CuriosityUpdate (rate_adaptation.c:5893)",
+      "RA_EmlsrLinkUpdate (rate_adaptation.c:7883, 7899, 7937, 7942)",
+      "RA_BwAdapt (rate_adaptation.c:4421, 4428, 4429)",
+      "RA_Center2PrimaryChannel (rate_adaptation.c:7976, 7984)",
+      "RA_EnableTxbf (rate_adaptation.c:7742)",
+      "RA_calcTxModePower (rate_adaptation.c:4258)",
+      "RA_PwrDbUpdate (rate_adaptation.c:6844, 6933)",
+      "RA_HandleGIProbing (rate_adaptation.c:3527)",
+      "Coex_RA_ChainSelection (rate_manager.c:1136, 1137, 1138)"
+    ]
+  },
+  "rf_calibration_subsystem": {
+    "calibration_memory": {
+      "symbol": "__CALMEM",
+      "size_bytes": 131072,
+      "purpose": "Dedicated Fast Calibration RAM for 320 MHz Frequency Domain IQMM & Filter Shaping"
+    },
+    "calibration_algorithms": {
+      "frequency_dependent_iqmm": {
+        "driver": "calib_fd_iqmm.c",
+        "description": "Frequency-Domain IQ Mismatch Calibration across wide 160/320 MHz bandwidths"
+      },
+      "frequency_independent_iqmm": {
+        "driver": "calib_fi_iqmm.c",
+        "description": "Frequency-Independent IQ Mismatch Calibration"
+      },
+      "input_intercept_point_2": {
+        "driver": "calib_iip2.c",
+        "description": "Second-Order Input Intercept Point (IIP2) even-order distortion suppression"
+      },
+      "local_oscillator_leakage": {
+        "driver": "calib_lo_leakage_operational.c",
+        "description": "Operational Local Oscillator carrier leakage cancellation"
+      },
+      "rx_dc_offset": {
+        "driver": "calib_rx_dc_operational.c",
+        "description": "Operational Receiver Direct-Conversion DC offset cancellation"
+      },
+      "closed_loop_power_control": {
+        "driver": "tx_power_control_clpc_temp_comp.c",
+        "description": "Closed-Loop Transmit Power Control with dynamic temperature compensation"
+      }
+    },
+    "calibration_tables_manifest": {
+      "regulatory_power_tables": [
+        {
+          "index": 41,
+          "tag": "P005",
+          "offset_hex": "0x01af98d8",
+          "offset_dec": 28285144,
+          "size_hex": "0x0001de72",
+          "size_dec": 122482,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "e847cebc59c632f0fffd37e2c89079a366c06b9a55adc91fd13029bfa2ea25b2",
+          "filename": "41_P005.bin",
+          "relative_path": "centauri/firmware/partitions/41_P005.bin"
+        },
+        {
+          "index": 42,
+          "tag": "P006",
+          "offset_hex": "0x01b1774c",
+          "offset_dec": 28407628,
+          "size_hex": "0x0001e69d",
+          "size_dec": 124573,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "ed01923e59c66bab86ce6f6ba184fa560f491f8e6f1a022e5176f92a873c964f",
+          "filename": "42_P006.bin",
+          "relative_path": "centauri/firmware/partitions/42_P006.bin"
+        },
+        {
+          "index": 43,
+          "tag": "P007",
+          "offset_hex": "0x01b35dec",
+          "offset_dec": 28532204,
+          "size_hex": "0x0001d574",
+          "size_dec": 120180,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "135f6b73aa9bcf9b63f42f009be89df98df4bb9e957600a226fa2b9aeef4d89b",
+          "filename": "43_P007.bin",
+          "relative_path": "centauri/firmware/partitions/43_P007.bin"
+        },
+        {
+          "index": 44,
+          "tag": "P008",
+          "offset_hex": "0x01b53360",
+          "offset_dec": 28652384,
+          "size_hex": "0x0001feef",
+          "size_dec": 130799,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "abcf96d82cc7832361515642cce477bc368897f58258e1ca12904213ab0208a3",
+          "filename": "44_P008.bin",
+          "relative_path": "centauri/firmware/partitions/44_P008.bin"
+        },
+        {
+          "index": 45,
+          "tag": "P009",
+          "offset_hex": "0x01b73250",
+          "offset_dec": 28783184,
+          "size_hex": "0x0001e8c6",
+          "size_dec": 125126,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "c4c45b7c802a52d7c034fb935584a1bb396fc5b4cceb7071b372a029d1448122",
+          "filename": "45_P009.bin",
+          "relative_path": "centauri/firmware/partitions/45_P009.bin"
+        },
+        {
+          "index": 46,
+          "tag": "P014",
+          "offset_hex": "0x01b91b18",
+          "offset_dec": 28908312,
+          "size_hex": "0x0001d272",
+          "size_dec": 119410,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "95345c9998726b6ac44b3e17f78575c8633556f0f6cae345c8e1530ac2a185cc",
+          "filename": "46_P014.bin",
+          "relative_path": "centauri/firmware/partitions/46_P014.bin"
+        },
+        {
+          "index": 47,
+          "tag": "P015",
+          "offset_hex": "0x01baed8c",
+          "offset_dec": 29027724,
+          "size_hex": "0x0001feef",
+          "size_dec": 130799,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "24387222c2ccc95285c32c0f3afb920c2725e38b232b5b8448df723331f93a67",
+          "filename": "47_P015.bin",
+          "relative_path": "centauri/firmware/partitions/47_P015.bin"
+        },
+        {
+          "index": 48,
+          "tag": "P032",
+          "offset_hex": "0x01bcec7c",
+          "offset_dec": 29158524,
+          "size_hex": "0x0001d817",
+          "size_dec": 120855,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "be628ffbb25772a1e6ca8e55f5328129df04c40fce55bdce6c15392b59356a7b",
+          "filename": "48_P032.bin",
+          "relative_path": "centauri/firmware/partitions/48_P032.bin"
+        }
+      ],
+      "rf_calibration_tables": [
+        {
+          "index": 49,
+          "tag": "R000",
+          "offset_hex": "0x01bec494",
+          "offset_dec": 29279380,
+          "size_hex": "0x00005334",
+          "size_dec": 21300,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "3e99d23c2aa2494fa65f214e27d937d7c15f223a826f2a15111ac8741c0e63de",
+          "filename": "49_R000.bin",
+          "relative_path": "centauri/firmware/partitions/49_R000.bin"
+        },
+        {
+          "index": 50,
+          "tag": "R001",
+          "offset_hex": "0x01bf17c8",
+          "offset_dec": 29300680,
+          "size_hex": "0x000053f4",
+          "size_dec": 21492,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "93a7e19488cdaf5aaa153ef135cf7e73af917b9f6aa9d4790ed9b354c22b18dc",
+          "filename": "50_R001.bin",
+          "relative_path": "centauri/firmware/partitions/50_R001.bin"
+        },
+        {
+          "index": 51,
+          "tag": "R002",
+          "offset_hex": "0x01bf6bbc",
+          "offset_dec": 29322172,
+          "size_hex": "0x000053f4",
+          "size_dec": 21492,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "953574b522b08ee20c6637feeac6cc84c6ae8114822aa68e8b49fe00268b0422",
+          "filename": "51_R002.bin",
+          "relative_path": "centauri/firmware/partitions/51_R002.bin"
+        },
+        {
+          "index": 52,
+          "tag": "R003",
+          "offset_hex": "0x01bfbfb0",
+          "offset_dec": 29343664,
+          "size_hex": "0x000053f4",
+          "size_dec": 21492,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "74975ac42a6fec89ecdccbe34e21748452fb46a52bd8ec4c859866542241c91f",
+          "filename": "52_R003.bin",
+          "relative_path": "centauri/firmware/partitions/52_R003.bin"
+        },
+        {
+          "index": 53,
+          "tag": "R004",
+          "offset_hex": "0x01c013a4",
+          "offset_dec": 29365156,
+          "size_hex": "0x000053f4",
+          "size_dec": 21492,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "df8206a32d276818405cc77f752c0f9ca5e89449534a05db270a8595e388109a",
+          "filename": "53_R004.bin",
+          "relative_path": "centauri/firmware/partitions/53_R004.bin"
+        },
+        {
+          "index": 54,
+          "tag": "R005",
+          "offset_hex": "0x01c06798",
+          "offset_dec": 29386648,
+          "size_hex": "0x000053f4",
+          "size_dec": 21492,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "70243fa47f1abecdb85f9de63d94630e47fbd516b93a8cb42f6ac43cbe26d50e",
+          "filename": "54_R005.bin",
+          "relative_path": "centauri/firmware/partitions/54_R005.bin"
+        },
+        {
+          "index": 55,
+          "tag": "R006",
+          "offset_hex": "0x01c0bb8c",
+          "offset_dec": 29408140,
+          "size_hex": "0x000053f4",
+          "size_dec": 21492,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "b0a5f5c71ca2674ad99b2356f2d71ea6c901e2cf8ffa58cebb070c3fd3e162ff",
+          "filename": "55_R006.bin",
+          "relative_path": "centauri/firmware/partitions/55_R006.bin"
+        },
+        {
+          "index": 56,
+          "tag": "R007",
+          "offset_hex": "0x01c10f80",
+          "offset_dec": 29429632,
+          "size_hex": "0x000053f4",
+          "size_dec": 21492,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "c3aae4366d5315923466c4296c97e9828fd2ab5203a98d7de92e22c4dcc10570",
+          "filename": "56_R007.bin",
+          "relative_path": "centauri/firmware/partitions/56_R007.bin"
+        },
+        {
+          "index": 57,
+          "tag": "R008",
+          "offset_hex": "0x01c16374",
+          "offset_dec": 29451124,
+          "size_hex": "0x00005630",
+          "size_dec": 22064,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "f796572a9e99c487389e610cced3dfbe399cde146fda7266616489362e4bcedb",
+          "filename": "57_R008.bin",
+          "relative_path": "centauri/firmware/partitions/57_R008.bin"
+        },
+        {
+          "index": 58,
+          "tag": "R009",
+          "offset_hex": "0x01c1b9a4",
+          "offset_dec": 29473188,
+          "size_hex": "0x00005630",
+          "size_dec": 22064,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "aabf183733654d876881efd3f631f3601c244e1d62a397f08747f8c0179ff370",
+          "filename": "58_R009.bin",
+          "relative_path": "centauri/firmware/partitions/58_R009.bin"
+        }
+      ],
+      "country_channel_tables": [
+        {
+          "index": 63,
+          "tag": "C000",
+          "offset_hex": "0x01c238d4",
+          "offset_dec": 29505748,
+          "size_hex": "0x00001a02",
+          "size_dec": 6658,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "4a0cb59eda297bc685876056dd5bdab71a27a4ac41575eb30d35872c1b319639",
+          "filename": "63_C000.bin",
+          "relative_path": "centauri/firmware/partitions/63_C000.bin"
+        },
+        {
+          "index": 64,
+          "tag": "C001",
+          "offset_hex": "0x01c252d8",
+          "offset_dec": 29512408,
+          "size_hex": "0x00001a02",
+          "size_dec": 6658,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "e982753eadf286bf28355764e89ca48e8b95e0560e25389125c5274aa557dc82",
+          "filename": "64_C001.bin",
+          "relative_path": "centauri/firmware/partitions/64_C001.bin"
+        },
+        {
+          "index": 65,
+          "tag": "C002",
+          "offset_hex": "0x01c26cdc",
+          "offset_dec": 29519068,
+          "size_hex": "0x00001a02",
+          "size_dec": 6658,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "c708d25b476a19fae6b95a9de97b30490f0a99c3cf6bfdeb2f87c40a120ea415",
+          "filename": "65_C002.bin",
+          "relative_path": "centauri/firmware/partitions/65_C002.bin"
+        },
+        {
+          "index": 66,
+          "tag": "C003",
+          "offset_hex": "0x01c286e0",
+          "offset_dec": 29525728,
+          "size_hex": "0x0000141a",
+          "size_dec": 5146,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "2cd0a703fa447b85d3e5979fd4162e634bb4060e6b060423702929b92459a1c0",
+          "filename": "66_C003.bin",
+          "relative_path": "centauri/firmware/partitions/66_C003.bin"
+        },
+        {
+          "index": 67,
+          "tag": "C004",
+          "offset_hex": "0x01c29afc",
+          "offset_dec": 29530876,
+          "size_hex": "0x00001a02",
+          "size_dec": 6658,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "02651bc06bbf221724336ffcabc6a0fe5c63d33938c47ae56f13fb4a4a192fe2",
+          "filename": "67_C004.bin",
+          "relative_path": "centauri/firmware/partitions/67_C004.bin"
+        },
+        {
+          "index": 68,
+          "tag": "C005",
+          "offset_hex": "0x01c2b500",
+          "offset_dec": 29537536,
+          "size_hex": "0x00001a02",
+          "size_dec": 6658,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "389ed532fb1fb2c6c016f7f9d61c3b4d1cf73b8c2278c3aa76a9af16ef4f5a09",
+          "filename": "68_C005.bin",
+          "relative_path": "centauri/firmware/partitions/68_C005.bin"
+        },
+        {
+          "index": 69,
+          "tag": "C006",
+          "offset_hex": "0x01c2cf04",
+          "offset_dec": 29544196,
+          "size_hex": "0x00001a02",
+          "size_dec": 6658,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "0d2f2af2df9a2f108caff065aec1984c42e269548aac1460439c5e1425c92152",
+          "filename": "69_C006.bin",
+          "relative_path": "centauri/firmware/partitions/69_C006.bin"
+        },
+        {
+          "index": 70,
+          "tag": "C007",
+          "offset_hex": "0x01c2e908",
+          "offset_dec": 29550856,
+          "size_hex": "0x0000141a",
+          "size_dec": 5146,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "5fb4ce6b6c87fc854e2ec0e16f9b628986726578b1b2a488a18f0815ed45be47",
+          "filename": "70_C007.bin",
+          "relative_path": "centauri/firmware/partitions/70_C007.bin"
+        }
+      ],
+      "spatial_sar_tables": [
+        {
+          "index": 59,
+          "tag": "S000",
+          "offset_hex": "0x01c20fd4",
+          "offset_dec": 29495252,
+          "size_hex": "0x00000a00",
+          "size_dec": 2560,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "22b98f3c62560875dbaff3c4a7fdfb64fd0f3c0ac8d45af4e3436d34694d11c8",
+          "filename": "59_S000.bin",
+          "relative_path": "centauri/firmware/partitions/59_S000.bin"
+        },
+        {
+          "index": 60,
+          "tag": "S001",
+          "offset_hex": "0x01c219d4",
+          "offset_dec": 29497812,
+          "size_hex": "0x00000aa0",
+          "size_dec": 2720,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "a39cbe984bf2027e58f8cddfb1c34f5c7748a19efce2e0859b39afc0c79260e9",
+          "filename": "60_S001.bin",
+          "relative_path": "centauri/firmware/partitions/60_S001.bin"
+        },
+        {
+          "index": 61,
+          "tag": "S002",
+          "offset_hex": "0x01c22474",
+          "offset_dec": 29500532,
+          "size_hex": "0x00000a00",
+          "size_dec": 2560,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "0170e1f7c6a6adfa3eedb700983c21f838f0b1de346e87a5df7825d122ecf5ff",
+          "filename": "61_S002.bin",
+          "relative_path": "centauri/firmware/partitions/61_S002.bin"
+        },
+        {
+          "index": 62,
+          "tag": "S003",
+          "offset_hex": "0x01c22e74",
+          "offset_dec": 29503092,
+          "size_hex": "0x00000a60",
+          "size_dec": 2656,
+          "flags_hex": "0x00000000",
+          "flags_dec": 0,
+          "sha256": "14f9aca3b55d18ca0908f2bd57501c5006e7353830fe9ed09f482a4c0fbcc410",
+          "filename": "62_S003.bin",
+          "relative_path": "centauri/firmware/partitions/62_S003.bin"
+        }
+      ]
+    }
+  },
+  "firmware_partitions_inventory": {
+    "aciw": {
+      "index": 2,
+      "tag": "aciw",
+      "offset_hex": "0x001b3e90",
+      "offset_dec": 1785488,
+      "size_hex": "0x00270cc0",
+      "size_dec": 2559168,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "7ed2709109580ff6e2c5bb0148a7ca410430763171acfc9bf38412e7227b1409",
+      "filename": "02_aciw.bin",
+      "relative_path": "centauri/firmware/partitions/02_aciw.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x0",
+        "reset_vector": "0x16f725",
+        "nmi_vector": "0x16f839",
+        "hardfault_vector": "0x16f7e9"
+      }
+    },
+    "w2lp": {
+      "index": 3,
+      "tag": "w2lp",
+      "offset_hex": "0x00424b50",
+      "offset_dec": 4344656,
+      "size_hex": "0x00091a20",
+      "size_dec": 596512,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "2345098c274efef7f2ff30e562d111c9a50aa0d8966436c6042e0985fa7b8ddf",
+      "filename": "03_w2lp.bin",
+      "relative_path": "centauri/firmware/partitions/03_w2lp.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x1002fff0",
+        "reset_vector": "0x100bd5",
+        "nmi_vector": "0x100ba3",
+        "hardfault_vector": "0x100bab"
+      }
+    },
+    "wftp": {
+      "index": 4,
+      "tag": "wftp",
+      "offset_hex": "0x004b6570",
+      "offset_dec": 4941168,
+      "size_hex": "0x00024460",
+      "size_dec": 148576,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "1a7de8a44773de6d6c8f30efc64142ea28d940e9cec845e983b4599c1e7270fa",
+      "filename": "04_wftp.bin",
+      "relative_path": "centauri/firmware/partitions/04_wftp.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x10001c9c",
+        "reset_vector": "0x100701",
+        "nmi_vector": "0x1006e5",
+        "hardfault_vector": "0x1006ed"
+      }
+    },
+    "wfrp": {
+      "index": 5,
+      "tag": "wfrp",
+      "offset_hex": "0x004da9d0",
+      "offset_dec": 5089744,
+      "size_hex": "0x000218c0",
+      "size_dec": 137408,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "986f574a950f36f62d055ec6efd0a3eb2a155ef1a2e48c779ecdea8c72e87f8b",
+      "filename": "05_wfrp.bin",
+      "relative_path": "centauri/firmware/partitions/05_wfrp.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x10008c84",
+        "reset_vector": "0x1006a1",
+        "nmi_vector": "0x10067d",
+        "hardfault_vector": "0x100685"
+      }
+    },
+    "w5lp": {
+      "index": 6,
+      "tag": "w5lp",
+      "offset_hex": "0x004fc290",
+      "offset_dec": 5227152,
+      "size_hex": "0x00091a20",
+      "size_dec": 596512,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "73688c699a56a56ab57cacf5ac3e98a9217fd52c3b40bd2cf5d3bdcd9e68a1f4",
+      "filename": "06_w5lp.bin",
+      "relative_path": "centauri/firmware/partitions/06_w5lp.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x1002fff0",
+        "reset_vector": "0x100bd5",
+        "nmi_vector": "0x100ba3",
+        "hardfault_vector": "0x100bab"
+      }
+    },
+    "w5pp": {
+      "index": 10,
+      "tag": "w5pp",
+      "offset_hex": "0x007c8ff0",
+      "offset_dec": 8163312,
+      "size_hex": "0x0007d140",
+      "size_dec": 512320,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "9548627f469086452324c68758a53d7e92ac97a9d9c9b25f9bde2d380ad94689",
+      "filename": "10_w5pp.bin",
+      "relative_path": "centauri/firmware/partitions/10_w5pp.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x1002fff0",
+        "reset_vector": "0x10090d",
+        "nmi_vector": "0x1008d5",
+        "hardfault_vector": "0x1008dd"
+      }
+    },
+    "w2pp": {
+      "index": 11,
+      "tag": "w2pp",
+      "offset_hex": "0x00846130",
+      "offset_dec": 8675632,
+      "size_hex": "0x0004dc20",
+      "size_dec": 318496,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "6c3e36b408e3e372e3558085284650be80f55617621c944453806ceff0c694de",
+      "filename": "11_w2pp.bin",
+      "relative_path": "centauri/firmware/partitions/11_w2pp.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x10023ff0",
+        "reset_vector": "0x10090d",
+        "nmi_vector": "0x1008d5",
+        "hardfault_vector": "0x1008dd"
+      }
+    },
+    "scaw": {
+      "index": 14,
+      "tag": "scaw",
+      "offset_hex": "0x00927210",
+      "offset_dec": 9597456,
+      "size_hex": "0x000370e0",
+      "size_dec": 225504,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "953605800b9bc2f6acbab6aea3e574254b7c4ffbe4c68d3c9a824c4f2b5794e2",
+      "filename": "14_scaw.bin",
+      "relative_path": "centauri/firmware/partitions/14_scaw.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x1000a724",
+        "reset_vector": "0x100761",
+        "nmi_vector": "0x100741",
+        "hardfault_vector": "0x100749"
+      }
+    },
+    "awma": {
+      "index": 20,
+      "tag": "awma",
+      "offset_hex": "0x00c2caf0",
+      "offset_dec": 12765936,
+      "size_hex": "0x0026eca0",
+      "size_dec": 2550944,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "e7e954a8af2643402ced9bf4c952439a02d9a1a97b56f71246b60a54c6727990",
+      "filename": "20_awma.bin",
+      "relative_path": "centauri/firmware/partitions/20_awma.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x0",
+        "reset_vector": "0x16ef2d",
+        "nmi_vector": "0x16f041",
+        "hardfault_vector": "0x16eff1"
+      }
+    },
+    "w2lm": {
+      "index": 21,
+      "tag": "w2lm",
+      "offset_hex": "0x00e9b790",
+      "offset_dec": 15316880,
+      "size_hex": "0x00091a20",
+      "size_dec": 596512,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "885a16e2f91bd8bfc828bbd472b292fe114c15d151f3ba7ab3d4647c55c88c2b",
+      "filename": "21_w2lm.bin",
+      "relative_path": "centauri/firmware/partitions/21_w2lm.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x1002fff0",
+        "reset_vector": "0x100bd5",
+        "nmi_vector": "0x100ba3",
+        "hardfault_vector": "0x100bab"
+      }
+    },
+    "w5lm": {
+      "index": 22,
+      "tag": "w5lm",
+      "offset_hex": "0x00f2d1b0",
+      "offset_dec": 15913392,
+      "size_hex": "0x00091a20",
+      "size_dec": 596512,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "a83f8cb5a3469779272119e1067bc12d1596951b8dabe574c577ee0feaf045c4",
+      "filename": "22_w5lm.bin",
+      "relative_path": "centauri/firmware/partitions/22_w5lm.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x1002fff0",
+        "reset_vector": "0x100bd5",
+        "nmi_vector": "0x100ba3",
+        "hardfault_vector": "0x100bab"
+      }
+    },
+    "wftm": {
+      "index": 23,
+      "tag": "wftm",
+      "offset_hex": "0x00fbebd0",
+      "offset_dec": 16509904,
+      "size_hex": "0x00024460",
+      "size_dec": 148576,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "a0c8788acf45e2d741c1d314acdaed2e71e0a760f8d7213f8c1499ef06ce1fc5",
+      "filename": "23_wftm.bin",
+      "relative_path": "centauri/firmware/partitions/23_wftm.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x10001cac",
+        "reset_vector": "0x100701",
+        "nmi_vector": "0x1006e5",
+        "hardfault_vector": "0x1006ed"
+      }
+    },
+    "wfrm": {
+      "index": 24,
+      "tag": "wfrm",
+      "offset_hex": "0x00fe3030",
+      "offset_dec": 16658480,
+      "size_hex": "0x000218c0",
+      "size_dec": 137408,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "a9c0f7d2d8afd5bd0284815a9549950b9f6f126c2694a7e9905d52d4aecdbd25",
+      "filename": "24_wfrm.bin",
+      "relative_path": "centauri/firmware/partitions/24_wfrm.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x10008c64",
+        "reset_vector": "0x1006a1",
+        "nmi_vector": "0x10067d",
+        "hardfault_vector": "0x100685"
+      }
+    },
+    "swfm": {
+      "index": 25,
+      "tag": "swfm",
+      "offset_hex": "0x010048f0",
+      "offset_dec": 16795888,
+      "size_hex": "0x000390e0",
+      "size_dec": 233696,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "ae8a59b9e1b5c5425cf2ca929ae6142f2cabd9487058522c910b1cca64747883",
+      "filename": "25_swfm.bin",
+      "relative_path": "centauri/firmware/partitions/25_swfm.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x1000a5cc",
+        "reset_vector": "0x100761",
+        "nmi_vector": "0x100741",
+        "hardfault_vector": "0x100749"
+      }
+    },
+    "w2pm": {
+      "index": 26,
+      "tag": "w2pm",
+      "offset_hex": "0x0103d9d0",
+      "offset_dec": 17029584,
+      "size_hex": "0x0004dc20",
+      "size_dec": 318496,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "6c3e36b408e3e372e3558085284650be80f55617621c944453806ceff0c694de",
+      "filename": "26_w2pm.bin",
+      "relative_path": "centauri/firmware/partitions/26_w2pm.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x10023ff0",
+        "reset_vector": "0x10090d",
+        "nmi_vector": "0x1008d5",
+        "hardfault_vector": "0x1008dd"
+      }
+    },
+    "w5pm": {
+      "index": 27,
+      "tag": "w5pm",
+      "offset_hex": "0x0108b5f0",
+      "offset_dec": 17348080,
+      "size_hex": "0x0007d140",
+      "size_dec": 512320,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "9548627f469086452324c68758a53d7e92ac97a9d9c9b25f9bde2d380ad94689",
+      "filename": "27_w5pm.bin",
+      "relative_path": "centauri/firmware/partitions/27_w5pm.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x1002fff0",
+        "reset_vector": "0x10090d",
+        "nmi_vector": "0x1008d5",
+        "hardfault_vector": "0x1008dd"
+      }
+    },
+    "w2pt": {
+      "index": 33,
+      "tag": "w2pt",
+      "offset_hex": "0x0134af30",
+      "offset_dec": 20229936,
+      "size_hex": "0x00048aa0",
+      "size_dec": 297632,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "f6416e0ad863a23b604f6d699580a077b82623a625af40d10a9c411fe9364d2b",
+      "filename": "33_w2pt.bin",
+      "relative_path": "centauri/firmware/partitions/33_w2pt.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x10023ff0",
+        "reset_vector": "0x10090d",
+        "nmi_vector": "0x1008d5",
+        "hardfault_vector": "0x1008dd"
+      }
+    },
+    "w5pt": {
+      "index": 34,
+      "tag": "w5pt",
+      "offset_hex": "0x013939d0",
+      "offset_dec": 20527568,
+      "size_hex": "0x00076140",
+      "size_dec": 483648,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "96df4ad329a35ddef3028a1e7bc9e7cd63ed6b534aba51cc3ae95900a427cd9b",
+      "filename": "34_w5pt.bin",
+      "relative_path": "centauri/firmware/partitions/34_w5pt.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x1002fff0",
+        "reset_vector": "0x10090d",
+        "nmi_vector": "0x1008d5",
+        "hardfault_vector": "0x1008dd"
+      }
+    },
+    "_wfa": {
+      "index": 36,
+      "tag": "_wfa",
+      "offset_hex": "0x01410390",
+      "offset_dec": 21037968,
+      "size_hex": "0x0033265b",
+      "size_dec": 3352155,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "48d0fe7088a50065094b1434fff878c4b9da0147d44e039334e5d3d55585d1b8",
+      "filename": "36__wfa.bin",
+      "relative_path": "centauri/firmware/partitions/36__wfa.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x6d783f3c",
+        "reset_vector": "0x6576206c",
+        "nmi_vector": "0x6f697372",
+        "hardfault_vector": "0x31223d6e"
+      }
+    },
+    "_wma": {
+      "index": 37,
+      "tag": "_wma",
+      "offset_hex": "0x017429ec",
+      "offset_dec": 24390124,
+      "size_hex": "0x00330a58",
+      "size_dec": 3344984,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "0ced0a0994318c621a8f45281922d8f242bcfbafa5beef317d0523cf34f2ad3d",
+      "filename": "37__wma.bin",
+      "relative_path": "centauri/firmware/partitions/37__wma.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x6d783f3c",
+        "reset_vector": "0x6576206c",
+        "nmi_vector": "0x6f697372",
+        "hardfault_vector": "0x31223d6e"
+      }
+    },
+    "_wcl": {
+      "index": 38,
+      "tag": "_wcl",
+      "offset_hex": "0x01a73444",
+      "offset_dec": 27735108,
+      "size_hex": "0x0007fe4e",
+      "size_dec": 523854,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "7974f574937c1ba5b46c54ae83e69bc7e1c9ba4f4375d0904f0d11dbdcaf0f8c",
+      "filename": "38__wcl.bin",
+      "relative_path": "centauri/firmware/partitions/38__wcl.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x6d783f3c",
+        "reset_vector": "0x6576206c",
+        "nmi_vector": "0x6f697372",
+        "hardfault_vector": "0x31223d6e"
+      }
+    },
+    "wfrd": {
+      "index": 40,
+      "tag": "wfrd",
+      "offset_hex": "0x01af32d8",
+      "offset_dec": 28259032,
+      "size_hex": "0x00006600",
+      "size_dec": 26112,
+      "flags_hex": "0x00000000",
+      "flags_dec": 0,
+      "sha256": "e030b67b2228362b726a41319129313276d3ebc96b60feec79019166807611c0",
+      "filename": "40_wfrd.bin",
+      "relative_path": "centauri/firmware/partitions/40_wfrd.bin",
+      "cortex_vector_table": {
+        "initial_sp": "0x0",
+        "reset_vector": "0x31",
+        "nmi_vector": "0x0",
+        "hardfault_vector": "0x0"
+      }
+    }
+  },
+  "protocol_enums": {
+    "AciAkmTypeEnum": {
+      "AciAkmNone": 0,
+      "AciAkmWpa": 1,
+      "AciAkmWpaPsk": 2,
+      "AciAkmWpa2": 3,
+      "AciAkmWpa2Psk": 4,
+      "AciAkmWps": 5,
+      "AciAkmWpa2PskSHA256": 6,
+      "AciAkmWpa2SHA256": 7,
+      "AciAkmWpa3SaePsk": 8,
+      "AciAkmWpa3SaeFt": 9,
+      "AciAkmWapi": 10,
+      "AciAkmOwe": 11,
+      "AciAkmWpa3Sha384": 12,
+      "AciAkmWpa3SaePskGroupDep": 13,
+      "AciAkmWpa3SaeFtGroupDep": 14,
+      "AciAkmTypeMax": 15
+    },
+    "AciAuthTypeEnum": {
+      "AciAuthOpen": 0,
+      "AciAuthShared": 1,
+      "AciAuthFt": 2,
+      "AciAuthSAE": 3,
+      "AciAuthTypeMax": 4
+    },
+    "AciCommandGroupsEnum": {
+      "AciCommandGroupSystem": 0,
+      "AciCommandGroupScan": 1,
+      "AciCommandGroupConnect": 2,
+      "AciCommandGroupSecurity": 3,
+      "AciCommandGroupP2P": 4,
+      "AciCommandGroupAwdl": 5,
+      "AciCommandGroupTest": 6,
+      "AciCommandGroupDebug": 7,
+      "AciCommandGroupKlv": 8,
+      "AciCommandGroupNan": 9,
+      "AciCommandGroupFTM": 10,
+      "AciCommandGroupStatistics": 11,
+      "AciCommandGroupMws": 12,
+      "AciCommandGroupCoreTest": 13,
+      "AciCommandGroupGWTestMode": 14,
+      "AciCommandGroupCoreDebug": 15,
+      "AciCommandGroupDfsp": 16,
+      "AciCommandGroupCoex": 17,
+      "AciCommandGroupAdr": 18,
+      "AciCommandGroupSap": 19,
+      "AciCommandGroupDebugStart": 20,
+      "AciCommandGroupDebugRx": 21,
+      "AciCommandGroupDebugLmac": 22,
+      "AciCommandGroupLlv": 23,
+      "AciCommandGroupLowLatency": 24,
+      "AciCommandGroupRegulatory": 25,
+      "WctCommandGroupAOP": 26,
+      "AciCommandGroupMax": 27
+    },
+    "AciHostPowerStateEnum": {
+      "AciHostPowerStateOn": 0,
+      "AciHostPowerStateWow": 1,
+      "AciHostPowerStateLpas": 2,
+      "AciHostPowerStateLpna": 3,
+      "AciHostPowerStateLpw": 4,
+      "AciHostPowerModeMax": 5
+    },
+    "AciLinkOperationTypeEnum": {
+      "AciLinkOperationOpen": 0,
+      "AciLinkOperationClose": 1,
+      "AciLinkOperationUpdate": 2,
+      "AciLinkOperationMax": 3
+    },
+    "AciScanMotionStateEnum": {
+      "AciScanMotionStationary": 0,
+      "AciScanMotionMoving": 1,
+      "AciScanMotionPedestrian": 2,
+      "AciScanMotionDriving": 3,
+      "AciScanMotionMax": 4
+    },
+    "AciScanPriorityEnum": {
+      "AciScanPriorityDefault": 0,
+      "AciScanPriorityHigh": 1,
+      "AciScanPriorityLow": 2,
+      "AciScanPriorityBackground": 3
+    },
+    "AciScanSearchModeEnum": {
+      "AciScanSearchAny": 0,
+      "AciScanSearchSsid": 1,
+      "AciScanSearchBssid": 2,
+      "AciScanSearchDirect": 3,
+      "AciScanSearchHs20": 4,
+      "AciScanSearchDmg": 5,
+      "AciScanSearchModeMax": 6
+    },
+    "AciStatisticsClientIdEnum": {
+      "ACI_STATISTICS_CLIENT_HOST_CMD": 0,
+      "ACI_STATISTICS_CLIENT_HOST_EVENT": 1,
+      "ACI_STATISTICS_CLIENT_DTM": 2,
+      "ACI_STATISTICS_CLIENT_HOST_CMD_RESET": 3,
+      "ACI_STATISTICS_CLIENT_CCA_TIMER": 4,
+      "ACI_STATISTICS_CLIENT_RX_PHY_COUNT": 5,
+      "ACI_STATISTICS_CLIENTS_NUM": 6
+    },
+    "AciTofFrameIndexInBurst": {
+      "AciTofFrameIndexFtmOne": 0,
+      "AciTofFrameIndexFtmTwo": 1,
+      "AciTofFrameIndexFtmThree": 2,
+      "AciTofFrameIndexFtmReq": 3
+    },
+    "AciTofModeEnum": {
+      "AciTofModeResponder": 0,
+      "AciTofModeInitiator": 1,
+      "AciTofModeResponderPAU": 2,
+      "AciTofModeInitiatorPAU": 3
+    },
+    "AciWifiErrorCodeEnum": {
+      "AciWifiStatusOk": 0,
+      "AciWifiReasonUnspec": 1,
+      "AciWifiReasonInvalidAuth": 2,
+      "AciWifiReasonLeavingNetwork": 3,
+      "AciWifiReasonInactivity": 4,
+      "AciWifiReasonNoMoreStas": 5,
+      "AciWifiMicFailure": 14,
+      "AciWiFiGroupKeyTimeOut": 16,
+      "AciWifiReasonHandshakeElementMismatch": 17,
+      "AciWifiMissingAcks": 34,
+      "AciWifiExceededTxop": 35,
+      "AciWifiStaLeaving": 36,
+      "AciWifiEndTsEndBa": 37,
+      "AciWifiReasonInvalidPmkid": 49,
+      "AciWifiReasonInvalidMde": 50,
+      "AciWifiReasonInvalidFte": 51,
+      "AciWifiReasonEnd": 99,
+      "AciWifiStatusBegin": 100,
+      "AciWifiStatusUnspecError": 101,
+      "AciWifiStatusUnsupportedAuthAlgo": 113,
+      "AciWifiStatusChallengeFailure": 115,
+      "AciWifiStatusRefusedTemporarily": 130,
+      "AciWifiStatusDeniedQosNotSupported": 135,
+      "AciWifiStatusInvalidParams": 138,
+      "AciWifiStatusInvalidGroupCipher": 141,
+      "AciWifiStatusInvalidPairwiseCipher": 142,
+      "AciWifiStatusInvalidAkm": 143,
+      "AciWifiStatusInvalidRsnCaps": 145,
+      "AciWifiStatusCipherOutOfPolicy": 146,
+      "AciWifiStatusInvalidPmkid": 153,
+      "AciWifiStatusInvalidRsne": 172,
+      "AciWifiStatusEnd": 299,
+      "AciWifiInternalBegin": 300,
+      "AciWifiBssLoss": 301,
+      "AciWifiDisconnectRequest": 302,
+      "AciWifiTofFailure": 303,
+      "AciWifiInvalidAssocitationResponse": 304,
+      "AciWifiTimeoutProbe": 305,
+      "AciWifiTimeoutAuthentication": 306,
+      "AciWifiTimeoutWepAuthentication": 307,
+      "AciWifiTimeoutAssocitation": 308,
+      "AciWifiTimeoutConnected": 309,
+      "AciWifiTimeoutDisconnecting": 310,
+      "AciWifiSecurityFailure": 311,
+      "AciWifiNotAllowed": 312,
+      "AciWifiInvalidParam": 313,
+      "AciWifiNotFound": 314,
+      "AciWifiNotEnoughResources": 315,
+      "AciWifiSecurityTimeout": 316,
+      "AciWifiTofPhyFailure": 317,
+      "AciWifiTofFtmInvalidParam": 318,
+      "AciWifiTofNotEnoughResources": 319,
+      "AciWifiTofTimeout": 320,
+      "AciWifiInvalidStatus": 321,
+      "AciWifiInterfaceStarted": 322,
+      "AciWifiInterfaceNotStarted": 323,
+      "AciWifiInterfaceNotConfigured": 324,
+      "AciWifiInvalidDatabase": 325,
+      "AciWifiStateIdle": 326,
+      "AciWifiStateNotIdle": 327,
+      "AciWifiStateConnected": 328,
+      "AciWifiStateNotConnected": 329,
+      "AciWifiNotInRequiredMode": 330,
+      "AciWifiScanDisabled": 331,
+      "AciWifiScanSuppressed": 332,
+      "AciWifiPrevCmdNotEnded": 333,
+      "AciWifiCmdNotSupported": 334,
+      "AciWifiEventNotSupported": 335,
+      "AciWifiParamNotSupported": 336,
+      "AciWifiParamOutOfRange": 337,
+      "AciWifiParamsMissmatch": 338,
+      "AciWifiInvalidLength": 339,
+      "AciWifiInvalidInterface": 340,
+      "AciWifiInvalidMode": 341,
+      "AciWifiInvalidHandle": 342,
+      "AciWifiInvalidType": 343,
+      "AciWifiInvalidMacAddr": 344,
+      "AciWifiInvalidSsids": 345,
+      "AciWifiCopyFailed": 346,
+      "AciWifiTlvsParsingFailed": 347,
+      "AciWifiInvalidBand": 348,
+      "AciWifiInalidChannels": 349,
+      "AciWifiScanConfigured": 350,
+      "AciWifiIpNotConfigured": 351,
+      "AciWifiBadRfConditionsProbe": 352,
+      "AciWifiBadRfConditionsAuthentication": 353,
+      "AciWifiBadRfConditionsWepAuthentication": 354,
+      "AciWifiBadRfConditionsAssocitation": 355,
+      "AciWifiBadRfConditionsConnected": 356,
+      "AciWifiBadRfConditionsDisconnecting": 357,
+      "AciWifiSecurityLinkNotValid": 358,
+      "AciWifiSecurityUnsupportedKeyLen": 359,
+      "AciWifiSecurityUnsupportedCipher": 360,
+      "AciWifiSecurityInvalidEapolLength": 361,
+      "AciWifiSecurity4WayHandshakeTimeout": 362,
+      "AciWifiSecurityMessageSendFailure": 363,
+      "AciWifiSecurityDecryptKeyDataFailed": 364,
+      "AciWifiSecurityInvalidMic": 365,
+      "AciWifiSecurityInstallFlagUnset": 366,
+      "AciWifiSecurityVersionFlagUnknown": 367,
+      "AciWifiSecurityAckFlagUnset": 368,
+      "AciWifiSecurityMicFlagUnset": 369,
+      "AciWifiSecurityReqFlagSet": 370,
+      "AciWifiSecurityKeyIndexFlagInvalid": 371,
+      "AciWifiSecurityMfpNegotiationFailed": 372,
+      "AciWifiSecurityAnonceChanged": 373,
+      "AciWifiSecurityGtkMissing": 374,
+      "AciWifiSecurityMessage3GtkNotEncrypted": 375,
+      "AciWifiSecurityReplayCounterNotIncrease": 376,
+      "AciWifiSecurityMessage3IeMismatch": 377,
+      "AciWifiSecurityMessage3TooManyIe": 378,
+      "AciWifiSecurityFtIeMismatch": 379,
+      "AciWifiSaeGenerateCommitFailed": 380,
+      "AciWifiSaeReceiveCommitParameterInvalid": 381,
+      "AciWifiSaeReceiveCommitValidationFailed": 382,
+      "AciWifiSaeReceiveCommitInvalidAntiClogging": 383,
+      "AciWifiSaeGenerateConfirmFailed": 384,
+      "AciWifiSaeReceiveConfirmParameterInvalid": 385,
+      "AciWifiSaeReceiveConfirmValidationFailed": 386,
+      "AciWifiCommandAborted": 387,
+      "AciWifiCommandInvalidScanFlags": 388,
+      "AciWifiChannelSwitchInProgress": 389,
+      "AciWiFiLlvSpHandlerNotConverged": 390,
+      "AciWiFiRxcConfigOverCapacity": 391,
+      "AciWiFiRxcInvalidTR": 392,
+      "AciWiFiRxcInvalidCR": 393,
+      "AciWiFiRxcInvalidTlvList": 394,
+      "AciWifiConnFailedOweTrans": 395,
+      "AciWifiConnFailedOweHs": 396,
+      "AciWifiSecurityGroupMismatch": 397,
+      "wctWifiMissingElement": 398,
+      "AciWiFiRxcOoOHostPowerState": 399,
+      "AciWiFiRxcUnexpectedState": 400,
+      "wctInvalidTlvList": 401,
+      "wctInvalidNumOfTlvs": 402,
+      "wctDmsDuplicateDescriptor": 403,
+      "AciWiFiLLxSessionExceededLimit": 404,
+      "AciWiFiLLxPeersExceededLimit": 405,
+      "AciWiFiLLxSessionInvalidTidSet": 406,
+      "AciWiFiLLxSessionInvalidOperationMode": 407,
+      "AciWiFiLLxInvalidSessionID": 408,
+      "AciWiFiLLxInvalidPeerID": 409,
+      "AciWiFiLLxActivePeers": 410,
+      "wctBmmActive": 411,
+      "wctBmmEndDisabled": 412,
+      "wctBmmEndBeaconReceived": 413,
+      "wctBmmEndProbeResTimeOut": 414,
+      "wctBmmEndTimeOut": 415,
+      "wctBmmEndRoamSuccess": 416,
+      "wctBmmEndDisassoc": 417,
+      "wctBmmEndApDeauth": 418,
+      "wctBmmEndLinkLoss": 419,
+      "wctWifiMldOneOtaRetry": 420,
+      "wctRxFrameParsingError": 421,
+      "wctUserScanRejectByRoamingBssLoss": 422,
+      "wctWifiStatusOkNoAck": 423,
+      "AciWifiInternalEnd": 424,
+      "ManagementErrorCodeMax": 425
+    },
+    "AclDataRate_e": {
+      "ACL_BASIC_RATE": 0,
+      "ACL_EDR": 1,
+      "ACL_HDR": 2
+    },
+    "ApMlmeStatus_e": {
+      "ApMlmeStatusDisco": 0,
+      "ApMlmeStatusDiscoPeerReq": 1,
+      "ApMlmeStatusDiscoRejAuth": 2,
+      "ApMlmeStatusDiscoRejAssoc": 3,
+      "ApMlmeStatusDiscoSecFailed": 4,
+      "ApMlmeStatusDiscoTimeout": 5,
+      "ApMlmeStatusGroupKeyFail": 6,
+      "ApMlmeStatusSapIsLeaving": 7,
+      "ApMlmeStatusReauth": 8,
+      "ApMlmeStatusKeepAliveFailed": 9,
+      "ApMlmeStatusConnected": 10,
+      "ApMlmeStatusMax": 11
+    },
+    "AppleCore80211LinkConnectionState_e": {
+      "ACW_LINK_CONNECTION_STATE_INVALID": 1,
+      "ACW_LINK_CONNECTION_STATE_DISASSOCIATED": 2,
+      "ACW_LINK_CONNECTION_STATE_ASSOCIATED": 4,
+      "ACW_LINK_CONNECTION_STATE_CONNECTED": 8,
+      "ACW_LINK_CONNECTION_STATE_DISCONNECTING": 16,
+      "ACW_LINK_CONNECTION_STATE_TX_FLUSHING": 32,
+      "ACW_LINK_CONNECTION_STATE_BSS_LOSS": 64,
+      "ACW_LINK_CONNECTION_STATE_BSS_LOSS_DEBOUNCE": 256
+    },
+    "AppleCore80211_LinkId_e": {
+      "ACW_LINK_ID_SCAN": 0,
+      "ACW_LINK_ID_GLOBAL": 1,
+      "ACW_LINK_ID_FIRST_STA": 2,
+      "ACW_LINK_ID_SECOND_STA": 3,
+      "ACW_LINK_ID_PSF_BCAST_TX": 4,
+      "ACW_LINK_ID_AW_GLOBAL": 5,
+      "ACW_LINK_ID_AW_GLOBAL_FW_GEN": 6,
+      "ACW_LINK_ID_AW_BCAST_TX": 7,
+      "ACW_LINK_ID_NAN_BCN_BCAST_TX": 8,
+      "ACW_LINK_ID_NAN_DW": 9,
+      "ACW_LINK_ID_NAN_DW_BCAST_TX": 10,
+      "ACW_LINK_ID_SAP_BCAST_TX": 11,
+      "ACW_LINK_ID_SAP_GLOBAL": 12,
+      "ACW_LINK_ID_DYNAMIC_FIRST": 13,
+      "ACW_LINK_ID_DYNAMIC_LAST": 33,
+      "ACW_LINK_ID_LAST": 34,
+      "ACW_LINKS_NUMBER_OF_LINKS": 44,
+      "ACW_LINK_ID_INVALID": 255
+    },
+    "AwdlDelayStopIfReason_e": {
+      "AWDL_DELAY_INACTIVE": 0,
+      "AWDL_DELAY_STOP_IF_LINK_OP_ACTIVE": 1,
+      "AWDL_DELAY_STOP_IF_TOF_CRTITICAL_ACTIVE": 2
+    },
+    "BtConnectionMode_e": {
+      "BT_CONNECTION_MODE_DISCONNECTED": 0,
+      "BT_CONNECTION_MODE_SLAVE": 1,
+      "BT_CONNECTION_MODE_MASTER": 2,
+      "BT_CONNECTION_MODE_SCATTERNET": 3,
+      "BT_CONNECTION_MODE_INVALID": 255
+    },
+    "BtSlotType_e": {
+      "VOICE_RESERVED_SLOT": 0,
+      "VOICE_RETRANSMISSION_WINDOW": 1,
+      "VOICE_DEFAULT_CLEAR": 2,
+      "LEA_RESERVED_SLOT": 3,
+      "LEA_RETRANSMISSION_WINDOW": 4
+    },
+    "COEX_RF_ANTENNA_DIVERSITY_STATE": {
+      "COEX_RF_ANTENNA_DIVERSITY_STATE__0": 0,
+      "COEX_RF_ANTENNA_DIVERSITY_STATE__1": 1,
+      "COEX_RF_ANTENNA_DIVERSITY_STATE__DONT_CARE": 2,
+      "COEX_RF_CHAINS_ANTENNA_NUM_STATES": 3
+    },
+    "COEX_RF_CHAINS_TYPE": {
+      "COEX_RF_CHAINS_TYPE__DONT_CARE": 0,
+      "COEX_RF_CHAINS_TYPE__CHAIN_0": 1,
+      "COEX_RF_CHAINS_TYPE__CHAIN_1": 2,
+      "COEX_RF_CHAINS_TYPE__CHAIN_2": 3
+    },
+    "COEX_RT_ARBITER_decision_mode_e": {
+      "COEX_RT_ARBITER_DECISION_MODE_IDLE": 0,
+      "COEX_RT_ARBITER_DECISION_MODE_BT": 1,
+      "COEX_RT_ARBITER_DECISION_MODE_WIFI": 2,
+      "COEX_RT_ARBITER_DECISION_MODE_UNDEFINED": 3,
+      "COEX_RT_ARBITER_DECISION_MODE_BT_SCAN": 4,
+      "COEX_RT_ARBITER_DECISION_MODE_WIFI_SCAN": 5,
+      "COEX_RT_ARBITER_DECISION_MODE_PPM_ALERT": 6
+    },
+    "CORE_INFRA_ERROR_HANDLING_state": {
+      "ERROR_HANDLER_NO_ENTRY_E": 0,
+      "ERROR_HANDLER_SINGLE_ENTRY_E": 1,
+      "ERROR_HANDLER_REENTRY_E": 2,
+      "ERROR_HANDLER_MULTIPLE_REENTRY_E": 3
+    },
+    "CORE_INFRA_INTERNAL_error_e": {
+      "CORE_INFRA_ERROR_OK_E": 0,
+      "CORE_INFRA_ERROR_IP_USER_INITIATED_E": 1,
+      "CORE_INFRA_ERROR_BOOT_MANAGER_BAD_DATABASE_E": 2,
+      "CORE_INFRA_ERROR_BOOT_MANAGER_UNEXPECTED_BOOT_E": 3,
+      "CORE_INFRA_ERROR_BOOT_MANAGER_PREPARE_FOR_SLEEP_ILLEGAL_BOOT_TYPE_E": 4,
+      "CORE_INFRA_ERROR_BOOT_MANAGER_STATE_MISMATCH_E": 5,
+      "CORE_INFRA_ERROR_BOOT_MANAGER_BAD_PARAMETER_E": 6,
+      "CORE_INFRA_ERROR_BOOT_MANAGER_BAD_INIT_E": 7,
+      "CORE_INFRA_ERROR_NVIC_MANAGER_INIT_MULTI_IRQ_MAP_E": 8,
+      "CORE_INFRA_ERROR_NVIC_MANAGER_IRQ_PRIORITY_NOT_IN_RANGE_E": 9,
+      "CORE_INFRA_ERROR_NVIC_MANAGER_ILLEGAL_IRQ_VALUE": 10,
+      "CORE_INFRA_ERROR_NVIC_MANAGER_IRQ_SUBPRIORITY_NOT_IN_RANGE_E": 11,
+      "CORE_INFRA_ERROR_NVIC_CONTROL_VTOR_BAD_ADDRESS_E": 12,
+      "CORE_INFRA_ERROR_STACK_CHECKER_BASE_POINTER_MISMATCH_E": 13,
+      "CORE_INFRA_ERROR_STACK_CHECKER_STACK_MAX_USAGE_E": 14,
+      "CORE_INFRA_ERROR_PERFORMANCE_STATISTICS_HISTOGRAM_INIT_TIMER_ID_E": 15,
+      "CORE_INFRA_ERROR_PERFORMANCE_STATISTICS_HISTOGRAM_START_TIMER_ID_E": 16,
+      "CORE_INFRA_ERROR_BOOT_CORRUPTED_DATABASE_E": 17,
+      "CORE_INFRA_ERROR_STATE_MACHINE_ENGINE_ILLEGAL_EVENT_E": 18,
+      "CORE_INFRA_ERROR_STATE_MACHINE_ENGINE_ILLEGAL_ACTION_ID_E": 19,
+      "CORE_INFRA_ERROR_STATE_MACHINE_ENGINE_ILLEGAL_NEXT_STATE_E": 20,
+      "CORE_INFRA_ERROR_STATE_MACHINE_ENGINE_PERF_STATS_CONFIG_MISSING_E": 21,
+      "CORE_INFRA_ERROR_STATE_MACHINE_ENGINE_PERF_STATS_NOT_INITIALIZED_E": 22,
+      "CORE_INFRA_ERROR_STATE_MACHINE_ENGINE_WITH_PROTECTION_ILLEGAL_EVENT_E": 23,
+      "CORE_INFRA_ERROR_STATE_MACHINE_ENGINE_WO_PROTECTION_ILLEGAL_EVENT_E": 24,
+      "CORE_INFRA_ERROR_DEFAULT_EXCEPTION_E": 25,
+      "CORE_INFRA_ERROR_NMI_E": 26,
+      "CORE_INFRA_ERROR_HARD_FAULT_E": 27,
+      "CORE_INFRA_ERROR_MEMORY_ACCESS_E": 28,
+      "CORE_INFRA_ERROR_BUS_FAULT_E": 29,
+      "CORE_INFRA_ERROR_USAGE_FAULT_E": 30,
+      "CORE_INFRA_ERROR_UNDEFINED_IRQ_E": 31,
+      "CORE_INFRA_ERROR_UTILS_MEM_COPY_BAD_PARAM_E": 32,
+      "CORE_INFRA_ERROR_UTILS_MEM_COMPARE_32_BAD_PARAM_E": 33,
+      "CORE_INFRA_ERROR_UTILS_MEM_SET_32_BAD_PARAM_E": 34,
+      "CORE_INFRA_ERROR_TASK_INIT_BAD_PARAMETERS_E": 35,
+      "CORE_INFRA_ERROR_TASK_INIT_BAD_FUNCTION_POINTER_E": 36,
+      "CORE_INFRA_ERROR_TASK_REGISTER_STATS_EXCEED_MAX_E": 37,
+      "CORE_INFRA_ERROR_TASK_HISTORY_REGISTER_EXCEED_MAX_E": 38,
+      "CORE_INFRA_ERROR_TASK_PENDING_ID_EXCEED_MAX_E": 39,
+      "CORE_INFRA_ERROR_TASK_RETRIGGER_ID_EXCEED_MAX_E": 40,
+      "CORE_INFRA_ERROR_MPU_MANAGER_MPU_SET_ILLEGAL_ADDRESS_E": 41,
+      "CORE_INFRA_ERROR_MPU_MANAGER_MPU_DISABLED_MPU_E": 42,
+      "CORE_INFRA_ERROR_MPU_MANAGER_MPU_VALIDATION_FAIL_E": 43,
+      "CORE_INFRA_ERRORRESERVED_43": 44,
+      "CORE_INFRA_ERROR_IPC_INIT_REGISTER_EXCEED_MAX_E": 45,
+      "CORE_INFRA_ERROR_IPC_INIT_ILLEGAL_ROLE_E": 46,
+      "CORE_INFRA_ERROR_IPC_INIT_ILLEGAL_LOCAL_CONTROL_E": 47,
+      "CORE_INFRA_ERROR_IPC_INIT_ILLEGAL_REMOTE_CONTROL_E": 48,
+      "CORE_INFRA_ERROR_IPC_INIT_ILLEGAL_BUFFER_E": 49,
+      "CORE_INFRA_ERROR_IPC_INIT_ILLEGAL_DMA_COPY_FUNCTION_E": 50,
+      "CORE_INFRA_ERROR_IPC_INIT_ILLEGAL_DMA_COMPLETE_FUNCTION_E": 51,
+      "CORE_INFRA_ERROR_IPC_INIT_ILLEGAL_SENDER_BUFFER_E": 52,
+      "CORE_INFRA_ERROR_IPC_INIT_ILLEGAL_SENDER_INTERRUPT_PTR_E": 53,
+      "CORE_INFRA_ERROR_IPC_INIT_ILLEGAL_SENDER_CONFIG_E": 54,
+      "CORE_INFRA_ERROR_IPC_INIT_ILLEGAL_RECEIVER_INTERRUPT_PTR_E": 55,
+      "CORE_INFRA_ERROR_IPC_HISTORY_REGISTER_EXCEED_MAX_E": 56,
+      "CORE_INFRA_ERROR_IPC_ILLEGAL_BUFFER_SIZE_E": 57,
+      "CORE_INFRA_ERROR_IPC_ILLEGAL_ROLE_NOT_SENDER_E": 58,
+      "CORE_INFRA_ERROR_IPC_ILLEGAL_ROLE_NOT_RECEIVER_E": 59,
+      "CORE_INFRA_ERROR_IPC_ILLEGAL_SEND_QUEUE_DISABLED_E": 60,
+      "CORE_INFRA_ERROR_IPC_ILLEGAL_RECEIVE_QUEUE_DISABLED_E": 61,
+      "CORE_INFRA_ERROR_IPC_ILLEGAL_ALREADY_ENABLED_E": 62,
+      "CORE_INFRA_ERROR_REG_STORE_RESTORE_MNGR_LIFO_FULL_E": 63,
+      "CORE_INFRA_ERROR_REG_STORE_RESTORE_MNGR_NOT_ENOUGH_SPACE_IN_LIFO_E": 64,
+      "CORE_INFRA_ERROR_REG_STORE_RESTORE_MNGR_ILLEGAL_LIFO_SIZE_E": 65,
+      "CORE_INFRA_ERROR_REG_STORE_RESTORE_MNGR_NOT_ENOUGH_DATA_IN_LIFO_E": 66,
+      "CORE_INFRA_ERROR_REG_STORE_RESTORE_MNGR_INIT_E": 67,
+      "CORE_INFRA_ERROR_REG_STORE_RESTORE_PADDING_E": 68,
+      "CORE_INFRA_ERROR_REG_STORE_RESTORE_MNGR_HEADER_MISMATCH_E": 69,
+      "CORE_INFRA_ERROR_REG_STORE_RESTORE_MNGR_REGISTER_LIST_MISMATCH_E": 70,
+      "CORE_INFRA_ERROR_REG_STORE_RESTORE_MNGR_LIFO_NOT_EMPTY_E": 71,
+      "CORE_INFRA_ERROR_REG_STORE_RESTORE_LIFO_POINTER_NOT_NULL_AT_INIT_E": 72,
+      "CORE_INFRA_ERROR_STACK_UTILITY_INVALID_STACK_POINTER_E": 73,
+      "CORE_INFRA_ERROR_STACK_UTILITY_INVALID_ELEMENTS_POINTER_E": 74,
+      "CORE_INFRA_ERROR_STACK_UTILITY_INVALID_PUSH_ACTION_E": 75,
+      "CORE_INFRA_ERROR_STACK_UTILITY_INVALID_POP_ACTION_E": 76,
+      "CORE_INFRA_ERROR_TIMERS_DURATION_EXCEEDED_MAX_E": 77,
+      "CORE_INFRA_ERROR_TIMERS_ILLEGAL_INDEX_MAX_E": 78,
+      "CORE_INFRA_ERROR_TIMERS_HEAP_INDEX_MAX_E": 79,
+      "CORE_INFRA_ERROR_TIMERS_HEAP_ENTRY_ILLEGAL_VALUE_E": 80,
+      "CORE_INFRA_ERROR_TIMERS_SIZE_NOT_ALIGNED_E": 81,
+      "CORE_INFRA_ERROR_SEQUENCE_PROTECTION_INIT_EVENT_MATRIX_SYMMETRY_E": 82,
+      "CORE_INFRA_ERROR_SEQUENCE_PROTECTION_ILLEGAL_CONCURRENT_FLOW_E": 83,
+      "CORE_INFRA_ERROR_SEQUENCE_PROTECTION_FLOW_IS_INACTIVE_E": 84,
+      "CORE_INFRA_ERROR_SEQUENCE_PROTECTION_ILLEGAL_FLOW_ACTIVE_START_E": 85,
+      "CORE_INFRA_ERROR_SEQUENCE_PROTECTION_START_BAD_FLOW_E": 86,
+      "CORE_INFRA_ERROR_SEQUENCE_PROTECTION_FLOW_ILLEGAL_EVENT_E": 87,
+      "CORE_INFRA_ERROR_SEQUENCE_PROTECTION_MULTIPLE_INIT_E": 88,
+      "CORE_INFRA_ERROR_SEQUENCE_PROTECTION_NULL_POINTER_E": 89,
+      "CORE_INFRA_ERROR_SEQUENCE_PROTECTION_BAD_PARAMETER_E": 90,
+      "CORE_INFRA_ERROR_SEQUENCE_PROTECTION_BAD_DATABASE_E": 91,
+      "CORE_INFRA_ERROR_SEQUENCE_PROTECTION_FLOW_ILLEGAL_FLOW_OR_EVENT_COUNT_E": 92,
+      "CORE_INFRA_ERROR_BOOT_FLOW_IRQ_E": 93,
+      "CORE_INFRA_ERROR_FIXED_POINT_CREATE_INT_SIZE": 94,
+      "CORE_INFRA_ERROR_FIXED_POINT_CREATE_FRAC_SIZE": 95,
+      "CORE_INFRA_ERROR_FIXED_POINT_CREATE_WORD_SIZE": 96,
+      "CORE_INFRA_ERROR_FIXED_POINT_BIAS_ROUND_SIZE": 97,
+      "CORE_INFRA_ERROR_FIXED_POINT_FLOOR_SIZE": 98,
+      "CORE_INFRA_ERROR_FIXED_POINT_CLIP_SIZE": 99,
+      "CORE_INFRA_ERROR_FIXED_POINT_WRAP_SIZE": 100,
+      "CORE_INFRA_ERROR_FIXED_POINT_CLIP_DIV_BY_0": 101,
+      "CORE_INFRA_ERROR_FIXED_POINT_SQRT_NEGATIVE": 102,
+      "CORE_INFRA_ERROR_ERROR_FIXED_POINT_COMPLEX_DIV_BY_0": 103,
+      "CORE_INFRA_ERROR_ERROR_FIXED_POINT_CREATE_INT_SIZE": 104,
+      "CORE_INFRA_ERROR_ERROR_FIXED_POINT_CREATE_FRAC_SIZE": 105,
+      "CORE_INFRA_ERROR_ERROR_FLOAT_OVERRUN": 106,
+      "CORE_INFRA_ERROR_HOOK_USER_REQUESTED_SHUTDOWN_E": 107,
+      "CORE_INFRA_ERROR_FIFO_BAD_POINTER_E": 108,
+      "CORE_INFRA_ERROR_FIFO_VALIDATE_OVERFLOW_E": 109,
+      "CORE_INFRA_ERROR_FIFO_INIT_BAD_PARAMETER_E": 110,
+      "CORE_INFRA_ERROR_FIFO_PUSH_WHEN_FULL_E": 111,
+      "CORE_INFRA_ERROR_FIFO_POP_WHEN_EMPTY_E": 112,
+      "CORE_INFRA_ERROR_FIFO_PEEK_FIFO_TOO_SMALL_E": 113,
+      "CORE_INFRA_ERROR_IPC_GENERAL_ERROR_E": 114,
+      "CORE_INFRA_ERROR_IPC_FIFO_INIT_BAD_BUFFER_SIZE_E": 115,
+      "CORE_INFRA_ERROR_IPC_FIFO_VALIDATE_OVERFLOW_E": 116,
+      "CORE_INFRA_ERROR_IPC_INIT_ZERO_QUEUES_E": 117,
+      "CORE_INFRA_ERROR_IPC_INIT_NULL_QUEUE_E": 118,
+      "CORE_INFRA_ERROR_IPC_INIT_QUEUE_DISABLED_E": 119,
+      "CORE_INFRA_ERROR_IPC_INIT_ILLEGAL_MEMCOPY_FUNCTION_E": 120,
+      "CORE_INFRA_ERROR_IPC_ILLEGAL_MESSAGE_STATE_E": 121,
+      "CORE_INFRA_ERROR_IPC_SEND_BAD_SIZE_E": 122,
+      "CORE_INFRA_ERROR_IPC_RECIEVE_MESSAGE_ILLEGAL_SEQ_COUNTER_MISMATCH_E": 123,
+      "CORE_INFRA_ERROR_IPC_RECEIVE_MESSAGE_BAD_CHECKSUM_E": 124,
+      "CORE_INFRA_ERROR_IPC_BAD_QUEUE_ID_E": 125,
+      "CORE_INFRA_ERROR_IPC_SANITY_E": 126,
+      "CORE_INFRA_ERROR_IPC_MALLOC_ZERO_SIZE_ALLOC_E": 127,
+      "CORE_INFRA_ERROR_IPC_MALLOC_NO_FREE_MEMORY_E": 128,
+      "CORE_INFRA_ERROR_IPC_SEND_DATA_TRANSACTION_COMPLETE_ID_MISMATCH_E": 129,
+      "CORE_INFRA_ERROR_IPC_PEER_SYNC_E": 130,
+      "CORE_INFRA_ERROR_IPC_INIT_BAD_PARAMETERS_E": 131,
+      "CORE_INFRA_ERROR_IPC_BAD_POINTER_E": 132,
+      "CORE_INFRA_ERROR_LIFO_BAD_PARAMETER_E": 133,
+      "CORE_INFRA_ERROR_LIFO_OVERFLOW_E": 134,
+      "CORE_INFRA_ERROR_LIFO_PUSH_WHEN_FULL_E": 135,
+      "CORE_INFRA_ERROR_LIFO_POP_WHEN_EMPTY_E": 136,
+      "CORE_INFRA_CORTEX_FPU_ENABLE_STATE_MISMATCH_E": 137,
+      "CORE_INFRA_UTILS_HASH_BAD_PARAMETER_E": 138,
+      "CORE_INFRA_ERROR_STACK_CHECKER_FIRST_TIME_BASE_SP_TEST": 139,
+      "CORE_INFRA_ERROR_STACK_CHECKER_BAD_PARAMETER": 140,
+      "CORE_INFRA_ERROR_STACK_CHECKER_STACK_MIN_USAGE_E": 141,
+      "CORE_INFRA_ERRORS_NUM": 142
+    },
+    "Core80211CipherSuite_e": {
+      "CORE80211_CIPHER_SUITE_NONE": 0,
+      "CORE80211_CIPHER_SUITE_WEP": 1,
+      "CORE80211_CIPHER_SUITE_TKIP": 2,
+      "CORE80211_CIPHER_SUITE_AES": 3,
+      "CORE80211_CIPHER_SUITE_CCMP_256": 4,
+      "CORE80211_CIPHER_SUITE_SM4": 5,
+      "CORE80211_CIPHER_SUITE_GCMP_128": 6,
+      "CORE80211_CIPHER_SUITE_GCMP_256": 7,
+      "CORE80211_MAX_CIPHER_TYPE": 8
+    },
+    "CsTimerReason_e": {
+      "CsTimerReasonNone": 0,
+      "CsTimerReasonMinDwell": 1,
+      "CsTimerReasonProbeDelay": 2,
+      "CsTimerReasonGasTransaction": 3,
+      "CstimerReasonMax": 4
+    },
+    "HAL_LMAC_MA_index_e": {
+      "HAL_LMAC_MA_INDEX_0_E": 0,
+      "HAL_LMAC_MA_INDEX_1_E": 1,
+      "HAL_LMAC_MA_INDEX_2_E": 2,
+      "HAL_LMAC_MA_INDEX_3_E": 3,
+      "HAL_LMAC_MA_INDEX_4_E": 4,
+      "HAL_LMAC_MA_INDEX_5_E": 5,
+      "HAL_LMAC_MA_INDEX_6_E": 6,
+      "HAL_LMAC_MA_INDEX_7_E": 7,
+      "HAL_LMAC_MA_LLX_E": 8,
+      "HAL_LMAC_MA_INDEX_LMAC_QUEUE_PG_E": 9,
+      "HAL_LMAC_MA_SECONDARY_INDEX_0_ID_10_E": 10,
+      "HAL_LMAC_MA_SECONDARY_INDEX_1_ID_11_E": 11,
+      "HAL_LMAC_MA_SECONDARY_INDEX_2_ID_12_E": 12,
+      "HAL_LMAC_MA_SECONDARY_INDEX_3_ID_13_E": 13,
+      "HAL_LMAC_RX_TRIGGER_INDEX_0_ID_14_E": 14,
+      "HAL_LMAC_RX_TRIGGER_INDEX_1_ID_15_E": 15,
+      "HAL_LMAC_RX_TRIGGER_INDEX_2_ID_16_E": 16,
+      "HAL_LMAC_RX_TRIGGER_INDEX_3_ID_17_E": 17,
+      "HAL_LMAC_RX_TRIGGER_INDEX_4_ID_18_E": 18,
+      "HAL_LMAC_RX_TRIGGER_INDEX_5_ID_19_E": 19,
+      "HAL_LMAC_RX_TRIGGER_INDEX_6_ID_20_E": 20,
+      "HAL_LMAC_RX_TRIGGER_INDEX_7_ID_21_E": 21,
+      "HAL_LMAC_RX_TRIGGER_INDEX_8_ID_22_E": 22,
+      "HAL_LMAC_RX_TRIGGER_INDEX_9_ID_23_E": 23,
+      "HAL_LMAC_RX_TRIGGER_INDEX_10_ID_24_E": 24,
+      "HAL_LMAC_RX_TRIGGER_INDEX_11_ID_25_E": 25,
+      "HAL_LMAC_RX_TRIGGER_INDEX_12_ID_26_E": 26,
+      "HAL_LMAC_RX_TRIGGER_INDEX_13_ID_27_E": 27,
+      "HAL_LMAC_RX_TRIGGER_INDEX_14_ID_28_E": 28,
+      "HAL_LMAC_RX_TRIGGER_INDEX_15_ID_29_E": 29,
+      "HAL_LMAC_RX_TRIGGER_INDEX_16_ID_30_E": 30,
+      "HAL_LMAC_RX_TRIGGER_INDEX_17_ID_31_E": 31,
+      "HAL_LMAC_RX_TRIGGER_INDEX_18_ID_32_E": 32,
+      "HAL_LMAC_RX_TRIGGER_INDEX_19_ID_33_E": 33,
+      "HAL_LMAC_RX_TRIGGER_INDEX_20_ID_34_E": 34,
+      "HAL_LMAC_RX_TRIGGER_INDEX_21_ID_35_E": 35,
+      "HAL_LMAC_RX_TRIGGER_INDEX_22_ID_36_E": 36,
+      "HAL_LMAC_RX_TRIGGER_INDEX_23_ID_37_E": 37,
+      "HAL_LMAC_RX_TRIGGER_INDEX_24_ID_38_E": 38,
+      "HAL_LMAC_RX_TRIGGER_INDEX_25_ID_39_E": 39,
+      "HAL_LMAC_RX_TRIGGER_INDEX_26_ID_40_E": 40,
+      "HAL_LMAC_RX_TRIGGER_INDEX_27_ID_41_E": 41,
+      "HAL_LMAC_RX_TRIGGER_INDEX_28_ID_42_E": 42,
+      "HAL_LMAC_RX_TRIGGER_INDEX_29_ID_43_E": 43,
+      "HAL_LMAC_RX_TRIGGER_INDEX_30_ID_44_E": 44,
+      "HAL_LMAC_RX_TRIGGER_INDEX_31_ID_45_E": 45,
+      "HAL_LMAC_MA_INDEX_INVALID_E": 46,
+      "HAL_LMAC_MA_INDEX_UNALLOCATED": 63
+    },
+    "HAL_WINDOW_HANDLER_win_move_reason_e": {
+      "HAL_WINDOW_HANDLER_WIN_MOVE_REASON_EXCHANGE_E": 0,
+      "HAL_WINDOW_HANDLER_WIN_MOVE_REASON_UNEXPECTED_E": 1,
+      "HAL_WINDOW_HANDLER_WIN_MOVE_REASON_EXPIRY_E": 2,
+      "HAL_WINDOW_HANDLER_WIN_MOVE_REASON_SW_UPDATE_E": 3,
+      "HAL_WINDOW_HANDLER_WIN_MOVE_REASON_IBA_FLUSH_DONE_E": 4,
+      "HAL_WINDOW_HANDLER_WIN_MOVE_REASON_TDQ_FLUSH_E": 5,
+      "HAL_WINDOW_HANDLER_WIN_MOVE_REASON_TDQ_CLEAR_E": 6,
+      "HAL_WINDOW_HANDLER_WIN_MOVE_REASON_TR_DRAIN_E": 7,
+      "HAL_WINDOW_HANDLER_WIN_MOVE_REASON_INTERNAL_LMAC_E": 8,
+      "HAL_WINDOW_HANDLER_WIN_MOVE_REASONS_NUM": 9
+    },
+    "HostPowerModes_e": {
+      "HOST_POWER_MODE_SLEEP_REQUEST": 0,
+      "HOST_POWER_MODE_AWAKE_REQUEST": 1,
+      "HOST_POWER_MODE_AP_D3TAG_REQUEST": 2,
+      "HOST_POWER_MODE_AOP_D3TAG_REQUEST": 3,
+      "HOST_POWER_MODE_MAX": 4
+    },
+    "PACKET_HANDLER_program_id_e": {
+      "PACKET_HANDLER_PROGRAM_0_E": 0,
+      "PACKET_HANDLER_PROGRAM_1_E": 1,
+      "PACKET_HANDLER_PROGRAM_2_E": 2,
+      "PACKET_HANDLER_PROGRAM_3_E": 3,
+      "PACKET_HANDLER_NUM_PROGRAMS": 4
+    },
+    "PACKET_HANDLER_program_status_e": {
+      "PACKET_HANDLER_PROGRAM_COMPLETE_E": 0,
+      "PACKET_HANDLER_PROGRAM_IN_PROGRESS_E": 1
+    },
+    "PHY_DEFS_band_e": {
+      "BAND_2G_E": 0,
+      "BAND_5G_E": 1,
+      "BAND_6G_E": 2,
+      "BAND_NUMS_E": 3,
+      "BAND_UNINITIALIZED_E": 255
+    },
+    "PHY_DEFS_band_edge_e": {
+      "BAND_EDGE_INVALID_E": 0,
+      "BAND_EDGE_MIDDLE_E": 1,
+      "BAND_EDGE_LEFT_E": 2,
+      "BAND_EDGE_RIGHT_E": 3,
+      "BAND_EDGE_DUAL_E": 4,
+      "BAND_EDGE_DISABLE_E": 5
+    },
+    "PHY_DEFS_primary_bandwidth_e": {
+      "PRIMARY_BANDWIDTH_CHANNEL_20_PRIMARY_E": 0,
+      "PRIMARY_BANDWIDTH_CHANNEL_40_PRIMARY_0_E": 1,
+      "PRIMARY_BANDWIDTH_CHANNEL_40_PRIMARY_1_E": 2,
+      "PRIMARY_BANDWIDTH_CHANNEL_80_PRIMARY_0_E": 3,
+      "PRIMARY_BANDWIDTH_CHANNEL_80_PRIMARY_1_E": 4,
+      "PRIMARY_BANDWIDTH_CHANNEL_80_PRIMARY_2_E": 5,
+      "PRIMARY_BANDWIDTH_CHANNEL_80_PRIMARY_3_E": 6,
+      "PRIMARY_BANDWIDTH_CHANNEL_160_PRIMARY_0_E": 7,
+      "PRIMARY_BANDWIDTH_CHANNEL_160_PRIMARY_1_E": 8,
+      "PRIMARY_BANDWIDTH_CHANNEL_160_PRIMARY_2_E": 9,
+      "PRIMARY_BANDWIDTH_CHANNEL_160_PRIMARY_3_E": 10,
+      "PRIMARY_BANDWIDTH_CHANNEL_160_PRIMARY_4_E": 11,
+      "PRIMARY_BANDWIDTH_CHANNEL_160_PRIMARY_5_E": 12,
+      "PRIMARY_BANDWIDTH_CHANNEL_160_PRIMARY_6_E": 13,
+      "PRIMARY_BANDWIDTH_CHANNEL_160_PRIMARY_7_E": 14,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_0_E": 15,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_1_E": 16,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_2_E": 17,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_3_E": 18,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_4_E": 19,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_5_E": 20,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_6_E": 21,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_7_E": 22,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_8_E": 23,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_9_E": 24,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_10_E": 25,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_11_E": 26,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_12_E": 27,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_13_E": 28,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_14_E": 29,
+      "PRIMARY_BANDWIDTH_CHANNEL_320_PRIMARY_15_E": 30,
+      "PRIMARY_BANDWIDTH_CHANNELS_NUM": 31
+    },
+    "PMGR_DRV_power_gate_step_e": {
+      "POWER_GATE_STEP_0_E": 0,
+      "POWER_GATE_STEP_1_E": 1,
+      "POWER_GATE_STEP_2_E": 2,
+      "POWER_GATE_STEP_3_E": 3,
+      "POWER_GATE_NUM_STEPS": 4
+    },
+    "PREALLOC_FgpsEngineId_e": {
+      "PREALLOC_MGMT_MLME_1": 0,
+      "PREALLOC_MGMT_MLME_2": 1,
+      "PREALLOC_MGMT_BA_0": 2,
+      "PREALLOC_MGMT_BA_1": 3,
+      "PREALLOC_MGMT_BA_2": 4,
+      "PREALLOC_MGMT_BA_3": 5,
+      "PREALLOC_MGMT_SUPPLICANT_1": 6,
+      "PREALLOC_MGMT_SUPPLICANT_2": 7,
+      "PREALLOC_MGMT_CM": 8,
+      "PREALLOC_MGMT_CM_2": 9,
+      "PREALLOC_MGMT_11K": 10,
+      "PREALLOC_BEACON_REPORT_11K": 11,
+      "PREALLOC_MGMT_KEEP_ALIVE": 12,
+      "PREALLOC_MGMT_ARP_FILTER": 13,
+      "PREALLOC_MGMT_CM_DMS": 14,
+      "PREALLOC_OOS_PROBE_REQUEST": 15,
+      "PREALLOC_SCAN_PROBE_REQ_FIRST": 16,
+      "PREALLOC_SCAN_PROBE_REQ_LAST": 17,
+      "PREALLOC_SAP_CM": 18,
+      "PREALLOC_AP_CONNECTION_FIRST": 19,
+      "PREALLOC_AP_CONNECTION_LAST": 22,
+      "PREALLOC_AP_PEER_FIRST": 23,
+      "PREALLOC_AP_PEER_LAST": 27,
+      "PREALLOC_AWDL_PSF": 28,
+      "PREALLOC_AWDL_PSF_5G": 29,
+      "PREALLOC_AWDL_MIF": 30,
+      "PREALLOC_AWDL_UMIF": 31,
+      "PREALLOC_AWDL_FTM": 32,
+      "PREALLOC_NAN_DSCV": 33,
+      "PREALLOC_NAN_SYNC": 34,
+      "PREALLOC_NAN_SCHED": 35,
+      "PREALLOC_NAN_SDF": 36,
+      "PREALLOC_NAN_NDP_ACC_DSCV": 37,
+      "PREALLOC_NAN_NDP_0": 38,
+      "PREALLOC_NAN_NDP_x": 41,
+      "PREALLOC_NAN_NDP_TERM": 42,
+      "PREALLOC_NAN_NDP_RESP_REJ": 43,
+      "PREALLOC_NAN_OOB_0": 44,
+      "PREALLOC_NAN_OOB_x": 59,
+      "PREALLOC_NAN_NDP_LAST": 60,
+      "PREALLOC_NAN_PASN_0": 61,
+      "PREALLOC_NAN_PASN_x": 63,
+      "PREALLOC_NAN_SU_RESP": 64,
+      "PREALLOC_MGMT_HE_ASR": 65,
+      "PREALLOC_MGMT_OMI": 66,
+      "PREALLOC_FGPS_ENGINE_ID_LAST": 67
+    },
+    "ProximaHybridBtcoexMode": {
+      "HybridBtCoexModeTdd": 0,
+      "HybridBtCoexModeIpadMbaHybrid": 1,
+      "HybridBtCoexModeMbpParallel": 2,
+      "HybridBtCoexModeMbpHybrid": 3,
+      "HybridBtCoexModeDPC": 4
+    },
+    "RATE_FALLBACK_phase_e": {
+      "RATE_FALLBACK_PHASE_CURIOSITY_E": 0,
+      "RATE_FALLBACK_PHASE_NON_CURIOSITY_E": 1,
+      "RATE_FALLBACK_PHASE_2_E": 2,
+      "RATE_FALLBACK_PHASE_3_E": 3,
+      "RATE_FALLBACK_PHASE_4_E": 4,
+      "RATE_FALLBACK_PHASE_5_E": 5,
+      "RATE_FALLBACK_PHASE_6_E": 6,
+      "RATE_FALLBACK_PHASE_7_E": 7,
+      "RATE_FALLBACK_PHASES_NUM_E": 8
+    },
+    "RATE_FALLBACK_table_e": {
+      "RATE_FALLBACK_TABLE_REGULAR": 0,
+      "RATE_FALLBACK_TABLE_LOW_LAT": 1,
+      "RATE_FALLBACK_TABLES_NUM": 2
+    },
+    "RATE_bw_e": {
+      "RATE_BW_20_MHZ_E": 0,
+      "RATE_BW_40_MHZ_E": 1,
+      "RATE_BW_80_MHZ_E": 2,
+      "RATE_BW_160_MHZ_E": 3,
+      "RATE_BW_NUM": 4
+    },
+    "RATE_nss_e": {
+      "RATE_NSS_1_E": 0,
+      "RATE_NSS_2_E": 1,
+      "RATE_NSS_NUM": 2
+    },
+    "RATE_ordered_rate_e": {
+      "RATE_ORDERED_1MBPS_E": 0,
+      "RATE_ORDERED_DCM_DUP_E": 1,
+      "RATE_ORDERED_2MBPS_E": 2,
+      "RATE_ORDERED_DCM_E": 3,
+      "RATE_ORDERED_5_5MBPS_E": 4,
+      "RATE_ORDERED_OFDM6_MCS0_E": 5,
+      "RATE_ORDERED_OFDM9_E": 6,
+      "RATE_ORDERED_11MBPS_E": 7,
+      "RATE_ORDERED_OFDM12_MCS1_E": 8,
+      "RATE_ORDERED_OFDM18_MCS_2_E": 9,
+      "RATE_ORDERED_OFDM24_MCS_3_E": 10,
+      "RATE_ORDERED_OFDM36_MCS_4_E": 11,
+      "RATE_ORDERED_OFDM48_MCS_5_E": 12,
+      "RATE_ORDERED_OFDM54_MCS_6_E": 13,
+      "RATE_ORDERED_MCS_7_E": 14,
+      "RATE_ORDERED_MCS_8_E": 15,
+      "RATE_ORDERED_MCS_9_E": 16,
+      "RATE_ORDERED_MCS_10_E": 17,
+      "RATE_ORDERED_MCS_11_E": 18,
+      "RATE_ORDERED_INVALID_E": 19
+    },
+    "RATE_ppdu_type_e": {
+      "RATE_PPDU_11B_LONG_E": 0,
+      "RATE_PPDU_11B_SHORT_E": 1,
+      "RATE_PPDU_NON_HT_E": 2,
+      "RATE_PPDU_HT_E": 3,
+      "RATE_PPDU_VHT_E": 4,
+      "RATE_PPDU_HE_E": 5,
+      "RATE_PPDU_EHT_E": 6,
+      "RATE_PPDU_INVALID": 7
+    },
+    "RA_NewDiversityState_e": {
+      "ANT_DIV_EVALUATING_CURRENT_ANTENNA": 0,
+      "ANT_DIV_WAITING_FOR_STA_RESUME": 1,
+      "ANT_DIV_PROBING_OTHER_ANTENNA": 2,
+      "ANT_DIV_NEED_TO_MAKE_DECISION": 3
+    },
+    "RFA_SM_state_e": {
+      "WIFI_DECISION_WITH_BT_SUSPENDED_STATE": 0,
+      "WIFI_DECISION_WITH_BT_RESUMED_STATE": 1,
+      "WIFI_DECISION_WITH_BT_SUSPENDING_STATE": 2,
+      "BT_DECISION_WITH_BT_SUSPENDED_STATE": 3,
+      "BT_DECISION_WITH_BT_RESUMED_STATE": 4,
+      "BT_DECISION_WITH_BT_SUSPENDING_STATE": 5,
+      "BT_DECISION_WITH_BT_SUSPENDING_RFA_FALL_STATE": 6
+    },
+    "RXC_HostPowerStateTransition_e": {
+      "Converged2Active": 0,
+      "Converged2LowPower": 1,
+      "EnteringLowPower": 2,
+      "ExitingLowPower": 3,
+      "HostPowerTrans_Last": 4
+    },
+    "SCHED_Req_ActivityID_e": {
+      "SCHED_ACTIVITY_ID_NONE": 0,
+      "SCHED_ACTIVITY_ID_WLAN_BEACON_TX": 1,
+      "SCHED_ACTIVITY_ID_WLAN_HOME_PRESENCE": 2,
+      "SCHED_ACTIVITY_ID_WLAN_TRAFFIC_BANDWIDTH": 3,
+      "SCHED_ACTIVITY_ID_WLAN_TX_FW_GENERATED": 4,
+      "SCHED_ACTIVITY_ID_WLAN_BEACON_RX": 5,
+      "SCHED_ACTIVITY_ID_WLAN_MGMT_OUT_OF_SYNC": 6,
+      "SCHED_ACTIVITY_ID_WLAN_MGMT_MLME_SUPP": 7,
+      "SCHED_ACTIVITY_ID_WLAN_MGMT_ACTION_FRAME": 8,
+      "SCHED_ACTIVITY_ID_WLAN_MGMT_POWER_SAVE": 9,
+      "SCHED_ACTIVITY_ID_WLAN_BROADCAST_RX": 10,
+      "SCHED_ACTIVITY_ID_WLAN_BROADCAST_TX": 11,
+      "SCHED_ACTIVITY_ID_WLAN_PROTECTION_REQUEST": 12,
+      "SCHED_ACTIVITY_ID_WLAN_P2P_CONNECTION": 13,
+      "SCHED_ACTIVITY_ID_WLAN_AWDL_PSF_BEACON": 14,
+      "SCHED_ACTIVITY_ID_WLAN_AWDL_AW": 15,
+      "SCHED_ACTIVITY_ID_WLAN_TOF": 16,
+      "SCHED_ACTIVITY_ID_WLAN_NAN_DW": 17,
+      "SCHED_ACTIVITY_ID_BACKGROUND_WIFI": 18,
+      "SCHED_ACTIVITY_ID_WLAN_PS_MODE_CHANGE": 19,
+      "SCHED_ACTIVITY_ID_WLAN_LSM_PROB": 20,
+      "SCHED_ACTIVITY_ID_WLAN_LLV": 21,
+      "SCHED_ACTIVITY_ID_WLAN_LPSC_TRAFFIC_BANDWIDTH": 22,
+      "SCHED_ACTIVITY_ID_WLAN_MONITOR": 23,
+      "SCHED_ACTIVITY_ID_WLAN_PROC_SCAN_ACTIVE": 24,
+      "SCHED_ACTIVITY_ID_WLAN_PROC_SCAN_PASSIVE": 25,
+      "SCHED_ACTIVITY_ID_WLAN_PROC_CALIBRATION": 26,
+      "SCHED_ACTIVITY_ID_WLAN_PROC_CALIBRATION_5G": 27,
+      "SCHED_ACTIVITY_ID_WLAN_SCAN_CALIB_2G": 28,
+      "SCHED_ACTIVITY_ID_WLAN_SCAN_CALIB_5G": 29,
+      "SCHED_ACTIVITY_ID_WLAN_PROC_CHANNEL_SWITCH": 30,
+      "SCHED_ACTIVITY_ID_WLAN_PROC_CSI_DISCOVERY": 31,
+      "SCHED_ACTIVITY_ID_BT_ACL_A2DP": 32,
+      "SCHED_ACTIVITY_ID_BT_ACL_A2DP_LLM": 33,
+      "SCHED_ACTIVITY_ID_BT_FASTPATH_GENERAL": 34,
+      "SCHED_ACTIVITY_ID_BT_PAGE_INQUIRY": 35,
+      "SCHED_ACTIVITY_ID_BT_PAGE_SCAN_INQUIRY_SCAN": 36,
+      "SCHED_ACTIVITY_ID_BT_CALIBRATION": 37,
+      "SCHED_ACTIVITY_ID_BT_ACL_BEST_EFFORT": 38,
+      "SCHED_ACTIVITY_ID_BT_HP_ACL_BEST_EFFORT": 39,
+      "SCHED_ACTIVITY_ID_BT_ACL_CONNECTION_SETUP": 40,
+      "SCHED_ACTIVITY_ID_BT_LE_DIRECT_ADVERTISE": 41,
+      "SCHED_ACTIVITY_ID_BT_LE_INDIRECT_ADVERTISE": 42,
+      "SCHED_ACTIVITY_ID_BT_LE_SCANNER": 43,
+      "SCHED_ACTIVITY_ID_BT_LE_CONNECT": 44,
+      "SCHED_ACTIVITY_ID_BT_LE_SNIFF": 45,
+      "SCHED_ACTIVITY_ID_BT_CLASSIC_SNIFF": 46,
+      "SCHED_ACTIVITY_ID_BT_VOICE_PROTECTION": 47,
+      "SCHED_ACTIVITY_ID_BT_FASTPATH_VOICE": 48,
+      "SCHED_ACTIVITY_ID_BT_TEST_MODE": 49,
+      "SCHED_ACTIVITY_ID_BT_MSS": 50,
+      "SCHED_ACTIVITY_ID_BT_AFH": 51,
+      "SCHED_ACTIVITY_ID_BT_CS": 52,
+      "SCHED_ACTIVITY_ID_BACKGROUND_BT": 53,
+      "SCHED_ACTIVITY_ID_MWS_CELL_ON": 54,
+      "SCHED_ACTIVITY_ID_MWS_SCAN": 55,
+      "SCHED_ACTIVITY_ID_MWS_TIME_SHARING": 56,
+      "SCHED_ACTIVITY_ID_UWB_NB": 57,
+      "SCHED_ACTIVITY_ID_BT_THREAD_TX_DATA": 58,
+      "SCHED_ACTIVITY_ID_BT_THREAD_RX_DATA": 59,
+      "SCHED_ACTIVITY_ID_BT_THREAD_ANCHOR_TX": 60,
+      "SCHED_ACTIVITY_ID_BT_THREAD_ANCHOR_RX": 61,
+      "SCHED_ACTIVITY_ID_EXTERNAL_THREAD_RX": 62,
+      "SCHED_ACTIVITY_ID_EXTERNAL_THREAD_TX": 63,
+      "SCHED_ACTIVITY_ID_EXTERNAL_THREAD_BANDWIDTH": 64,
+      "SCHED_ACTIVITY_NUM_ACTIVITIES": 65
+    },
+    "SCHED_Req_Urgency_e": {
+      "SCHED_REQ_URGENCY_NORMAL": 0,
+      "SCHED_REQ_URGENCY_HIGH": 1,
+      "SCHED_REQ_URGENCY_URGENT": 2,
+      "SCHED_REQ_NUM_URGENCY": 3
+    },
+    "ScanControllerPhyTypeEnum": {
+      "ScanControllerPhyType_2_4": 0,
+      "ScanControllerPhyType_5_0": 1,
+      "ScanControllerPhyType_L_P": 2,
+      "ScanControllerPhyTypeAny": 3
+    },
+    "ScanMode_e": {
+      "ScanModePassive": 0,
+      "ScanModeActive": 1,
+      "ScanModeDirect": 2,
+      "ScanModeGAS": 3,
+      "ScanModeDMG": 4
+    },
+    "ScanNextAction": {
+      "ScanActionStart": 0,
+      "ScanActionContinue": 1,
+      "ScanActionRestart": 2,
+      "ScanActionMax": 3
+    },
+    "ScanSubType": {
+      "ScanPeriodicSubTypeRoaming": 0,
+      "ScanPeriodicSubTypeEpno": 1,
+      "ScanPeriodicSubTypePno": 2,
+      "ScanOneShotSubTypeUser": 3,
+      "ScanOneShotSubTypeRoaming": 4,
+      "ScanTypeMax": 5
+    },
+    "SeId_e": {
+      "ACW_SE_ID_STA_NETIF_1ST_FIRST": 0,
+      "ACW_SE_ID_LOW_POWER_SCAN_1ST": 3,
+      "ACW_SE_ID_STA_NETIF_2ST_FIRST": 4,
+      "ACW_SE_ID_LOW_POWER_SCAN_2ND": 7,
+      "ACW_SE_ID_AWDL_PSF_24": 8,
+      "ACW_SE_ID_AWDL_PSF_5": 9,
+      "ACW_SE_ID_AWDL_AW_24": 10,
+      "ACW_SE_ID_AWDL_AW_5": 11,
+      "ACW_SE_ID_NAN_DISCOVERY_BCN_LAST": 12,
+      "ACW_SE_ID_NAN_DW_24": 13,
+      "ACW_SE_ID_NAN_DW_5": 14,
+      "ACW_SE_ID_SCAN_FIRST": 15,
+      "ACW_SE_ID_SCAN_LAST": 19,
+      "ACW_SE_ID_SAP_FIRST": 20,
+      "ACW_SE_ID_SAP_LOW_POWER_SCAN": 21,
+      "ACW_SE_ID_WLAN_CALIBRATION_2_4G": 22,
+      "ACW_SE_ID_WLAN_CALIBRATION_5G": 23,
+      "ACW_SE_ID_WLAN_CALIBRATION_SCAN_PHY": 24,
+      "ACW_SE_ID_BT": 25,
+      "ACW_SE_ID_BT_5G": 26,
+      "ACW_SE_ID_BT_CALIBRATION": 27,
+      "ACW_SE_ID_BT_5G_CALIBRATION": 28,
+      "ACW_SE_ID_MWS": 29,
+      "ACW_SE_ID_UWB": 30,
+      "ACW_SE_ID_THREAD": 31,
+      "ACW_SE_ID_MAX": 32,
+      "ACW_SE_ID_INVALID": 255
+    },
+    "SgWaitForCompletionType_e": {
+      "SG_WAIT_FOR_COMPLETION_TYPE_DONT_WAIT": 0,
+      "SG_WAIT_FOR_COMPLETION_TYPE_RF_ACTIVE": 1,
+      "SG_WAIT_FOR_COMPLETION_TYPE_ENVELOPE": 2
+    },
+    "TCQ_HANDLER_tx_fw_type_e": {
+      "TCQ_HANDLER_FW_TYPE_DEFAULT_E": 0,
+      "TCQ_HANDLER_FW_TYPE_RTS_E": 1,
+      "TCQ_HANDLER_FW_TYPE_CF_END_E": 2,
+      "TCQ_HANDLER_FW_TYPE_PACKET_GENERATOR_E": 3,
+      "TCQ_HANDLER_FW_TYPE_BEACON_E": 4,
+      "TCQ_HANDLER_FW_TYPE_LEGACY_CIPHER_E": 5,
+      "TCQ_HANDLER_FW_TYPE_ADDBA_REQ_E": 6,
+      "TCQ_HANDLER_FW_TYPE_FRAGMENTATION_E": 7,
+      "TCQ_HANDLER_FW_TYPE_DELIMITERS_E": 8,
+      "TCQ_HANDLER_FW_TYPE_MU_RTS_E": 9,
+      "TCQ_HANDLER_FW_TYPE_CTS_2_SELF_E": 10,
+      "TCQ_HANDLER_FW_TYPE_GCR_BAR_E": 11,
+      "TCQ_HANDLER_FW_TYPE_INVALID": 12
+    },
+    "TCQ_HANDLER_tx_nav_type_e": {
+      "TCQ_HANDLER_TX_NAV_TYPE_LONG_NAV_E": 0,
+      "TCQ_HANDLER_TX_NAV_TYPE_PROTECTED_LONG_NAV_E": 1,
+      "TCQ_HANDLER_TX_NAV_TYPE_SHORT_NAV_E": 2,
+      "TCQ_HANDLER_TX_NAV_TYPE_PROTECTED_SHORT_NAV_E": 3,
+      "TCQ_HANDLER_TX_NAV_TYPE_NUM_E": 4
+    },
+    "TX_MGR_expected_response_e": {
+      "TX_MGR_EXPECTED_RESPONSE_NONE_E": 0,
+      "TX_MGR_EXPECTED_RESPONSE_ACK_E": 1,
+      "TX_MGR_EXPECTED_RESPONSE_CTS_E": 2,
+      "TX_MGR_EXPECTED_RESPONSES_NUM": 3
+    },
+    "UMAC_LMAC_API_aps_state_e": {
+      "APS_STATE_ACTIVE_E": 0,
+      "APS_STATE_POWER_SAVE_E": 1
+    },
+    "UMAC_LMAC_API_ppdu_type_e": {
+      "PPDU_TYPE_LEGACY_E": 0,
+      "PPDU_TYPE_HT_E": 1,
+      "PPDU_TYPE_VHT_E": 2,
+      "PPDU_TYPE_HE_E": 3,
+      "PPDU_TYPE_EHT_E": 4
+    },
+    "WATCHDOG_client_e": {
+      "WATCHDOG_CLIENT_LINK_REMOVE": 0,
+      "WATCHDOG_CLIENT_PPDU_SM": 1,
+      "WATCHDOG_CLIENT_RX_SM": 2,
+      "WATCHDOG_CLIENT_TX_ACS": 3,
+      "WATCHDOG_CLIENT_VTDQ_SM": 4,
+      "WATCHDOG_CLIENT_WIN_MOVE": 5,
+      "WATCHDOG_CLIENT_STORE": 6,
+      "WATCHDOG_CLIENT_RESTORE": 7,
+      "WATCHDOG_CLIENT_FORCE_SWITCH": 8,
+      "WATCHDOG_CLIENT_ROLE_CONFIG": 9,
+      "WATCHDOG_CLIENT_PREVENT_TX": 10,
+      "WATCHDOG_CLIENT_INHIBIT_IR": 11,
+      "WATCHDOG_CLIENT_INHIBIT_CTS": 12,
+      "WATCHDOG_CLIENT_EMLSR_TRANSITION": 13,
+      "WATCHDOG_CLIENT_CH_TUNE_LOCK": 14,
+      "WATCHDOG_NUM_OF_CLIENTS": 15
+    },
+    "WctBtProfile_e": {
+      "WctIpadBtLIGHTMbaBtLIGHTMbpBtLIGHTiPhoneTDD": 1,
+      "WctIpadBtHEAVYHFPMbaBtHEAVYMbpBtHEAVYiPhoneDPC": 2,
+      "WctIpadBtHEAVYA2DPMbaBtClamshellMbpBtClamshell": 3,
+      "WctIpadBtTDDPROFMbpBtHPP": 4,
+      "WctMbaBt5GMbpBt5G": 5,
+      "WctMbaBtOffOrNoWiFi2GMbpBtOffOrNoWiFi2G": 6,
+      "WctBtProfileNotInUse": 7,
+      "WctBtDEFAULT": 0,
+      "WctMacBookAirBtHeavyLea": 8
+    },
+    "WctDiversityOrientationEnum": {
+      "WctOrientationUnknown": 0,
+      "WctOrientationPortrait": 1,
+      "WctOrientationPortraitUpsideDown": 2,
+      "WctOrientationLandscapeLeft": 3,
+      "WctOrientationLandscapeRight": 4,
+      "WctOrientationFaceUp": 5,
+      "WctOrientationFaceDown": 6
+    },
+    "WctDiversitySmartCaseEnum": {
+      "WctSmartCaseOpen": 0,
+      "WctSmartCaseAmbiguousOpen": 1,
+      "WctSmartCaseClosed": 2,
+      "WctSmartCaseUnknown": 3
+    },
+    "acipcPeripheralSleepState_e": {
+      "ACTIVE": 0,
+      "PERIPHERAL_SLEEP_WAIT_1": 1,
+      "PERIPHERAL_SLEEP_WAIT_2": 2,
+      "PERIPHERAL_SLEEP_WAKE": 3,
+      "PERIPHERAL_SLEEP": 4,
+      "ACTIVE_WAIT": 5,
+      "PERIPHERAL_WAKE": 6,
+      "HOST_SLEEP_WAIT_1": 7,
+      "HOST_SLEEP_WAIT_2": 8,
+      "HOST_PERIPHERAL_SLEEP_WAIT_1": 9,
+      "HOST_PERIPHERAL_SLEEP_WAIT_2": 10,
+      "HOST_SLEEP": 11,
+      "WAKE_WAIT": 12
+    },
+    "acl_role_linkType_e": {
+      "ACL_ACW_LINK_TYPE_IDLE": 0,
+      "ACL_ACW_LINK_TYPE_SCO": 1,
+      "ACL_ACW_LINK_TYPE_FTP": 2,
+      "ACL_ACW_LINK_TYPE_A2DP": 3,
+      "ACL_ACW_LINK_TYPE_A2DP_LLM": 4,
+      "ACL_ACW_LINK_TYPE_COMPANION": 5
+    },
+    "aosType_e": {
+      "AOS_TYPE_A2DP": 0,
+      "AOS_TYPE_VOICE": 1,
+      "AOS_TYPE_NUMBER_OF_TYPES": 2
+    },
+    "coex_antDiv_stateCause_e": {
+      "COEX_ANT_DIV_CAUSE_NON": 0,
+      "COEX_ANT_DIV_CAUSE_GLOBAL": 1,
+      "COEX_ANT_DIV_CAUSE_BT": 2,
+      "COEX_ANT_DIV_CAUSE_RA": 3,
+      "COEX_ANT_DIV_CAUSE_DEBUG": 4,
+      "COEX_ANT_DIV_CAUSE_NUM": 5
+    },
+    "coex_antDiv_switchGpioIdx_e": {
+      "COEX_ANT_DIV_NO_SWITCH": 0,
+      "COEX_ANT_DIV_GPIO_IDX0": 1,
+      "COEX_ANT_DIV_GPIO_IDX1": 2,
+      "COEX_ANT_DIV_GPIO_IDX2": 3,
+      "COEX_ANT_DIV_GPIO_IDX3": 4,
+      "COEX_ANT_DIV_GPIO_IDX4": 5,
+      "COEX_ANT_DIV_NUM_GPIO_IDX": 6
+    },
+    "cpuPowerMode_e": {
+      "CPU_POWER_MODE_awake_with_both_lmacs": 0,
+      "CPU_POWER_MODE_awake_with_2G_lmac": 1,
+      "CPU_POWER_MODE_awake_with_5G_lmac": 2,
+      "CPU_POWER_MODE_awake_with_any_lmac": 3,
+      "CPU_POWER_MODE_allow_no_lmacs": 4,
+      "CPU_POWER_MODE_allow_power_down": 5,
+      "CPU_POWER_MODE_MAX": 6
+    },
+    "hostWakeReason_e": {
+      "HOST_WAKE_REASON_NOT_SET": 0,
+      "HOST_WAKE_REASON_RX_DATA": 1,
+      "HOST_WAKE_REASON_EVENT": 2,
+      "HOST_WAKE_REASON_LAST": 3
+    },
+    "initSequenceStage_e": {
+      "BEGIN_BOOT": 0,
+      "RESET_BSS_DONE": 1,
+      "UART_INIT_DONE": 2,
+      "MPU_INIT_DONE": 3,
+      "CALLBACKS_MGR_INIT_DONE": 4,
+      "LOGGER_INIT_DONE": 5,
+      "RTK_PLATFORM_INIT_DONE": 6,
+      "ISR_INIT_DONE": 7,
+      "GDMA_INIT_DONE": 8,
+      "IPC_MGR_INIT_DONE": 9,
+      "RTK_SCHEDULER_INIT_DONE": 10,
+      "INTERRUPTS_ENABLED": 11,
+      "THREADS_CREATED": 12,
+      "ACIPC_INIT_DONE": 13,
+      "HTM_INIT_DONE": 14,
+      "CORE2WORLD_BUFFX_INIT_DONE": 15,
+      "CORE80211_INIT_DONE": 16,
+      "CTM_INIT_DONE": 17,
+      "PHYOP_INIT_DONE": 18,
+      "PHYOP_ENABLE_DONE": 19,
+      "CAP_INIT_DONE": 20,
+      "TEST_CMD_INIT_DONE": 21,
+      "RELEASE_M3_PHYS_FROM_RESET_DONE": 22,
+      "TIMER_CB_INIT_DONE": 23,
+      "MPAPI_TUNE_SM_DONE": 24,
+      "LOWERED_MAIN_TASK_PRIORITY": 25,
+      "PHY_CPU_INIT_DONE_COMPLETE": 26,
+      "MEM_MGR_INIT_DONE": 27,
+      "RELEASE_AND_WAIT_FOR_ALL_CPUS_INIT_DONE": 28,
+      "ALL_CPUS_INIT_DONE_COMPLETE": 29,
+      "TX_ATTR_INIT_DONE": 30,
+      "CORE80211_ACTIVATION_DONE": 31,
+      "ACIPC_API_STARTED": 32,
+      "RPU_INIT_DONE": 33,
+      "RXC_INIT_DONE": 34,
+      "STATS_MGR_INIT_DONE": 35,
+      "BACKGROUND_TASK_TRIGGERED": 36,
+      "RATE_GLOBAL_CONFIG_SENT_TO_LMAC": 37,
+      "RUN_BG_TASK": 38,
+      "SECURITY_KEYS_DONE": 39,
+      "MSWP_INIT_DONE": 40,
+      "TRAFFIC_MONITOR_INIT_DONE": 41,
+      "UmacRanging_STOF_Init_DONE": 42,
+      "PROTIUM_WA_CPY_MEM_FROM_PRAM_TO_HOST_DONE": 43,
+      "UMAC_GDMA_INIT_DONE": 44,
+      "SOUNDING_MGR_INIT_DONE": 45,
+      "BFER_MGR_INIT_DONE": 46,
+      "UMAC_COEX_RTA_INIT_DONE": 47,
+      "RTK_PLATFORM_INIT_PHASE_2_DONE": 48,
+      "MSWP_HOST_ADDRESS_DONE": 49,
+      "SEND_MSI_DONE": 50,
+      "START_MAIN": 51,
+      "PS_INIT_DONE": 52,
+      "TUNABLES_INIT_DONE": 53,
+      "RF_PHY_REGISTERS_DONE": 54,
+      "TAS_INIT_DONE": 55,
+      "PMGR_INIT_DONE": 56,
+      "USER_MBI_USER_END_POINT_INIT_DONE": 57,
+      "COEX_BT_SIM_INIT_DONE": 58,
+      "COEX_INIT_DONE": 59,
+      "COEX_SPMI_INIT_DONE": 60,
+      "SET_PHY_VERSION": 61,
+      "AUTO_THROTTLING_INIT_DONE": 62,
+      "PATCHBAY_COPIED": 63,
+      "FEDX_INIT_DONE": 64,
+      "UMAC_CCPU_TRANSPORT_INIT_DONE": 65,
+      "UMAC_TIMER_INIT_DONE": 66,
+      "UMAC_EPs_HANDSHAKE_WITH_CCPU_INIT_DONE": 67,
+      "UMAC_HOST_SLEEP_MGR_INIT_DONE": 68,
+      "UMAC_CSI_DONE": 69,
+      "UMAC_INIT_DONE": 100
+    },
+    "sniffType_e": {
+      "SNIFF_TYPE_SNIFF": 0,
+      "SNIFF_TYPE_AOS": 1,
+      "SNIFF_TYPE_NUMBER_OF_TYPES": 2
+    },
+    "tasMgr_PowerOptimizedState_e": {
+      "TAS_MGR_POWER_STATE_NONE_E": 0,
+      "TAS_MGR_POWER_STATE_TARGET_E": 1,
+      "TAS_MGR_POWER_STATE_MIN_E": 2,
+      "TAS_MGR_POWER_STATE_E": 3
+    },
+    "te_PowerGateLmacStates": {
+      "PMGR_LMAC_PG": 0,
+      "PMGR_LMAC_AWAKE": 1,
+      "PMGR_LMAC_ACTIVE": 2,
+      "PMGR_LMAC_TRANSITION": 3,
+      "PMGR_LMAC_NUM_OF_STATES": 4
+    },
+    "te_PowerGateStates": {
+      "PMGR_STATE_INVALID": 0,
+      "PMGR_STATE_POWER_GATE": 1,
+      "PMGR_STATE_CLOCK_GATE": 2,
+      "PMGR_STATE_CAN_START_BOOT": 3,
+      "PMGR_STATE_BOTH_NOT_ACTIVE": 4,
+      "PMGR_STATE_SINGLE_AWAKE": 5,
+      "PMGR_STATE_SINGLE_ACTIVE": 6,
+      "PMGR_STATE_ACTIVE_2G_ONLY": 7,
+      "PMGR_STATE_ACTIVE_5G_ONLY": 8,
+      "PMGR_STATE_ACTIVE_ANY": 9,
+      "PMGR_STATE_ACTIVE_BOTH": 10,
+      "PMGR_STATE_ACTIVE_2G_TX_START": 11,
+      "PMGR_STATE_ACTIVE_5G_TX_START": 12,
+      "PMGR_STATE_HOST_NOT_ALLOWING_SLEEP": 13,
+      "PMGR_STATE_NUM_OF_STATES": 14
+    },
+    "te_PowerGateTnStates": {
+      "PMGR_T_STATE_POWER_GATE": 0,
+      "PMGR_T_STATE_BOTH_PG": 1,
+      "PMGR_T_STATE_BOTH_AWAKE": 2,
+      "PMGR_T_STATE_BOTH_ACTIVE": 3,
+      "PMGR_T_STATE_2G_PG_5G_AWAKE": 4,
+      "PMGR_T_STATE_2G_PG_5G_ACTIVE": 5,
+      "PMGR_T_STATE_2G_AWAKE_5G_PG": 6,
+      "PMGR_T_STATE_2G_AWAKE_5G_ACTIVE": 7,
+      "PMGR_T_STATE_2G_ACTIVE_5G_PG": 8,
+      "PMGR_T_STATE_2G_ACTIVE_5G_AWAKE": 9,
+      "PMGR_T_STATE_NUMBER_OF_T_STATES": 10
+    },
+    "umac_hw_wd_clients_e": {
+      "UMAC_HW_WD_CLIENT_COLD_BOOT": 0,
+      "UMAC_HW_WD_CLIENT_UMAC_BACKGROUND_TASK": 1,
+      "UMAC_HW_WD_CLIENT_EXCEPTION": 2,
+      "UMAC_HW_WD_CLIENT_ENTER_ELP": 3,
+      "UMAC_HW_WD_CLIENT_EXIT_ELP": 4,
+      "UMAC_HW_WD_MAX_CLIENTS": 5
+    },
+    "umac_sw_wd_clients_e": {
+      "UMAC_SW_WD_CLIENT_DTM_DISCONNECTING_CONVERGE": 0,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_0": 1,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_1": 2,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_2": 3,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_3": 4,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_4": 5,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_5": 6,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_6": 7,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_7": 8,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_8": 9,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_9": 10,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_10": 11,
+      "UMAC_SW_WD_CLIENT_PACKET_TO_CORE_WQE_11": 12,
+      "UMAC_SW_WD_CLIENT_FREE_TD_TO_RXCPU": 13,
+      "UMAC_SW_WD_CLIENT_TASKS_FIRST": 14,
+      "UMAC_SW_WD_CLIENT_TASKS_LAST": 29,
+      "UMAC_SW_WD_CLIENT_STATISTICS_MANAGER": 30,
+      "UMAC_SW_WD_CLIENT_WAIT_FOR_HOST_D0_D3_COMMAND_CONVERGENCE": 31,
+      "UMAC_SW_WD_CLIENT_WAIT_FOR_HOST_D0_WAKE_COMMAND_FROM_ACIPC": 32,
+      "UMAC_SW_WD_CLIENT_CAP_RF_CHAN_READY": 33,
+      "UMAC_SW_WD_CLIENT_WAIT_FOR_ALL_SUB_BANDS_READY": 34,
+      "UMAC_SW_WD_CLIENT_SCAN_TRANSPORT_DOWNLINK_DMA": 35,
+      "UMAC_SW_WD_CLIENT_AON_TRANSPORT_DOWNLINK_DMA": 36,
+      "UMAC_SW_WD_CLIENT_PMGR_WAIT_TRANSITION": 37,
+      "UMAC_SW_WD_CLIENT_COMMAND_TO_CORE_WQE_0": 38,
+      "UMAC_SW_WD_CLIENT_HOST_RX_MNG_RING_STUCK": 39,
+      "UMAC_SW_WD_CLIENT_DTM_WAIT_FOR_GET_STATS_TRANS_DONE": 40,
+      "UMAC_SW_WD_CLIENT_CSI_TRANSPORT_DOWNLINK_DMA": 41,
+      "UMAC_SW_WD_MAX_CLIENTS": 42
+    }
+  },
+  "rtkit_crashlog_sections": {
+    "WFcx": {
+      "signature_hex": "0x57466378",
+      "signature_str": "WFcx",
+      "description": "WiFi Coex State",
+      "struct_name": "wifi_coex_crashlog_info_t_1"
+    },
+    "WFdp": {
+      "signature_hex": "0x57466470",
+      "signature_str": "WFdp",
+      "description": "WiFi Date Path",
+      "struct_name": "wifi_data_path_crashlog_info_t_1"
+    },
+    "WFhs": {
+      "signature_hex": "0x57466873",
+      "signature_str": "WFhs",
+      "description": "WiFi Host Sleep",
+      "struct_name": "wifi_host_sleep_crashlog_data_t_1"
+    },
+    "WFra": {
+      "signature_hex": "0x57467261",
+      "signature_str": "WFra",
+      "description": "WiFi Rate Adaptation",
+      "struct_name": "wifi_ra_state_crashlog_info_t_1"
+    },
+    "WFsm": {
+      "signature_hex": "0x5746736d",
+      "signature_str": "WFsm",
+      "description": "WiFi Satistics Manager",
+      "struct_name": "wifi_stat_mgr_crashlog_info_t_1"
+    },
+    "WFss": {
+      "signature_hex": "0x57467373",
+      "signature_str": "WFss",
+      "description": "WiFi System State",
+      "struct_name": "wifi_system_state_crashlog_info_t_1"
+    },
+    "WFwd": {
+      "signature_hex": "0x57467764",
+      "signature_str": "WFwd",
+      "description": "WiFi WatchDog",
+      "struct_name": "wifi_wd_crashlog_info_t_1"
+    },
+    "Wawl": {
+      "signature_hex": "0x5761776c",
+      "signature_str": "Wawl",
+      "description": "WiFi Core80211 AWDL",
+      "struct_name": "CrashLog_AWDL_t"
+    },
+    "Wcap": {
+      "signature_hex": "0x57636170",
+      "signature_str": "Wcap",
+      "description": "WiFi CAP",
+      "struct_name": "wifi_cap_state_crashlog_info_t_1"
+    },
+    "Wcbi": {
+      "signature_hex": "0x57636269",
+      "signature_str": "Wcbi",
+      "description": "WiFi Coex BT",
+      "struct_name": "wifi_coex_bt_interface_crashlog_info_t_1"
+    },
+    "Wdms": {
+      "signature_hex": "0x57646d73",
+      "signature_str": "Wdms",
+      "description": "WiFi Core80211 DMRS",
+      "struct_name": "DMRS_CrashLogData_t"
+    },
+    "Wdtm": {
+      "signature_hex": "0x5764746d",
+      "signature_str": "Wdtm",
+      "description": "WiFi DTM",
+      "struct_name": "wifi_dtm_stats_crashlog_info_t_v1"
+    },
+    "Whyb": {
+      "signature_hex": "0x57687962",
+      "signature_str": "Whyb",
+      "description": "WiFi Coex Hybrid",
+      "struct_name": "wifi_hybrid_crashlog_info_t_1"
+    },
+    "Wnan": {
+      "signature_hex": "0x576e616e",
+      "signature_str": "Wnan",
+      "description": "WiFi Core80211 NAN",
+      "struct_name": "CrashLog_NAN_t"
+    },
+    "Wphs": {
+      "signature_hex": "0x57706873",
+      "signature_str": "Wphs",
+      "description": "WiFi PHY State",
+      "struct_name": "wifi_phy_state_crashlog_info_t_1"
+    },
+    "Wpmg": {
+      "signature_hex": "0x57706d67",
+      "signature_str": "Wpmg",
+      "description": "WiFi PMGR",
+      "struct_name": "wifi_pmgr_data_crashlog_info_t_1"
+    },
+    "Wsap": {
+      "signature_hex": "0x57736170",
+      "signature_str": "Wsap",
+      "description": "WiFi Core80211 SAP",
+      "struct_name": "CrashLog_SAP_t"
+    },
+    "Wscn": {
+      "signature_hex": "0x5773636e",
+      "signature_str": "Wscn",
+      "description": "WiFi Core80211 SCAN",
+      "struct_name": "CrashLog_SCAN_t"
+    },
+    "Wspm": {
+      "signature_hex": "0x5773706d",
+      "signature_str": "Wspm",
+      "description": "WiFi SPMI",
+      "struct_name": "wifi_spmi_crashlog_info_t_1"
+    },
+    "Wsta": {
+      "signature_hex": "0x57737461",
+      "signature_str": "Wsta",
+      "description": "WiFi Core80211 STATION",
+      "struct_name": "CrashLog_STA_t"
+    }
+  },
+  "crashlog_section_struct_mappings": {
+    "WFL2G": [
+      "CORE_INFRA_ERROR_dynamic_db_t",
+      "lmac_crashlog_info_t"
+    ],
+    "WFL5G": [
+      "CORE_INFRA_ERROR_dynamic_db_t",
+      "lmac_crashlog_info_t"
+    ],
+    "WFP2G": [
+      "PHY_CORE_INFRA_ERROR_dynamic_db_t"
+    ],
+    "WFP5G": [
+      "PHY_CORE_INFRA_ERROR_dynamic_db_t"
+    ],
+    "WFRX": [
+      "CORE_INFRA_ERROR_dynamic_db_t",
+      "rx_crashlog_info_t"
+    ],
+    "WFSC": [
+      "CORE_INFRA_ERROR_dynamic_db_t",
+      "scan_crashlog_info_t"
+    ],
+    "WFTX": [
+      "CORE_INFRA_ERROR_dynamic_db_t",
+      "tx_crashlog_info_t"
+    ]
+  }
+}
