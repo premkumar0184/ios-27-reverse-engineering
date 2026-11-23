@@ -1,0 +1,1558 @@
+{
+  "source_ramdisk": "artifacts/rootfs/141-09491-242_restoreramdisk.apfs",
+  "source_size_bytes": 247463936,
+  "source_sha256": "128c27ac96708d6ba4e3e239099f97b776c79a632fce16647a7c22d6e4239335",
+  "target_output_directory": "artifacts/centauri/driverkit",
+  "extracted_files": [
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriControl.framework/Info.plist",
+      "size_bytes": 717,
+      "sha256": "7b9c9a9a0519c0a0c491720c00766c6abfd2eae0e2e34f863d42f3f81f6d4d13",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.CentauriControl",
+        "bundle_executable": "CentauriControl"
+      }
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriControl.framework/CentauriControl",
+      "size_bytes": 1272768,
+      "sha256": "25cf3ed935dad5ea196303d9f53de83540009a5c587a955c62901f5af93eb64f",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_DYLIB",
+        "ncmds": 23,
+        "sizeofcmds": 2504,
+        "flags": "0x2110085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriManager.framework/Info.plist",
+      "size_bytes": 717,
+      "sha256": "f4cbba3a7a9a532d0e5227affe11da67ffdf2f48f8c285dc68f35387f76e9678",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.CentauriManager",
+        "bundle_executable": "CentauriManager"
+      }
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriManager.framework/CentauriManager",
+      "size_bytes": 102336,
+      "sha256": "1a458c7ac70f857fe812b8ea88b56c2e13b5d1ded8734c102518f47d2e9a9c5a",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_DYLIB",
+        "ncmds": 19,
+        "sizeofcmds": 1720,
+        "flags": "0x2100085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipCentauriHelperServices.framework/Info.plist",
+      "size_bytes": 751,
+      "sha256": "a826594a6c844c02019d11ac0f128fe3ad511ff2de8808af19bc85178a8408ea",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.airship.CentauriHelperServices",
+        "bundle_executable": "AirshipCentauriHelperServices"
+      }
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipCentauriHelperServices.framework/AirshipCentauriHelperServices",
+      "size_bytes": 317824,
+      "sha256": "170654de33b67942b053225590954a79acdee41d23b1fa0b924d577935c8550c",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_DYLIB",
+        "ncmds": 20,
+        "sizeofcmds": 2104,
+        "flags": "0x2110085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriBeta.framework/Info.plist",
+      "size_bytes": 709,
+      "sha256": "501a11a006fb96d1469b43b4631ede1103e521afa66483370b3cdcac8861166f",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.CentauriBeta",
+        "bundle_executable": "CentauriBeta"
+      }
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriBeta.framework/CentauriBeta",
+      "size_bytes": 450896,
+      "sha256": "bf7c12eb7e6d648c5cde297169720095caae8e7fda56da33940e6a94f84b490a",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_DYLIB",
+        "ncmds": 23,
+        "sizeofcmds": 2496,
+        "flags": "0x2110085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriAlpha.framework/CentauriAlpha",
+      "size_bytes": 459008,
+      "sha256": "a8504bde02da1410011cc0f19f8a2c02847aea3ab9604230c5d0708c07b9c6e0",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_DYLIB",
+        "ncmds": 23,
+        "sizeofcmds": 2504,
+        "flags": "0x2110085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriAlpha.framework/Info.plist",
+      "size_bytes": 711,
+      "sha256": "a531fa5e09aaa823d535c8d6a3b3ded3653099f5ce0a571da0ec5a7769f413d0",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.CentauriAlpha",
+        "bundle_executable": "CentauriAlpha"
+      }
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriDebug.framework/Info.plist",
+      "size_bytes": 711,
+      "sha256": "2cc29fbed84813c4b5638080510e9e08c38a8aef2da85985128890ae00652404",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.CentauriDebug",
+        "bundle_executable": "CentauriDebug"
+      }
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriDebug.framework/CentauriDebug",
+      "size_bytes": 232240,
+      "sha256": "9830118dde88654af930e978261a7970364e6edf38196f20407e063abb3b103b",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_DYLIB",
+        "ncmds": 21,
+        "sizeofcmds": 2120,
+        "flags": "0x2100085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/t2026-CentauriBeta.plist",
+      "size_bytes": 17902,
+      "sha256": "b4b0736c3f2151b73d735d03fc1cfcfd1d52295954b6f9df7e0c464407766943",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x6d783f3c"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "auxiliary_contexts",
+          "chipset",
+          "device_info",
+          "doorbells",
+          "driver_ioservice_params",
+          "errata",
+          "exec_stages",
+          "interrupts",
+          "limits",
+          "main_ipc_stages",
+          "protocol",
+          "resources",
+          "role",
+          "transfer_rings",
+          "vendor"
+        ]
+      }
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/Info.plist",
+      "size_bytes": 725,
+      "sha256": "066cefdc79cbf8499a2944bec9d1aa56fcef1de856fbe9d535018d12c5f2a063",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.airship.DriverKitFramework",
+        "bundle_executable": "AirshipDK"
+      }
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/t2026-CentauriAlpha_AlphaPrimeFPGA.plist",
+      "size_bytes": 26884,
+      "sha256": "29bb66ba9a85c5220635b35091ce1497f760b85301250a033b8e6de6fd63c407",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x6d783f3c"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "chipset",
+          "completion_groups",
+          "completion_rings",
+          "device_info",
+          "doorbells",
+          "driver_ioservice_params",
+          "errata",
+          "exec_stages",
+          "interrupts",
+          "limits",
+          "main_ipc_stages",
+          "memory_regions",
+          "protocol",
+          "resources",
+          "role",
+          "transfer_rings",
+          "vendor"
+        ]
+      }
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/t2026-CentauriControl.plist",
+      "size_bytes": 22855,
+      "sha256": "a1af72dd9c95a82644a679d68606bfd120ce1ac9f15ba6296b26dde36f0ccd5e",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x6d783f3c"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "auxiliary_contexts",
+          "boot_ipc_stages",
+          "chipset",
+          "device_info",
+          "doorbells",
+          "driver_ioservice_params",
+          "errata",
+          "exec_stages",
+          "interrupts",
+          "limits",
+          "main_ipc_stages",
+          "protocol",
+          "resources",
+          "role",
+          "transfer_rings",
+          "vendor"
+        ]
+      }
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/AirshipDK",
+      "size_bytes": 1079776,
+      "sha256": "e2ebd4d9a6272e9aae2559c9daad1f4a1b8646847e96d7e69238e1f12fce1627",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_DYLIB",
+        "ncmds": 20,
+        "sizeofcmds": 2136,
+        "flags": "0x2110085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/t2026-CentauriAlpha.plist",
+      "size_bytes": 28058,
+      "sha256": "8a7c6c50b55e1b05154ff0f48b778de5149bf3da97935e528c10d0c7ce92f076",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x6d783f3c"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "chipset",
+          "completion_groups",
+          "completion_rings",
+          "device_info",
+          "doorbells",
+          "driver_ioservice_params",
+          "errata",
+          "exec_stages",
+          "interrupts",
+          "limits",
+          "main_ipc_stages",
+          "memory_regions",
+          "protocol",
+          "resources",
+          "role",
+          "transfer_rings",
+          "vendor"
+        ]
+      }
+    },
+    {
+      "relative_path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/t2026-CentauriBeta_BetaPrimeFPGA.plist",
+      "size_bytes": 17976,
+      "sha256": "efc28e9bcc681e73e026f9e1291df30a8d0d92a58440b0b47c187360ec61a79b",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x6d783f3c"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "chipset",
+          "device_info",
+          "doorbells",
+          "driver_ioservice_params",
+          "errata",
+          "exec_stages",
+          "interrupts",
+          "limits",
+          "main_ipc_stages",
+          "protocol",
+          "resources",
+          "role",
+          "transfer_rings",
+          "vendor"
+        ]
+      }
+    },
+    {
+      "relative_path": "System/Library/DriverExtensions/AppleCentauriAlpha.dext/Info.plist",
+      "size_bytes": 5868,
+      "sha256": "fdd2c3eaa1230a21110b166a6dd989bca87a661c5c83d7e8d274e86dfe29446c",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "CFBundleName",
+          "DTXcode",
+          "DTSDKName",
+          "OSMinimumDriverKitVersion",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "CFBundleVersion",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "CFBundlePackageType",
+          "CFBundleShortVersionString",
+          "CFBundleSupportedPlatforms",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleExecutable",
+          "DTCompiler",
+          "CFBundleIdentifier",
+          "IOKitPersonalities",
+          "DTPlatformVersion",
+          "DTXcodeBuild",
+          "CFBundleDisplayName",
+          "OSBundleLibraries",
+          "EnableCoreDumps",
+          "DTPlatformBuild",
+          "OSBundleUsageDescription"
+        ],
+        "bundle_identifier": "com.apple.driver.AppleCentauriAlpha",
+        "bundle_executable": "AppleCentauriAlpha",
+        "iokit_personalities": {
+          "CentauriAlphaCCPlugin": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CCPluginNubAlpha",
+            "IOMatchCategory": "CentauriAlphaCCPlugin",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          },
+          "CentauriAlpha": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOPCIDevice",
+            "IOMatchCategory": "com.apple.driver.AppleCentauriAlpha",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          },
+          "AirshipDriverAlpha": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriAlpha",
+            "CFBundleIdentifier": "com.apple.driver.AppleCentauriAlpha",
+            "IOMatchCategory": "AirshipDriverDK",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          },
+          "AppleWLANDriver": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKAlpha",
+            "CFBundleIdentifier": "com.apple.driver.AppleCentauriAlpha",
+            "IOMatchCategory": "AppleWLANDriver",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          },
+          "CentauriAlphaPCI": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriAlpha",
+            "IOMatchCategory": "CentauriSubsystemPCI",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          },
+          "CentauriDebugAlpha": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKAlpha",
+            "IOMatchCategory": "CentauriDebugAlpha",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          }
+        }
+      }
+    },
+    {
+      "relative_path": "System/Library/DriverExtensions/AppleCentauriAlpha.dext/AppleCentauriAlpha",
+      "size_bytes": 36560,
+      "sha256": "a9c6f0e62198e30e251f2ef31c4984bea8e8b815994864a1ffe4c90cbce2f228",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_EXECUTE",
+        "ncmds": 19,
+        "sizeofcmds": 1280,
+        "flags": "0x200085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/Library/DriverExtensions/AppleCentauriControl.dext/Info.plist",
+      "size_bytes": 3770,
+      "sha256": "514681c567525ea9f56879853bd18a6fd7f7191064e457748e5a03e63454307b",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "CFBundleName",
+          "DTXcode",
+          "DTSDKName",
+          "OSMinimumDriverKitVersion",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "CFBundleVersion",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "CFBundlePackageType",
+          "CFBundleShortVersionString",
+          "CFBundleSupportedPlatforms",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleExecutable",
+          "DTCompiler",
+          "CFBundleIdentifier",
+          "IOKitPersonalities",
+          "DTPlatformVersion",
+          "DTXcodeBuild",
+          "CFBundleDisplayName",
+          "EnableCoreDumps",
+          "DTPlatformBuild",
+          "OSBundleUsageDescription"
+        ],
+        "bundle_identifier": "com.apple.driver.AppleCentauriControl",
+        "bundle_executable": "AppleCentauriControl",
+        "iokit_personalities": {
+          "CentauriControlSystemEvents": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKControl",
+            "IOMatchCategory": "CentauriControlSystemEvents",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "CoProcBinaryLoggerControl": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKControl",
+            "IOMatchCategory": "CoProcBinaryLoggerControl",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "AirshipDriverControl": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriControl",
+            "CFBundleIdentifier": "com.apple.driver.AppleCentauriControl",
+            "IOMatchCategory": "AirshipDriverDK",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "CentauriControl": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOPCIDevice",
+            "IOMatchCategory": "com.apple.driver.AppleCentauriControl",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "CentauriDebugControl": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKControl",
+            "IOMatchCategory": "CentauriDebugControl",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "CentauriControlPCI": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriControl",
+            "IOMatchCategory": "CentauriSubsystemPCI",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "CentauriControlCCPlugin": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CCPluginNubControl",
+            "IOMatchCategory": "CentauriControlCCPlugin",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          }
+        }
+      }
+    },
+    {
+      "relative_path": "System/Library/DriverExtensions/AppleCentauriControl.dext/AppleCentauriControl",
+      "size_bytes": 36592,
+      "sha256": "5f9fcf21292c3feec5a1c95228cb2b6887c53768283ad286de506b891b421f47",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_EXECUTE",
+        "ncmds": 19,
+        "sizeofcmds": 1288,
+        "flags": "0x200085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/Library/DriverExtensions/AppleCentauriBeta.dext/Info.plist",
+      "size_bytes": 3223,
+      "sha256": "c2a92d6dc74fa42589c939a5b8b9610e623cfbe3138e09951e39d389cee6b2af",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "CFBundleName",
+          "DTXcode",
+          "DTSDKName",
+          "OSMinimumDriverKitVersion",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "CFBundleVersion",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "CFBundlePackageType",
+          "CFBundleShortVersionString",
+          "CFBundleSupportedPlatforms",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleExecutable",
+          "DTCompiler",
+          "CFBundleIdentifier",
+          "IOKitPersonalities",
+          "DTPlatformVersion",
+          "DTXcodeBuild",
+          "CFBundleDisplayName",
+          "EnableCoreDumps",
+          "DTPlatformBuild",
+          "OSBundleUsageDescription"
+        ],
+        "bundle_identifier": "com.apple.driver.AppleCentauriBeta",
+        "bundle_executable": "AppleCentauriBeta",
+        "iokit_personalities": {
+          "CentauriBeta": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOPCIDevice",
+            "IOMatchCategory": "com.apple.driver.AppleCentauriBeta",
+            "IOUserServerName": "com.apple.driver.AppleCentauriBeta"
+          },
+          "CentauriDebugBeta": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKBeta",
+            "IOMatchCategory": "CentauriDebugBeta",
+            "IOUserServerName": "com.apple.driver.AppleCentauriBeta"
+          },
+          "CentauriBetaPCI": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriBeta",
+            "IOMatchCategory": "CentauriSubsystemPCI",
+            "IOUserServerName": "com.apple.driver.AppleCentauriBeta"
+          },
+          "AirshipDriverBeta": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriBeta",
+            "CFBundleIdentifier": "com.apple.driver.AppleCentauriBeta",
+            "IOMatchCategory": "AirshipDriverDK",
+            "IOUserServerName": "com.apple.driver.AppleCentauriBeta"
+          },
+          "CentauriBetaCCPlugin": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CCPluginNubBeta",
+            "IOMatchCategory": "CentauriBetaCCPlugin",
+            "IOUserServerName": "com.apple.driver.AppleCentauriBeta"
+          }
+        }
+      }
+    },
+    {
+      "relative_path": "System/Library/DriverExtensions/AppleCentauriBeta.dext/AppleCentauriBeta",
+      "size_bytes": 36496,
+      "sha256": "bfc44a702320d64d2c58c9a8ec7c532b00f9913cd968f473177c78b1293a5185",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_EXECUTE",
+        "ncmds": 20,
+        "sizeofcmds": 1344,
+        "flags": "0x200085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/Library/PrivateFrameworks/CentauriController.framework/Info.plist",
+      "size_bytes": 697,
+      "sha256": "363bf3efd98f3d5ac469cf577431041c6f1079c43407fb9b991b63f76cccfc85",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "CFBundleName",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "MinimumOSVersion",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "UIDeviceFamily",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "DTSDKName"
+        ],
+        "bundle_identifier": "com.apple.CentauriController",
+        "bundle_executable": "CentauriController"
+      }
+    },
+    {
+      "relative_path": "System/Library/PrivateFrameworks/CentauriController.framework/CentauriController",
+      "size_bytes": 174944,
+      "sha256": "b330746e1a72e0575931d330340275a1fa24ca5f158c4490290f569c44b9f28d",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_DYLIB",
+        "ncmds": 22,
+        "sizeofcmds": 2384,
+        "flags": "0x2110085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/Library/PrivateFrameworks/Airship.framework/Info.plist",
+      "size_bytes": 733,
+      "sha256": "1d961e41559b87c5dbea51a4c307cc65636fffabb6752e234860d4e6def1f7b2",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "CFBundleName",
+          "DTXcode",
+          "DTSDKName",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "CFBundleVersion",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "CFBundlePackageType",
+          "CFBundleShortVersionString",
+          "CFBundleSupportedPlatforms",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleExecutable",
+          "DTCompiler",
+          "UIDeviceFamily",
+          "CFBundleIdentifier",
+          "MinimumOSVersion",
+          "DTPlatformVersion",
+          "DTXcodeBuild",
+          "DTPlatformBuild"
+        ],
+        "bundle_identifier": "com.apple.airship.UserspaceFramework",
+        "bundle_executable": "Airship"
+      }
+    },
+    {
+      "relative_path": "System/Library/PrivateFrameworks/Airship.framework/Airship",
+      "size_bytes": 968928,
+      "sha256": "d8d7034fca7bbca9c3918a85531b59f8987d0d2fcc39e7c05a37f8f408448128",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_DYLIB",
+        "ncmds": 21,
+        "sizeofcmds": 2272,
+        "flags": "0x2110085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "System/Library/PrivateFrameworks/AirshipCentauriHelper.framework/Info.plist",
+      "size_bytes": 754,
+      "sha256": "c5c74ceba5f29f202da2e3bbd0499bfb5c75c306aa0f56479bc71a8683b66eba",
+      "macho": {
+        "is_macho": false,
+        "magic_hex": "0x696c7062"
+      },
+      "plist": {
+        "is_plist": true,
+        "keys": [
+          "CFBundleName",
+          "DTXcode",
+          "DTSDKName",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "CFBundleVersion",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "CFBundlePackageType",
+          "CFBundleShortVersionString",
+          "CFBundleSupportedPlatforms",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleExecutable",
+          "DTCompiler",
+          "UIDeviceFamily",
+          "CFBundleIdentifier",
+          "MinimumOSVersion",
+          "DTPlatformVersion",
+          "DTXcodeBuild",
+          "DTPlatformBuild"
+        ],
+        "bundle_identifier": "com.apple.airship.CentauriHelperFramework",
+        "bundle_executable": "AirshipCentauriHelper"
+      }
+    },
+    {
+      "relative_path": "System/Library/PrivateFrameworks/AirshipCentauriHelper.framework/AirshipCentauriHelper",
+      "size_bytes": 186432,
+      "sha256": "52124574a93f9a32c1de677ee4a9705e9effd2b10fa7284dddc40f4aabaf6534",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_DYLIB",
+        "ncmds": 22,
+        "sizeofcmds": 2320,
+        "flags": "0x2110085"
+      },
+      "plist": {}
+    },
+    {
+      "relative_path": "usr/lib/updaters/libCentauriUpdater.dylib",
+      "size_bytes": 402256,
+      "sha256": "a69e14445c620006f60df41aad4c5ff72ed50fa7c9c6890c5a336563e7f55b6f",
+      "macho": {
+        "is_macho": true,
+        "cpu_architecture": "arm64e",
+        "cputype": 16777228,
+        "cpusubtype": 2147483650,
+        "filetype": "MH_DYLIB",
+        "ncmds": 31,
+        "sizeofcmds": 3544,
+        "flags": "0x2110085"
+      },
+      "plist": {}
+    }
+  ],
+  "dext_bundles": [
+    {
+      "name": "AppleCentauriAlpha.dext",
+      "path": "System/Library/DriverExtensions/AppleCentauriAlpha.dext",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "CFBundleName",
+          "DTXcode",
+          "DTSDKName",
+          "OSMinimumDriverKitVersion",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "CFBundleVersion",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "CFBundlePackageType",
+          "CFBundleShortVersionString",
+          "CFBundleSupportedPlatforms",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleExecutable",
+          "DTCompiler",
+          "CFBundleIdentifier",
+          "IOKitPersonalities",
+          "DTPlatformVersion",
+          "DTXcodeBuild",
+          "CFBundleDisplayName",
+          "OSBundleLibraries",
+          "EnableCoreDumps",
+          "DTPlatformBuild",
+          "OSBundleUsageDescription"
+        ],
+        "bundle_identifier": "com.apple.driver.AppleCentauriAlpha",
+        "bundle_executable": "AppleCentauriAlpha",
+        "iokit_personalities": {
+          "CentauriAlphaCCPlugin": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CCPluginNubAlpha",
+            "IOMatchCategory": "CentauriAlphaCCPlugin",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          },
+          "CentauriAlpha": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOPCIDevice",
+            "IOMatchCategory": "com.apple.driver.AppleCentauriAlpha",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          },
+          "AirshipDriverAlpha": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriAlpha",
+            "CFBundleIdentifier": "com.apple.driver.AppleCentauriAlpha",
+            "IOMatchCategory": "AirshipDriverDK",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          },
+          "AppleWLANDriver": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKAlpha",
+            "CFBundleIdentifier": "com.apple.driver.AppleCentauriAlpha",
+            "IOMatchCategory": "AppleWLANDriver",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          },
+          "CentauriAlphaPCI": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriAlpha",
+            "IOMatchCategory": "CentauriSubsystemPCI",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          },
+          "CentauriDebugAlpha": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKAlpha",
+            "IOMatchCategory": "CentauriDebugAlpha",
+            "IOUserServerName": "com.apple.driver.AppleCentauriAlpha"
+          }
+        }
+      }
+    },
+    {
+      "name": "AppleCentauriControl.dext",
+      "path": "System/Library/DriverExtensions/AppleCentauriControl.dext",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "CFBundleName",
+          "DTXcode",
+          "DTSDKName",
+          "OSMinimumDriverKitVersion",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "CFBundleVersion",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "CFBundlePackageType",
+          "CFBundleShortVersionString",
+          "CFBundleSupportedPlatforms",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleExecutable",
+          "DTCompiler",
+          "CFBundleIdentifier",
+          "IOKitPersonalities",
+          "DTPlatformVersion",
+          "DTXcodeBuild",
+          "CFBundleDisplayName",
+          "EnableCoreDumps",
+          "DTPlatformBuild",
+          "OSBundleUsageDescription"
+        ],
+        "bundle_identifier": "com.apple.driver.AppleCentauriControl",
+        "bundle_executable": "AppleCentauriControl",
+        "iokit_personalities": {
+          "CentauriControlSystemEvents": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKControl",
+            "IOMatchCategory": "CentauriControlSystemEvents",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "CoProcBinaryLoggerControl": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKControl",
+            "IOMatchCategory": "CoProcBinaryLoggerControl",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "AirshipDriverControl": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriControl",
+            "CFBundleIdentifier": "com.apple.driver.AppleCentauriControl",
+            "IOMatchCategory": "AirshipDriverDK",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "CentauriControl": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOPCIDevice",
+            "IOMatchCategory": "com.apple.driver.AppleCentauriControl",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "CentauriDebugControl": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKControl",
+            "IOMatchCategory": "CentauriDebugControl",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "CentauriControlPCI": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriControl",
+            "IOMatchCategory": "CentauriSubsystemPCI",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          },
+          "CentauriControlCCPlugin": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CCPluginNubControl",
+            "IOMatchCategory": "CentauriControlCCPlugin",
+            "IOUserServerName": "com.apple.driver.AppleCentauriControl"
+          }
+        }
+      }
+    },
+    {
+      "name": "AppleCentauriBeta.dext",
+      "path": "System/Library/DriverExtensions/AppleCentauriBeta.dext",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "CFBundleName",
+          "DTXcode",
+          "DTSDKName",
+          "OSMinimumDriverKitVersion",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "CFBundleVersion",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "CFBundlePackageType",
+          "CFBundleShortVersionString",
+          "CFBundleSupportedPlatforms",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleExecutable",
+          "DTCompiler",
+          "CFBundleIdentifier",
+          "IOKitPersonalities",
+          "DTPlatformVersion",
+          "DTXcodeBuild",
+          "CFBundleDisplayName",
+          "EnableCoreDumps",
+          "DTPlatformBuild",
+          "OSBundleUsageDescription"
+        ],
+        "bundle_identifier": "com.apple.driver.AppleCentauriBeta",
+        "bundle_executable": "AppleCentauriBeta",
+        "iokit_personalities": {
+          "CentauriBeta": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOPCIDevice",
+            "IOMatchCategory": "com.apple.driver.AppleCentauriBeta",
+            "IOUserServerName": "com.apple.driver.AppleCentauriBeta"
+          },
+          "CentauriDebugBeta": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "AirshipDriverDKBeta",
+            "IOMatchCategory": "CentauriDebugBeta",
+            "IOUserServerName": "com.apple.driver.AppleCentauriBeta"
+          },
+          "CentauriBetaPCI": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriBeta",
+            "IOMatchCategory": "CentauriSubsystemPCI",
+            "IOUserServerName": "com.apple.driver.AppleCentauriBeta"
+          },
+          "AirshipDriverBeta": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CentauriBeta",
+            "CFBundleIdentifier": "com.apple.driver.AppleCentauriBeta",
+            "IOMatchCategory": "AirshipDriverDK",
+            "IOUserServerName": "com.apple.driver.AppleCentauriBeta"
+          },
+          "CentauriBetaCCPlugin": {
+            "IOClass": "IOUserService",
+            "IOProviderClass": "IOUserService",
+            "IONameMatch": "CCPluginNubBeta",
+            "IOMatchCategory": "CentauriBetaCCPlugin",
+            "IOUserServerName": "com.apple.driver.AppleCentauriBeta"
+          }
+        }
+      }
+    }
+  ],
+  "framework_bundles": [
+    {
+      "name": "CentauriController.framework",
+      "path": "System/Library/PrivateFrameworks/CentauriController.framework",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "CFBundleName",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "MinimumOSVersion",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "UIDeviceFamily",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "DTSDKName"
+        ],
+        "bundle_identifier": "com.apple.CentauriController",
+        "bundle_executable": "CentauriController"
+      }
+    },
+    {
+      "name": "Airship.framework",
+      "path": "System/Library/PrivateFrameworks/Airship.framework",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "CFBundleName",
+          "DTXcode",
+          "DTSDKName",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "CFBundleVersion",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "CFBundlePackageType",
+          "CFBundleShortVersionString",
+          "CFBundleSupportedPlatforms",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleExecutable",
+          "DTCompiler",
+          "UIDeviceFamily",
+          "CFBundleIdentifier",
+          "MinimumOSVersion",
+          "DTPlatformVersion",
+          "DTXcodeBuild",
+          "DTPlatformBuild"
+        ],
+        "bundle_identifier": "com.apple.airship.UserspaceFramework",
+        "bundle_executable": "Airship"
+      }
+    },
+    {
+      "name": "AirshipCentauriHelper.framework",
+      "path": "System/Library/PrivateFrameworks/AirshipCentauriHelper.framework",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "CFBundleName",
+          "DTXcode",
+          "DTSDKName",
+          "DTSDKBuild",
+          "CFBundleDevelopmentRegion",
+          "CFBundleVersion",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "CFBundlePackageType",
+          "CFBundleShortVersionString",
+          "CFBundleSupportedPlatforms",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleExecutable",
+          "DTCompiler",
+          "UIDeviceFamily",
+          "CFBundleIdentifier",
+          "MinimumOSVersion",
+          "DTPlatformVersion",
+          "DTXcodeBuild",
+          "DTPlatformBuild"
+        ],
+        "bundle_identifier": "com.apple.airship.CentauriHelperFramework",
+        "bundle_executable": "AirshipCentauriHelper"
+      }
+    },
+    {
+      "name": "CentauriControl.framework",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriControl.framework",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.CentauriControl",
+        "bundle_executable": "CentauriControl"
+      }
+    },
+    {
+      "name": "CentauriManager.framework",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriManager.framework",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.CentauriManager",
+        "bundle_executable": "CentauriManager"
+      }
+    },
+    {
+      "name": "AirshipCentauriHelperServices.framework",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipCentauriHelperServices.framework",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.airship.CentauriHelperServices",
+        "bundle_executable": "AirshipCentauriHelperServices"
+      }
+    },
+    {
+      "name": "CentauriBeta.framework",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriBeta.framework",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.CentauriBeta",
+        "bundle_executable": "CentauriBeta"
+      }
+    },
+    {
+      "name": "CentauriAlpha.framework",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriAlpha.framework",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.CentauriAlpha",
+        "bundle_executable": "CentauriAlpha"
+      }
+    },
+    {
+      "name": "CentauriDebug.framework",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/CentauriDebug.framework",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.CentauriDebug",
+        "bundle_executable": "CentauriDebug"
+      }
+    },
+    {
+      "name": "AirshipDK.framework",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework",
+      "info": {
+        "is_plist": true,
+        "keys": [
+          "DTPlatformVersion",
+          "CFBundleIdentifier",
+          "DTCompiler",
+          "DTPlatformBuild",
+          "CFBundleInfoDictionaryVersion",
+          "CFBundleVersion",
+          "CFBundleExecutable",
+          "DTXcodeBuild",
+          "DTSDKName",
+          "CFBundleShortVersionString",
+          "DTXcode",
+          "CFBundleSupportedPlatforms",
+          "CFBundlePackageType",
+          "BuildMachineOSBuild",
+          "DTPlatformName",
+          "DTSDKBuild",
+          "OSMinimumDriverKitVersion",
+          "CFBundleDevelopmentRegion",
+          "CFBundleName"
+        ],
+        "bundle_identifier": "com.apple.driver.airship.DriverKitFramework",
+        "bundle_executable": "AirshipDK"
+      }
+    }
+  ],
+  "configuration_plists": [
+    {
+      "name": "t2026-CentauriBeta.plist",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/t2026-CentauriBeta.plist",
+      "size_bytes": 17902,
+      "sha256": "b4b0736c3f2151b73d735d03fc1cfcfd1d52295954b6f9df7e0c464407766943"
+    },
+    {
+      "name": "t2026-CentauriAlpha_AlphaPrimeFPGA.plist",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/t2026-CentauriAlpha_AlphaPrimeFPGA.plist",
+      "size_bytes": 26884,
+      "sha256": "29bb66ba9a85c5220635b35091ce1497f760b85301250a033b8e6de6fd63c407"
+    },
+    {
+      "name": "t2026-CentauriControl.plist",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/t2026-CentauriControl.plist",
+      "size_bytes": 22855,
+      "sha256": "a1af72dd9c95a82644a679d68606bfd120ce1ac9f15ba6296b26dde36f0ccd5e"
+    },
+    {
+      "name": "t2026-CentauriAlpha.plist",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/t2026-CentauriAlpha.plist",
+      "size_bytes": 28058,
+      "sha256": "8a7c6c50b55e1b05154ff0f48b778de5149bf3da97935e528c10d0c7ce92f076"
+    },
+    {
+      "name": "t2026-CentauriBeta_BetaPrimeFPGA.plist",
+      "path": "System/DriverKit/System/Library/PrivateFrameworks/AirshipDK.framework/t2026-CentauriBeta_BetaPrimeFPGA.plist",
+      "size_bytes": 17976,
+      "sha256": "efc28e9bcc681e73e026f9e1291df30a8d0d92a58440b0b47c187360ec61a79b"
+    }
+  ]
+}
