@@ -38,6 +38,7 @@ typedef struct AppleAICState {
 
 void aic_init(AppleAICState *s);
 void aic_set_irq(AppleAICState *s, uint32_t irq, int level);
+bool aic_has_pending_irq(const AppleAICState *s);
 uint32_t aic_get_pending_irq(AppleAICState *s);
 void aic_ack_irq(AppleAICState *s, uint32_t irq);
 

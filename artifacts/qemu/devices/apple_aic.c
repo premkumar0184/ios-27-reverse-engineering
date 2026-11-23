@@ -29,12 +29,17 @@ void aic_set_irq(AppleAICState *s, uint32_t irq, int level) {
     }
 
     /* Check if any unmasked interrupt is pending */
-    uint32_t pending_vector = aic_get_pending_irq(s);
-    if (pending_vector != 0) {
-        s->irq_asserted = true;
-    } else {
-        s->irq_asserted = false;
+    s->irq_asserted = aic_has_pending_irq(s);
+}
+
+bool aic_has_pending_irq(const AppleAICState *s) {
+    if (!s) return false;
+    for (uint32_t idx = 0; idx < 32; idx++) {
+        if ((s->pending[idx] & (~s->mask[idx])) != 0) {
+            return true;
+        }
     }
+    return false;
 }
 
 uint32_t aic_get_pending_irq(AppleAICState *s) {
@@ -59,9 +64,7 @@ void aic_ack_irq(AppleAICState *s, uint32_t irq) {
     s->pending[idx] &= ~bit;
     s->total_irqs_acked++;
 
-    if (aic_get_pending_irq(s) == 0) {
-        s->irq_asserted = false;
-    }
+    s->irq_asserted = aic_has_pending_irq(s);
 }
 
 uint32_t aic_read32(AppleAICState *s, uint64_t offset) {

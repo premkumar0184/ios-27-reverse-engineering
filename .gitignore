@@ -16,6 +16,10 @@ iPhone18,3_27.2_24B119_Restore/
 *.im4p
 *.car
 *.macho
+*.elf
+*.wav
+audio_direct_submit
+apple_a19_emulation_runner
 
 # Raw extracted filesystems and crypto dumps
 artifacts/crypto/

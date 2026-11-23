@@ -148,6 +148,7 @@ extern "C" {
 #define AIC_IRQ_SEP_INBOX                   304U    /* 0x0130: SEP Mailbox Inbox        */
 #define AIC_IRQ_SEP_OUTBOX                  305U    /* 0x0131: SEP Mailbox Outbox       */
 #define AIC_IRQ_SEP_DOORBELL                306U    /* 0x0132: SEP Doorbell             */
+#define AIC_IRQ_DART_SEP_FAULT              314U    /* 0x013a: DART-SEP Fault           */
 #endif
 
 #ifndef AIC_IRQ_AOP1_INBOX
@@ -183,6 +184,12 @@ extern "C" {
 #define AIC_IRQ_AGX_CORE1_INBOX             956U    /* 0x03bc: AGX RTBuddy 1 Inbox      */
 #define AIC_IRQ_AGX_CORE1_OUTBOX            957U    /* 0x03bd: AGX RTBuddy 1 Outbox     */
 #define AIC_IRQ_AGX_CORE1_DOORBELL          958U    /* 0x03be: AGX RTBuddy 1 Doorbell   */
+#endif
+
+#ifndef AIC_IRQ_DART_AVE_FAULT
+#define AIC_IRQ_DART_AVE_FAULT              917U    /* 0x0395: DART-AVE Fault           */
+#define AIC_IRQ_DART_DCP_FAULT              632U    /* 0x0278: DART-DCP Fault           */
+#define AIC_IRQ_DART_ANE_FAULT              800U    /* 0x0320: DART-ANE Fault           */
 #endif
 
 /* ========================================================================= */

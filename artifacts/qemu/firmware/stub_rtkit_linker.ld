@@ -35,6 +35,7 @@ SECTIONS
         _bss_start = .;
         *(.bss .bss.*)
         *(COMMON)
+        . = ALIGN(16);
         _bss_end = .;
     } > SRAM
 

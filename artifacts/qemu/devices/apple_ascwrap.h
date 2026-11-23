@@ -44,6 +44,11 @@ typedef struct AppleASCwrapState {
     /* Doorbell registers */
     uint32_t        doorbell_status;
 
+    /* 32-bit MMIO staging latches */
+    uint32_t        inbox_latched_hi;
+    uint32_t        outbox_latched_lo;
+    bool            outbox_lo_valid;
+
     /* Coprocessor hook / callback */
     void (*coproc_recv_cb)(void *opaque, uint16_t ep, uint64_t payload);
     void *coproc_opaque;

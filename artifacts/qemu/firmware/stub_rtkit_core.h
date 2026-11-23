@@ -32,6 +32,7 @@ extern "C" {
 #define RTK_EP0_MSG_HELLO_ACK               0x0002ULL
 #define RTK_EP0_MSG_EP_MAP                  0x0003ULL
 #define RTK_EP0_MSG_CONFIG                  0x0004ULL
+#define RTK_EP0_MSG_EP_MAP_HI               0x0005ULL
 
 /* Coprocessor IDs */
 #define RTK_COPROC_AOP2                     1U

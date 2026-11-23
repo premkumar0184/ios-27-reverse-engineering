@@ -87,6 +87,15 @@ bool dart_translate(AppleDARTState *s, uint32_t sid, uint64_t dva, uint64_t *out
     }
 
     AppleDARTStream *st = &s->streams[sid];
+    if (!st->enabled) {
+        s->fault_status = DART_FAULT_FLAG | 0x01U; /* Stream disabled fault */
+        s->fault_addr = dva;
+        s->fault_sid = sid;
+        s->total_faults++;
+        if (s->aic) aic_set_irq(s->aic, s->irq_fault, 1);
+        return false;
+    }
+
     for (uint32_t i = 0; i < st->num_mappings; i++) {
         AppleDARTMapEntry *e = &st->mappings[i];
         if (e->valid && dva >= e->dva_start && dva < (e->dva_start + e->size)) {

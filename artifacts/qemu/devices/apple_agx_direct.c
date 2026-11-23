@@ -68,11 +68,13 @@ void agx_direct_kick(AppleAGXState *s, uint16_t queue_id, uint32_t tail_offset, 
 
     s->total_kicks++;
     uint32_t target_index = (tail_offset / sizeof(struct agx_command_descriptor)) & AGX_RING_INDEX_MASK;
+    uint32_t commands_processed_in_kick = 0;
 
     if (s->ring_buffer) {
         while (s->current_read_index != target_index) {
             const struct agx_command_descriptor *desc = &s->ring_buffer->entries[s->current_read_index];
             agx_direct_process_descriptor(s, desc);
+            commands_processed_in_kick++;
 
             if (s->status_page) {
                 uint32_t stamp = desc->stamp_token.stamp.stamp_value;
@@ -80,6 +82,10 @@ void agx_direct_kick(AppleAGXState *s, uint16_t queue_id, uint32_t tail_offset, 
                     stamp = s->current_read_index + 1U;
                 }
                 s->status_page->completed_stamps[s->current_read_index] = stamp;
+                uint32_t q_idx = desc->stamp_token.stamp.queue_index;
+                if (q_idx < AGX_RING_CAPACITY_ENTRIES && q_idx != s->current_read_index) {
+                    s->status_page->completed_stamps[q_idx] = stamp;
+                }
             }
 
             s->current_read_index = (s->current_read_index + 1U) & AGX_RING_INDEX_MASK;
@@ -92,12 +98,14 @@ void agx_direct_kick(AppleAGXState *s, uint16_t queue_id, uint32_t tail_offset, 
         }
     }
 
-    /* Assert completion interrupt via AIC Vector 952 / 954 */
-    if (s->aic) {
-        aic_set_irq(s->aic, AIC_IRQ_AGX_CORE0_INBOX, 1);
-    }
-    if (s->ascwrap) {
-        ascwrap_coproc_ring_doorbell(s->ascwrap, 1U << 0);
+    /* Assert completion interrupt via AIC Vector 952 / 954 if work was processed */
+    if (commands_processed_in_kick > 0) {
+        if (s->aic) {
+            aic_set_irq(s->aic, AIC_IRQ_AGX_CORE0_INBOX, 1);
+        }
+        if (s->ascwrap) {
+            ascwrap_coproc_ring_doorbell(s->ascwrap, 1U << 0);
+        }
     }
 }
 

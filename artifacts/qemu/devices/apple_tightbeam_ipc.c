@@ -28,7 +28,8 @@ bool tightbeam_route_query(AppleTightbeamState *s,
         return false;
     }
 
-    if (query->disposition != TB_MESSAGE_DISPOSITION_QUERY) {
+    if (query->disposition != TB_MESSAGE_DISPOSITION_QUERY ||
+        (query->state_and_flags & 0xFF) != TB_MESSAGE_STATE_READY) {
         s->last_error = L4_ERROR_ARGUMENT_INVALID;
         return false;
     }

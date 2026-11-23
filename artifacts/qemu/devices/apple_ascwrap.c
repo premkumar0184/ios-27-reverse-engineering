@@ -34,13 +34,16 @@ uint32_t ascwrap_read32(AppleASCwrapState *s, uint64_t offset) {
         case ASCWRAP_REG_INBOX_CTRL:
             return s->inbox_ctrl | (s->inbox_count << 16);
 
-        case ASCWRAP_REG_INBOX_DATA:
+        case ASCWRAP_REG_INBOX_DATA: {
             /* Low 32 bits of 64-bit inbox data */
-            return (uint32_t)(ascwrap_read64(s, offset) & 0xFFFFFFFFULL);
+            uint64_t msg = ascwrap_read64(s, offset);
+            s->inbox_latched_hi = (uint32_t)((msg >> 32) & 0xFFFFFFFFULL);
+            return (uint32_t)(msg & 0xFFFFFFFFULL);
+        }
 
         case ASCWRAP_REG_INBOX_DATA + 4:
-            /* High 32 bits - normally read via read64 */
-            return 0;
+            /* High 32 bits (contains 16-bit Endpoint ID) */
+            return s->inbox_latched_hi;
 
         case ASCWRAP_REG_OUTBOX_CTRL:
             return s->outbox_ctrl | (s->outbox_count << 16);
@@ -72,9 +75,19 @@ void ascwrap_write32(AppleASCwrapState *s, uint64_t offset, uint32_t val) {
             break;
 
         case ASCWRAP_REG_OUTBOX_DATA:
-            /* 32-bit write to outbox */
-            ascwrap_write64(s, offset, (uint64_t)val);
+            /* Low 32 bits of outbox write - staged until high word written */
+            s->outbox_latched_lo = val;
+            s->outbox_lo_valid = true;
             break;
+
+        case ASCWRAP_REG_OUTBOX_DATA + 4: {
+            /* High 32 bits written - assemble 64-bit message and send */
+            uint64_t lo = s->outbox_lo_valid ? (uint64_t)s->outbox_latched_lo : 0ULL;
+            uint64_t full_msg = ((uint64_t)val << 32) | lo;
+            s->outbox_lo_valid = false;
+            ascwrap_write64(s, ASCWRAP_REG_OUTBOX_DATA, full_msg);
+            break;
+        }
 
         default:
             break;
@@ -144,8 +157,10 @@ void ascwrap_doorbell_write32(AppleASCwrapState *s, uint64_t offset, uint32_t va
         }
     } else if (offset == DOORBELL_REG_CLEAR) {
         s->doorbell_status &= ~val;
-        if (s->doorbell_status == 0 && s->aic) {
-            aic_set_irq(s->aic, s->irq_doorbell, 0);
+        if (s->doorbell_status == 0) {
+            if (s->aic) aic_set_irq(s->aic, s->irq_doorbell, 0);
+        } else {
+            if (s->aic) aic_set_irq(s->aic, s->irq_doorbell, 1);
         }
     }
 }

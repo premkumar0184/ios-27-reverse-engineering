@@ -47,16 +47,23 @@ bool silenus_process_cisp_packet(AppleSilenusState *s, const struct cisp_command
         /* 1. DART translation checks for sensor input and display/preview output */
         if (s->dart) {
             uint64_t raw_pa = 0;
-            dart_translate(s->dart, DART_ISP_SID_RAW_STREAM,
-                           pkt->payload.buffer_process.dva_luma, &raw_pa, DART_PERM_READ);
+            bool ok_raw = dart_translate(s->dart, DART_ISP_SID_RAW_STREAM,
+                                         pkt->payload.buffer_process.dva_luma, &raw_pa, DART_PERM_READ);
 
             uint64_t bni_pa = 0;
-            dart_translate(s->dart, DART_ISP_SID_BNI_PEARL,
-                           A19_SEP_TZ1S_BASE, &bni_pa, DART_PERM_WRITE);
+            bool ok_bni = dart_translate(s->dart, DART_ISP_SID_BNI_PEARL,
+                                         A19_SEP_TZ1S_BASE, &bni_pa, DART_PERM_WRITE);
 
             uint64_t preview_pa = 0;
-            dart_translate(s->dart, DART_ISP_SID_YUV_PREVIEW,
-                           pkt->payload.buffer_process.dva_chroma, &preview_pa, DART_PERM_WRITE);
+            bool ok_prev = dart_translate(s->dart, DART_ISP_SID_YUV_PREVIEW,
+                                          pkt->payload.buffer_process.dva_chroma, &preview_pa, DART_PERM_WRITE);
+
+            if (!ok_raw || !ok_bni || !ok_prev) {
+                if (s->aic) {
+                    aic_set_irq(s->aic, AIC_IRQ_ISP_DMA_ERROR, 1);
+                }
+                return false;
+            }
         }
 
         /* 2. Route BNI FaceID NIR data directly to SEP TZ1S */

@@ -71,6 +71,7 @@ bool prores_hw_encode_raw_frame(AppleProResHWState *s,
     s->total_frames_encoded++;
 
     /* 3. Bitstream Generation & Hardware CRC Calculation */
+    memset(output_bitstream, 0, (max_output_size < 256) ? max_output_size : 256);
     uint32_t *out_words = (uint32_t *)output_bitstream;
     out_words[0] = 0x7072386BU; /* 'pr8k' ProRes 8K RAW Magic */
     out_words[1] = header->id;

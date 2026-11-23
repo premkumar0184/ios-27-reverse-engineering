@@ -89,11 +89,20 @@ void rtkit_handle_msg(AppleRTKitState *rtk, uint16_t ep, uint64_t payload,
                 rtk->total_tx_msgs++;
             }
 
-            /* 2. Advertise active endpoint bitmask */
+            /* 2. Advertise active endpoint bitmask (low 32 bits: EPs 0..31) */
             uint64_t ep_map_payload = (RTK_EP0_MSG_EP_MAP << 32) | (rtk->active_endpoints_mask & 0xFFFFFFFFULL);
             if (tx_func) {
                 tx_func(opaque, RTK_EP_MGMT, ep_map_payload);
                 rtk->total_tx_msgs++;
+            }
+
+            /* 3. Advertise upper endpoint bitmask (high 32 bits: EPs 32..63) if non-zero */
+            if ((rtk->active_endpoints_mask >> 32) != 0) {
+                uint64_t ep_map_hi = (RTK_EP0_MSG_EP_MAP_HI << 32) | ((rtk->active_endpoints_mask >> 32) & 0xFFFFFFFFULL);
+                if (tx_func) {
+                    tx_func(opaque, RTK_EP_MGMT, ep_map_hi);
+                    rtk->total_tx_msgs++;
+                }
             }
 
             rtk->state = RTK_STATE_RUNNING;
