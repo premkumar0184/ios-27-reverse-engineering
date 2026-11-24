@@ -1,0 +1,191 @@
+{
+  "metadata": {
+    "title": "SpringBoard Home Gesture Recognition & Arbitration State Machine",
+    "version": "1.0.0",
+    "target": "iOS 27.2 A19 Pro (iPhone 18,3 - v57ap)"
+  },
+  "physical_thresholds": {
+    "display_geometry": {
+      "screen_width_pt": 402.0,
+      "screen_height_pt": 874.0,
+      "display_corner_radius_pt": 55.0
+    },
+    "bottom_exclusion_zone": {
+      "exclusion_depth_pt": 16.0,
+      "activation_y_min_pt": 858.0,
+      "activation_y_max_pt": 874.0,
+      "description": "Touches initiating with y >= 858.0pt are captured by the home gesture recognizer before passing to application content."
+    },
+    "touch_slop_gate": {
+      "vertical_displacement_slop_pt": 8.0,
+      "description": "Gesture recognizer remains in POSSIBLE state until upward vertical travel exceeds 8.0pt."
+    },
+    "dwell_for_switcher_gate": {
+      "stationary_dwell_time_ms": 180.0,
+      "max_velocity_threshold_pt_s": 50.0,
+      "description": "If user holds finger stationary (dwell >= 180ms and velocity < 50pt/s), gesture transitions to App Switcher."
+    },
+    "commit_to_home_velocity_gate": {
+      "flick_upward_velocity_threshold_pt_s": -500.0,
+      "displacement_commit_ratio": 0.35,
+      "displacement_commit_pt": 305.9,
+      "description": "Upward flick velocity < -500pt/s or displacement > 305.9pt commits to Home Screen."
+    }
+  },
+  "participant_priority_arbitration": {
+    "description": "Priority hierarchy governing ownership of the bottom home affordance and gesture preemption",
+    "priority_tiers": [
+      {
+        "tier": "LOCKSCREEN_COVERSHEET",
+        "priority_level": 100,
+        "representative_class": "CSCoverSheetHomeGestureParticipant",
+        "preemption_behavior": "Absolute preemption; intercepts all edge swipes when device is locked or CoverSheet is presenting."
+      },
+      {
+        "tier": "SYSTEM_APERTURE_ASSISTANT",
+        "priority_level": 80,
+        "representative_class": "SBAssistantIslandHomeGestureAssertion",
+        "preemption_behavior": "Preempts application gestures while Siri or dynamic island expanded modal is active."
+      },
+      {
+        "tier": "SYSTEM_PRESENTABLE_MODAL",
+        "priority_level": 50,
+        "representative_class": "SBUIPresentableHomeGestureParticipant",
+        "preemption_behavior": "Used by Picture-in-Picture, Control Center overlays, and Quick Note platters."
+      },
+      {
+        "tier": "FLOATING_DOCK_GRABBER",
+        "priority_level": 20,
+        "representative_class": "SBFloatingDockController",
+        "preemption_behavior": "Used on iPadOS/Stage Manager for dock invocation gestures."
+      },
+      {
+        "tier": "RUNNING_APPLICATION",
+        "priority_level": 10,
+        "representative_class": "SBApplication",
+        "preemption_behavior": "Standard foreground userland application. Can assert edge protection (requires double swipe)."
+      },
+      {
+        "tier": "HOME_SCREEN_CANVAS",
+        "priority_level": 0,
+        "representative_class": "SBHomeScreen",
+        "preemption_behavior": "Baseline fallback state."
+      }
+    ]
+  },
+  "fsm_states": [
+    {
+      "state_id": "STATE_POSSIBLE",
+      "name": "Possible (Monitoring Edge)",
+      "description": "Touch detected inside the bottom 16pt exclusion zone. Awaiting vertical travel."
+    },
+    {
+      "state_id": "STATE_BEGAN",
+      "name": "Began (Slop Qualified)",
+      "description": "Upward travel exceeded 8.0pt slop. SpringBoard captures touch exclusively; application touch cancelled."
+    },
+    {
+      "state_id": "STATE_TRACKING_HOME",
+      "name": "Tracking Home Swipe",
+      "description": "Active upward dragging. App card scales down, corner radius morphs from 0pt to 55pt."
+    },
+    {
+      "state_id": "STATE_PAUSED_IN_SWITCHER",
+      "name": "Paused In Switcher",
+      "description": "Finger dwell duration >= 180ms with velocity < 50pt/s. Rigid haptic tick emitted; deck cards materialize."
+    },
+    {
+      "state_id": "STATE_TRACKING_SWITCHER",
+      "name": "Tracking Switcher Deck",
+      "description": "User dragging across the multitasking deck. Lateral finger motion tracks card stack scrolling."
+    },
+    {
+      "state_id": "STATE_ARC_SWIPE",
+      "name": "Arc Swipe (Quick Switch)",
+      "description": "Trajectory forms low horizontal arc. Directly switches between adjacent foreground applications."
+    },
+    {
+      "state_id": "STATE_COMMITTED_HOME",
+      "name": "Committed to Home",
+      "description": "Release satisfies Home qualification. Velocity projection calculates flight to SBIconView."
+    },
+    {
+      "state_id": "STATE_COMMITTED_SWITCHER",
+      "name": "Committed to Switcher",
+      "description": "Release satisfies Switcher qualification. App card docks into position 0 of the 3D deck stack."
+    },
+    {
+      "state_id": "STATE_CANCELLED_RETURN",
+      "name": "Cancelled (Return to App)",
+      "description": "Gesture aborted or dragged downward back into starting window. Snaps back to fullscreen."
+    }
+  ],
+  "fsm_transitions": [
+    {
+      "from_state": "STATE_POSSIBLE",
+      "to_state": "STATE_BEGAN",
+      "trigger": "TOUCH_MOVED",
+      "guard": "delta_y >= 8.0 && y_start >= 858.0"
+    },
+    {
+      "from_state": "STATE_POSSIBLE",
+      "to_state": "STATE_CANCELLED_RETURN",
+      "trigger": "TOUCH_ENDED",
+      "guard": "delta_y < 8.0"
+    },
+    {
+      "from_state": "STATE_BEGAN",
+      "to_state": "STATE_TRACKING_HOME",
+      "trigger": "TOUCH_CONTINUED",
+      "guard": "velocity_y < -50.0 || delta_y > 8.0"
+    },
+    {
+      "from_state": "STATE_TRACKING_HOME",
+      "to_state": "STATE_PAUSED_IN_SWITCHER",
+      "trigger": "DWELL_TIMER_FIRED",
+      "guard": "dwell_ms >= 180.0 && abs(velocity_y) < 50.0"
+    },
+    {
+      "from_state": "STATE_TRACKING_HOME",
+      "to_state": "STATE_ARC_SWIPE",
+      "trigger": "HORIZONTAL_ARC_DETECTED",
+      "guard": "abs(velocity_x) > 600.0 && abs(velocity_x) > 2.0 * abs(velocity_y)"
+    },
+    {
+      "from_state": "STATE_TRACKING_HOME",
+      "to_state": "STATE_COMMITTED_HOME",
+      "trigger": "TOUCH_RELEASED",
+      "guard": "velocity_y < -500.0 || delta_y >= 305.9"
+    },
+    {
+      "from_state": "STATE_TRACKING_HOME",
+      "to_state": "STATE_CANCELLED_RETURN",
+      "trigger": "TOUCH_RELEASED",
+      "guard": "velocity_y > -200.0 && delta_y < 150.0"
+    },
+    {
+      "from_state": "STATE_PAUSED_IN_SWITCHER",
+      "to_state": "STATE_TRACKING_SWITCHER",
+      "trigger": "TOUCH_MOVED",
+      "guard": "displacement_from_pause > 5.0"
+    },
+    {
+      "from_state": "STATE_PAUSED_IN_SWITCHER",
+      "to_state": "STATE_COMMITTED_SWITCHER",
+      "trigger": "TOUCH_RELEASED",
+      "guard": "true"
+    },
+    {
+      "from_state": "STATE_TRACKING_SWITCHER",
+      "to_state": "STATE_COMMITTED_SWITCHER",
+      "trigger": "TOUCH_RELEASED",
+      "guard": "true"
+    },
+    {
+      "from_state": "STATE_ARC_SWIPE",
+      "to_state": "STATE_COMMITTED_HOME",
+      "trigger": "ARC_COMPLETED",
+      "guard": "transition_to_adjacent_scene"
+    }
+  ]
+}

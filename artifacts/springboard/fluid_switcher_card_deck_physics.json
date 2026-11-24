@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "title": "SpringBoard Fluid Switcher Multitasking Card Deck Physics Model",
+    "version": "1.0.0",
+    "target": "iOS 27.2 A19 Pro (t8150)"
+  },
+  "spring_oscillator": {
+    "mass_kg": 1.0,
+    "stiffness_npm": 380.0,
+    "damping_ratio_zeta": 0.88,
+    "damping_coefficient_c": 34.3087160701706,
+    "natural_angular_frequency_rad_s": 19.493588676233298,
+    "damped_angular_frequency_rad_s": 9.258941624181459,
+    "damping_factor_gamma_rad_s": 17.1543580350853,
+    "settling_time_practical_ms": 308.86
+  },
+  "rubberband_model": {
+    "formula": "f(x) = (x * c * d) / (d + c * abs(x))",
+    "coefficient_c": 0.55,
+    "viewport_dimension_d_pt": 874.0,
+    "asymptotic_limit_pt": 874.0
+  },
+  "card_deck_parameters": {
+    "card_width_pt": 321.6,
+    "card_height_pt": 699.2,
+    "y_base_pt": 454.48,
+    "spacing_delta_y_pt": 64.0,
+    "depth_delta_z_pt": 40.0,
+    "scale_decay_step": 0.082,
+    "scale_minimum_clamp": 0.65,
+    "corner_radius_pt": 44.0
+  }
+}

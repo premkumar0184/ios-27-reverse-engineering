@@ -24,6 +24,11 @@ apple_a19_emulation_runner
 # Raw extracted filesystems and crypto dumps
 artifacts/crypto/
 artifacts/rootfs/
+artifacts/baseband/
+artifacts/esim/
+artifacts/se/
+artifacts/exclave/rootfs/
+artifacts/security/sandbox/
 artifacts/firmware/*.raw
 artifacts/firmware/exclavecore_bundle_unpacked/
 artifacts/ui/Applications/

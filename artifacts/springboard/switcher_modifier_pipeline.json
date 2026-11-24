@@ -1,0 +1,138 @@
+{
+  "metadata": {
+    "title": "SpringBoard Fluid Switcher Declarative Modifier Architecture & Mathematics",
+    "version": "1.0.0",
+    "target": "iOS 27.2 A19 Pro (t8150)"
+  },
+  "architecture_pattern": {
+    "name": "Functional Reducer Tree",
+    "description": "Modifiers do not mutate views. They receive immutable events and return geometry, alpha, blur, and event responses.",
+    "root_class": "SBFluidSwitcherRootSwitcherModifier",
+    "base_class": "SBSwitcherModifier"
+  },
+  "events": [
+    {
+      "event_class": "SBGestureSwitcherModifierEvent",
+      "payload": [
+        "phase",
+        "touch_location",
+        "translation",
+        "velocity",
+        "touch_timestamp"
+      ],
+      "description": "Dispatched on each digitizer touch update"
+    },
+    {
+      "event_class": "SBTransitionSwitcherModifierEvent",
+      "payload": [
+        "from_layout_state",
+        "to_layout_state",
+        "transition_id",
+        "animated"
+      ],
+      "description": "Dispatched when layout transitions between App, Switcher, and Home"
+    },
+    {
+      "event_class": "SBTimerSwitcherModifierEvent",
+      "payload": [
+        "reason",
+        "fire_timestamp"
+      ],
+      "description": "Dispatched when 180ms dwell timer fires for switcher preview"
+    }
+  ],
+  "event_responses": [
+    {
+      "response_class": "SBAddModifierSwitcherEventResponse",
+      "description": "Pushes a child modifier onto the active evaluation stack"
+    },
+    {
+      "response_class": "SBRemoveModifierSwitcherEventResponse",
+      "description": "Pops a modifier off the stack upon transition completion"
+    },
+    {
+      "response_class": "RequestMatchMoveToIconView",
+      "description": "Instantiates CA match-move animation binding app card to SBIconView"
+    },
+    {
+      "response_class": "RequestNotifyIconWillZoomDown",
+      "description": "Notifies Home Screen icon controller to hide icon badge and prepare for morph"
+    },
+    {
+      "response_class": "RequestInjectVelocity",
+      "description": "Injects digitizer exit velocity vector into second-order harmonic oscillator"
+    },
+    {
+      "response_class": "SBRemoveFromDesktopSwitcherEventResponse",
+      "description": "Initiates FBScene invalidation and SIGKILL process tear-down"
+    }
+  ],
+  "card_deck_geometry_math": {
+    "interactive_drag_scaling": {
+      "formula": "s(y) = 1.0 - (1.0 - s_switcher) * min(1.0, max(0.0, delta_y / H_travel))",
+      "s_switcher": 0.8,
+      "H_travel_pt": 400.0,
+      "unit": "unitless_ratio",
+      "description": "Continuous linear scale decay from 1.0 to 0.80 as finger traverses upward 400pt"
+    },
+    "resting_deck_scaling": {
+      "formula": "Scale(i) = max(0.65, 1.0 - i * 0.082)",
+      "scale_decrement_per_card": 0.082,
+      "min_scale_clamp": 0.65,
+      "evaluations": [
+        {
+          "index": 0,
+          "scale": 1.0
+        },
+        {
+          "index": 1,
+          "scale": 0.918
+        },
+        {
+          "index": 2,
+          "scale": 0.836
+        },
+        {
+          "index": 3,
+          "scale": 0.754
+        },
+        {
+          "index": 4,
+          "scale": 0.672
+        },
+        {
+          "index": 5,
+          "scale": 0.65
+        }
+      ]
+    },
+    "card_depth_projection": {
+      "formula": "z(i) = -i * Delta_z",
+      "Delta_z_pt": 40.0,
+      "perspective_focal_length_pt": 600.0,
+      "m34": -0.0016666666666666668
+    },
+    "vertical_stacking_offset": {
+      "formula": "y_offset(i) = y_base - i * Delta_y",
+      "y_base_pt": 454.48,
+      "Delta_y_pt": 64.0,
+      "card_height_pt": 699.2,
+      "visible_header_exposure_pt": 64.0
+    },
+    "continuous_corner_radius_interpolation": {
+      "interactive_drag_morphing": {
+        "formula": "r(delta_y) = r_fullscreen + (r_card - r_fullscreen) * min(1.0, max(0.0, delta_y / delta_y_morph))",
+        "r_fullscreen_pt": 0.0,
+        "r_card_pt": 55.0,
+        "delta_y_morph_pt": 100.0,
+        "description": "App card corners morph continuously from 0.0pt (flush against bezels) to 55.0pt over the first 100pt of vertical drag."
+      },
+      "icon_docking_morphing": {
+        "formula": "r(p) = (1.0 - p) * r_card + p * r_icon",
+        "r_card_pt": 55.0,
+        "r_icon_pt": 13.5,
+        "description": "During match-move zoom-down, corners morph from 55.0pt to 13.5pt squircle radius."
+      }
+    }
+  }
+}

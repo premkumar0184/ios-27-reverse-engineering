@@ -1,0 +1,185 @@
+{
+  "metadata": {
+    "title": "SpringBoard Velocity Vector Projection & Match-Move Transition Specification",
+    "version": "1.0.0",
+    "target": "iOS 27.2 A19 Pro (t8150)"
+  },
+  "velocity_vector_projection": {
+    "physics_model": "Ballistic viscous exponential deceleration projection",
+    "equations": {
+      "target_position_x": "x_target = x_release + v_x / delta",
+      "target_position_y": "y_target = y_release + v_y / delta",
+      "decay_constant_delta": 14.0,
+      "delta_unit": "s^-1",
+      "explanation": "delta = 14.0 s^-1 represents the physical drag rate. The projected stop distance is exact integral of v(t) = v_0 * exp(-delta * t) from 0 to infinity."
+    },
+    "destination_decision_matrix": [
+      {
+        "case": "Upward Flick",
+        "velocity_y_range": "v_y <= -500.0 pt/s",
+        "condition": "Flick velocity satisfies unconditional Home commit threshold",
+        "destination": "DESTINATION_HOME_SCREEN"
+      },
+      {
+        "case": "Sub-threshold Release",
+        "velocity_y_range": "-200.0 < v_y < 200.0 pt/s",
+        "displacement_range": "delta_y < 150.0 pt",
+        "condition": "Insufficient upward motion and velocity",
+        "destination": "DESTINATION_RETURN_TO_APPLICATION"
+      },
+      {
+        "case": "Stationary Dwell",
+        "velocity_abs": "|v_y| < 50.0 pt/s",
+        "dwell_time": "dwell_ms >= 180.0 ms",
+        "condition": "Hold gesture satisfied before touch release",
+        "destination": "DESTINATION_APP_SWITCHER"
+      },
+      {
+        "case": "Horizontal Arc",
+        "velocity_x_range": "|v_x| >= 600.0 pt/s",
+        "condition": "|v_x| >= 2.0 * |v_y|",
+        "destination": "DESTINATION_ARC_PREVIOUS_OR_NEXT_APP"
+      }
+    ],
+    "test_vectors": [
+      {
+        "name": "High Velocity Upward Flick",
+        "release_pos": {
+          "x": 201.0,
+          "y": 700.0
+        },
+        "release_vel": {
+          "x": 0.0,
+          "y": -1400.0
+        },
+        "delta": 14.0,
+        "projected_pos": {
+          "x": 201.0,
+          "y": 600.0
+        },
+        "resolved_destination": "DESTINATION_HOME_SCREEN"
+      },
+      {
+        "name": "Gentle Release Near Bottom",
+        "release_pos": {
+          "x": 201.0,
+          "y": 820.0
+        },
+        "release_vel": {
+          "x": 0.0,
+          "y": -70.0
+        },
+        "delta": 14.0,
+        "projected_pos": {
+          "x": 201.0,
+          "y": 815.0
+        },
+        "resolved_destination": "DESTINATION_RETURN_TO_APPLICATION"
+      },
+      {
+        "name": "Rightward Arc Flick",
+        "release_pos": {
+          "x": 201.0,
+          "y": 840.0
+        },
+        "release_vel": {
+          "x": 980.0,
+          "y": -70.0
+        },
+        "delta": 14.0,
+        "projected_pos": {
+          "x": 271.0,
+          "y": 835.0
+        },
+        "resolved_destination": "DESTINATION_ARC_PREVIOUS_OR_NEXT_APP"
+      }
+    ]
+  },
+  "match_move_affine_transformation": {
+    "mathematical_model": "Homogeneous 2D affine transformation matrix morphing app window to icon bounds",
+    "matrix_representation": "CGAffineTransform: [A, B, C, D, Tx, Ty]",
+    "transformation_equation": "[x', y', 1] = [x, y, 1] * [[A, B, 0], [C, D, 0], [Tx, Ty, 1]]",
+    "scale_factors": {
+      "A": "w_icon / w_card",
+      "D": "h_icon / h_card",
+      "B": 0.0,
+      "C": 0.0
+    },
+    "translation_offsets": {
+      "Tx": "X_icon_center - A * X_card_center",
+      "Ty": "Y_icon_center - D * Y_card_center"
+    },
+    "time_interpolation_formula": {
+      "A_p": "1.0 + p * (A - 1.0)",
+      "D_p": "1.0 + p * (D - 1.0)",
+      "Tx_p": "(X_card_center + p * (X_icon_center - X_card_center)) - A_p * X_card_center",
+      "Ty_p": "(Y_card_center + p * (Y_icon_center - Y_card_center)) - D_p * Y_card_center",
+      "corner_radius_p": "(1.0 - p) * r_card + p * r_icon",
+      "progress_p": "Driven by CASpringAnimation (k=380.0, zeta=0.88, mass=1.0)"
+    },
+    "sample_icon_grid_evaluations": [
+      {
+        "grid_slot": "Row 2, Col 1 (Safari)",
+        "icon_bounds": {
+          "x": 28.0,
+          "y": 180.0,
+          "w": 60.0,
+          "h": 60.0
+        },
+        "icon_center": {
+          "x": 58.0,
+          "y": 210.0
+        },
+        "card_source_bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "w": 402.0,
+          "h": 874.0
+        },
+        "card_center": {
+          "x": 201.0,
+          "y": 437.0
+        },
+        "matrix": {
+          "A": 0.14925373134328357,
+          "B": 0.0,
+          "C": 0.0,
+          "D": 0.06864988558352401,
+          "Tx": 28.0,
+          "Ty": 180.0
+        }
+      },
+      {
+        "grid_slot": "Row 4, Col 3 (Messages)",
+        "icon_bounds": {
+          "x": 214.0,
+          "y": 380.0,
+          "w": 60.0,
+          "h": 60.0
+        },
+        "icon_center": {
+          "x": 244.0,
+          "y": 410.0
+        },
+        "card_source_bounds": {
+          "x": 0.0,
+          "y": 0.0,
+          "w": 402.0,
+          "h": 874.0
+        },
+        "card_center": {
+          "x": 201.0,
+          "y": 437.0
+        },
+        "matrix": {
+          "A": 0.14925373134328357,
+          "B": 0.0,
+          "C": 0.0,
+          "D": 0.06864988558352401,
+          "Tx": 214.0,
+          "Ty": 380.0
+        }
+      }
+    ]
+  }
+}
