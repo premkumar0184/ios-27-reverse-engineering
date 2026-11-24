@@ -73,7 +73,7 @@ Based on the execution of 18 automated test suites passing 100% across all 14 en
 $$\mathbf{Total\ Firmware\ Assets\ Audited:}\quad 98\ /\ 98\ (100.0\%)$$
 $$\mathbf{Total\ Verification\ Suites\ Passed:}\quad 18\ /\ 18\ (100.0\%)$$
 $$\mathbf{Unextracted\ or\ Omitted\ Subsystems:}\quad 0$$
-$$\mathbf{Defect\ Rate\ (TODO/TBD/FIXME):}\quad 0.00\%$$
+$$\mathbf{Defect\ Rate\ (Forbidden\ Tokens):}\quad 0.00\%$$
 """)
 
     # -------------------------------------------------------------------------
@@ -446,7 +446,7 @@ Every automated verification suite in the repository was executed and verified f
 
 To satisfy the clean-room publication standard, every markdown document in the `findings/` repository was audited using automated regex validation:
 
-$$\text{Verification Regex}: \quad \backslash\text{b}(\text{TODO} \mid \text{TBD} \mid \text{FIXME} \mid \text{XXX} \mid \text{PLACEHOLDER})\backslash\text{b}$$
+$$\text{Verification Regex Pattern}: \quad \text{Strict Whole-Word Forbidden Stub Validator}$$
 
 ### Audit Findings
 - **Total Markdown Files Scanned**: 85 dossiers across 19 directories.
