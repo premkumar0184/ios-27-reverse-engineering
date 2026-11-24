@@ -1,0 +1,368 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FrontBoard Scene Lifecycle, FSM Transitions & Watchdog Specification",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "platform": "iOS 27.2 / Darwin 24.2.0 (Build 24B119)",
+  "device_model": "iPhone18,3 (v57ap)",
+  "subsystems": {
+    "scene_manager": "FrontBoard.framework (FBSceneManager, FBScene, FBWorkspace)",
+    "process_manager": "FrontBoard.framework (FBProcessManager, FBProcess, FBProcessWatchdog)",
+    "client_scene_kit": "FrontBoardServices.framework (FBSScene, FBSSceneSettings, FBSSceneTransitionContext)",
+    "event_server": "backboardd (BKHIDEventDeliveryManager, BKTouchEventServer)",
+    "render_server": "QuartzCore.framework (CARenderServer, CAContext, CALayerHost)",
+    "ipc_transport": "BoardServices.framework (BSServiceConnection, BSServiceDomain)"
+  },
+  "mach_endpoints": {
+    "frontboard_workspace": "com.apple.frontboard.workspace-service",
+    "frontboard_systemapp": "com.apple.frontboard.systemappservices",
+    "backboard_touch_delivery": "com.apple.backboard.TouchDeliveryPolicyServer",
+    "backboard_system_app": "com.apple.backboard.system-app-server",
+    "quartzcore_renderserver": "com.apple.CARenderServer"
+  },
+  "scene_lifecycle_fsm": {
+    "fsm_name": "FBSceneLifecycleFSM",
+    "initial_state": "STATE_UNPREPARED",
+    "terminal_state": "STATE_DESTROYED",
+    "states": [
+      {
+        "id": "STATE_UNPREPARED",
+        "name": "Unprepared",
+        "numeric_id": 0,
+        "description": "Initial creation state in FBSceneManager. The scene definition (FBSSceneDefinition) and client identity (FBSSceneClientIdentity) are allocated, but no client process or render context is attached.",
+        "client_process_state": "NONE",
+        "render_context_allocated": false,
+        "touch_event_routing": "DISABLED",
+        "memory_surface_state": "UNALLOCATED"
+      },
+      {
+        "id": "STATE_PREPARED",
+        "name": "Prepared",
+        "numeric_id": 1,
+        "description": "Client application process is spawned by FBProcessManager via posix_spawnattr_setmacpolicyinfo_np. Mach endpoint connection established over com.apple.frontboard.workspace-service. Initial FBSSceneParameters sent to client.",
+        "client_process_state": "LAUNCHING",
+        "render_context_allocated": false,
+        "touch_event_routing": "DISABLED",
+        "memory_surface_state": "INITIALIZING"
+      },
+      {
+        "id": "STATE_FOREGROUND_ACTIVE",
+        "name": "ForegroundActive",
+        "numeric_id": 2,
+        "description": "Application scene is frontmost and fully interactive. CAContext is linked to CARenderServer, receiving active 240Hz touch input from BKSTouchStream. Variable refresh rate dynamically driven up to 120Hz via ProMotion VFTG.",
+        "client_process_state": "RUNNING",
+        "render_context_allocated": true,
+        "touch_event_routing": "DIRECT_ACTIVE",
+        "memory_surface_state": "COMMITTED_IOSURFACE"
+      },
+      {
+        "id": "STATE_FOREGROUND_INACTIVE",
+        "name": "ForegroundInactive",
+        "numeric_id": 3,
+        "description": "Application scene remains visually presented on screen but has lost user interaction focus (e.g., system alert modal displayed, Control Center dragged, App Switcher deck invoked, or Dynamic Island expanded). Touches intercepted by SpringBoard.",
+        "client_process_state": "RUNNING",
+        "render_context_allocated": true,
+        "touch_event_routing": "INTERCEPTED_SYSTEM",
+        "memory_surface_state": "COMMITTED_IOSURFACE"
+      },
+      {
+        "id": "STATE_BACKGROUND",
+        "name": "Background",
+        "numeric_id": 4,
+        "description": "Scene is dismissed from active display hierarchy. Display layer unlinked or replaced by static switcher snapshot. Client process receives background execution entitlement budget, suspends rendering loop, and releases transient GPU caches.",
+        "client_process_state": "BACKGROUND_EXEC",
+        "render_context_allocated": false,
+        "touch_event_routing": "DISABLED",
+        "memory_surface_state": "SNAPSHOT_CACHED"
+      },
+      {
+        "id": "STATE_SUSPENDED",
+        "name": "Suspended",
+        "numeric_id": 5,
+        "description": "Client application process is frozen by FBProcessManager using task_suspend(). Mach port receive queues are frozen, threads halted (0% CPU), and physical memory pages marked eligible for Jetsam compression.",
+        "client_process_state": "SUSPENDED",
+        "render_context_allocated": false,
+        "touch_event_routing": "DISABLED",
+        "memory_surface_state": "COMPRESSED_RAM"
+      },
+      {
+        "id": "STATE_DESTROYED",
+        "name": "Destroyed",
+        "numeric_id": 6,
+        "description": "Scene is invalidated and unregistered from FBSceneManager. CAContext invalidated, Mach send-rights deallocated, IOSurface backing memory reclaimed, and client process terminated via SIGKILL or exit.",
+        "client_process_state": "TERMINATED",
+        "render_context_allocated": false,
+        "touch_event_routing": "DISABLED",
+        "memory_surface_state": "DEALLOCATED"
+      }
+    ],
+    "transitions": [
+      {
+        "transition_id": "TRANS_01_INIT_SCENE",
+        "from_state": "STATE_UNPREPARED",
+        "to_state": "STATE_PREPARED",
+        "trigger": "EVENT_SCENE_CREATE_REQUEST",
+        "mach_message_notification": "MACH_MSG_FBS_SCENE_CREATE_REQ",
+        "mach_msg_id": "0x1f01",
+        "action": "FBSceneManager instantiates FBScene instance, requests FBProcessManager spawn client process, and establishes BSServiceConnection channel."
+      },
+      {
+        "transition_id": "TRANS_02_ACTIVATE_SCENE",
+        "from_state": "STATE_PREPARED",
+        "to_state": "STATE_FOREGROUND_ACTIVE",
+        "trigger": "EVENT_SCENE_ATTACH_AND_ACTIVATE",
+        "mach_message_notification": "MACH_MSG_FBS_SCENE_SETTINGS_UPDATE",
+        "mach_msg_id": "0x1f02",
+        "action": "Host sends FBSSceneSettings with isForeground=YES and userInterfaceStyle. Client connects CAContext to CARenderServer, transmits context_id, and registers touch stream."
+      },
+      {
+        "transition_id": "TRANS_03_INTERRUPT_FOCUS",
+        "from_state": "STATE_FOREGROUND_ACTIVE",
+        "to_state": "STATE_FOREGROUND_INACTIVE",
+        "trigger": "EVENT_SYSTEM_INTERRUPT_OCCURRED",
+        "mach_message_notification": "MACH_MSG_FBS_SCENE_SETTINGS_UPDATE",
+        "mach_msg_id": "0x1f02",
+        "action": "Host updates FBSSceneSettings setting deactivated=YES. BKHIDDirectTouchEventProcessor reroutes touch routing to SpringBoard system gesture recognizers."
+      },
+      {
+        "transition_id": "TRANS_04_RESTORE_FOCUS",
+        "from_state": "STATE_FOREGROUND_INACTIVE",
+        "to_state": "STATE_FOREGROUND_ACTIVE",
+        "trigger": "EVENT_SYSTEM_INTERRUPT_DISMISSED",
+        "mach_message_notification": "MACH_MSG_FBS_SCENE_SETTINGS_UPDATE",
+        "mach_msg_id": "0x1f02",
+        "action": "Host updates FBSSceneSettings setting deactivated=NO. Touch routing restored to client's BKTouchStream."
+      },
+      {
+        "transition_id": "TRANS_05_SEND_TO_BACKGROUND",
+        "from_state": "STATE_FOREGROUND_INACTIVE",
+        "to_state": "STATE_BACKGROUND",
+        "trigger": "EVENT_HOME_GESTURE_COMMIT",
+        "mach_message_notification": "MACH_MSG_FBS_SCENE_TRANSITION_CONTEXT",
+        "mach_msg_id": "0x1f03",
+        "action": "Host captures SBSwitcherSnapshot, detaches CALayerHost from window tree, updates FBSSceneSettings setting isForeground=NO. Watchdog starts 10.0s background timer."
+      },
+      {
+        "transition_id": "TRANS_06_DIRECT_BACKGROUND",
+        "from_state": "STATE_FOREGROUND_ACTIVE",
+        "to_state": "STATE_BACKGROUND",
+        "trigger": "EVENT_LOCK_SCREEN_OR_DIRECT_DISMISS",
+        "mach_message_notification": "MACH_MSG_FBS_SCENE_TRANSITION_CONTEXT",
+        "mach_msg_id": "0x1f03",
+        "action": "Screen locks or coversheet rolls down; host transitions scene directly to background mode and suspends client rendering."
+      },
+      {
+        "transition_id": "TRANS_07_FREEZE_PROCESS",
+        "from_state": "STATE_BACKGROUND",
+        "to_state": "STATE_SUSPENDED",
+        "trigger": "EVENT_BACKGROUND_BUDGET_EXPIRED",
+        "mach_message_notification": "MACH_MSG_FBS_PROCESS_SUSPEND_ASSERTION",
+        "mach_msg_id": "0x1f05",
+        "action": "Background assertion released. FBProcessManager executes task_suspend() on client task. Process enters low-power frozen state in memory."
+      },
+      {
+        "transition_id": "TRANS_08_RESUME_FROM_SUSPENDED",
+        "from_state": "STATE_SUSPENDED",
+        "to_state": "STATE_BACKGROUND",
+        "trigger": "EVENT_BACKGROUND_TASK_TRIGGER",
+        "mach_message_notification": "MACH_MSG_FBS_PROCESS_RESUME_ASSERTION",
+        "mach_msg_id": "0x1f06",
+        "action": "Background URLSession or Push Notification wakes process; FBProcessManager executes task_resume() with temporary execution assertion."
+      },
+      {
+        "transition_id": "TRANS_09_WAKE_TO_FOREGROUND",
+        "from_state": "STATE_SUSPENDED",
+        "to_state": "STATE_FOREGROUND_ACTIVE",
+        "trigger": "EVENT_APP_SWITCHER_OR_ICON_SELECT",
+        "mach_message_notification": "MACH_MSG_FBS_SCENE_SETTINGS_UPDATE",
+        "mach_msg_id": "0x1f02",
+        "action": "FBProcessManager executes task_resume(). FBSceneManager commits foreground activation transition, restoring CAContext to live CARenderServer composite tree."
+      },
+      {
+        "transition_id": "TRANS_10_RESUME_BACKGROUND_TO_ACTIVE",
+        "from_state": "STATE_BACKGROUND",
+        "to_state": "STATE_FOREGROUND_ACTIVE",
+        "trigger": "EVENT_APP_REOPEN_FROM_BACKGROUND",
+        "mach_message_notification": "MACH_MSG_FBS_SCENE_SETTINGS_UPDATE",
+        "mach_msg_id": "0x1f02",
+        "action": "Client notified of return to foreground. Re-attaches live layer tree and commits initial render frame to CARenderServer."
+      },
+      {
+        "transition_id": "TRANS_11_TERMINATE_FROM_SUSPENDED",
+        "from_state": "STATE_SUSPENDED",
+        "to_state": "STATE_DESTROYED",
+        "trigger": "EVENT_CARD_FLICK_OR_JETSAM_KILL",
+        "mach_message_notification": "MACH_MSG_FBS_SCENE_INVALIDATION",
+        "mach_msg_id": "0x1f07",
+        "action": "User flicks card upward in App Switcher or kernel Jetsam claims dirty memory. Process terminated via SIGKILL; scene destroyed in FBSceneManager."
+      },
+      {
+        "transition_id": "TRANS_12_TERMINATE_FROM_BACKGROUND",
+        "from_state": "STATE_BACKGROUND",
+        "to_state": "STATE_DESTROYED",
+        "trigger": "EVENT_SCENE_DISMISSAL_TEARDOWN",
+        "mach_message_notification": "MACH_MSG_FBS_SCENE_INVALIDATION",
+        "mach_msg_id": "0x1f07",
+        "action": "FBSceneManager invalidates scene. Client process unregisters workspace connection and cleans up local CAContext."
+      },
+      {
+        "transition_id": "TRANS_13_CRASH_OR_WATCHDOG_KILL",
+        "from_state": "STATE_FOREGROUND_ACTIVE",
+        "to_state": "STATE_DESTROYED",
+        "trigger": "EVENT_WATCHDOG_TIMEOUT_OR_FATAL_EXCEPTION",
+        "mach_message_notification": "MACH_MSG_FBS_PROCESS_TERMINATE_FORCE",
+        "mach_msg_id": "0x1f08",
+        "action": "Watchdog timer fires (0x8badf00d) or unhandled Mach exception occurs. FBProcessManager terminates task immediately with SIGKILL."
+      }
+    ]
+  },
+  "watchdog_timer_matrix": {
+    "subsystem": "FBProcessWatchdog / FBApplicationProcessWatchdogPolicy",
+    "enforcement_mechanism": "Dispatch source timers monitoring Mach message response handshake across BSServiceConnection",
+    "timeout_action": {
+      "exception_type": "EXC_CRASH (SIGKILL)",
+      "mach_exception_code": "0x000000008badf00d",
+      "human_mnemonic": "ate my dog (application took too long to complete lifecycle transition)",
+      "kernel_signal": "SIGKILL (Signal 9)",
+      "diagnostic_artifact": "/Library/Logs/CrashReporter/DiagnosticReports/<AppName>-<Timestamp>.ips",
+      "termination_primitive": "task_terminate(mach_task_self()) via XNU kernel syscall"
+    },
+    "deadlines": [
+      {
+        "phase": "Application Launch & Initial Scene Presentation",
+        "policy_constant": "FBApplicationProcessWatchdogPolicyLaunchDeadline",
+        "deadline_seconds": 20.0,
+        "description": "Maximum permissible wall-clock duration from posix_spawn execution until client process finishes initial main runloop spin, instantiates UIWindowScene, and commits initial CAContext frame to CARenderServer.",
+        "mitigation_conditions": "Suspended during system debugger attachment (SIGSTOP / ptrace PT_ATTACH)."
+      },
+      {
+        "phase": "Scene Background Transition & Resource Relinquish",
+        "policy_constant": "FBApplicationProcessWatchdogPolicyBackgroundDeadline",
+        "deadline_seconds": 10.0,
+        "description": "Maximum permissible duration for client process to complete sceneDidEnterBackground notifications, serialize essential application state, flush pending CoreData/SQLite transactions, and surrender GPU drawables.",
+        "mitigation_conditions": "Client requests extended background execution via beginBackgroundTaskWithName:completionHandler:."
+      },
+      {
+        "phase": "Scene Teardown & Process Invalidation",
+        "policy_constant": "FBApplicationProcessWatchdogPolicyTeardownDeadline",
+        "deadline_seconds": 5.0,
+        "description": "Maximum permissible duration for client process to acknowledge sceneDidDisconnect and release registered Mach receive ports before forceful termination.",
+        "mitigation_conditions": "None. Mandatory unyielding kernel boundary."
+      },
+      {
+        "phase": "Collective System App Responsiveness / Main Runloop Ping",
+        "policy_constant": "BKWatchdogServiceCollectivePingDeadline",
+        "deadline_seconds": 15.0,
+        "description": "Periodic heartbeat ping dispatched by backboardd over com.apple.backboard.watchdog to SpringBoard and system shell processes. If the main thread hangs without servicing Mach port events for >15.0s, backboardd initiates diagnostic spin dump and system panic.",
+        "mitigation_conditions": "None."
+      }
+    ]
+  },
+  "buffer_synchronization_pipeline": {
+    "subsystem": "QuartzCore Client-Server Inter-Process Rendering Pipeline",
+    "primitives": {
+      "context_object": "CAContext (Remote Render Surface Handle)",
+      "host_layer": "CALayerHost (In-Process Proxy Layer)",
+      "sync_fence": "CAFenceHandle (Mach Send-Right Synchronization Token)",
+      "backing_store": "IOSurface (Kernel-Shared Non-Pageable Memory Primitive)"
+    },
+    "synchronization_protocol": [
+      {
+        "step": 1,
+        "actor": "Client Application Process",
+        "action": "Calls +[CAContext remoteContextWithOptions:] with option dictionary containing _kCAContextDisplayName and _kCAContextDisplayId. CARenderServer assigns globally unique 32-bit uint32_t context_id."
+      },
+      {
+        "step": 2,
+        "actor": "Client Application Process",
+        "action": "Attaches root CALayer (or CAMetalLayer backed by IOSurfacePool) to CAContext. Commits transaction via [CATransaction commit]."
+      },
+      {
+        "step": 3,
+        "actor": "Client Application Process",
+        "action": "Encapsulates context_id into FBSSceneTransitionContext clientSettingsDiff payload and sends Mach message MACH_MSG_FBS_SCENE_DID_UPDATE_CLIENT_SETTINGS across BSServiceConnection to SpringBoard."
+      },
+      {
+        "step": 4,
+        "actor": "SpringBoard Host (FBScene / SBSceneView)",
+        "action": "Extracts context_id. Instantiates CALayerHost in the target UIWindowScene view hierarchy and assigns layerHost.contextId = context_id."
+      },
+      {
+        "step": 5,
+        "actor": "SpringBoard Host (FBSceneManager)",
+        "action": "Inserts CALayerHost into the window corresponding to the target UIWindowLevel (e.g., Level 0.0 for normal applications)."
+      },
+      {
+        "step": 6,
+        "actor": "QuartzCore RenderServer (backboardd)",
+        "action": "Traverses compositor tree across all active CAContext IDs. Resolves CALayerHost references to client IOSurface memory buffers. Generates direct GPU command buffers without copying pixels across processes (Zero-Copy Inter-Process Compositing)."
+      },
+      {
+        "step": 7,
+        "actor": "Host & Client Lockstep Fencing",
+        "action": "During interactive gestures, host allocates a CAFenceHandle backed by a Mach port send-right. The fence handle is sent in FBSSceneTransitionContext. Host and client synchronize their CATransactions to fire on the identical hardware VSYNC pulse, preventing frame tearing."
+      }
+    ]
+  },
+  "registered_scene_workspaces": [
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.DruidUI",
+      "role": "Drag-and-Drop visual interaction canvas and ghost preview surface"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.InputUI",
+      "role": "System out-of-process software keyboard (Medusa) and Dictation UI"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.OverlayUI",
+      "role": "General transient system overlays and floating dialogs"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.FullKeyboardAccessUI",
+      "role": "Accessibility hardware keyboard navigation highlight ring"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.VoiceControlUI",
+      "role": "Voice Control accessibility speech recognition tags and overlays"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.AssistiveTouchUI",
+      "role": "AssistiveTouch floating orb, virtual cursor, and accessibility menu"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.AccessibilityUIServerUI",
+      "role": "Accessibility UI host server for Zoom, Magnifier, and Invert Colors"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.Ensemble",
+      "role": "Universal Control / Continuity multi-device cursor and clipboard portal"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.EyedropperUI",
+      "role": "System color picker magnifying loupe and pixel color sampler"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.Moments",
+      "role": "System Journaling and Moments suggestion card staging canvas"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.InternalPerfPowerHUD",
+      "role": "Internal Apple engineering performance and power diagnostic HUD"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.PerfPowerHUD",
+      "role": "Instruments / Metal developer overlay HUD and frame time graph"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.CameraOverlayUI",
+      "role": "Hardware Camera Control overlay UI scene for iPhone 16 Pro / iPhone 17"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.PrototypeTools",
+      "role": "Internal animation physics prototype slider settings and UI test harness"
+    },
+    {
+      "workspace_identifier": "com.apple.SpringBoard.SceneWorkspace.AudioHUD",
+      "role": "Elastic volume slider, mute ringer banner, and AirPlay audio routing HUD"
+    }
+  ]
+}

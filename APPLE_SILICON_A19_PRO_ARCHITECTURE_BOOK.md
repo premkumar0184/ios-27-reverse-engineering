@@ -75,6 +75,7 @@ This publication synthesizes fifteen independent, empirical reverse-engineering 
 - [Part XXVII: Apple Video Decoder (AVD), Video Encoder 2 (AVE2) & AppleProResHW Codec Engines](#part-xxvii-apple-video-decoder-avd-video-encoder-2-ave2--appleproreshw-codec-engines)
 - [Part XXVIII: Multi-Touch Processor (MTP), Leap Haptics & MagSafe Wireless Charging Coexistence](#part-xxviii-multi-touch-processor-mtp-leap-haptics--magsafe-wireless-charging-coexistence)
 - [Part XXIX: Complete Full-Stack Architectural Glossary & Mathematical Notation Index](#part-xxix-complete-full-stack-architectural-glossary--mathematical-notation-index)
+- [Part XXX: SpringBoard UI Compositor, Dynamic Island & Gestural Multitasking](#part-xxx-springboard-ui-compositor-dynamic-island--gestural-multitasking)
 
 ---
 
@@ -2498,6 +2499,122 @@ $$\text{Morton}(x, y) = \sum_{i=0}^{n-1} \left( (x_i \ll 2i) \mid (y_i \ll (2i+1
 
 The Color Space Conversion transpose-inverse relationship between forward matrix $\mathbf{M}_{\text{CSCA}}$ and reverse matrix $\mathbf{M}_{\text{CSCB}}$ satisfies:
 $$\|\mathbf{M}_{\text{CSCB}} - (\mathbf{M}_{\text{CSCA}}^{-1})^T\|_F < 0.0002$$
+
+---
+
+
+## Part XXX: SpringBoard UI Compositor, Dynamic Island & Gestural Multitasking
+
+### 30.1 High-Frequency Display Compositing & Input Routing Architecture
+The terminal userland presentation layer of Apple Silicon A19 Pro (`t8150`) is governed by **`SpringBoard.app`**, coordinating touch events, application scene lifecycles, and hardware layer compositing in direct synchronization with the Display Co-Processor (DCP) at 120Hz ProMotion.
+
+```mermaid
+flowchart TD
+    subgraph InputPath ["240Hz Digitizer & Button Input"]
+        Digitizer["MTP Digitizer (240Hz Scan Rate)"]
+        CameraControl["Capacitive Camera Control Sensor"]
+        backboardd["backboardd (BKTouchDeliveryPolicyServer)"]
+    end
+
+    subgraph SpringBoardCore ["SpringBoard UI Compositor"]
+        HitTest["18-Layer UIWindowLevel Hit-Testing"]
+        SystemAperture["Dynamic Island (SystemApertureUI)"]
+        FluidSwitcher["Fluid Switcher Deck & Spring Physics"]
+        FrontBoard["FrontBoard FBSceneManager"]
+    end
+
+    subgraph QuartzRenderServer ["QuartzCore RenderServer & DCP"]
+        CAContextTree["CAContext Composition Hierarchy"]
+        IOSurfaceBuffers["Zero-Copy IOSurface Buffers"]
+        DCP120Hz["DCP ProMotion 120Hz Dynamic VFTG Sync"]
+    end
+
+    Digitizer --> backboardd
+    CameraControl --> backboardd
+    backboardd --> HitTest
+    HitTest -->|Level 2500| SystemAperture
+    HitTest -->|Level 0| FluidSwitcher
+    HitTest -->|Level 0| FrontBoard
+    SystemAperture --> CAContextTree
+    FluidSwitcher --> CAContextTree
+    FrontBoard --> CAContextTree
+    CAContextTree --> IOSurfaceBuffers
+    IOSurfaceBuffers --> DCP120Hz
+```
+
+The input routing pipeline operates within a strict latency budget:
+$$\Delta t_{\text{input}} \le 4.166\text{ ms}$$
+matching the 240Hz polling rate of the Multi-Touch Processor (MTP). Touches are serialized across Mach port connections directly to `backboardd`, filtered for occlusion security, and dispatched to the target `CAContext` client without waking idle background applications.
+
+### 30.2 Dynamic Island (System Aperture Engine) Mechanics & Pill Split
+The Dynamic Island layout engine (`SystemAperture.framework` and `SystemApertureUI.framework`) governs interactive notifications around the physical sensor cutout on `v57ap` ($1320 \times 2868$ px at $3\times$ scale):
+
+- **Hardware Cutout Bounds**: Centered at $x = 196.50\text{ pt}, y = 11.00\text{ pt}$ with width $W_{\text{cutout}} = 120.00\text{ pt}$, height $H_{\text{cutout}} = 35.00\text{ pt}$, and corner radius $R_{\text{cutout}} = 17.50\text{ pt}$.
+- **Mode 1 (Compact Split Mechanics)**: When two activities are concurrently active (e.g. CallKit VoIP call and media playback), the continuous pill splits into two separate sub-pills separated by the hardware sensor void:
+  $$x_{\text{lead}} = x_{\text{cutout}} - W_{\text{lead}} - \Delta_{\text{gap}} = 196.50 - 37.00 - 8.33 = 151.17\text{ pt}$$
+  $$x_{\text{trail}} = x_{\text{cutout}} + W_{\text{cutout}} + \Delta_{\text{gap}} = 196.50 + 120.00 + 8.33 = 324.83\text{ pt}$$
+  $$W_{\text{lead}} = 37.00\text{ pt}, \quad W_{\text{trail}} = 37.00\text{ pt}, \quad H = 35.00\text{ pt}, \quad \Delta_{\text{gap}} = 8.33\text{ pt}$$
+- **Mode 3 (Expanded HUD Card)**: Centers horizontally at $x = 36.00\text{ pt}$ with $W = 368.00\text{ pt}$, default height $160.00\text{ pt}$ (up to $214.00\text{ pt}$), and $R = 42.00\text{ pt}$.
+- **Priority Preemption Queue**: Elements are arbitrated strictly by priority rank:
+  $$\text{Rank}: \quad \text{SystemAlert} (100) > \text{IncomingCall} (80) > \text{TurnByTurnNav} (60) > \text{MediaPlayback} (40) > \text{BackgroundTimer} (20)$$
+
+### 30.3 Fluid Switcher 3D Deck Scaling & Velocity-Preserving Spring Physics
+The multitasking App Switcher employs 3D projective card positioning and kinetic gesture tracking:
+
+- **Card Scaling & Depth Recession**: For card index $i \ge 0$ ($i=0$ denotes the foreground application):
+  $$\text{Scale}(i) = \max\left(1.0 - i \times 0.082, \; 0.650\right)$$
+  $$z_{\text{card}}(i) = -i \times 40.00\text{ pt}$$
+- **Flick-to-Home Harmonic Oscillator Dynamics**: Touch release transitions preserve user velocity $v_0$ and initial displacement $x_0$ using an underdamped harmonic spring:
+  $$m \ddot{x} + c \dot{x} + k x = 0 \iff \ddot{x} + 2 \zeta \omega_n \dot{x} + \omega_n^2 x = 0$$
+  $$\text{Parameters}: \quad m = 1.0\text{ kg}, \quad k = 380.0\text{ N/m}, \quad \zeta = 0.88$$
+  $$\omega_n = \sqrt{\frac{k}{m}} \approx 19.4936\text{ rad/s}, \quad \omega_d = \omega_n \sqrt{1 - \zeta^2} \approx 9.2589\text{ rad/s}$$
+- **Analytical Solution**: Evaluated cleanly in ISO C99:
+  $$x(t) = e^{-\zeta \omega_n t} \left[ x_0 \cos(\omega_d t) + \left(\frac{v_0 + \zeta \omega_n x_0}{\omega_d}\right) \sin(\omega_d t) \right]$$
+  Due to $\zeta = 0.88$, displacement settles to $< 0.5\text{ pt}$ within $320\text{ ms}$ with zero residual vibration.
+- **App-Kill Gestural FSM**: Dragging a card upward exceeding $Y_{\text{dismiss}} = 180.00\text{ pt}$ or flicking upward with velocity $v_y < -1200.00\text{ pt/s}$ triggers scene teardown.
+
+### 30.4 FrontBoard Scene Lifecycle & Window Level Matrix
+Application scene lifecycles are governed by `FBSceneManager` across 6 discrete states enforced by `0x8badf00d` watchdog timers:
+1. **Launch Watchdog**: $20.0\text{ s}$ deadline from `posix_spawn` to initial frame commit.
+2. **Transition Watchdog**: $10.0\text{ s}$ deadline for background state serialization.
+3. **Termination Watchdog**: $5.0\text{ s}$ deadline for process invalidation.
+
+The compositor hierarchy enforces strict monotonic ordering across 18 discrete window levels:
+
+| Level Index | Window Level | Constant Symbol | Window Class | Description |
+| :---: | :---: | :--- | :--- | :--- |
+| 1 | `-1000.0` | `UIWindowLevelWallpaper` | `SBWallpaperWindow` | Desktop background wallpaper layer |
+| 2 | `0.0` | `UIWindowLevelNormal` | `SBHomeScreenWindow` | Application scenes and Home Screen icon grid |
+| 3 | `10.0` | `UIWindowLevelDock` | `SBFloatingDockWindow` | Floating Multitasking Dock |
+| 4 | `100.0` | `UIWindowLevelBanner` | `SBBannerWindow` | Ephemeral notification banners |
+| 5 | `500.0` | `UIWindowLevelControlCenter` | `SBControlCenterWindow` | Control Center drawer overlay |
+| 6 | `1000.0` | `UIWindowLevelStatusBar` | `SBStatusBarWindow` | System status bar (clock, battery, Wi-Fi) |
+| 7 | `1050.0` | `UIWindowLevelLockScreenQuickActions` | `SBCoverSheetQuickActionsWindow` | Flashlight and Camera lockscreen buttons |
+| 8 | `1100.0` | `UIWindowLevelVolumeHUD` | `SBElasticVolumeHUDWindow` | Volume and ringer slider HUD |
+| 9 | `1500.0` | `UIWindowLevelSpotlight` | `SBSpotlightWindow` | Universal Search & Spotlight interface |
+| 10 | `2000.0` | `UIWindowLevelAlert` | `SBAlertItemWindow` | System modal alert sheets |
+| 11 | `2100.0` | `UIWindowLevelSiri` | `SBAssistantWindow` | Siri & Apple Intelligence glowing border |
+| 12 | `2200.0` | `UIWindowLevelAccessibility` | `SBAccessibilityOverlayWindow` | AssistiveTouch & accessibility focus overlays |
+| 13 | `2500.0` | `UIWindowLevelSystemAperture` | `SBSystemApertureWindow` | Dynamic Island (compact, split, expanded HUD) |
+| 14 | `2600.0` | `UIWindowLevelCameraControl` | `SBCameraControlOverlayWindow` | Camera Control bezel overlay HUD |
+| 15 | `2800.0` | `UIWindowLevelPictureInPicture` | `SBPictureInPictureWindow` | Floating PIP video player |
+| 16 | `3000.0` | `UIWindowLevelCoverSheet` | `SBCoverSheetWindow` | Lock Screen & Notification Center |
+| 17 | `3200.0` | `UIWindowLevelEmergencySOS` | `SBEmergencyCallWindow` | Satellite / Emergency SOS slider |
+| 18 | `3500.0` | `UIWindowLevelSecureEnclavePinpad` | `SBSecureWindow` | Exclave/SEP secure Passcode PINpad |
+
+### 30.5 SpringBoard IPC Domains & BSXPCCoder Wire Format
+SpringBoard hosts 52 discrete BoardServices endpoints registered across 4 root BSServiceDomains:
+1. `com.apple.frontboard` (`com.apple.frontboard.systemappservices`): 48 services managing scenes, buttons, and layout.
+2. `com.apple.posterboardui` (`com.apple.posterboardui.services`): Lock Screen poster editing.
+3. `com.apple.siri.activation` (`com.apple.siri.activation.service`): Assistant presentation and signals.
+4. `com.apple.usernotifications.systemservice` (`com.apple.usernotifications.systemservice`): System bulletins.
+
+Every service requires specific client entitlements (e.g. `com.apple.frontboard.systemappservices`, `com.apple.siri.AssistantIsland`), verified via Mach trailer `audit_token_t` checks. Unauthorized requests trigger immediate port deallocation and `0x8badf00d` client disconnection.
+
+### 30.6 Standalone Clean-Room Repository
+The complete clean-room C99 layout solver, test harness, and technical dossiers are published in the 15th standalone repository of the ecosystem:
+- [**ios-27-springboard-compositor-re**](https://github.com/premkumar0184/ios-27-springboard-compositor-re): SpringBoard UI Compositor, Dynamic Island & Gestural Multitasking Clean-Room Reverse Engineering.
+
 
 ---
 

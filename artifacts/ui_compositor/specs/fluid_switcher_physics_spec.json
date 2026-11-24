@@ -1,0 +1,494 @@
+{
+  "metadata": {
+    "title": "Apple Fluid Switcher & Gestural Multitasking Physics Specification",
+    "version": "1.0.0",
+    "operating_system": "iOS 27.2",
+    "build": "24B119",
+    "release_train": "RaveB",
+    "target_hardware": "iPhone 18,3 (v57ap)",
+    "soc": "Apple A19 Pro (t8150)",
+    "architecture": "arm64e (PAC00)",
+    "subsystems": [
+      "SBFluidSwitcherGestureManager",
+      "SBDeckSwitcherModifier",
+      "SBChamoisLayoutEngine",
+      "SBHomeGesturePanGestureRecognizer",
+      "SBSwipeToKillSwitcherModifier",
+      "SBAppSwitcherSnapshotImageCache"
+    ],
+    "authoritative_sources": [
+      "artifacts/rootfs/shared_cache/System/Library/Caches/com.apple.dyld/dyld_shared_cache_arm64e.36",
+      "artifacts/ui/SpringBoard/System/Library/CoreServices/SpringBoard.app/SpringBoard",
+      "findings/SPRINGBOARD_DEEP_DISSECTION.md",
+      "artifacts/ui/springboard_fsm_transitions.json"
+    ]
+  },
+  "deck_switcher_layout_3d": {
+    "description": "3D perspective deck layout projection and spacing model for app cards in the App Switcher deck",
+    "projection_matrix": {
+      "transform_type": "CATransform3D",
+      "m34_perspective": -0.0016666666666666668,
+      "perspective_focal_length_pt": 600.0,
+      "vanishing_point_normalized": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "card_depth_projection": {
+      "formula": "z_card(i) = -i * Delta_z",
+      "Delta_z_pt": 40.0,
+      "unit": "pt",
+      "explanation": "Progressive linear z-axis translation pushing successive cards deeper into the virtual 3D display volume per index i (i=0 denotes the foreground MRU card).",
+      "sample_evaluations": [
+        {
+          "index": 0,
+          "z_pt": 0.0
+        },
+        {
+          "index": 1,
+          "z_pt": -40.0
+        },
+        {
+          "index": 2,
+          "z_pt": -80.0
+        },
+        {
+          "index": 3,
+          "z_pt": -120.0
+        },
+        {
+          "index": 4,
+          "z_pt": -160.0
+        },
+        {
+          "index": 5,
+          "z_pt": -200.0
+        }
+      ]
+    },
+    "card_scaling": {
+      "formula": "Scale(i) = max(0.65, 1.0 - i * 0.082)",
+      "scale_decrement_per_card": 0.082,
+      "min_scale_clamp": 0.65,
+      "unit": "unitless_ratio",
+      "explanation": "Continuous linear scale decay clamped at a lower bound of 0.65 for cards at stack depth index >= 5 to preserve legibility and icon visibility.",
+      "sample_evaluations": [
+        {
+          "index": 0,
+          "scale": 1.0
+        },
+        {
+          "index": 1,
+          "scale": 0.918
+        },
+        {
+          "index": 2,
+          "scale": 0.836
+        },
+        {
+          "index": 3,
+          "scale": 0.754
+        },
+        {
+          "index": 4,
+          "scale": 0.672
+        },
+        {
+          "index": 5,
+          "scale": 0.65
+        },
+        {
+          "index": 6,
+          "scale": 0.65
+        }
+      ]
+    },
+    "card_offset": {
+      "formula": "y_offset(i) = y_base - i * Delta_y + rubberband(Delta_drag)",
+      "y_base_ratio": 0.52,
+      "y_base_pt": 454.48,
+      "Delta_y_pt": 64.0,
+      "card_overlap_factor": 0.84,
+      "card_spacing_pt": 64.0,
+      "explanation": "Vertical stacking translation offset where Delta_y = 64.0 pt defines the visible leading edge exposure of underlying stacked cards.",
+      "sample_evaluations_resting": [
+        {
+          "index": 0,
+          "y_offset_pt": 454.48
+        },
+        {
+          "index": 1,
+          "y_offset_pt": 390.48
+        },
+        {
+          "index": 2,
+          "y_offset_pt": 326.48
+        },
+        {
+          "index": 3,
+          "y_offset_pt": 262.48
+        },
+        {
+          "index": 4,
+          "y_offset_pt": 198.48
+        },
+        {
+          "index": 5,
+          "y_offset_pt": 134.48
+        }
+      ]
+    },
+    "card_dimensions": {
+      "iphone_reference": {
+        "screen_width_pt": 402.0,
+        "screen_height_pt": 874.0,
+        "card_width_pt": 321.6,
+        "card_height_pt": 699.2,
+        "card_aspect_ratio": 0.46,
+        "card_corner_radius_pt": 44.0
+      }
+    },
+    "rubberband_drag_model": {
+      "formula": "f(x) = (x * c * d) / (d + c * |x|)",
+      "resistance_coefficient_c": 0.55,
+      "viewport_dimension_key": "screen_height_pt",
+      "viewport_dimension_value_pt": 874.0,
+      "bounciness_damping": 0.9,
+      "explanation": "Rational asymptotic compression applied to finger dragging when the user pans past the first or last available deck switcher card.",
+      "asymptotic_limit_pt": 1589.09
+    }
+  },
+  "flick_to_home_spring_dynamics": {
+    "description": "Velocity-preserving second-order damped harmonic oscillator governing release-to-home gesture animation",
+    "governing_ode": "m * x''(t) + c * x'(t) + k * x(t) = 0",
+    "physical_parameters": {
+      "mass_m_kg": 1.0,
+      "stiffness_k_npm": 380.0,
+      "damping_ratio_zeta": 0.88,
+      "damping_coefficient_c_nspm": 34.3087160701706,
+      "spring_regime": "UNDERDAMPED_LIGHT_OSCILLATION"
+    },
+    "modal_frequency_analysis": {
+      "natural_angular_frequency_omega_n_rad_s": 19.493588676233298,
+      "damped_angular_frequency_omega_d_rad_s": 9.258671610981775,
+      "damping_factor_gamma_rad_s": 17.1543580350853,
+      "natural_frequency_f_n_hz": 3.102492576974274,
+      "damped_frequency_f_d_hz": 1.473562624510006,
+      "oscillation_period_T_d_s": 0.6786273418721666,
+      "perceptual_duration_d_s": 0.32232049386345685,
+      "bounce_parameter_b": 0.12
+    },
+    "initial_conditions_and_velocity_preservation": {
+      "preserve_digitizer_release_velocity": true,
+      "digitizer_scan_rate_hz": 240.0,
+      "sample_window_ms": 40.0,
+      "velocity_handoff_protocol": "v_0 = -v_release_vector; x_0 = x_displacement_vector",
+      "analytical_solution_displacement": "x(t) = exp(-gamma * t) * (x_0 * cos(omega_d * t) + ((v_0 + gamma * x_0) / omega_d) * sin(omega_d * t))",
+      "analytical_solution_velocity": "v(t) = exp(-gamma * t) * (v_0 * cos(omega_d * t) - ((gamma * v_0 + omega_n^2 * x_0) / omega_d) * sin(omega_d * t))"
+    },
+    "settling_dynamics": {
+      "epsilon_threshold": 0.001,
+      "theoretical_settling_time_ms": 402.68,
+      "practical_settling_tolerance_pt": 0.5,
+      "practical_settling_time_ms": 308.8,
+      "settling_time_target_ms": 320.0,
+      "display_refresh_rate_hz": 120.0,
+      "frame_interval_ms": 8.333333333333334,
+      "frames_to_practical_settle": 37
+    }
+  },
+  "app_kill_gesture_fsm": {
+    "description": "Finite State Machine and physical threshold gates for interactive card dismissal and process termination",
+    "managing_classes": [
+      "SBFluidSwitcherGestureManager",
+      "SBDeckSwitcherPanGestureWorkspaceTransresponse",
+      "SBSwipeToKillSwitcherModifier",
+      "SBRemoveFromDesktopSwitcherEventResponse",
+      "FBSceneManager"
+    ],
+    "threshold_gates": {
+      "vertical_displacement_kill_threshold_pt": 180.0,
+      "upward_velocity_kill_threshold_pt_s": -1200.0,
+      "qualification_logic": "displacement_y >= 180.0 OR velocity_y < -1200.0",
+      "card_ejection_target_y_pt": -1200.0,
+      "card_ejection_duration_ms": 240.0,
+      "ejection_spring_stiffness_k": 438.65,
+      "ejection_spring_damping_ratio": 1.0
+    },
+    "states": [
+      {
+        "id": "STATE_CARD_RESTING",
+        "name": "Card Resting in Deck Stack",
+        "description": "Application card rendered in 3D perspective stack with MRU z-depth."
+      },
+      {
+        "id": "STATE_CARD_TRACKING_DRAG",
+        "name": "Interactive Vertical Pan Drag",
+        "description": "User finger actively translating card along Y-axis; 1:1 displacement tracking."
+      },
+      {
+        "id": "STATE_CARD_RUBBERBANDING",
+        "name": "Sub-Threshold Boundary Resistance",
+        "description": "Downward drag against deck floor or sideways deviation suppressed via rational rubberbanding."
+      },
+      {
+        "id": "STATE_CARD_QUALIFIED_KILL",
+        "name": "Ejection Threshold Exceeded",
+        "description": "Touch release occurs with displacement >= 180pt or upward velocity < -1200pt/s."
+      },
+      {
+        "id": "STATE_CARD_EJECTING_ANIMATION",
+        "name": "Ballistic Catapult Animation",
+        "description": "Card accelerates off top edge of screen toward y = -1200pt using critical spring."
+      },
+      {
+        "id": "STATE_PROCESS_TERMINATING",
+        "name": "FBScene Invalidation & Process Tear-Down",
+        "description": "SpringBoard dispatches SIGKILL to target PID and reclaims IOSurface framebuffers."
+      },
+      {
+        "id": "STATE_DECK_REBALANCING",
+        "name": "Deck Stack Collapse & Restitution",
+        "description": "Subsequent cards shift forward (Delta_y = +64pt, Delta_z = +40pt) via fluid spring."
+      }
+    ],
+    "fsm_transitions": [
+      {
+        "from_state": "STATE_CARD_RESTING",
+        "to_state": "STATE_CARD_TRACKING_DRAG",
+        "trigger": "EVENT_CARD_TOUCH_PAN_BEGAN",
+        "condition": "Touch recognized by SBFluidSwitcherPanGestureRecognizer on card bounds"
+      },
+      {
+        "from_state": "STATE_CARD_TRACKING_DRAG",
+        "to_state": "STATE_CARD_RESTING",
+        "trigger": "EVENT_CARD_TOUCH_PAN_CANCELLED",
+        "condition": "Touch released below displacement 180pt and velocity > -1200pt/s; snaps back via harmonic oscillator"
+      },
+      {
+        "from_state": "STATE_CARD_TRACKING_DRAG",
+        "to_state": "STATE_CARD_QUALIFIED_KILL",
+        "trigger": "EVENT_CARD_TOUCH_PAN_ENDED",
+        "condition": "Delta_y >= 180.0 pt OR v_y < -1200.0 pt/s"
+      },
+      {
+        "from_state": "STATE_CARD_QUALIFIED_KILL",
+        "to_state": "STATE_CARD_EJECTING_ANIMATION",
+        "trigger": "EVENT_DISPATCH_REMOVE_FROM_DESKTOP_RESPONSE",
+        "condition": "SBSwipeToKillSwitcherModifier emits SBRemoveFromDesktopSwitcherEventResponse"
+      },
+      {
+        "from_state": "STATE_CARD_EJECTING_ANIMATION",
+        "to_state": "STATE_PROCESS_TERMINATING",
+        "trigger": "EVENT_CARD_EXITS_VIEWPORT",
+        "condition": "Card Y-position crosses y = -1200.0 pt boundary"
+      },
+      {
+        "from_state": "STATE_PROCESS_TERMINATING",
+        "to_state": "STATE_DECK_REBALANCING",
+        "trigger": "EVENT_FBSCENE_DEALLOCATED",
+        "condition": "FrontBoard reports scene invalidation complete"
+      },
+      {
+        "from_state": "STATE_DECK_REBALANCING",
+        "to_state": "STATE_CARD_RESTING",
+        "trigger": "EVENT_DECK_RESTITUTION_SETTLED",
+        "condition": "Remaining cards reach equilibrium offset and depth"
+      }
+    ]
+  },
+  "chamois_stage_manager_layout": {
+    "description": "Stage Manager (Chamois) multi-window stage management engine, coordinate matrices, and quad-tiling architecture",
+    "managing_classes": [
+      "SBChamoisLayoutEngine",
+      "SBContinuousExposeAutoLayoutConfiguration",
+      "SBFlexibleWindowingAutoLayoutSpace",
+      "SBFlexibleWindowingAutoLayoutGroup",
+      "SBFlexibleWindowingAutoLayoutItem",
+      "SBContinuousExposeWindowDragContainerSwitcherModifier"
+    ],
+    "canvas_geometry": {
+      "desktop_class_canvas": {
+        "width_pt": 1366.0,
+        "height_pt": 1024.0,
+        "shelf_width_pt": 180.0,
+        "shelf_margin_left_pt": 16.0,
+        "dock_height_pt": 84.0,
+        "stage_bounds_rect": {
+          "x": 212.0,
+          "y": 24.0,
+          "w": 1130.0,
+          "h": 892.0
+        }
+      },
+      "compact_adaptive_canvas": {
+        "width_pt": 402.0,
+        "height_pt": 874.0,
+        "shelf_width_pt": 72.0,
+        "dock_height_pt": 64.0,
+        "stage_bounds_rect": {
+          "x": 12.0,
+          "y": 44.0,
+          "w": 378.0,
+          "h": 750.0
+        }
+      }
+    },
+    "quad_tiling_matrix": {
+      "max_concurrent_windows": 4,
+      "configurations": [
+        {
+          "layout_mode": "SINGLE_WINDOW_FULL_STAGE",
+          "window_count": 1,
+          "coordinates": [
+            {
+              "window_index": 0,
+              "x_ratio": 0.0,
+              "y_ratio": 0.0,
+              "w_ratio": 1.0,
+              "h_ratio": 1.0
+            }
+          ]
+        },
+        {
+          "layout_mode": "DUAL_SPLIT_VERTICAL",
+          "window_count": 2,
+          "coordinates": [
+            {
+              "window_index": 0,
+              "x_ratio": 0.0,
+              "y_ratio": 0.0,
+              "w_ratio": 0.5,
+              "h_ratio": 1.0
+            },
+            {
+              "window_index": 1,
+              "x_ratio": 0.5,
+              "y_ratio": 0.0,
+              "w_ratio": 0.5,
+              "h_ratio": 1.0
+            }
+          ]
+        },
+        {
+          "layout_mode": "DUAL_SPLIT_HORIZONTAL",
+          "window_count": 2,
+          "coordinates": [
+            {
+              "window_index": 0,
+              "x_ratio": 0.0,
+              "y_ratio": 0.0,
+              "w_ratio": 1.0,
+              "h_ratio": 0.5
+            },
+            {
+              "window_index": 1,
+              "x_ratio": 0.0,
+              "y_ratio": 0.5,
+              "w_ratio": 1.0,
+              "h_ratio": 0.5
+            }
+          ]
+        },
+        {
+          "layout_mode": "TRIPLE_PRIMARY_PLUS_STACK",
+          "window_count": 3,
+          "coordinates": [
+            {
+              "window_index": 0,
+              "x_ratio": 0.0,
+              "y_ratio": 0.0,
+              "w_ratio": 0.6,
+              "h_ratio": 1.0
+            },
+            {
+              "window_index": 1,
+              "x_ratio": 0.6,
+              "y_ratio": 0.0,
+              "w_ratio": 0.4,
+              "h_ratio": 0.5
+            },
+            {
+              "window_index": 2,
+              "x_ratio": 0.6,
+              "y_ratio": 0.5,
+              "w_ratio": 0.4,
+              "h_ratio": 0.5
+            }
+          ]
+        },
+        {
+          "layout_mode": "QUAD_TILING_2X2_GRID",
+          "window_count": 4,
+          "coordinates": [
+            {
+              "window_index": 0,
+              "quadrant": "TOP_LEFT",
+              "x_ratio": 0.0,
+              "y_ratio": 0.0,
+              "w_ratio": 0.5,
+              "h_ratio": 0.5
+            },
+            {
+              "window_index": 1,
+              "quadrant": "TOP_RIGHT",
+              "x_ratio": 0.5,
+              "y_ratio": 0.0,
+              "w_ratio": 0.5,
+              "h_ratio": 0.5
+            },
+            {
+              "window_index": 2,
+              "quadrant": "BOTTOM_LEFT",
+              "x_ratio": 0.0,
+              "y_ratio": 0.5,
+              "w_ratio": 0.5,
+              "h_ratio": 0.5
+            },
+            {
+              "window_index": 3,
+              "quadrant": "BOTTOM_RIGHT",
+              "x_ratio": 0.5,
+              "y_ratio": 0.5,
+              "w_ratio": 0.5,
+              "h_ratio": 0.5
+            }
+          ]
+        }
+      ]
+    },
+    "freeform_floating_coordinate_constraints": {
+      "min_window_width_pt": 320.0,
+      "min_window_height_pt": 400.0,
+      "max_window_width_pt": 1130.0,
+      "max_window_height_pt": 892.0,
+      "magnetic_snap_distance_pt": 24.0,
+      "auto_reposition_overlap_margin_pt": 32.0,
+      "window_corner_radius_pt": 18.0,
+      "window_shadow_radius_pt": 28.0,
+      "window_shadow_opacity": 0.35
+    }
+  },
+  "card_snapshotting_and_texture_memory": {
+    "description": "Snapshot caching engine, IOSurface zero-copy scanout, and memory budget governance",
+    "cache_manager": "SBAppSwitcherSnapshotImageCache",
+    "container_view": "SBReusableSnapshotItemContainer",
+    "snapshot_view": "SBAppSwitcherReusableSnapshotView",
+    "texture_backing": "IOSurface zero-copy CAMetalLayer / CAContext slot ID mapping",
+    "live_scene_surfaces_limit": 3,
+    "snapshot_lru_cache_budget_mb": 256.0,
+    "downsample_policy": {
+      "near_cards_indices": "[0, 1, 2]",
+      "near_cards_scale": 1.0,
+      "near_cards_pixel_format": "BGRA8Unorm",
+      "distant_cards_indices": ">= 3",
+      "distant_cards_scale": 0.5,
+      "distant_cards_pixel_format": "ASTC_4x4_sRGB"
+    },
+    "memory_pressure_reclamation": {
+      "warning_level_1": "Purge snapshots with stack index >= 6",
+      "warning_level_2": "Purge all cached snapshots except index 0 and 1; convert live scene 2 to static snapshot",
+      "warning_level_critical": "Evict entire snapshot cache; invalidate background scene IOSurface layers"
+    }
+  }
+}

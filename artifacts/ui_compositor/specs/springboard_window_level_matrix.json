@@ -1,0 +1,604 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SpringBoard UIWindowLevel Compositor Matrix & Touch Arbitration Specification",
+  "target_soc": "t8150 (Apple A19 Pro)",
+  "platform": "iOS 27.2 / Darwin 24.2.0 (Build 24B119)",
+  "device_model": "iPhone18,3 (v57ap)",
+  "compositor_subsystems": {
+    "window_server": "backboardd",
+    "event_pump": "BKHIDDirectTouchEventProcessor",
+    "delivery_manager": "BKHIDEventDeliveryManager",
+    "touch_policy_server": "BKTouchDeliveryPolicyServer",
+    "compositor_core": "QuartzCore CARenderServer",
+    "scene_host": "SpringBoard FBSceneManager"
+  },
+  "window_levels_count": 18,
+  "window_level_matrix": [
+    {
+      "level_index": 1,
+      "window_level": -1000.0,
+      "symbolic_constant": "UIWindowLevelWallpaper",
+      "primary_window_class": "SBWallpaperWindow",
+      "secondary_window_classes": [
+        "PBUIWallpaperWindow",
+        "PBUIPosterWallpaperWindow"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.Wallpaper",
+      "visual_role": "Dynamic and static desktop/lockscreen wallpaper rendering, PosterBoard parallax depth effects, and astronomical/photographic wallpaper engines.",
+      "security_isolation_tier": "TIER_BACKGROUND_BASE",
+      "hit_testing": {
+        "policy": "PASSTHROUGH_ALWAYS",
+        "ignores_hit_test": true,
+        "ca_context_flag": "_kCAContextIgnoresHitTest",
+        "description": "Never captures direct user touch events. Touches pass through to icon grid or desktop gestures."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": false,
+        "can_occlude_underlying": false,
+        "security_analysis_required": false
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "NONE",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "IDLE_10HZ_OR_AOD_1HZ"
+      }
+    },
+    {
+      "level_index": 2,
+      "window_level": 0.0,
+      "symbolic_constant": "UIWindowLevelNormal",
+      "primary_window_class": "SBHomeScreenWindow",
+      "secondary_window_classes": [
+        "SBMainSwitcherWindow",
+        "SBSwitcherWindow",
+        "SBAppContainerWindow"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.Default",
+      "visual_role": "Standard foreground application scenes (FBScene / UIWindowScene), SpringBoard Home Screen application icon grid, Smart Stack widgets, and Stage Manager canvas.",
+      "security_isolation_tier": "TIER_APP_SANDBOX",
+      "hit_testing": {
+        "policy": "TARGET_DIRECT_INTERACTION",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Direct touch interaction routing via BKSTouchStream. System gesture reservations (bottom 16pt home affordance) intercept and detach touches upon gesture commit."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": true
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": false,
+        "backdrop_material": "NONE",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 3,
+      "window_level": 10.0,
+      "symbolic_constant": "UIWindowLevelDock",
+      "primary_window_class": "SBFloatingDockWindow",
+      "secondary_window_classes": [
+        "SBFloatingDockRootViewController"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.DruidUI",
+      "visual_role": "iPadOS / Stage Manager persistent multitasking dock, recent application drawer, split-view drag-and-drop affordance, and Stash shelf.",
+      "security_isolation_tier": "TIER_SYSTEM_CHROME",
+      "hit_testing": {
+        "policy": "TARGET_SELECTIVE_BOUNDS",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Hit-tests within dock bounding rect. Transparent margins pass touch events through to underlying application scenes."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": false
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "ultraThinMaterial",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 4,
+      "window_level": 100.0,
+      "symbolic_constant": "UIWindowLevelBanner",
+      "primary_window_class": "SBBannerWindow",
+      "secondary_window_classes": [
+        "NCNotificationWindow",
+        "BNBannerSourceWindow"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.OverlayUI",
+      "visual_role": "Interactive notification banners, incoming VOIP call alerts, BannerKit dynamic alerts, and in-app system feedback cards.",
+      "security_isolation_tier": "TIER_SYSTEM_INTERRUPT",
+      "hit_testing": {
+        "policy": "TARGET_NON_TRANSPARENT_REGIONS",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Hit-tests strictly within the active pill banner rect. Screen space outside the banner dismisses on tap or passes through."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": true
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "regularMaterial",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 5,
+      "window_level": 500.0,
+      "symbolic_constant": "UIWindowLevelControlCenter",
+      "primary_window_class": "SBControlCenterWindow",
+      "secondary_window_classes": [
+        "CCUIModularControlCenterOverlayWindow"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.OverlayUI",
+      "visual_role": "Control Center full-screen modular grid, quick toggles (Wi-Fi, Bluetooth, Airplane Mode), audio routing sliders, brightness sliders, and Game Mode overlay.",
+      "security_isolation_tier": "TIER_SYSTEM_CONTROL",
+      "hit_testing": {
+        "policy": "EXCLUSIVE_WHEN_PRESENTED",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "When presented, absorbs all screen touches. Dimmed backdrop tap dismisses Control Center upward."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": false
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "prominentMaterial",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 6,
+      "window_level": 1000.0,
+      "symbolic_constant": "UIWindowLevelStatusBar",
+      "primary_window_class": "SBStatusBarWindow",
+      "secondary_window_classes": [
+        "UIStatusBarWindow",
+        "SBStatusBarContainer"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.Default",
+      "visual_role": "Global system status bar presenting current time, cellular signal strength bars, Wi-Fi telemetry glyphs, battery percentage gauge, and privacy sensor indicator dots (microphone/camera indicator dots).",
+      "security_isolation_tier": "TIER_TELEMETRY_PRIVACY",
+      "hit_testing": {
+        "policy": "TARGET_SYSTEM_ACTIONS_ONLY",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Tap-to-scroll-to-top handler intercepted for scrollable scenes. Top-right corner drag down intercepted by SBSystemGestureManager for Control Center."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": false,
+        "security_analysis_required": true
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "NONE",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "CADENCE_MATCH_APP"
+      }
+    },
+    {
+      "level_index": 7,
+      "window_level": 1050.0,
+      "symbolic_constant": "UIWindowLevelLockScreenQuickActions",
+      "primary_window_class": "SBCoverSheetQuickActionsWindow",
+      "secondary_window_classes": [
+        "CSQuickActionsViewController"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.OverlayUI",
+      "visual_role": "Bottom circular Lock Screen quick action toggle buttons (Torch / Flashlight with variable beam intensity, Quick Camera launch button).",
+      "security_isolation_tier": "TIER_COVERSHEET_SURFACE",
+      "hit_testing": {
+        "policy": "HAPTIC_FORCE_TOUCH_GATED",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Requires sustained force press (>0.35s and actuation force threshold) with taptic engine feedback click before triggering hardware actions."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": false,
+        "security_analysis_required": false
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "thinMaterial",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 8,
+      "window_level": 1100.0,
+      "symbolic_constant": "UIWindowLevelVolumeHUD",
+      "primary_window_class": "SBElasticVolumeHUDWindow",
+      "secondary_window_classes": [
+        "SBElasticSliderView",
+        "SBVolumeHUDViewController"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.AudioHUD",
+      "visual_role": "Elastic volume slider indicator, silent/ringer switch banner, AirPlay audio device routing notification, and spatial audio head-tracking calibration indicator.",
+      "security_isolation_tier": "TIER_SYSTEM_FEEDBACK",
+      "hit_testing": {
+        "policy": "TRANSIENT_ELASTIC_TOUCH",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Initially displays as non-interactive thin bar. If user touches volume pill, it expands into an interactive wide slider capturing direct drag gestures."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": false
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "ultraThinMaterial",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 9,
+      "window_level": 1500.0,
+      "symbolic_constant": "UIWindowLevelSpotlight",
+      "primary_window_class": "SBSpotlightWindow",
+      "secondary_window_classes": [
+        "SPUIRemoteSearchViewController",
+        "SBSpotlightMultiplexingViewController"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.Default",
+      "visual_role": "System Spotlight search canvas, on-device Siri proactive suggestions, Web search query results, and on-screen keyboard text query input.",
+      "security_isolation_tier": "TIER_SEARCH_INDEX",
+      "hit_testing": {
+        "policy": "EXCLUSIVE_WHEN_ACTIVE",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Captures all touches when search field is active. Pull-down dismisses back to Home Screen or active application."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": false
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "regularMaterial",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 10,
+      "window_level": 2000.0,
+      "symbolic_constant": "UIWindowLevelAlert",
+      "primary_window_class": "SBAlertItemWindow",
+      "secondary_window_classes": [
+        "SBModalAlertPresenterWindow",
+        "SBUserNotificationAlert"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.OverlayUI",
+      "visual_role": "Modal system dialogs (Carrier network alerts, Low Battery 20%/10% warnings, Storage Full warning, SIM PIN unlock prompt, and Accessory Not Supported dialogs).",
+      "security_isolation_tier": "TIER_SYSTEM_MODAL",
+      "hit_testing": {
+        "policy": "MODAL_EXCLUSIVE_BLOCKING",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Absorbs 100% of display touches. Modally blocks touch delivery to all underlying layers until the user taps an explicit dialog button (e.g. OK, Cancel)."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": true
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "regularMaterial",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "STATIC_OR_DISMISS_120HZ"
+      }
+    },
+    {
+      "level_index": 11,
+      "window_level": 2100.0,
+      "symbolic_constant": "UIWindowLevelSiri",
+      "primary_window_class": "SBAssistantWindow",
+      "secondary_window_classes": [
+        "SBAssistantIslandStagePlaceholderWindow",
+        "SBAssistantRootViewController"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.Default",
+      "visual_role": "Siri Apple Intelligence full-screen voice assistant, glowing display edge illumination aura, conversational response cards, and contextual screen-aware assistant canvas.",
+      "security_isolation_tier": "TIER_VOICE_INTELLIGENCE",
+      "hit_testing": {
+        "policy": "TARGET_SIRI_CARDS_OR_DISMISS",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Touches on Siri cards trigger deep links. Touches on background aura dismiss Siri and return control to the underlying application."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": false
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "thinMaterial",
+        "edr_headroom_multiplier": 1.25,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 12,
+      "window_level": 2200.0,
+      "symbolic_constant": "UIWindowLevelAccessibility",
+      "primary_window_class": "SBAccessibilityOverlayWindow",
+      "secondary_window_classes": [
+        "AXUIAssistiveTouchWindow",
+        "AXUIVoiceOverCursorWindow",
+        "AXUIFullKeyboardAccessWindow"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.AssistiveTouchUI",
+      "visual_role": "Accessibility visual feedback layer: AssistiveTouch floating orb, VoiceOver rectangular focus cursor ring, Full Keyboard Access border, Switch Control scanner, and Color Tint filters.",
+      "security_isolation_tier": "TIER_ACCESSIBILITY_CRITICAL",
+      "hit_testing": {
+        "policy": "SURFACE_ISOLATED_PASSTHROUGH",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Hit-tests specifically within AssistiveTouch menu orb or menu items. All non-orb coordinates pass through transparently to underlying windows."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": false,
+        "can_occlude_underlying": false,
+        "security_analysis_required": false,
+        "occlusion_override_entitlement": "com.apple.QuartzCore.occlusion-override"
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "NONE",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 13,
+      "window_level": 2500.0,
+      "symbolic_constant": "UIWindowLevelSystemAperture",
+      "primary_window_class": "SBSystemApertureWindow",
+      "secondary_window_classes": [
+        "SBSAContainerViewController",
+        "SAElementHost"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.Default",
+      "visual_role": "Dynamic Island hardware sensor cutout masking curtain, compact dual pill presentation, minimal trailing island dot, detached secondary bubble, and expanded Live Activity interactive cards.",
+      "security_isolation_tier": "TIER_SENSOR_AFFORDANCE",
+      "hit_testing": {
+        "policy": "DYNAMIC_MASKED_GEOMETRY",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Hit-test geometry precisely tracks the animated SVG/Metal capsule boundary path. Tap launches owning app; long-press (>0.3s) triggers spring expansion into expanded HUD."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": false,
+        "occlusion_override_entitlement": "com.apple.QuartzCore.occlusion-override"
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "NONE",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 14,
+      "window_level": 2600.0,
+      "symbolic_constant": "UIWindowLevelCameraControl",
+      "primary_window_class": "SBCameraControlOverlayWindow",
+      "secondary_window_classes": [
+        "SBCaptureButtonSuppressionManager",
+        "SBCameraOverlayViewController"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.CameraOverlayUI",
+      "visual_role": "iPhone 16 Pro / iPhone 17 capacitive Camera Control lateral slider, haptic force feedback arc visualizer, focal length selector (13mm, 24mm, 48mm, 120mm), depth-of-field slider, and tone curves.",
+      "security_isolation_tier": "TIER_HARDWARE_PERIPHERAL",
+      "hit_testing": {
+        "policy": "HARDWARE_CAPACITIVE_TOUCH_STREAM",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Receives specialized capacitive swipe/pressure events directly from BKHIDTouchSensitiveButtonEventProcessor. Pocket proximity sensors suppress inadvertent actuation."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": false
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "thinMaterial",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 15,
+      "window_level": 2800.0,
+      "symbolic_constant": "UIWindowLevelPictureInPicture",
+      "primary_window_class": "SBPictureInPictureWindow",
+      "secondary_window_classes": [
+        "PGPictureInPictureRemoteObject",
+        "SBPIPContainerViewController"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.OverlayUI",
+      "visual_role": "Pegasus Picture-in-Picture floating video playback viewport, FaceTime video thumbnail, interactive playback controls (Play/Pause, 15s Skip, Close, Stash edge tab).",
+      "security_isolation_tier": "TIER_MEDIA_OVERLAY",
+      "hit_testing": {
+        "policy": "FLOATING_RECT_INTERACTIVE",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Hit-tests within floating video rectangle. Supports drag gestures with magnetic edge snapping and pinch-to-zoom scaling."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": true
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "NONE",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_CADENCE_MATCH_VIDEO_24_30_60HZ"
+      }
+    },
+    {
+      "level_index": 16,
+      "window_level": 3000.0,
+      "symbolic_constant": "UIWindowLevelCoverSheet",
+      "primary_window_class": "SBCoverSheetWindow",
+      "secondary_window_classes": [
+        "CSCoverSheetViewController",
+        "SBCoverSheetGrabberWindow"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.Default",
+      "visual_role": "Device Lock Screen, CoverSheet notification list scroll, PosterBoard complication widgets, Media Now Playing player card, and lockscreen camera/torch affordances.",
+      "security_isolation_tier": "TIER_LOCK_AUTHORITY",
+      "hit_testing": {
+        "policy": "FULLSCREEN_LOCK_ARBITRATION",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "When screen is locked, captures all touch input. Swipe-up gesture initiates biometric evaluation or passcode entry. Pull-down affordance (Level 990.0) captures top pull."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": false
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "prominentMaterial",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    },
+    {
+      "level_index": 17,
+      "window_level": 3200.0,
+      "symbolic_constant": "UIWindowLevelEmergencySOS",
+      "primary_window_class": "SBEmergencyCallWindow",
+      "secondary_window_classes": [
+        "SBEmergencyCallHostViewController",
+        "SBMedicalIDViewController"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.OverlayUI",
+      "visual_role": "Emergency SOS countdown alert siren modal, satellite emergency text dispatch terminal, Medical ID emergency card (blood type, allergies, emergency contacts), and direct emergency 911 dialer.",
+      "security_isolation_tier": "TIER_LIFE_SAFETY_CRITICAL",
+      "hit_testing": {
+        "policy": "EXCLUSIVE_EMERGENCY_OVERRIDE",
+        "ignores_hit_test": false,
+        "ca_context_flag": "NONE",
+        "description": "Supersedes all standard lockscreen and application touch delivery. Unconditionally accepts dialer touches, SOS cancel taps, and Medical ID scrolling."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": false,
+        "can_occlude_underlying": true,
+        "security_analysis_required": false
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "prominentMaterial",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "STATIC_OR_DISMISS_120HZ"
+      }
+    },
+    {
+      "level_index": 18,
+      "window_level": 3500.0,
+      "symbolic_constant": "UIWindowLevelSecureEnclavePinpad",
+      "primary_window_class": "SBSecureWindow",
+      "secondary_window_classes": [
+        "SBUIPasscodeLockViewWithKeyboard",
+        "PKPaymentAuthorizationRemoteAlertViewController"
+      ],
+      "scene_workspace": "com.apple.SpringBoard.SceneWorkspace.Default",
+      "visual_role": "Secure Enclave (SEP) biometric fallback PIN keypad, Exclave isolated display plane, Apple Pay NFC payment authorization card sheet, FaceID confirmation HUD, and Stolen Device Protection delay timer.",
+      "security_isolation_tier": "TIER_HARDWARE_SECURE_ISOLATION",
+      "hit_testing": {
+        "policy": "HARDWARE_SECURE_HIT_TEST",
+        "ignores_hit_test": false,
+        "ca_context_flag": "_kCAContextSecure",
+        "description": "Highest compositor priority in the operating system. Backed by _kCAContextSecure. Touch delivery strictly evaluated by BKSWindowServerHitTestSecurityAnalysis to guarantee anti-spoofing and anti-tapjacking integrity."
+      },
+      "touch_occlusion_flags": {
+        "occlusion_detection_enabled": true,
+        "can_occlude_underlying": true,
+        "security_analysis_required": true,
+        "mandatory_security_rules": [
+          "hitTestInsecureFiltered",
+          "hitTestBackgroundAverageContrastThreshold",
+          "_kCAWindowServerHitTestDetectedOcclusion"
+        ]
+      },
+      "transparency_mode": {
+        "group_opacity_disabled": true,
+        "backdrop_material": "regularMaterial",
+        "edr_headroom_multiplier": 1.0,
+        "variable_frame_duration_policy": "DYNAMIC_120HZ_PROMOTION"
+      }
+    }
+  ],
+  "hit_test_architecture": {
+    "engine": "BKHIDDirectTouchEventProcessor in backboardd",
+    "layer_traversal_direction": "TOP_TO_BOTTOM (Level 3500.0 down to Level -1000.0)",
+    "ca_window_server_attributes": [
+      "_kCAWindowServerHitTestContextId",
+      "_kCAWindowServerHitTestSlotId",
+      "_kCAWindowServerHitTestCumulativeLayerTransform",
+      "_kCAWindowServerHitTestCumulativeContentsTransform",
+      "_kCAWindowServerHitTestCumulativeOpacity",
+      "_kCAWindowServerHitTestDetectedOcclusion",
+      "_kCAWindowServerHitTestLayerBackgroundAverage",
+      "_kCAWindowServerHitTestLayerBackgroundStandardDeviation"
+    ],
+    "context_flags": [
+      "_kCAContextSecure",
+      "_kCAContextIgnoresHitTest",
+      "_kCAContextDisplayable",
+      "_kCAContextDisableGroupOpacity",
+      "_kCAContextDisplayId",
+      "_kCAContextDisplayName"
+    ]
+  },
+  "touch_occlusion_security_engine": {
+    "evaluator_class": "BKSWindowServerHitTestSecurityAnalysis",
+    "anti_tapjacking_rules": {
+      "hitTestInsecureFiltered": {
+        "action": "DISCARD_TOUCH_EVENT",
+        "rationale": "If any non-secure or semi-transparent layer with opacity between 0.01 and 0.95 overlaps the target secure frame without com.apple.QuartzCore.occlusion-override entitlement, the touch event is dropped and logged as a potential tapjacking assault."
+      },
+      "hitTestBackgroundAverageContrastThreshold": {
+        "action": "ENFORCE_MINIMUM_LUMINANCE_DELTA",
+        "min_contrast_ratio": 3.0,
+        "rationale": "Prevents invisible clickjacking overlays where an attacker creates low-contrast text or controls over a secure confirmation button."
+      },
+      "_kCAWindowServerHitTestDetectedOcclusion": {
+        "action": "ABORT_SECURE_AUTHORIZATION",
+        "rationale": "For Apple Pay and FaceID confirmation buttons, any detected occlusion causes biometric confirmation to abort and fallback to full passcode entry."
+      }
+    }
+  }
+}

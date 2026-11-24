@@ -110,12 +110,12 @@ def audit_gate_4_zero_placeholders():
     print(f"  [PASS] Zero draft/placeholder stubs confirmed across all {scanned_count} markdown dossiers")
 
 def audit_gate_5_architecture_book():
-    print("[AUDIT 5/6] Auditing Master Architecture Book (Parts I through XXIX)...")
+    print("[AUDIT 5/6] Auditing Master Architecture Book (Parts I through XXX)...")
     book = ROOT / "APPLE_SILICON_A19_PRO_ARCHITECTURE_BOOK.md"
     assert book.exists()
     text = book.read_text(encoding="utf-8")
     parts = re.findall(r'## Part ([IVXLCDM]+):', text)
-    expected_count = 29
+    expected_count = 30
     assert len(parts) == expected_count, f"Architecture book has {len(parts)} parts, expected {expected_count}"
     assert len(text) >= 200000, f"Architecture book size {len(text)} < 200,000 characters"
     print(f"  [PASS] Architecture Book verified: {len(parts)} parts, {len(text):,} characters")
@@ -124,7 +124,9 @@ def audit_gate_6_standalone_repositories():
     print("[AUDIT 6/6] Auditing Standalone Open-Source Repositories...")
     repos = [
         Path("/home/prem/Projects/apple-pmic-spmi-re"),
-        Path("/home/prem/Projects/apple-ave2-codecs-re")
+        Path("/home/prem/Projects/apple-ave2-codecs-re"),
+        Path("/home/prem/Projects/ios-27-springboard-compositor-re"),
+        Path("/home/prem/Projects/apple-silicon-a19-pro-architecture")
     ]
     for r in repos:
         assert r.exists(), f"Repo missing: {r}"

@@ -1,0 +1,416 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DynamicIslandPreemptionSpecification",
+  "description": "Exhaustive priority queue, split arbitration, and ActivityKit JIT ingestion specification for Apple Dynamic Island (SystemAperture / SystemApertureUI) on iOS 27.2 (iPhone18,3 / v57ap / t8150).",
+  "target_metadata": {
+    "os_version": "iOS 27.2",
+    "build_number": "24B119",
+    "train": "RaveB",
+    "subsystem": "SpringBoard.framework (SBSystemApertureElementAuthority)",
+    "ipc_service": "com.apple.springboard.system-aperture-scene-request-service"
+  },
+  "priority_queue_hierarchy": [
+    {
+      "priority": 100,
+      "tier_name": "SystemAlert",
+      "canonical_identifier": "com.apple.springboard.system-alert",
+      "subsystems": [
+        "LocalAuthentication (Face ID / Pearl)",
+        "PassKit (Apple Pay / Express Transit)",
+        "PowerUI (Low Battery 20% / 10% / 5%)",
+        "AirDrop (Incoming Transfer / Proximity)",
+        "SIM / Cellular Activation",
+        "Physical Switch / Ringer Mute Toggle"
+      ],
+      "preemption_behavior": {
+        "window_type": "immediate",
+        "preemption_window_ms": 0,
+        "default_timeout_ms": 3000,
+        "timeout_overrides": {
+          "FaceID_Evaluation": 1500,
+          "ApplePay_Transaction": 4000,
+          "LowBattery_Notice": 3500,
+          "RingerSwitch_Toggle": 2000
+        },
+        "can_preempt_lower_tiers": true,
+        "can_be_preempted_by": [],
+        "suspends_lower_tier_rendering": true
+      },
+      "presentation": {
+        "target_layout_mode": "Mode 4 (Staged Alert) or Mode 0 (Compact Flash)",
+        "leading_component": "System_Glyph (SF Symbol: faceid, applepay, battery.20, bell.slash.fill)",
+        "trailing_component": "Contextual_Text_Or_Spinner (Double Click to Pay, 20% Battery, Done)",
+        "user_interaction": {
+          "interactive_dismissal_allowed": false,
+          "haptic_feedback_pattern": "UINotificationFeedbackGenerator_Warning_Or_Success"
+        }
+      }
+    },
+    {
+      "priority": 80,
+      "tier_name": "IncomingCall",
+      "canonical_identifier": "com.apple.InCallService",
+      "subsystems": [
+        "CallKit",
+        "TelephonyUtilities",
+        "FaceTime",
+        "ThirdParty_VoIP_CallKit"
+      ],
+      "preemption_behavior": {
+        "window_type": "immediate_crossfade",
+        "preemption_window_ms": 50,
+        "default_timeout_ms": "persistent_until_state_change",
+        "termination_events": [
+          "CALL_ANSWERED",
+          "CALL_DECLINED",
+          "CALL_DISCONNECTED",
+          "CALL_TIMED_OUT"
+        ],
+        "can_preempt_lower_tiers": true,
+        "can_be_preempted_by": [
+          "SystemAlert (100)"
+        ],
+        "suspends_lower_tier_rendering": false
+      },
+      "presentation": {
+        "target_layout_mode": "Mode 0 (Single Pill) or Mode 1 (Split Leading Pill)",
+        "leading_component": "Caller_Avatar_Or_Initials (Circular crop, 28x28 pt)",
+        "trailing_component": "Interactive_Call_Controls (Decline red phone / Accept green phone)",
+        "user_interaction": {
+          "tap_action": "Route to InCallService fullscreen workspace",
+          "long_press_action": "Expand to Mode 3 (Expanded HUD, 368x196 pt) with Keypad & Audio Route",
+          "swipe_up_action": "Suppress to minimal indicator"
+        }
+      }
+    },
+    {
+      "priority": 60,
+      "tier_name": "TurnByTurnNav",
+      "canonical_identifier": "com.apple.Maps",
+      "subsystems": [
+        "CoreNavigation",
+        "NavigationServices",
+        "CarPlaySupport",
+        "GeoServices"
+      ],
+      "preemption_behavior": {
+        "window_type": "debounced",
+        "preemption_window_ms": 150,
+        "default_timeout_ms": "persistent_during_active_maneuver",
+        "passive_inter_maneuver_timeout_ms": 10000,
+        "can_preempt_lower_tiers": true,
+        "can_be_preempted_by": [
+          "SystemAlert (100)",
+          "IncomingCall (80)"
+        ],
+        "suspends_lower_tier_rendering": false
+      },
+      "presentation": {
+        "target_layout_mode": "Mode 0 (Single Pill) or Mode 1 (Split Leading Pill)",
+        "leading_component": "Maneuver_Direction_Arrow (SF Symbol: arrow.turn.up.right, arrow.triangle.branch)",
+        "trailing_component": "Distance_And_Unit (e.g. 500 ft, 2.5 mi, ETA countdown)",
+        "user_interaction": {
+          "tap_action": "Route to Maps foreground navigation viewport",
+          "long_press_action": "Expand to Mode 3 (Expanded HUD, 368x214 pt) with route step list",
+          "swipe_up_action": "Dismiss to secondary minimal badge"
+        }
+      }
+    },
+    {
+      "priority": 40,
+      "tier_name": "MediaAudio",
+      "canonical_identifier": "com.apple.Music",
+      "subsystems": [
+        "MediaRemote",
+        "AVSystemController",
+        "AudioSession",
+        "Podcasts",
+        "ThirdParty_Audio_NowPlaying"
+      ],
+      "preemption_behavior": {
+        "window_type": "debounced",
+        "preemption_window_ms": 300,
+        "default_timeout_ms": "persistent_during_audio_playback",
+        "pause_grace_period_ms": 15000,
+        "can_preempt_lower_tiers": true,
+        "can_be_preempted_by": [
+          "SystemAlert (100)",
+          "IncomingCall (80)",
+          "TurnByTurnNav (60)"
+        ],
+        "suspends_lower_tier_rendering": false
+      },
+      "presentation": {
+        "target_layout_mode": "Mode 0 (Single Pill) or Mode 1 (Split Leading / Trailing Pill)",
+        "leading_component": "Album_Art_Thumbnail (Rounded rect 20x20 pt, R=4 pt)",
+        "trailing_component": "Animated_Audio_Waveform (3-bar CoreAnimation real-time equalizer)",
+        "user_interaction": {
+          "tap_action": "Launch media player app",
+          "long_press_action": "Expand to Mode 3 (Expanded HUD, 368x160 pt) with scrub slider and transport controls",
+          "swipe_up_action": "Suppress waveform to background"
+        }
+      }
+    },
+    {
+      "priority": 20,
+      "tier_name": "BackgroundTimer",
+      "canonical_identifier": "com.apple.mobiletimer",
+      "subsystems": [
+        "ActivityKit",
+        "ClockApp",
+        "UserNotificationsServer",
+        "ThirdParty_ActivityKit_LiveActivities"
+      ],
+      "preemption_behavior": {
+        "window_type": "debounced",
+        "preemption_window_ms": 500,
+        "default_timeout_ms": "persistent_until_zero",
+        "completion_escalation": {
+          "escalation_priority": 85,
+          "escalation_duration_ms": 6000,
+          "alert_glyph": "timer.fill",
+          "haptic": "CoreHaptics_TimerCompletionAlert"
+        },
+        "can_preempt_lower_tiers": false,
+        "can_be_preempted_by": [
+          "SystemAlert (100)",
+          "IncomingCall (80)",
+          "TurnByTurnNav (60)",
+          "MediaAudio (40)"
+        ],
+        "suspends_lower_tier_rendering": false
+      },
+      "presentation": {
+        "target_layout_mode": "Mode 0 (Single Pill) or Mode 1 / Mode 2 (Trailing Bubble)",
+        "leading_component": "Timer_Icon (SF Symbol: timer, stopwatch)",
+        "trailing_component": "Monospaced_Countdown_Clock (mm:ss format)",
+        "user_interaction": {
+          "tap_action": "Route to Clock / ActivityKit owning application",
+          "long_press_action": "Expand to Mode 3 (Expanded HUD, 368x160 pt) with Pause / Cancel buttons",
+          "swipe_up_action": "Cancel timer presentation"
+        }
+      }
+    }
+  ],
+  "pill_split_arbitration_engine": {
+    "max_concurrent_visual_elements": 2,
+    "max_dormant_queue_capacity": 16,
+    "slot_assignment_rules": {
+      "leading_slot": {
+        "slot_geometry": {
+          "x": 151.17,
+          "y": 11.0,
+          "width": 37.0,
+          "height": 35.0,
+          "corner_radius": 17.5
+        },
+        "selection_rule": "Element with highest priority (P1) is assigned to the Leading pill.",
+        "asymmetric_expansion_supported": true,
+        "max_leading_width_pt": 165.33
+      },
+      "trailing_slot": {
+        "slot_geometry": {
+          "x": 324.83,
+          "y": 11.0,
+          "width": 37.0,
+          "height": 35.0,
+          "corner_radius": 17.5
+        },
+        "selection_rule": "Element with second-highest priority (P2) is assigned to the Trailing pill.",
+        "asymmetric_expansion_supported": false,
+        "fixed_width_pt": 37.0
+      },
+      "center_sensor_void": {
+        "void_geometry": {
+          "x": 196.5,
+          "y": 11.0,
+          "width": 120.0,
+          "height": 35.0
+        },
+        "guarantee": "Zero display pixels illuminated within [196.5, 316.5]; hardware camera cluster preserved."
+      }
+    },
+    "tie_breaking_arbitration": {
+      "rule": "Temporal Recency",
+      "algorithm": "When two coexisting elements have identical priority tier (e.g. Navigation P=60 and Sports LiveActivity P=60), the element with the most recent state timestamp (t_event) occupies the Leading slot; the older element is relegated to the Trailing slot.",
+      "formula": "if (P_A == P_B) { slot_leading = (t_A >= t_B) ? Element_A : Element_B; slot_trailing = (t_A >= t_B) ? Element_B : Element_A; }"
+    },
+    "preemption_transition_matrix": [
+      {
+        "initial_state": "Empty (None)",
+        "incoming_event": "Element_A arrives (Priority P_A)",
+        "resulting_layout": "Mode 0 (Compact Single)",
+        "leading_element": "Element_A",
+        "trailing_element": "null",
+        "dormant_elements": []
+      },
+      {
+        "initial_state": "Single Element_A active",
+        "incoming_event": "Element_B arrives (Priority P_B)",
+        "resulting_layout": "Mode 1 (Compact Split / Mitosis)",
+        "arbitration_outcome": "if P_A >= P_B: Leading=Element_A, Trailing=Element_B; else: Leading=Element_B, Trailing=Element_A",
+        "dormant_elements": []
+      },
+      {
+        "initial_state": "Split Active (Leading=A, Trailing=B, P_A >= P_B)",
+        "incoming_event": "Element_C arrives (Priority P_C > P_A)",
+        "resulting_layout": "Mode 1 (Compact Split)",
+        "arbitration_outcome": "Leading=Element_C, Trailing=Element_A, Element_B evicted to dormant queue",
+        "dormant_elements": [
+          "Element_B"
+        ]
+      },
+      {
+        "initial_state": "Split Active (Leading=A, Trailing=B, P_A >= P_B)",
+        "incoming_event": "Element_C arrives (Priority P_A >= P_C > P_B)",
+        "resulting_layout": "Mode 1 (Compact Split)",
+        "arbitration_outcome": "Leading=Element_A, Trailing=Element_C, Element_B evicted to dormant queue",
+        "dormant_elements": [
+          "Element_B"
+        ]
+      },
+      {
+        "initial_state": "Split Active (Leading=A, Trailing=B, P_A >= P_B)",
+        "incoming_event": "Element_C arrives (Priority P_C <= P_B)",
+        "resulting_layout": "Mode 1 (Compact Split - Unchanged)",
+        "arbitration_outcome": "Leading=Element_A, Trailing=Element_B, Element_C enqueued directly to dormant queue without visual re-layout",
+        "dormant_elements": [
+          "Element_C"
+        ]
+      },
+      {
+        "initial_state": "Split Active (Leading=A, Trailing=B), Dormant=[C, D]",
+        "incoming_event": "Element_A completes / dismisses",
+        "resulting_layout": "Mode 1 (Compact Split)",
+        "arbitration_outcome": "Element_B promoted to Leading; highest priority element from dormant queue (Element_C) promoted to Trailing",
+        "dormant_elements": [
+          "Element_D"
+        ]
+      },
+      {
+        "initial_state": "Split Active (Leading=A, Trailing=B)",
+        "incoming_event": "SystemAlert arrives (Priority 100)",
+        "resulting_layout": "Mode 4 (Staged Alert) or Mode 0 (Alert Pill)",
+        "arbitration_outcome": "Temporarily preempts entire aperture. Elements A and B suspended in memory cache. After 3000ms timeout, atomic Recombination restores Split state.",
+        "dormant_elements": [
+          "Element_A (suspended)",
+          "Element_B (suspended)"
+        ]
+      }
+    ]
+  },
+  "activitykit_jit_push_notification_schema": {
+    "apns_channel_spec": {
+      "transport": "HTTP/2 over TLS 1.3",
+      "target_host": "api.push.apple.com:443",
+      "topic_format": "{app_bundle_identifier}.push-type.liveactivity",
+      "mandatory_headers": {
+        "apns-push-type": "liveactivity",
+        "apns-priority": "10",
+        "apns-topic": "com.example.app.push-type.liveactivity",
+        "apns-expiration": "0"
+      }
+    },
+    "payload_structure": {
+      "aps": {
+        "timestamp": {
+          "type": "integer",
+          "description": "UNIX epoch seconds when the push notification was dispatched by backend.",
+          "validation": "abs(current_epoch_seconds - timestamp) <= 300"
+        },
+        "event": {
+          "type": "string",
+          "enum": [
+            "update",
+            "end"
+          ],
+          "description": "Lifecycle transition event for the Live Activity."
+        },
+        "stale-date": {
+          "type": "integer",
+          "description": "UNIX epoch seconds after which the client must treat cached state as stale."
+        },
+        "relevance-score": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 100.0,
+          "description": "Dynamic weight used by SBSystemApertureElementAuthority for intra-tier micro-arbitration."
+        },
+        "content-state": {
+          "type": "object",
+          "description": "Polymorphic JSON payload decoded into Swift ActivityAttributes.ContentState.",
+          "required": [
+            "leadingText",
+            "trailingValue",
+            "progressFraction"
+          ],
+          "properties": {
+            "leadingText": {
+              "type": "string",
+              "maxLength": 32
+            },
+            "trailingValue": {
+              "type": "string",
+              "maxLength": 16
+            },
+            "progressFraction": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0
+            },
+            "statusIndicatorColorHex": {
+              "type": "string",
+              "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$"
+            }
+          }
+        },
+        "dismissal-date": {
+          "type": "integer",
+          "description": "Optional UNIX epoch seconds indicating when an ended activity should automatically vanish from the island."
+        },
+        "alert": {
+          "type": "object",
+          "description": "Optional alert payload triggering transient expansion and haptic impulse.",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            },
+            "sound": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "payload_validation_pipeline": {
+      "step_1_payload_size_check": {
+        "rule": "byte_length(raw_json) <= 4096",
+        "error_code": "APNS_ERR_PAYLOAD_TOO_LARGE",
+        "action": "Drop packet, record os_log fault in com.apple.ActivityKit"
+      },
+      "step_2_audit_token_entitlement_check": {
+        "rule": "SecTaskCopyValueForEntitlement(client_task, 'com.apple.developer.activitykit.updates') == kCFBooleanTrue",
+        "mach_service": "com.apple.springboard.system-aperture-scene-request-service",
+        "error_code": "SB_ERR_MISSING_ACTIVITYKIT_ENTITLEMENT",
+        "action": "Terminate BSServiceConnection immediately"
+      },
+      "step_3_clock_skew_verification": {
+        "rule": "abs(gettimeofday() - payload.aps.timestamp) <= 300",
+        "error_code": "ACTIVITYKIT_ERR_CLOCK_SKEW_EXCEEDED",
+        "action": "Discard expired update to prevent replay attacks"
+      },
+      "step_4_schema_and_state_hash": {
+        "rule": "Verify JSON matches registered ActivityAttributes schema and compute SHA256(content-state)",
+        "error_code": "ACTIVITYKIT_ERR_INVALID_CONTENT_STATE",
+        "action": "Log diagnostic failure and reject scene update"
+      },
+      "step_5_stale_date_evaluation": {
+        "rule": "If current_time > payload.aps.stale-date, mark element as degraded, set subview alpha to 0.65",
+        "action": "Demote priority by 20 points in SBSystemApertureElementAuthority"
+      }
+    }
+  }
+}
